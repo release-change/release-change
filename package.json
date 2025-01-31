@@ -1,0 +1,70 @@
+{
+  "name": "release-change",
+  "version": "0.0.0",
+  "description": "Fully automated version management, changelogs management and package publishing with a focus on monorepos, pre-releases and major version zero",
+  "keywords": [
+    "automation",
+    "changelog",
+    "cli",
+    "major-version-zero",
+    "monorepo",
+    "package",
+    "pre-release",
+    "publish",
+    "release",
+    "release-automation",
+    "release-workflow",
+    "semantic",
+    "semantic-version",
+    "semver",
+    "semver-release",
+    "tags",
+    "version",
+    "versioning"
+  ],
+  "homepage": "https://github.com/release-change/release-change",
+  "bugs": {
+    "url": "https://github.com/release-change/release-change/issues"
+  },
+  "author": "Victor Brito (https://victor-brito.dev)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/release-change/release-change.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": "^18.20.5 || ^20.18.2 || ^22.12.0",
+    "npm": ">=10.8.2",
+    "pnpm": ">=9.15.4"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "biome": "biome check --write .",
+    "biome:check": "biome check .",
+    "biome:format": "biome format --write .",
+    "biome:format:check": "biome format .",
+    "biome:lint": "biome lint --write .",
+    "biome:lint:check": "biome lint .",
+    "build": "tsc",
+    "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
+    "dev": "tsc:watch & test:watch",
+    "prepare": "husky",
+    "tsc:watch": "tsc --watch --preserveWatchOutput",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.17.3",
+    "@biomejs/biome": "1.9.4",
+    "@commitlint/cli": "19.6.1",
+    "@commitlint/config-conventional": "19.6.0",
+    "git-format-staged": "3.1.1",
+    "husky": "9.1.7",
+    "typescript": "5.7.3",
+    "vitest": "3.0.0"
+  }
+}
