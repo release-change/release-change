@@ -1,5 +1,5 @@
 if git rev-parse --verify HEAD >/dev/null 2>&1; then
-  git-format-staged --formatter 'biome check --write --files-ignore-unknown=true --no-errors-on-unmatched "{}"' .
+  git diff --cached --name-only --diff-filter=ACM | xargs -I{} biome check --write --files-ignore-unknown=true --no-errors-on-unmatched "{}"
 else
   STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
   if [ -n "$STAGED_FILES" ]; then
