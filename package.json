@@ -54,7 +54,7 @@
     "biome:lint:check": "biome lint .",
     "build": "tsc",
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
-    "dev": "tsc:watch & test:watch",
+    "dev": "pnpm tsc:watch & pnpm test:watch",
     "prepare": "husky",
     "release-change": "./bin/index.js",
     "tsc:watch": "tsc --watch --preserveWatchOutput",
