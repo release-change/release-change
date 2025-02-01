@@ -42,6 +42,9 @@
     "pnpm": ">=9.15.4"
   },
   "main": "./dist/index.js",
+  "bin": {
+    "release-change": "./bin/index.js"
+  },
   "scripts": {
     "biome": "biome check --write .",
     "biome:check": "biome check .",
@@ -53,6 +56,7 @@
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "dev": "tsc:watch & test:watch",
     "prepare": "husky",
+    "release-change": "./bin/index.js",
     "tsc:watch": "tsc --watch --preserveWatchOutput",
     "test": "vitest run",
     "test:watch": "vitest"
@@ -62,7 +66,6 @@
     "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "19.6.1",
     "@commitlint/config-conventional": "19.6.0",
-    "git-format-staged": "3.1.1",
     "husky": "9.1.7",
     "typescript": "5.7.3",
     "vitest": "3.0.0"

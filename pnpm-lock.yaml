@@ -20,9 +20,6 @@ importers:
       '@commitlint/config-conventional':
         specifier: 19.6.0
         version: 19.6.0
-      git-format-staged:
-        specifier: 3.1.1
-        version: 3.1.1
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -679,10 +676,6 @@ packages:
   get-caller-file@2.0.5:
     resolution: {integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==}
     engines: {node: 6.* || 8.* || >= 10.*}
-
-  git-format-staged@3.1.1:
-    resolution: {integrity: sha512-P749fkktaiAchFZKR7bgdvruzhvbcIDr1uRBrS9/Wdimb7wH1Twchz9gOixj8tUaHVMuXY/ckDojfOwV6AxgPA==}
-    hasBin: true
 
   git-raw-commits@4.0.0:
     resolution: {integrity: sha512-ICsMM1Wk8xSGMowkOmPrzo2Fgmfo4bMHLNX6ytHjajRJUqvHOw/TFapQ+QG75c3X/tTDDhOSRPGC52dDbNM8FQ==}
@@ -1674,8 +1667,6 @@ snapshots:
     optional: true
 
   get-caller-file@2.0.5: {}
-
-  git-format-staged@3.1.1: {}
 
   git-raw-commits@4.0.0:
     dependencies:
