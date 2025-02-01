@@ -17,10 +17,18 @@ export const GIT_MIN_VERSION = "2.48.1";
 export const isNodeVersionCompatible = (nodeVersion: string, nodeVersionsRequired: string) =>
   semver.satisfies(nodeVersion, nodeVersionsRequired);
 
+/**
+ * Checks whether the version of git installed matches the minimal version required.
+ * @param gitVersion - The git version installed.
+ * @return `true` if the version installed matches the minimal version required, `false` otherwise.
+ */
 export const isGitVersionCompatible = (gitVersion: NonNullable<SemVer>) => {
   return gitVersion && semver.gte(gitVersion, GIT_MIN_VERSION);
 };
 
+/**
+ * Checks whether Node and git versions match the versions required.
+ */
 const checkRequirements = () => {
   const { version } = process;
   const requiredNodeVersions = packageManager.engines.node;
