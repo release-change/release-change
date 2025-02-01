@@ -70,7 +70,6 @@ describe("check requirements", () => {
       encoding: "utf-8"
     })
   );
-  console.log(nodeReleases[0]);
   const nodeLtsReleases = nodeReleases
     .filter(release => release.lts)
     .map(release => {
@@ -110,7 +109,7 @@ describe("check requirements", () => {
   });
 
   it.each(formerLtsReleases)(
-    "should call process.exit(1) and display an error message if Node version %s is not compatible with those required",
+    "should call `process.exit(1)` and display an error message if Node version %s is not compatible with those required",
     mockedNodeVersion => {
       const formattedRequiredNodeVersions = packageManager.engines.node
         .replaceAll(/\^([.0-9]+)/gi, "$1+")
@@ -128,7 +127,7 @@ describe("check requirements", () => {
     }
   );
 
-  it(`should call process.exit(1) and display an error message if git version is less than ${GIT_MIN_VERSION}`, () => {
+  it(`should call \`process.exit(1)\` and display an error message if git version is less than ${GIT_MIN_VERSION}`, () => {
     const mockedGitVersion = "git version 2.30.0";
     const coercedVersion = semver.coerce(mockedGitVersion);
     vi.spyOn(childProcess, "execSync").mockReturnValue(mockedGitVersion);
