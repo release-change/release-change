@@ -6,10 +6,9 @@ import process from "node:process";
 import semver from "semver";
 
 import cli from "./cli.js";
+import { GIT_MIN_VERSION } from "./utils.js";
 
 import packageManager from "../package.json" with { type: "json" };
-
-export const GIT_MIN_VERSION = "2.48.1";
 
 /**
  * Checks whether the version of Node installed matches the versions required by `engines.node` in root `package.json`.
@@ -17,8 +16,10 @@ export const GIT_MIN_VERSION = "2.48.1";
  * @param nodeVersionsRequired - The versions required by `engines.node` in root `package.json`.
  * @return `true` if the version installed matches the versions required, `false` otherwise.
  */
-export const isNodeVersionCompatible = (nodeVersion: string, nodeVersionsRequired: string) =>
-  semver.satisfies(nodeVersion, nodeVersionsRequired);
+export const isNodeVersionCompatible = (
+  nodeVersion: string,
+  nodeVersionsRequired: string
+): boolean => semver.satisfies(nodeVersion, nodeVersionsRequired);
 
 /**
  * Checks whether the version of git installed matches the minimal version required.
@@ -32,7 +33,7 @@ export const isGitVersionCompatible = (gitVersion: NonNullable<SemVer>) => {
 /**
  * Checks whether Node and git versions match the versions required.
  */
-const checkRequirements = () => {
+const checkRequirements = (): void => {
   const { version } = process;
   const requiredNodeVersions = packageManager.engines.node;
   if (!isNodeVersionCompatible(version, requiredNodeVersions)) {

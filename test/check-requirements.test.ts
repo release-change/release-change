@@ -7,10 +7,10 @@ import semver from "semver";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import checkRequirements, {
-  GIT_MIN_VERSION,
   isGitVersionCompatible,
   isNodeVersionCompatible
-} from "../dist/index.js";
+} from "../src/index.js";
+import { GIT_MIN_VERSION } from "../src/utils.js";
 
 import packageManager from "../package.json" with { type: "json" };
 
