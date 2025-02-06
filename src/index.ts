@@ -4,6 +4,9 @@ import childProcess from "node:child_process";
 import process from "node:process";
 
 import semver from "semver";
+
+import cli from "./cli.js";
+
 import packageManager from "../package.json" with { type: "json" };
 
 export const GIT_MIN_VERSION = "2.48.1";
@@ -49,8 +52,7 @@ const checkRequirements = () => {
     );
     process.exit(1);
   }
-  process.exitCode = 0;
-  console.log(process.exitCode);
+  process.exitCode = cli();
 };
 
 export default checkRequirements;
