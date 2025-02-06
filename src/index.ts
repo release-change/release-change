@@ -52,7 +52,7 @@ const checkRequirements = () => {
     );
     process.exit(1);
   }
-  cli();
+  process.exitCode = cli();
 };
 
 export default checkRequirements;
