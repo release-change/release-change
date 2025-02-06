@@ -4,6 +4,8 @@ import packageManager from "../package.json" with { type: "json" };
 
 export const TAB = " ".repeat(2);
 
+export const GIT_MIN_VERSION = "2.48.1";
+
 export const availableOptions = {
   branches: {
     optionName: "branches",

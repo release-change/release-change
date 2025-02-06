@@ -6,10 +6,9 @@ import process from "node:process";
 import semver from "semver";
 
 import cli from "./cli.js";
+import { GIT_MIN_VERSION } from "./utils.js";
 
 import packageManager from "../package.json" with { type: "json" };
-
-export const GIT_MIN_VERSION = "2.48.1";
 
 /**
  * Checks whether the version of Node installed matches the versions required by `engines.node` in root `package.json`.
