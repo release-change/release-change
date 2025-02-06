@@ -31,8 +31,16 @@ type Alias = `-${Lowercase<Letter> | Uppercase<Letter>}`;
 type Flag = `--${string}`;
 export type CommandOption = Alias | Flag;
 export type Args = (Alias | Flag | string)[];
-export type Help = true;
-export type Version = true;
+export type OptionsPattern = Record<
+  string,
+  {
+    optionName: string;
+    flag: Flag;
+    alias?: Alias;
+    description: string;
+    type: "array" | "boolean" | "string";
+  }
+>;
 export type ParsedOptions = {
   branches?: string[];
   repositoryUrl?: string;

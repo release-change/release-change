@@ -1,1 +1,35 @@
+import type { OptionsPattern } from "./types.js";
+
 export const TAB = " ".repeat(2);
+
+/**
+ * Display the options when running the CLI with the `--help` or `-h` options.
+ * @param availableOptions - The available options.
+ * @return The options, with their alias (if available), flag, description and type.
+ */
+export const displayOptions = <TOptions extends OptionsPattern>(
+  availableOptions: TOptions
+): string => {
+  const availableOptionsValues = Object.values(availableOptions);
+  const aliasMaxLength = Math.max(
+    ...availableOptionsValues.map(option =>
+      "alias" in option && option.alias ? option.alias.length : 0
+    )
+  );
+  const flagMaxLength = Math.max(...availableOptionsValues.map(option => option.flag.length));
+  const descriptionMaxLength = Math.max(
+    ...availableOptionsValues.map(option => option.description.length)
+  );
+  const typeMaxLength = Math.max(...availableOptionsValues.map(option => option.type.length)) + 2;
+  const header = "Options";
+  const options: string[] = [];
+  for (const option of availableOptionsValues) {
+    const alias = "alias" in option ? `${option.alias}, ` : " ".repeat(aliasMaxLength + 2);
+    const optionName = `${TAB}${alias}${option.flag.padEnd(flagMaxLength, " ")}`;
+    const description = `${option.description.padEnd(descriptionMaxLength, " ")}`;
+    const type = `[${option.type}]`.padStart(typeMaxLength, " ");
+    const optionElements = [optionName, description, type];
+    options.push(optionElements.join(TAB));
+  }
+  return `${header}\n${options.join("\n")}`;
+};

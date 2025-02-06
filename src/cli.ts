@@ -2,7 +2,7 @@ import type { Args, CommandOption, ParsedOptions } from "./types.js";
 
 import process from "node:process";
 
-import { TAB } from "./utils.js";
+import { TAB, displayOptions } from "./utils.js";
 
 import packageManager from "../package.json" with { type: "json" };
 
@@ -102,38 +102,12 @@ export const parseOptions = (args: Args): ParsedOptions => {
 };
 
 /**
- * Displays the available options for `--help` command output.
- */
-const displayOptions = (): string => {
-  const availableOptionsValues = Object.values(availableOptions);
-  const aliasMaxLength = Math.max(
-    ...availableOptionsValues.map(option => ("alias" in option ? option.alias.length : 0))
-  );
-  const flagMaxLength = Math.max(...availableOptionsValues.map(option => option.flag.length));
-  const descriptionMaxLength = Math.max(
-    ...availableOptionsValues.map(option => option.description.length)
-  );
-  const typeMaxLength = Math.max(...availableOptionsValues.map(option => option.type.length)) + 2;
-  const header = "Options";
-  const options: string[] = [];
-  for (const option of availableOptionsValues) {
-    const alias = "alias" in option ? `${option.alias}, ` : " ".repeat(aliasMaxLength + 2);
-    const optionName = `${TAB}${alias}${option.flag.padEnd(flagMaxLength, " ")}`;
-    const description = `${option.description.padEnd(descriptionMaxLength, " ")}`;
-    const type = `[${option.type}]`.padStart(typeMaxLength, " ");
-    const optionElements = [optionName, description, type];
-    options.push(optionElements.join(TAB));
-  }
-  return `${header}\n${options.join("\n")}`;
-};
-
-/**
  * Shows the help for the `release-change` command.
  */
 export const showHelp = (): void => {
   const intro = "Runs automated package release and publishing";
   const usage = `Usage:\n${TAB}release-change [options]`;
-  const options = displayOptions();
+  const options = displayOptions<typeof availableOptions>(availableOptions);
   const output = [intro, usage, options].join("\n".repeat(2));
   console.log(output);
 };
