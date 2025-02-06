@@ -1,5 +1,7 @@
 import type { Args, CommandOption, ParsedOptions } from "./types.js";
 
+import packageManager from "../package.json" with { type: "json" };
+
 export const TAB = " ".repeat(2);
 
 export const availableOptions = {
@@ -125,3 +127,19 @@ export const parseOptions = (args: Args): ParsedOptions => {
   }
   return parsedOptions;
 };
+
+/**
+ * Shows the help for the `release-change` command.
+ */
+export const showHelp = (): void => {
+  const intro = "Runs automated package release and publishing";
+  const usage = `Usage:\n${TAB}release-change [options]`;
+  const options = displayOptions();
+  const output = [intro, usage, options].join("\n".repeat(2));
+  console.log(output);
+};
+
+/**
+ * Shows the current version of `release-change`.
+ */
+export const showVersion = (): void => console.log(`v${packageManager.version}`);

@@ -2,25 +2,7 @@ import type { Args } from "./types.js";
 
 import process from "node:process";
 
-import { TAB, displayOptions, parseOptions } from "./utils.js";
-
-import packageManager from "../package.json" with { type: "json" };
-
-/**
- * Shows the help for the `release-change` command.
- */
-export const showHelp = (): void => {
-  const intro = "Runs automated package release and publishing";
-  const usage = `Usage:\n${TAB}release-change [options]`;
-  const options = displayOptions();
-  const output = [intro, usage, options].join("\n".repeat(2));
-  console.log(output);
-};
-
-/**
- * Shows the current version of `release-change`.
- */
-export const showVersion = (): void => console.log(`v${packageManager.version}`);
+import { parseOptions, showHelp, showVersion } from "./utils.js";
 
 /**
  * Runs the CLI
