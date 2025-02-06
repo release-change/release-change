@@ -51,20 +51,18 @@ Options
   -d, --dry-run         Skip release and publishing   [boolean]
   -v, --version         Show version number           [boolean]
   -h, --help            Show help                     [boolean]`;
+  const options = ["-h", "--help"];
   let originalConsoleLog: typeof console.log;
-
   beforeEach(() => {
     originalConsoleLog = console.log;
     console.log = vi.fn();
   });
-
   afterEach(() => {
     console.log = originalConsoleLog;
     vi.restoreAllMocks();
   });
-
-  it("should display the help content", () => {
-    vi.spyOn(childProcess, "execSync").mockReturnValue("npx release-change -h");
+  it.each(options)("should display the help content when using the `%s` command", option => {
+    vi.spyOn(childProcess, "execSync").mockReturnValue(`npx release-change ${option}`);
     showHelp();
     expect(console.log).toHaveBeenCalledWith(expectedOutput);
   });
@@ -72,6 +70,7 @@ Options
 
 describe("display `release-change` version", () => {
   const expectedVersion = packageManager.version;
+  const options = ["-v", "--version"];
   let originalConsoleLog: typeof console.log;
 
   beforeEach(() => {
@@ -84,9 +83,12 @@ describe("display `release-change` version", () => {
     vi.restoreAllMocks();
   });
 
-  it(`should display a message saying \`v${expectedVersion}\``, () => {
-    vi.spyOn(childProcess, "execSync").mockReturnValue("npx release-change -v");
-    showVersion();
-    expect(console.log).toHaveBeenCalledWith(`v${expectedVersion}`);
-  });
+  it.each(options)(
+    `should display a message saying \`v${expectedVersion}\` when using the \`%s\` command`,
+    option => {
+      vi.spyOn(childProcess, "execSync").mockReturnValue(`npx release-change ${option}`);
+      showVersion();
+      expect(console.log).toHaveBeenCalledWith(`v${expectedVersion}`);
+    }
+  );
 });
