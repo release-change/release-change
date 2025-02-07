@@ -15,6 +15,10 @@
     {
       "matchUpdateTypes": ["digest", "minor", "patch", "pin"],
       "automerge": true
+    },
+    {
+      "matchPackageNames": ["node", "npm", "pnpm"],
+      "enabled": false
     }
   ]
 }
