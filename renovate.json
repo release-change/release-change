@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "dependencyDashboard": false,
+  "timezone": "Europe/Paris",
+  "schedule": ["* 0-5 * * *"],
+  "enabledManagers": ["npm"],
+  "rangeStrategy": "pin",
+  "baseBranches": ["main"],
+  "semanticCommits": "enabled",
+  "semanticCommitType": "build",
+  "reviewers": ["renovate-approve"],
+  "platformAutomerge": true,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["digest", "minor", "patch", "pin"],
+      "automerge": true
+    }
+  ]
+}
