@@ -1,7 +1,5 @@
 import type { Args, CommandOption, ParsedOptions } from "./types.js";
 
-import packageManager from "../package.json" with { type: "json" };
-
 import { AVAILABLE_OPTIONS, TAB } from "./utils/constants.js";
 
 /**
@@ -83,8 +81,3 @@ export const parseOptions = (args: Args): ParsedOptions => {
   }
   return parsedOptions;
 };
-
-/**
- * Shows the current version of `release-change`.
- */
-export const showVersion = (): void => console.log(`v${packageManager.version}`);
