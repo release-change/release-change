@@ -29,9 +29,9 @@ const letters = [
 type Letter = (typeof letters)[number];
 type Alias = `-${Lowercase<Letter> | Uppercase<Letter>}`;
 type Flag = `--${string}`;
-export type CommandOption = Alias | Flag;
+export type CliOptionCommand = Alias | Flag;
 export type Args = (Alias | Flag | string)[];
-export type ParsedOptions = {
+export type ParsedCliOptions = {
   branches?: string[];
   repositoryUrl?: string;
   debug?: true;
@@ -39,4 +39,4 @@ export type ParsedOptions = {
   version?: true;
   help?: true;
 };
-export type Options = Omit<ParsedOptions, "help" | "version">;
+export type CliOptions = Omit<ParsedCliOptions, "help" | "version">;

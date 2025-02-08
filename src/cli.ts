@@ -2,7 +2,9 @@ import type { Args } from "./types.js";
 
 import process from "node:process";
 
-import { parseOptions, showHelp, showVersion } from "./utils.js";
+import parseCliOptions from "./utils/parse-cli-options.js";
+import showHelp from "./utils/show-help.js";
+import showVersion from "./utils/show-version.js";
 
 /**
  * Runs the CLI
@@ -10,8 +12,8 @@ import { parseOptions, showHelp, showVersion } from "./utils.js";
  */
 const cli = (): number => {
   const args = process.argv.slice(2) as Args;
-  const parsedOptions = parseOptions(args);
-  const { help, version, ...options } = parsedOptions;
+  const parsedCliOptions = parseCliOptions(args);
+  const { help, version, ...cliOptions } = parsedCliOptions;
   if (help) {
     showHelp();
     return 0;
@@ -20,7 +22,7 @@ const cli = (): number => {
     showVersion();
     return 0;
   }
-  console.log(help, version, options);
+  console.log(help, version, cliOptions);
   return 0;
 };
 
