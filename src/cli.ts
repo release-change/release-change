@@ -2,7 +2,8 @@ import type { Args } from "./types.js";
 
 import process from "node:process";
 
-import { parseOptions, showHelp, showVersion } from "./utils.js";
+import { parseOptions, showVersion } from "./utils.js";
+import showHelp from "./utils/show-help.js";
 
 /**
  * Runs the CLI
