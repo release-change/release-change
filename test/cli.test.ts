@@ -41,10 +41,11 @@ describe("CLI options parsing", () => {
 });
 
 describe("display help for `release-change` command", () => {
+  const expectedPackageName = packageManager.name;
   const expectedOutput = `Runs automated package release and publishing
 
 Usage:
-  release-change [options]
+  ${expectedPackageName} [options]
 
 Options
   -b, --branches        Git branches to release from    [array]
