@@ -23,8 +23,8 @@ jobs:
       - name: Install pnpm and setup Node.js
         uses: ./.github/actions/pnpm-node
       - name: Install TypeScript
-        run: pnpm add typescript
+        run: pnpm add -w typescript
       - name: Install @arethetypeswrong/cli
-        run: pnpm add @arethetypeswrong/cli
+        run: pnpm add -w @arethetypeswrong/cli
       - name: Run check-exports
         run: pnpm check-exports
