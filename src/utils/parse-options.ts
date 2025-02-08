@@ -1,13 +1,13 @@
-import type { Args, CommandOption, ParsedOptions } from "./types.js";
+import type { Args, CommandOption, ParsedOptions } from "../types.js";
 
-import { AVAILABLE_OPTIONS } from "./utils/constants.js";
+import { AVAILABLE_OPTIONS } from "./constants.js";
 
 /**
  * Parses the options run from the CLI.
  * @param args - The arguments from the process.
  * @return The options as defined by `availableOptions`.
  */
-export const parseOptions = (args: Args): ParsedOptions => {
+const parseOptions = (args: Args): ParsedOptions => {
   const allowedCommandOptions = Object.values(AVAILABLE_OPTIONS).reduce(
     (acc, option) => {
       acc[option.flag] = option as (typeof AVAILABLE_OPTIONS)[keyof typeof AVAILABLE_OPTIONS];
@@ -52,3 +52,5 @@ export const parseOptions = (args: Args): ParsedOptions => {
   }
   return parsedOptions;
 };
+
+export default parseOptions;

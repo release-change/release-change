@@ -4,7 +4,7 @@ import childProcess from "node:child_process";
 
 import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { parseOptions } from "../src/utils.js";
+import parseOptions from "../src/utils/parse-options.js";
 import showHelp from "../src/utils/show-help.js";
 import showVersion from "../src/utils/show-version.js";
 
