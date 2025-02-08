@@ -10,7 +10,7 @@ import checkRequirements, {
   isGitVersionCompatible,
   isNodeVersionCompatible
 } from "../src/index.js";
-import { GIT_MIN_VERSION } from "../src/utils.js";
+import { GIT_MIN_VERSION } from "../src/utils/constants.js";
 
 import packageManager from "../package.json" with { type: "json" };
 

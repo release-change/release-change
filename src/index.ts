@@ -6,7 +6,7 @@ import process from "node:process";
 import semver from "semver";
 
 import cli from "./cli.js";
-import { GIT_MIN_VERSION } from "./utils.js";
+import { GIT_MIN_VERSION } from "./utils/constants.js";
 
 import packageManager from "../package.json" with { type: "json" };
 

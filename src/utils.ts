@@ -2,60 +2,14 @@ import type { Args, CommandOption, ParsedOptions } from "./types.js";
 
 import packageManager from "../package.json" with { type: "json" };
 
-export const TAB = " ".repeat(2);
-
-export const GIT_MIN_VERSION = "2.48.1";
-
-export const availableOptions = {
-  branches: {
-    optionName: "branches",
-    flag: "--branches",
-    alias: "-b",
-    description: "Git branches to release from",
-    type: "array"
-  },
-  repositoryUrl: {
-    optionName: "repositoryUrl",
-    flag: "--repository-url",
-    alias: "-r",
-    description: "Git repository URL",
-    type: "string"
-  },
-  debug: {
-    optionName: "debug",
-    flag: "--debug",
-    description: "Output debugging information",
-    type: "boolean"
-  },
-  dryRun: {
-    optionName: "dryRun",
-    flag: "--dry-run",
-    alias: "-d",
-    description: "Skip release and publishing",
-    type: "boolean"
-  },
-  version: {
-    optionName: "version",
-    flag: "--version",
-    alias: "-v",
-    description: "Show version number",
-    type: "boolean"
-  },
-  help: {
-    optionName: "help",
-    flag: "--help",
-    alias: "-h",
-    description: "Show help",
-    type: "boolean"
-  }
-} as const;
+import { AVAILABLE_OPTIONS, TAB } from "./utils/constants.js";
 
 /**
  * Display the options when running the CLI with the `--help` or `-h` options.
  * @return The options, with their alias (if available), flag, description and type.
  */
 export const displayOptions = (): string => {
-  const availableOptionsValues = Object.values(availableOptions);
+  const availableOptionsValues = Object.values(AVAILABLE_OPTIONS);
   const aliasMaxLength = Math.max(
     ...availableOptionsValues.map(option =>
       "alias" in option && option.alias ? option.alias.length : 0
@@ -85,18 +39,18 @@ export const displayOptions = (): string => {
  * @return The options as defined by `availableOptions`.
  */
 export const parseOptions = (args: Args): ParsedOptions => {
-  const allowedCommandOptions = Object.values(availableOptions).reduce(
+  const allowedCommandOptions = Object.values(AVAILABLE_OPTIONS).reduce(
     (acc, option) => {
-      acc[option.flag] = option as (typeof availableOptions)[keyof typeof availableOptions];
+      acc[option.flag] = option as (typeof AVAILABLE_OPTIONS)[keyof typeof AVAILABLE_OPTIONS];
       if ("alias" in option && option.alias) {
-        acc[option.alias] = option as (typeof availableOptions)[keyof typeof availableOptions];
+        acc[option.alias] = option as (typeof AVAILABLE_OPTIONS)[keyof typeof AVAILABLE_OPTIONS];
       }
       return acc;
     },
-    {} as Record<CommandOption, (typeof availableOptions)[keyof typeof availableOptions]>
+    {} as Record<CommandOption, (typeof AVAILABLE_OPTIONS)[keyof typeof AVAILABLE_OPTIONS]>
   );
   const parsedOptions: ParsedOptions = {};
-  let currentOption: keyof typeof availableOptions | null = null;
+  let currentOption: keyof typeof AVAILABLE_OPTIONS | null = null;
   for (const arg of args) {
     if (arg.startsWith("-")) {
       if (!(arg in allowedCommandOptions)) continue;
