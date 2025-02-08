@@ -20,5 +20,6 @@
     "declaration": true,
     "declarationMap": true
   },
-  "exclude": ["dist", "bin/**/*", "test/**/*", "node_modules"]
+  "exclude": ["dist", "bin/**/*", "test/**/*", "packages/**/test/**/*", "node_modules"],
+  "references": []
 }
