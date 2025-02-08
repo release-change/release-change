@@ -1,32 +1,33 @@
-import { AVAILABLE_OPTIONS, TAB } from "./constants.js";
+import { AVAILABLE_CLI_OPTIONS, TAB } from "./constants.js";
 
 /**
- * Display the options when running the CLI with the `--help` or `-h` options.
- * @return The options, with their alias (if available), flag, description and type.
+ * Displays the CLI options when running the CLI with the `--help` or `-h` options.
+ * @return The CLI options, with their alias (if available), flag, description and type.
  */
-const displayOptions = (): string => {
-  const availableOptionsValues = Object.values(AVAILABLE_OPTIONS);
+const displayCliOptions = (): string => {
+  const availableCliOptionsValues = Object.values(AVAILABLE_CLI_OPTIONS);
   const aliasMaxLength = Math.max(
-    ...availableOptionsValues.map(option =>
-      "alias" in option && option.alias ? option.alias.length : 0
+    ...availableCliOptionsValues.map(cliOption =>
+      "alias" in cliOption && cliOption.alias ? cliOption.alias.length : 0
     )
   );
-  const flagMaxLength = Math.max(...availableOptionsValues.map(option => option.flag.length));
+  const flagMaxLength = Math.max(...availableCliOptionsValues.map(option => option.flag.length));
   const descriptionMaxLength = Math.max(
-    ...availableOptionsValues.map(option => option.description.length)
+    ...availableCliOptionsValues.map(cliOption => cliOption.description.length)
   );
-  const typeMaxLength = Math.max(...availableOptionsValues.map(option => option.type.length)) + 2;
+  const typeMaxLength =
+    Math.max(...availableCliOptionsValues.map(option => option.type.length)) + 2;
   const header = "Options";
-  const options: string[] = [];
-  for (const option of availableOptionsValues) {
-    const alias = "alias" in option ? `${option.alias}, ` : " ".repeat(aliasMaxLength + 2);
-    const optionName = `${TAB}${alias}${option.flag.padEnd(flagMaxLength, " ")}`;
-    const description = `${option.description.padEnd(descriptionMaxLength, " ")}`;
-    const type = `[${option.type}]`.padStart(typeMaxLength, " ");
-    const optionElements = [optionName, description, type];
-    options.push(optionElements.join(TAB));
+  const cliOptions: string[] = [];
+  for (const cliOption of availableCliOptionsValues) {
+    const alias = "alias" in cliOption ? `${cliOption.alias}, ` : " ".repeat(aliasMaxLength + 2);
+    const cliOptionName = `${TAB}${alias}${cliOption.flag.padEnd(flagMaxLength, " ")}`;
+    const description = `${cliOption.description.padEnd(descriptionMaxLength, " ")}`;
+    const type = `[${cliOption.type}]`.padStart(typeMaxLength, " ");
+    const cliOptionElements = [cliOptionName, description, type];
+    cliOptions.push(cliOptionElements.join(TAB));
   }
-  return `${header}\n${options.join("\n")}`;
+  return `${header}\n${cliOptions.join("\n")}`;
 };
 
 /**
@@ -35,8 +36,8 @@ const displayOptions = (): string => {
 const showHelp = (): void => {
   const intro = "Runs automated package release and publishing";
   const usage = `Usage:\n${TAB}release-change [options]`;
-  const options = displayOptions();
-  const output = [intro, usage, options].join("\n".repeat(2));
+  const cliOptions = displayCliOptions();
+  const output = [intro, usage, cliOptions].join("\n".repeat(2));
   console.log(output);
 };
 

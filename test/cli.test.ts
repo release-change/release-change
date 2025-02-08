@@ -4,39 +4,39 @@ import childProcess from "node:child_process";
 
 import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import parseOptions from "../src/utils/parse-options.js";
+import parseCliOptions from "../src/utils/parse-cli-options.js";
 import showHelp from "../src/utils/show-help.js";
 import showVersion from "../src/utils/show-version.js";
 
 import packageManager from "../package.json" with { type: "json" };
 
-describe("options parsing", () => {
+describe("CLI options parsing", () => {
   it("should add the `--help` flag and return `true`", () => {
     const args: Args = ["--help"];
-    const options = parseOptions(args);
-    expect(options.help).toBe(true);
+    const cliOptions = parseCliOptions(args);
+    expect(cliOptions.help).toBe(true);
   });
   it("should add the `-h` alias and return `true`", () => {
     const args: Args = ["-h"];
-    const options = parseOptions(args);
-    expect(options.help).toBe(true);
+    const cliOptions = parseCliOptions(args);
+    expect(cliOptions.help).toBe(true);
   });
   it("should add the `--repository-url` flag and return the URL next to it", () => {
     const url = "https://github.com/release-change/release-change.git";
     const args: Args = ["--repository-url", url, "-d"];
-    const options = parseOptions(args);
-    expect(options.repositoryUrl).toBe(url);
+    const cliOptions = parseCliOptions(args);
+    expect(cliOptions.repositoryUrl).toBe(url);
   });
   it("should add the `--branches` flag and return an array containing the string(s) next to it", () => {
     const args: Args = ["--branches", "main", "next", "-d"];
-    const options = parseOptions(args);
-    assert.isArray(options.branches);
-    assert.deepEqual(options.branches, ["main", "next"]);
+    const cliOptions = parseCliOptions(args);
+    assert.isArray(cliOptions.branches);
+    assert.deepEqual(cliOptions.branches, ["main", "next"]);
   });
   it("should ignore a flag that does not exist", () => {
     const args: Args = ["--branches", "main", "--anOptionThatDoesNotExist"];
-    const options = parseOptions(args);
-    expect("anOptionThatDoesNotExist" in options).toBe(false);
+    const cliOptions = parseCliOptions(args);
+    expect("anOptionThatDoesNotExist" in cliOptions).toBe(false);
   });
 });
 
@@ -53,7 +53,7 @@ Options
   -d, --dry-run         Skip release and publishing   [boolean]
   -v, --version         Show version number           [boolean]
   -h, --help            Show help                     [boolean]`;
-  const options = ["-h", "--help"];
+  const cliOptions = ["-h", "--help"];
   let originalConsoleLog: typeof console.log;
   beforeEach(() => {
     originalConsoleLog = console.log;
@@ -63,7 +63,7 @@ Options
     console.log = originalConsoleLog;
     vi.restoreAllMocks();
   });
-  it.each(options)("should display the help content when using the `%s` command", option => {
+  it.each(cliOptions)("should display the help content when using the `%s` command", option => {
     vi.spyOn(childProcess, "execSync").mockReturnValue(`npx release-change ${option}`);
     showHelp();
     expect(console.log).toHaveBeenCalledWith(expectedOutput);
@@ -72,7 +72,7 @@ Options
 
 describe("display `release-change` version", () => {
   const expectedVersion = packageManager.version;
-  const options = ["-v", "--version"];
+  const cliOptions = ["-v", "--version"];
   let originalConsoleLog: typeof console.log;
 
   beforeEach(() => {
@@ -85,10 +85,10 @@ describe("display `release-change` version", () => {
     vi.restoreAllMocks();
   });
 
-  it.each(options)(
+  it.each(cliOptions)(
     `should display a message saying \`v${expectedVersion}\` when using the \`%s\` command`,
-    option => {
-      vi.spyOn(childProcess, "execSync").mockReturnValue(`npx release-change ${option}`);
+    cliOption => {
+      vi.spyOn(childProcess, "execSync").mockReturnValue(`npx release-change ${cliOption}`);
       showVersion();
       expect(console.log).toHaveBeenCalledWith(`v${expectedVersion}`);
     }
