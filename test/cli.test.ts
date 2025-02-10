@@ -1,6 +1,7 @@
 import type { Args } from "../src/types.js";
 
 import childProcess from "node:child_process";
+import process from "node:process";
 
 import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -9,6 +10,10 @@ import showHelp from "../src/utils/show-help.js";
 import showVersion from "../src/utils/show-version.js";
 
 import packageManager from "../package.json" with { type: "json" };
+import cli from "../src/cli.js";
+import * as runModule from "../src/run.js";
+
+const expectedPackageName = packageManager.name;
 
 describe("CLI options parsing", () => {
   it("should add the `--help` flag and return `true`", () => {
@@ -40,8 +45,7 @@ describe("CLI options parsing", () => {
   });
 });
 
-describe("display help for `release-change` command", () => {
-  const expectedPackageName = packageManager.name;
+describe(`display help for \`${expectedPackageName}\` command`, () => {
   const expectedOutput = `Runs automated package release and publishing
 
 Usage:
@@ -71,7 +75,7 @@ Options
   });
 });
 
-describe("display `release-change` version", () => {
+describe(`display \`${expectedPackageName}\` version`, () => {
   const expectedVersion = packageManager.version;
   const cliOptions = ["-v", "--version"];
   let originalConsoleLog: typeof console.log;
@@ -94,4 +98,25 @@ describe("display `release-change` version", () => {
       expect(console.log).toHaveBeenCalledWith(`v${expectedVersion}`);
     }
   );
+});
+
+describe("CLI behaviour when running with some CLI options", () => {
+  const cliOptions = ["-h", "--help", "-v", "--version"];
+  let originalProcessArgv: string[];
+
+  beforeEach(() => {
+    originalProcessArgv = process.argv;
+  });
+
+  afterEach(() => {
+    process.argv = originalProcessArgv;
+    vi.restoreAllMocks();
+  });
+
+  it.each(cliOptions)("should not call `run()` when `%s` is used", cliOption => {
+    const runMock = vi.spyOn(runModule, "default");
+    process.argv = ["pnpm", expectedPackageName, cliOption];
+    cli();
+    expect(runMock).not.toHaveBeenCalled();
+  });
 });
