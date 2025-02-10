@@ -2,6 +2,7 @@ import type { Args } from "./types.js";
 
 import process from "node:process";
 
+import run from "./run.js";
 import parseCliOptions from "./utils/parse-cli-options.js";
 import showHelp from "./utils/show-help.js";
 import showVersion from "./utils/show-version.js";
@@ -22,7 +23,7 @@ const cli = (): number => {
     showVersion();
     return 0;
   }
-  console.log(help, version, cliOptions);
+  run(cliOptions);
   return 0;
 };
 
