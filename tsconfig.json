@@ -17,9 +17,7 @@
     "rootDir": "src",
     "outDir": "dist",
     "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true
+    "declaration": true
   },
-  "exclude": ["dist", "bin/**/*", "test/**/*", "packages/**/test/**/*", "node_modules"],
-  "references": []
+  "exclude": ["dist", "bin/**/*", "test/**/*", "node_modules"]
 }
