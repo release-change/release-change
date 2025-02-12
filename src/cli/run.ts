@@ -1,6 +1,6 @@
-import type { CliOptions } from "./types.js";
+import type { CliOptions } from "./cli.types.js";
 
-import packageManager from "../package.json" with { type: "json" };
+import packageManager from "../../package.json" with { type: "json" };
 
 const run = (_cliOptions: CliOptions): void => {
   const { name: packageName, version: packageVersion } = packageManager;

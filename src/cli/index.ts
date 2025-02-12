@@ -1,11 +1,11 @@
-import type { Args } from "./types.js";
+import type { Args } from "./cli.types.js";
 
 import process from "node:process";
 
+import parseCliOptions from "./parse-cli-options.js";
 import run from "./run.js";
-import parseCliOptions from "./utils/parse-cli-options.js";
-import showHelp from "./utils/show-help.js";
-import showVersion from "./utils/show-version.js";
+import showHelp from "./show-help.js";
+import showVersion from "./show-version.js";
 
 /**
  * Runs the CLI
