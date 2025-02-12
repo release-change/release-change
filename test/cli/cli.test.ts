@@ -1,17 +1,17 @@
-import type { Args } from "../src/types.js";
+import type { Args } from "../../src/cli/cli.types.js";
 
 import childProcess from "node:child_process";
 import process from "node:process";
 
 import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import parseCliOptions from "../src/utils/parse-cli-options.js";
-import showHelp from "../src/utils/show-help.js";
-import showVersion from "../src/utils/show-version.js";
+import cli from "../../src/cli/index.js";
+import parseCliOptions from "../../src/cli/parse-cli-options.js";
+import * as runModule from "../../src/cli/run.js";
+import showHelp from "../../src/cli/show-help.js";
+import showVersion from "../../src/cli/show-version.js";
 
-import packageManager from "../package.json" with { type: "json" };
-import cli from "../src/cli.js";
-import * as runModule from "../src/run.js";
+import packageManager from "../../package.json" with { type: "json" };
 
 const expectedPackageName = packageManager.name;
 

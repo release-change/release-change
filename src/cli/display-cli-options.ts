@@ -1,7 +1,5 @@
 import { AVAILABLE_CLI_OPTIONS, TAB } from "./constants.js";
 
-import packageManager from "../../package.json" with { type: "json" };
-
 /**
  * Displays the CLI options when running the CLI with the `--help` or `-h` options.
  * @return The CLI options, with their alias (if available), flag, description and type.
@@ -32,16 +30,4 @@ const displayCliOptions = (): string => {
   return `${header}\n${cliOptions.join("\n")}`;
 };
 
-/**
- * Shows the help for the `release-change` command.
- */
-const showHelp = (): void => {
-  const { name } = packageManager;
-  const intro = "Runs automated package release and publishing";
-  const usage = `Usage:\n${TAB}${name} [options]`;
-  const cliOptions = displayCliOptions();
-  const output = [intro, usage, cliOptions].join("\n".repeat(2));
-  console.log(output);
-};
-
-export default showHelp;
+export default displayCliOptions;

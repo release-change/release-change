@@ -1,4 +1,4 @@
-import type { Args, CliOptionCommand, ParsedCliOptions } from "../types.js";
+import type { Args, CliOptionCommand, ParsedCliOptions } from "./cli.types.js";
 
 import { AVAILABLE_CLI_OPTIONS } from "./constants.js";
 
