@@ -8,7 +8,7 @@ Fully automated version management, changelogs management and package publishing
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
 ![NPM latest version](https://img.shields.io/npm/v/%40release-change%2Frelease-change/latest)
 ![Node support](https://img.shields.io/node/v/%40release-change%2Frelease-change)
-![Build status](https://img.shields.io/github/actions/workflow/status/release-change/release-change/tests.yml)
+![Build status](https://img.shields.io/github/actions/workflow/status/release-change/release-change/run-tests.yml)
 
 **release-change**
 
