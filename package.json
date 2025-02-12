@@ -52,18 +52,15 @@
     "biome:format:check": "biome format .",
     "biome:lint": "biome lint --write .",
     "biome:lint:check": "biome lint .",
-    "build": "tsc --build",
+    "build": "tsc",
     "check-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
     "dev": "pnpm tsc:watch & pnpm test:watch",
     "prepare": "husky",
     "release-change": "./bin/index.js",
-    "tsc:watch": "tsc --build --watch --preserveWatchOutput",
+    "tsc:watch": "tsc --watch --preserveWatchOutput",
     "test": "vitest run",
     "test:watch": "vitest"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "dependencies": {
     "semver": "7.7.1"
   },
