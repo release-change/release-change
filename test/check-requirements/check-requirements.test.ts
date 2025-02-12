@@ -47,47 +47,15 @@ describe("git version", () => {
 });
 
 describe("check requirements", () => {
-  type NodeRelease = {
-    version: string;
-    date: string;
-    files: string[];
-    npm: string;
-    v8: string;
-    uv: string;
-    zlib: string;
-    openssl: string;
-    modules: string;
-    lts: string | false;
-    security: boolean;
-  };
-  type LTSRelease = {
-    version: string;
-    major: number;
-  };
-  type LTSReleases = Record<number, LTSRelease>;
-  const nodeReleases: NodeRelease[] = JSON.parse(
-    childProcess.execSync("curl -L https://nodejs.org/download/release/index.json", {
-      encoding: "utf-8"
-    })
-  );
-  const nodeLtsReleases = nodeReleases
-    .filter(release => release.lts)
-    .map(release => {
-      return {
-        version: release.version,
-        major: semver.major(release.version)
-      };
-    });
-  const formerLtsReleases = Object.values(
-    nodeLtsReleases.reduce<LTSReleases>((acc, obj) => {
-      acc[obj.major] ??= obj;
-      if (acc[obj.major]?.version && semver.gt(obj.version, acc[obj.major]?.version as string))
-        acc[obj.major] = obj;
-      return acc;
-    }, {})
-  )
-    .map(latest => latest.version)
-    .slice(0, -3);
+  const formerLtsReleases = [
+    "4.9.1",
+    "6.17.1",
+    "8.17.0",
+    "10.24.1",
+    "12.22.12",
+    "14.21.3",
+    "16.20.2"
+  ];
   let originalProcessExit: typeof process.exit;
   let originalConsoleError: typeof console.error;
 
@@ -114,14 +82,13 @@ describe("check requirements", () => {
       const formattedRequiredNodeVersions = packageManager.engines.node
         .replaceAll(/\^([.0-9]+)/gi, "$1+")
         .replaceAll(" || ", " or ");
-      const foundVersion = mockedNodeVersion.replace("v", "");
       Object.defineProperty(process, "version", {
         value: mockedNodeVersion,
         configurable: true
       });
       checkRequirements();
       expect(console.error).toHaveBeenCalledWith(
-        `[release-change]: Required one of the following Node versions: ${formattedRequiredNodeVersions}. Found ${foundVersion}.`
+        `[release-change]: Required one of the following Node versions: ${formattedRequiredNodeVersions}. Found ${mockedNodeVersion}.`
       );
       expect(process.exit).toHaveBeenCalledWith(1);
     }
