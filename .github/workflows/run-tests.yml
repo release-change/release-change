@@ -23,9 +23,9 @@ jobs:
       - name: Install pnpm and setup Node.js
         uses: ./.github/actions/pnpm-node
       - name: Install TypeScript
-        run: pnpm add -w typescript
+        run: pnpm add typescript
       - name: Install Vitest
-        run: pnpm add -w vitest
+        run: pnpm add vitest
       - name: Build the package
         run: pnpm build
       - name: Run Vitest
