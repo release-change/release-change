@@ -5,7 +5,7 @@ import fs from "node:fs";
 import util from "node:util";
 
 import config from "../config/index.js";
-import logger from "../logger/index.js";
+import setLogger from "../logger/index.js";
 
 import packageManager from "../../package.json" with { type: "json" };
 
@@ -13,7 +13,7 @@ const run = (cliOptions: CliOptions, context: Context): void => {
   const { name: packageName, version: packageVersion } = packageManager;
   const { cwd } = context;
   context.config = config(cliOptions);
-  context.logger = logger;
+  context.logger = setLogger();
   context.logger.logInfo(`Running ${packageName} version ${packageVersion}`);
   if (context.config.debug) {
     context.logger.logInfo("Running in debug mode");

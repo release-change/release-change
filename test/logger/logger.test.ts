@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import logger from "../../src/logger/index.js";
+import setLogger from "../../src/logger/index.js";
 
 import packageManager from "../../package.json" with { type: "json" };
 
 describe("log messages to the console", () => {
+  const logger = setLogger();
   const mockedDateTime = "2025-01-01T13:37:42Z";
   const expectedTime = "13:37:42";
   const infoMessage = "This is an informational message.";
