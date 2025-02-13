@@ -12,9 +12,11 @@ import showVersion from "./show-version.js";
  * @return The exit code.
  */
 const cli = (): number => {
-  const args = process.argv.slice(2) as Args;
+  const { argv, cwd, env } = process;
+  const args = argv.slice(2) as Args;
   const parsedCliOptions = parseCliOptions(args);
   const { help, version, ...cliOptions } = parsedCliOptions;
+  const context = { cwd: cwd(), env };
   if (help) {
     showHelp();
     return 0;
@@ -23,7 +25,7 @@ const cli = (): number => {
     showVersion();
     return 0;
   }
-  run(cliOptions);
+  run(cliOptions, context);
   return 0;
 };
 
