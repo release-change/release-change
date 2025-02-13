@@ -1,3 +1,6 @@
+import type { Config } from "../config/config.types.js";
+import type { Logger } from "../logger/logger.types.js";
+
 const letters = [
   "a",
   "b",
@@ -40,3 +43,9 @@ export type ParsedCliOptions = {
   help?: true;
 };
 export type CliOptions = Omit<ParsedCliOptions, "help" | "version">;
+export type Context = {
+  cwd: string;
+  env: NodeJS.ProcessEnv;
+  config?: Config;
+  logger?: Logger;
+};
