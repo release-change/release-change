@@ -35,6 +35,13 @@ describe("log messages to the console", () => {
     vi.restoreAllMocks();
   });
 
+  it("should display leading zeros for the time", () => {
+    vi.spyOn(Date, "now").mockImplementationOnce(() => new Date("2025-01-01T00:07:09Z").getTime());
+    logger.logInfo(infoMessage);
+    expect(console.info).toHaveBeenCalledWith(
+      `[00:07:09] [${packageManager.name}] \u203a \u2139 ${infoMessage}`
+    );
+  });
   it("should display an info message to the console", () => {
     vi.spyOn(Date, "now").mockImplementationOnce(() => new Date(mockedDateTime).getTime());
     logger.logInfo(infoMessage);
