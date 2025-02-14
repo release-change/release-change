@@ -8,20 +8,24 @@ describe("log messages to the console", () => {
   const logger = setLogger();
   const mockedDateTime = "2025-01-01T13:37:42Z";
   const expectedTime = "13:37:42";
+  const debugMessage = "This is a message for debugging purpose.";
   const infoMessage = "This is an informational message.";
   const errorMessage = "This is an error message.";
   const warningMessage = "This is a warning message.";
   const successMessage = "This is a success message.";
+  let originalConsoleDebug: typeof console.debug;
   let originalConsoleInfo: typeof console.info;
   let originalConsoleError: typeof console.error;
   let originalConsoleWarn: typeof console.warn;
   let originalConsoleLog: typeof console.log;
 
   beforeEach(() => {
+    originalConsoleDebug = console.debug;
     originalConsoleInfo = console.info;
     originalConsoleError = console.error;
     originalConsoleWarn = console.warn;
     originalConsoleLog = console.log;
+    console.debug = vi.fn();
     console.info = vi.fn();
     console.error = vi.fn();
     console.warn = vi.fn();
@@ -29,6 +33,7 @@ describe("log messages to the console", () => {
   });
 
   afterEach(() => {
+    console.debug = originalConsoleDebug;
     console.info = originalConsoleInfo;
     console.error = originalConsoleError;
     console.warn = originalConsoleWarn;
@@ -36,6 +41,13 @@ describe("log messages to the console", () => {
     vi.restoreAllMocks();
   });
 
+  it("should display a message in debug mode with its own prefix", () => {
+    const isDebug = true;
+    setLogger(isDebug).logDebug(debugMessage, "test");
+    expect(console.debug).toHaveBeenCalledWith(
+      `\x1b[1;34m[debug] ${packageManager.name}:test\x1b[0m ${debugMessage}`
+    );
+  });
   it("should display leading zeros for the time", () => {
     vi.spyOn(Date, "now").mockImplementationOnce(() => new Date("2025-01-01T00:07:09Z").getTime());
     logger.logInfo(infoMessage);
