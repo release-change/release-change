@@ -7,6 +7,8 @@ import util from "node:util";
 import getConfig from "../config/index.js";
 import setLogger from "../logger/index.js";
 
+import { CONFIG_FILE_NAME } from "../config/constants.js";
+
 import packageManager from "../../package.json" with { type: "json" };
 
 const run = (cliOptions: CliOptions, context: Context): void => {
@@ -21,8 +23,8 @@ const run = (cliOptions: CliOptions, context: Context): void => {
     logger.logDebug("Load context", "context");
     logger.logDebug(util.inspect(context, { depth: Number.POSITIVE_INFINITY }), "context");
     logger.logDebug("Load config", "config");
-    const isConfigFile = fs.existsSync(`${cwd}/.releasechangerc`);
-    if (isConfigFile) logger.logDebug(`Config loaded from \`${cwd}/.releasechangerc\``, "debug");
+    const isConfigFile = fs.existsSync(`${cwd}/${CONFIG_FILE_NAME}`);
+    if (isConfigFile) logger.logDebug(`Config loaded from \`${cwd}/${CONFIG_FILE_NAME}\``, "debug");
     else logger.logDebug("Config file not found", "config");
     logger.logDebug(util.inspect(config, { depth: Number.POSITIVE_INFINITY }), "config");
   }
