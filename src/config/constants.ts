@@ -29,3 +29,4 @@ export const DEFAULT_CONFIG = {
   debug: false,
   dryRun: false
 } as const;
+export const CONFIG_FILE_NAME = `${packageManager.name}.config.json`;
