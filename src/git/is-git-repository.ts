@@ -1,8 +1,8 @@
 import { exec } from "node:child_process";
 
 /**
- * Checks whether it is a git repository or not.
- * @return `true` if it is a git repository, `false` otherwise.
+ * Checks whether it is a Git repository or not.
+ * @return `true` if it is a Git repository, `false` otherwise.
  */
 const isGitRepository = async (): Promise<boolean> => {
   const getCode = (): Promise<number> => {

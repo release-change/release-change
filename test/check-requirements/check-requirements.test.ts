@@ -38,10 +38,10 @@ describe("compatible Node version", () => {
 });
 
 describe("git version", () => {
-  it("tests an incompatible git version", () => {
+  it("tests an incompatible Git version", () => {
     expect(isGitVersionCompatible("2.7.1" as unknown as SemVer)).toBe(false);
   });
-  it("tests a compatible git version", () => {
+  it("tests a compatible Git version", () => {
     expect(isGitVersionCompatible("2.48.1" as unknown as SemVer)).toBe(true);
   });
 });
@@ -94,7 +94,7 @@ describe("check requirements", () => {
     }
   );
 
-  it(`should call \`process.exit(1)\` and display an error message if git version is less than ${GIT_MIN_VERSION}`, () => {
+  it(`should call \`process.exit(1)\` and display an error message if Git version is less than ${GIT_MIN_VERSION}`, () => {
     const mockedGitVersion = "git version 2.30.0";
     const coercedVersion = semver.coerce(mockedGitVersion);
     vi.spyOn(childProcess, "execSync").mockReturnValue(mockedGitVersion);
