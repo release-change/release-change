@@ -11,7 +11,7 @@ import showVersion from "./show-version.js";
  * Runs the CLI
  * @return The exit code.
  */
-const cli = (): number => {
+const cli = async (): Promise<number> => {
   const { argv, cwd, env } = process;
   const args = argv.slice(2) as Args;
   const parsedCliOptions = parseCliOptions(args);
@@ -25,7 +25,7 @@ const cli = (): number => {
     showVersion();
     return 0;
   }
-  run(cliOptions, context);
+  await run(cliOptions, context);
   return 0;
 };
 

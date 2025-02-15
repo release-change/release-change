@@ -14,7 +14,7 @@ import packageManager from "../../package.json" with { type: "json" };
 /**
  * Checks whether Node and git versions match the versions required.
  */
-const checkRequirements = (): void => {
+const checkRequirements = async (): Promise<void> => {
   const { version } = process;
   const packageName = packageManager.name;
   const requiredNodeVersions = packageManager.engines.node;
@@ -35,7 +35,7 @@ const checkRequirements = (): void => {
     );
     process.exit(1);
   }
-  process.exitCode = cli();
+  process.exitCode = await cli();
 };
 
 export default checkRequirements;
