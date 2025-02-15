@@ -11,7 +11,7 @@ import isGitRepository from "./is-git-repository.js";
 const checkRepository = async (context: Required<Context>): Promise<void> => {
   const { config, logger } = context;
   if (!(await isGitRepository())) {
-    logger.logError("The current directory is not a git repository");
+    logger.logError("The current directory is not a Git repository");
     process.exitCode = 1;
   } else {
     const branch = execSync("git branch --show-current", { encoding: "utf8" });

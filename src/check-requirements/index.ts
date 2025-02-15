@@ -12,7 +12,7 @@ import { GIT_MIN_VERSION } from "./constants.js";
 import packageManager from "../../package.json" with { type: "json" };
 
 /**
- * Checks whether Node and git versions match the versions required.
+ * Checks whether Node and Git versions match the versions required.
  */
 const checkRequirements = async (): Promise<void> => {
   const { version } = process;
