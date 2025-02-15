@@ -19,5 +19,5 @@
     "sourceMap": true,
     "declaration": true
   },
-  "exclude": ["dist", "bin/**/*", "test/**/*", "node_modules"]
+  "exclude": ["dist", "bin/**/*", "test/**/*", "vitest.config.*", "node_modules"]
 }
