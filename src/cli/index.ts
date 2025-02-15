@@ -26,7 +26,7 @@ const cli = async (): Promise<number> => {
     return 0;
   }
   await run(cliOptions, context);
-  return 0;
+  return Number(process.exitCode ?? 0);
 };
 
 export default cli;
