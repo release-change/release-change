@@ -2,6 +2,7 @@ import type { CliOptions, Context } from "./cli.types.js";
 
 import debugConfig from "../config/debug-config.js";
 import getConfig from "../config/index.js";
+import checkBranch from "../git/check-branch.js";
 import checkRepository from "../git/check-repository.js";
 import setLogger from "../logger/index.js";
 
@@ -14,7 +15,10 @@ const run = async (cliOptions: CliOptions, context: Context): Promise<void> => {
   const { logger } = context;
   logger.logInfo(`Running ${packageName} version ${packageVersion}`);
   debugConfig(context);
-  await checkRepository(context as Required<Context>);
+  await checkRepository(logger);
+  checkBranch(context as Required<Context>);
+  console.log("context.branch", context.branch);
+  console.log("context.config.dryRun", context.config.dryRun);
   console.log("exit", process.exitCode, process.exitCode ?? 0);
 };
 

@@ -48,4 +48,5 @@ export type Context = {
   env: NodeJS.ProcessEnv;
   config?: Config;
   logger?: Logger;
+  branch?: string | undefined;
 };

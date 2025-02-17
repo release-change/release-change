@@ -1,24 +1,18 @@
-import type { Context } from "../cli/cli.types.js";
-
-import { execSync } from "node:child_process";
+import type { Logger } from "../logger/logger.types.js";
 
 import isGitRepository from "./is-git-repository.js";
 
 /**
  * Checks the repository
- * @param context - The context where the CLI is running.
+ * @param logger - The logger object to log errors.
+ * @return The current exit code if it is a Git repository, the exit code set to `1` otherwise.
  */
-const checkRepository = async (context: Required<Context>): Promise<void> => {
-  const { config, logger } = context;
+const checkRepository = async (logger: Logger): Promise<string | number | undefined> => {
   if (!(await isGitRepository())) {
     logger.logError("The current directory is not a Git repository");
     process.exitCode = 1;
-  } else {
-    const branch = execSync("git branch --show-current", { encoding: "utf8" });
-    const runAutomatedReleaseText = `Run automated release from branch ${branch} on repository ${config.repositoryUrl}`;
-    if (config.dryRun) logger.logWarn(`${runAutomatedReleaseText} in dry run mode`);
-    else logger.logSuccess(runAutomatedReleaseText);
   }
+  return process.exitCode;
 };
 
 export default checkRepository;
