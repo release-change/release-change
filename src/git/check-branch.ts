@@ -11,8 +11,8 @@ import packageManager from "../../package.json" with { type: "json" };
  * @param context - The context where the CLI is running.
  * @return `undefined` if the package can publish from the branch, `false` otherwise.
  */
-const checkBranch = (context: Required<Context>): undefined | false => {
-  if (process.exitCode) return false;
+const checkBranch = (context: Context): undefined | false => {
+  if (process.exitCode || !context.config || !context.logger) return false;
   const { config, logger } = context;
   const { branches } = config;
   const branchName = getBranchName(logger);

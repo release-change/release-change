@@ -16,7 +16,7 @@ const run = async (cliOptions: CliOptions, context: Context): Promise<void> => {
   logger.logInfo(`Running ${packageName} version ${packageVersion}`);
   debugConfig(context);
   await checkRepository(logger);
-  checkBranch(context as Required<Context>);
+  checkBranch(context);
   console.log("context.branch", context.branch);
   console.log("context.config.dryRun", context.config.dryRun);
   console.log("exit", process.exitCode, process.exitCode ?? 0);
