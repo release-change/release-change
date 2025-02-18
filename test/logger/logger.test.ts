@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { setLogger } from "../../src/logger/index.js";
 
-import packageManager from "../../package.json" with { type: "json" };
+import { PACKAGE_NAME } from "../../src/shared/constants.js";
 
 describe("log messages to the console", () => {
   const logger = setLogger();
@@ -45,21 +45,21 @@ describe("log messages to the console", () => {
     const isDebug = true;
     setLogger(isDebug).logDebug(debugMessage, "test");
     expect(console.debug).toHaveBeenCalledWith(
-      `\x1b[1;34m[debug] ${packageManager.name}:test\x1b[0m ${debugMessage}`
+      `\x1b[1;34m[debug] ${PACKAGE_NAME}:test\x1b[0m ${debugMessage}`
     );
   });
   it("should display leading zeros for the time", () => {
     vi.spyOn(Date, "now").mockImplementationOnce(() => new Date("2025-01-01T00:07:09Z").getTime());
     logger.logInfo(infoMessage);
     expect(console.info).toHaveBeenCalledWith(
-      `[00:07:09] [${packageManager.name}] \u203a \u2139 ${infoMessage}`
+      `[00:07:09] [${PACKAGE_NAME}] \u203a \u2139 ${infoMessage}`
     );
   });
   it("should display an info message to the console", () => {
     vi.spyOn(Date, "now").mockImplementationOnce(() => new Date(mockedDateTime).getTime());
     logger.logInfo(infoMessage);
     expect(console.info).toHaveBeenCalledWith(
-      `[${expectedTime}] [${packageManager.name}] \u203a \u2139 ${infoMessage}`
+      `[${expectedTime}] [${PACKAGE_NAME}] \u203a \u2139 ${infoMessage}`
     );
   });
   it("should display an error message to the console", () => {
@@ -67,7 +67,7 @@ describe("log messages to the console", () => {
     logger.logError(errorMessage);
     expect(console.error).toHaveBeenCalledWith(
       "\x1b[1;31m%s\x1b[0m",
-      `[${expectedTime}] [${packageManager.name}] \u203a \u2718 ${errorMessage}`
+      `[${expectedTime}] [${PACKAGE_NAME}] \u203a \u2718 ${errorMessage}`
     );
   });
   it("should display a warning message to the console", () => {
@@ -75,7 +75,7 @@ describe("log messages to the console", () => {
     logger.logWarn(warningMessage);
     expect(console.warn).toHaveBeenCalledWith(
       "\x1b[33m%s\x1b[0m",
-      `[${expectedTime}] [${packageManager.name}] \u203a \u26a0 ${warningMessage}`
+      `[${expectedTime}] [${PACKAGE_NAME}] \u203a \u26a0 ${warningMessage}`
     );
   });
   it("should display a success message to the console", () => {
@@ -83,7 +83,7 @@ describe("log messages to the console", () => {
     logger.logSuccess(successMessage);
     expect(console.log).toHaveBeenCalledWith(
       "\x1b[32m%s\x1b[0m",
-      `[${expectedTime}] [${packageManager.name}] \u203a \u2714 ${successMessage}`
+      `[${expectedTime}] [${PACKAGE_NAME}] \u203a \u2714 ${successMessage}`
     );
   });
 });
