@@ -2,10 +2,10 @@ import type { Config } from "../../src/config/config.types.js";
 
 import { assert, describe, expect, it, vi } from "vitest";
 
-import parseCliOptions from "../../src/cli/parse-cli-options.js";
-import debugConfig from "../../src/config/debug-config.js";
-import * as getConfigFile from "../../src/config/get-config-file.js";
-import config from "../../src/config/index.js";
+import { parseCliOptions } from "../../src/cli/parse-cli-options.js";
+import { debugConfig } from "../../src/config/debug-config.js";
+import { getConfigFile } from "../../src/config/get-config-file.js";
+import { getConfig } from "../../src/config/index.js";
 
 import { DEFAULT_CONFIG } from "../../src/config/constants.js";
 
@@ -26,12 +26,16 @@ describe("get config", () => {
     }
   };
 
+  vi.mock("../../src/config/get-config-file.js", () => ({
+    getConfigFile: vi.fn()
+  }));
+
   it("should get config with default options when `config()` is called without arguments", () => {
-    assert.deepEqual(config(), expectedDefaultConfig);
+    assert.deepEqual(getConfig(), expectedDefaultConfig);
   });
   it("should get config with default options when `config()` is called without CLI options", () => {
     const { help, version, ...mockedCliOptions } = parseCliOptions([]);
-    assert.deepEqual(config(mockedCliOptions), expectedDefaultConfig);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedDefaultConfig);
   });
   it("should get config with default options, except for `--branches` CLI option", () => {
     const { help, version, ...mockedCliOptions } = parseCliOptions(["--branches", mockedBranch]);
@@ -39,7 +43,7 @@ describe("get config", () => {
       ...expectedDefaultConfig,
       ...{ branches: [mockedBranch] }
     };
-    assert.deepEqual(config(mockedCliOptions), expectedConfig);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
   });
   it("should get config with default options, except for `-b` CLI option", () => {
     const { help, version, ...cliOptions } = parseCliOptions(["-b", mockedBranch]);
@@ -47,7 +51,7 @@ describe("get config", () => {
       ...expectedDefaultConfig,
       ...{ branches: [mockedBranch] }
     };
-    assert.deepEqual(config(cliOptions), expectedConfig);
+    assert.deepEqual(getConfig(cliOptions), expectedConfig);
   });
   it("should get config with default options, except for `--repository-url` CLI option", () => {
     const { help, version, ...mockedCliOptions } = parseCliOptions([
@@ -58,7 +62,7 @@ describe("get config", () => {
       ...expectedDefaultConfig,
       ...{ repositoryUrl: mockedRepositoryUrl }
     };
-    assert.deepEqual(config(mockedCliOptions), expectedConfig);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
   });
   it("should get config with default options, except for `-r` CLI option", () => {
     const { help, version, ...cliOptions } = parseCliOptions(["-r", mockedRepositoryUrl]);
@@ -66,7 +70,7 @@ describe("get config", () => {
       ...expectedDefaultConfig,
       ...{ repositoryUrl: mockedRepositoryUrl }
     };
-    assert.deepEqual(config(cliOptions), expectedConfig);
+    assert.deepEqual(getConfig(cliOptions), expectedConfig);
   });
   it("should get config with default options, except for `--debug` CLI option", () => {
     const { help, version, ...mockedCliOptions } = parseCliOptions(["--debug"]);
@@ -74,7 +78,7 @@ describe("get config", () => {
       ...expectedDefaultConfig,
       ...{ debug: true }
     };
-    assert.deepEqual(config(mockedCliOptions), expectedConfig);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
   });
   it("should get config with default options, except for `--dry-run` CLI option", () => {
     const { help, version, ...mockedCliOptions } = parseCliOptions(["--dry-run"]);
@@ -82,7 +86,7 @@ describe("get config", () => {
       ...expectedDefaultConfig,
       ...{ dryRun: true }
     };
-    assert.deepEqual(config(mockedCliOptions), expectedConfig);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
   });
   it("should get config with default options, except for `-d` CLI option", () => {
     const { help, version, ...mockedCliOptions } = parseCliOptions(["-d"]);
@@ -90,7 +94,7 @@ describe("get config", () => {
       ...expectedDefaultConfig,
       ...{ dryRun: true }
     };
-    assert.deepEqual(config(mockedCliOptions), expectedConfig);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
   });
   it("should get config according to all CLI options when all of them are set", () => {
     const { help, version, ...mockedCliOptions } = parseCliOptions([
@@ -108,7 +112,7 @@ describe("get config", () => {
       debug: true,
       dryRun: true
     };
-    assert.deepEqual(config(mockedCliOptions), expectedConfig);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
   });
   it("should get config according to all CLI options when all of them are set using aliases", () => {
     const { help, version, ...mockedCliOptions } = parseCliOptions([
@@ -126,7 +130,7 @@ describe("get config", () => {
       debug: true,
       dryRun: true
     };
-    assert.deepEqual(config(mockedCliOptions), expectedConfig);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
   });
   it("should get config according to config file", () => {
     const mockedConfigFile = {
@@ -141,8 +145,8 @@ describe("get config", () => {
       debug: false,
       dryRun: false
     };
-    vi.spyOn(getConfigFile, "default").mockReturnValue(mockedConfigFile);
-    assert.deepEqual(config(mockedCliOptions), expectedConfig);
+    vi.mocked(getConfigFile).mockReturnValue(mockedConfigFile);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
   });
   it("should get config according to config file with custom `releaseType`", () => {
     const mockedConfigFile = {
@@ -166,8 +170,8 @@ describe("get config", () => {
       debug: false,
       dryRun: false
     };
-    vi.spyOn(getConfigFile, "default").mockReturnValue(mockedConfigFile);
-    assert.deepEqual(config(mockedCliOptions), expectedConfig);
+    vi.mocked(getConfigFile).mockReturnValue(mockedConfigFile);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
   });
   it("should get config according to CLI options rather than config file", () => {
     const mockedConfigFile = {
@@ -182,8 +186,8 @@ describe("get config", () => {
       debug: false,
       dryRun: false
     };
-    vi.spyOn(getConfigFile, "default").mockReturnValue(mockedConfigFile);
-    assert.deepEqual(config(mockedCliOptions), expectedConfig);
+    vi.mocked(getConfigFile).mockReturnValue(mockedConfigFile);
+    assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
   });
   it("should not log debug logs when not in debug mode", () => {
     debugConfig(mockedContext);

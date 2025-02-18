@@ -2,7 +2,7 @@ import type { Context } from "../cli/cli.types.js";
 
 import util from "node:util";
 
-import getBranchName from "./get-branch-name.js";
+import { getBranchName } from "./get-branch-name.js";
 
 import packageManager from "../../package.json" with { type: "json" };
 
@@ -11,7 +11,7 @@ import packageManager from "../../package.json" with { type: "json" };
  * @param context - The context where the CLI is running.
  * @return `undefined` if the package can publish from the branch, `false` otherwise.
  */
-const checkBranch = (context: Context): undefined | false => {
+export const checkBranch = (context: Context): undefined | false => {
   if (process.exitCode || !context.config || !context.logger) return false;
   const { config, logger } = context;
   const { branches } = config;
@@ -31,5 +31,3 @@ const checkBranch = (context: Context): undefined | false => {
   if (config.dryRun) logger.logWarn(`${runAutomatedReleaseText} in dry run mode`);
   else logger.logSuccess(runAutomatedReleaseText);
 };
-
-export default checkBranch;

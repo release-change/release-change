@@ -9,8 +9,6 @@ import { GIT_MIN_VERSION } from "./constants.js";
  * @param gitVersion - The Git version installed.
  * @return `true` if the version installed matches the minimal version required, `false` otherwise.
  */
-const isGitVersionCompatible = (gitVersion: NonNullable<SemVer>) => {
+export const isGitVersionCompatible = (gitVersion: NonNullable<SemVer>) => {
   return gitVersion && semver.gte(gitVersion, GIT_MIN_VERSION);
 };
-
-export default isGitVersionCompatible;

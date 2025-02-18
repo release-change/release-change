@@ -1,6 +1,6 @@
 import type { LoggerContext } from "./logger.types.js";
 
-import addLeadingZero from "./add-leading-zero.js";
+import { addLeadingZero } from "./add-leading-zero.js";
 
 import packageManager from "../../package.json" with { type: "json" };
 
@@ -12,7 +12,7 @@ import packageManager from "../../package.json" with { type: "json" };
  * @param loggerContext - The logger context (whether the debug mode is activated or not, what feature is concerned).
  * @return The prefix in the appropriate format.
  */
-const setPrefix = (timestamp: number, loggerContext: LoggerContext) => {
+export const setPrefix = (timestamp: number, loggerContext: LoggerContext) => {
   const { isDebug, feature } = loggerContext;
   if (isDebug && feature) return `\x1b[1;34m[debug] ${packageManager.name}:${feature}\x1b[0m`;
   const hours = addLeadingZero(new Date(timestamp).getUTCHours());
@@ -20,5 +20,3 @@ const setPrefix = (timestamp: number, loggerContext: LoggerContext) => {
   const seconds = addLeadingZero(new Date(timestamp).getUTCSeconds());
   return `[${hours}:${minutes}:${seconds}] [${packageManager.name}] \u203a`;
 };
-
-export default setPrefix;

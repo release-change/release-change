@@ -2,16 +2,16 @@ import type { Args } from "./cli.types.js";
 
 import process from "node:process";
 
-import parseCliOptions from "./parse-cli-options.js";
-import run from "./run.js";
-import showHelp from "./show-help.js";
-import showVersion from "./show-version.js";
+import { parseCliOptions } from "./parse-cli-options.js";
+import { run } from "./run.js";
+import { showHelp } from "./show-help.js";
+import { showVersion } from "./show-version.js";
 
 /**
  * Runs the CLI
  * @return The exit code.
  */
-const cli = async (): Promise<number> => {
+export const cli = async (): Promise<number> => {
   const { argv, cwd, env } = process;
   const args = argv.slice(2) as Args;
   const parsedCliOptions = parseCliOptions(args);
@@ -28,5 +28,3 @@ const cli = async (): Promise<number> => {
   await run(cliOptions, context);
   return Number(process.exitCode ?? 0);
 };
-
-export default cli;
