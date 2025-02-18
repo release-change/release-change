@@ -7,7 +7,7 @@ import { AVAILABLE_CLI_OPTIONS } from "./constants.js";
  * @param args - The arguments from the process.
  * @return The CLI options as defined by `AVAILABLE_CLI_OPTIONS`.
  */
-const parseCliOptions = (args: Args): ParsedCliOptions => {
+export const parseCliOptions = (args: Args): ParsedCliOptions => {
   const allowedCliOptions = Object.values(AVAILABLE_CLI_OPTIONS).reduce(
     (acc, cliOption) => {
       acc[cliOption.flag] =
@@ -57,5 +57,3 @@ const parseCliOptions = (args: Args): ParsedCliOptions => {
   }
   return parsedCliOptions;
 };
-
-export default parseCliOptions;

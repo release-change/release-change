@@ -3,9 +3,9 @@ import process from "node:process";
 
 import semver from "semver";
 
-import cli from "../cli/index.js";
-import isGitVersionCompatible from "./is-git-version-compatible.js";
-import isNodeVersionCompatible from "./is-node-version-compatible.js";
+import { cli } from "../cli/index.js";
+import { isGitVersionCompatible } from "./is-git-version-compatible.js";
+import { isNodeVersionCompatible } from "./is-node-version-compatible.js";
 
 import { GIT_MIN_VERSION } from "./constants.js";
 
@@ -14,7 +14,7 @@ import packageManager from "../../package.json" with { type: "json" };
 /**
  * Checks whether Node and Git versions match the versions required.
  */
-const checkRequirements = async (): Promise<void> => {
+export const checkRequirements = async (): Promise<void> => {
   const { version } = process;
   const packageName = packageManager.name;
   const requiredNodeVersions = packageManager.engines.node;
@@ -37,5 +37,3 @@ const checkRequirements = async (): Promise<void> => {
   }
   process.exitCode = await cli();
 };
-
-export default checkRequirements;

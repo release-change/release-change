@@ -1,13 +1,13 @@
 import type { Logger } from "./logger.types.js";
 
-import formatMessage from "./format-message.js";
+import { formatMessage } from "./format-message.js";
 
 /**
  * Sets the logger object.
  * @param [isDebug] - Whether the debug mode is activated or not.
  * @return The logger object.
  */
-const setLogger = (isDebug?: boolean): Logger => {
+export const setLogger = (isDebug?: boolean): Logger => {
   const loggerContext = {
     isDebug: Boolean(isDebug)
   };
@@ -35,5 +35,3 @@ const setLogger = (isDebug?: boolean): Logger => {
     }
   };
 };
-
-export default setLogger;

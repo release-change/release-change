@@ -6,9 +6,9 @@ import process from "node:process";
 import semver from "semver";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import checkRequirements from "../../src/check-requirements/index.js";
-import isGitVersionCompatible from "../../src/check-requirements/is-git-version-compatible.js";
-import isNodeVersionCompatible from "../../src/check-requirements/is-node-version-compatible.js";
+import { checkRequirements } from "../../src/check-requirements/index.js";
+import { isGitVersionCompatible } from "../../src/check-requirements/is-git-version-compatible.js";
+import { isNodeVersionCompatible } from "../../src/check-requirements/is-node-version-compatible.js";
 
 import { GIT_MIN_VERSION } from "../../src/check-requirements/constants.js";
 

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import setLogger from "../../src/logger/index.js";
+import { setLogger } from "../../src/logger/index.js";
 
 import packageManager from "../../package.json" with { type: "json" };
 

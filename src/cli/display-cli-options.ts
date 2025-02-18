@@ -4,7 +4,7 @@ import { AVAILABLE_CLI_OPTIONS, TAB } from "./constants.js";
  * Displays the CLI options when running the CLI with the `--help` or `-h` options.
  * @return The CLI options, with their alias (if available), flag, description and type.
  */
-const displayCliOptions = (): string => {
+export const displayCliOptions = (): string => {
   const availableCliOptionsValues = Object.values(AVAILABLE_CLI_OPTIONS);
   const aliasMaxLength = Math.max(
     ...availableCliOptionsValues.map(cliOption =>
@@ -29,5 +29,3 @@ const displayCliOptions = (): string => {
   }
   return `${header}\n${cliOptions.join("\n")}`;
 };
-
-export default displayCliOptions;

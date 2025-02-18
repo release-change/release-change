@@ -1,6 +1,6 @@
 import type { LoggerContext, MessageTypeSymbols } from "./logger.types.js";
 
-import setPrefix from "./set-prefix.js";
+import { setPrefix } from "./set-prefix.js";
 
 /**
  * Formats the message according to the context provided by `loggerContext`:
@@ -14,7 +14,7 @@ import setPrefix from "./set-prefix.js";
  * @param loggerContext - The logger context: whether the debug mode is activated or not, what feature is concerned (optional) and the message type (optional).
  * @return The formatted message.
  */
-const formatMessage = (message: string, loggerContext: LoggerContext): string => {
+export const formatMessage = (message: string, loggerContext: LoggerContext): string => {
   const prefix = setPrefix(Date.now(), loggerContext);
   const symbols: MessageTypeSymbols = {
     info: "\u2139",
@@ -25,5 +25,3 @@ const formatMessage = (message: string, loggerContext: LoggerContext): string =>
   const { type } = loggerContext;
   return type ? `${prefix} ${symbols[type]} ${message}` : `${prefix} ${message}`;
 };
-
-export default formatMessage;

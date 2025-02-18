@@ -7,7 +7,7 @@ import { execSync } from "node:child_process";
  * @param logger - The logger object to log errors.
  * @return The branch name if found, `undefined` otherwise.
  */
-const getBranchName = (logger: Logger): string | undefined => {
+export const getBranchName = (logger: Logger): string | undefined => {
   try {
     const headRef = execSync("git rev-parse --abbrev-ref HEAD", { encoding: "utf8" }).trim();
     if (headRef === "HEAD") {
@@ -29,5 +29,3 @@ const getBranchName = (logger: Logger): string | undefined => {
     return undefined;
   }
 };
-
-export default getBranchName;
