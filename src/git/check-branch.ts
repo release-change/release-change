@@ -4,7 +4,7 @@ import util from "node:util";
 
 import { getBranchName } from "./get-branch-name.js";
 
-import packageManager from "../../package.json" with { type: "json" };
+import { PACKAGE_NAME } from "../shared/constants.js";
 
 /**
  * Checks whether the current branch is part of the branches from which the package can publish.
@@ -21,7 +21,7 @@ export const checkBranch = (context: Context): undefined | false => {
     logger.logDebug(`Branch name: ${branchName}`, "branch");
   }
   if (!branchName || !branches.includes(branchName)) {
-    const runTriggeredOnWrongBranchText = `This run is triggered on the branch ${branchName}, while ${packageManager.name} is configured to only publish from ${branches.join(", ")}; therefore, a new version will not be published`;
+    const runTriggeredOnWrongBranchText = `This run is triggered on the branch ${branchName}, while ${PACKAGE_NAME} is configured to only publish from ${branches.join(", ")}; therefore, a new version will not be published`;
     logger.logWarn(runTriggeredOnWrongBranchText);
     context.config.dryRun = true;
     return false;

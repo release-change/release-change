@@ -10,30 +10,26 @@ import { checkRequirements } from "../../src/check-requirements/index.js";
 import { isGitVersionCompatible } from "../../src/check-requirements/is-git-version-compatible.js";
 import { isNodeVersionCompatible } from "../../src/check-requirements/is-node-version-compatible.js";
 
-import { GIT_MIN_VERSION } from "../../src/check-requirements/constants.js";
-
-import packageManager from "../../package.json" with { type: "json" };
-
-const nodeVersionsRequired = packageManager.engines.node;
+import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "../../src/check-requirements/constants.js";
 
 describe("incompatible Node version", () => {
   it("tests an outdated Node version", () => {
-    expect(isNodeVersionCompatible("v16.20.2", nodeVersionsRequired)).toBe(false);
+    expect(isNodeVersionCompatible("v16.20.2", REQUIRED_NODE_VERSIONS)).toBe(false);
   });
   it("tests an odd Node version", () => {
-    expect(isNodeVersionCompatible("v23.7.0", nodeVersionsRequired)).toBe(false);
+    expect(isNodeVersionCompatible("v23.7.0", REQUIRED_NODE_VERSIONS)).toBe(false);
   });
 });
 
 describe("compatible Node version", () => {
   it("tests a Node maintenance LTS version", () => {
-    expect(isNodeVersionCompatible("v18.20.6", nodeVersionsRequired)).toBe(true);
+    expect(isNodeVersionCompatible("v18.20.6", REQUIRED_NODE_VERSIONS)).toBe(true);
   });
   it("tests a Node active LTS version", () => {
-    expect(isNodeVersionCompatible("v20.18.2", nodeVersionsRequired)).toBe(true);
+    expect(isNodeVersionCompatible("v20.18.2", REQUIRED_NODE_VERSIONS)).toBe(true);
   });
   it("tests a Node current version (if even)", () => {
-    expect(isNodeVersionCompatible("v22.13.1", nodeVersionsRequired)).toBe(true);
+    expect(isNodeVersionCompatible("v22.13.1", REQUIRED_NODE_VERSIONS)).toBe(true);
   });
 });
 
@@ -79,9 +75,10 @@ describe("check requirements", () => {
   it.each(formerLtsReleases)(
     "should call `process.exit(1)` and display an error message if Node version %s is not compatible with those required",
     mockedNodeVersion => {
-      const formattedRequiredNodeVersions = packageManager.engines.node
-        .replaceAll(/\^([.0-9]+)/gi, "$1+")
-        .replaceAll(" || ", " or ");
+      const formattedRequiredNodeVersions = REQUIRED_NODE_VERSIONS.replaceAll(
+        /\^([.0-9]+)/gi,
+        "$1+"
+      ).replaceAll(" || ", " or ");
       Object.defineProperty(process, "version", {
         value: mockedNodeVersion,
         configurable: true

@@ -1,5 +1,7 @@
 import childProcess from "node:child_process";
 
+import { PACKAGE_NAME } from "../shared/constants.js";
+
 import packageManager from "../../package.json" with { type: "json" };
 
 export const DEFAULT_CONFIG = {
@@ -29,4 +31,4 @@ export const DEFAULT_CONFIG = {
   debug: false,
   dryRun: false
 } as const;
-export const CONFIG_FILE_NAME = `${packageManager.name}.config.json`;
+export const CONFIG_FILE_NAME = `${PACKAGE_NAME}.config.json`;

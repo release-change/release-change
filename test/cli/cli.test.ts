@@ -11,9 +11,7 @@ import { run } from "../../src/cli/run.js";
 import { showHelp } from "../../src/cli/show-help.js";
 import { showVersion } from "../../src/cli/show-version.js";
 
-import packageManager from "../../package.json" with { type: "json" };
-
-const expectedPackageName = packageManager.name;
+import { PACKAGE_NAME, PACKAGE_VERSION } from "../../src/shared/constants.js";
 
 describe("CLI options parsing", () => {
   it("should add the `--help` flag and return `true`", () => {
@@ -45,11 +43,11 @@ describe("CLI options parsing", () => {
   });
 });
 
-describe(`display help for \`${expectedPackageName}\` command`, () => {
+describe(`display help for \`${PACKAGE_NAME}\` command`, () => {
   const expectedOutput = `Runs automated package release and publishing
 
 Usage:
-  ${expectedPackageName} [options]
+  ${PACKAGE_NAME} [options]
 
 Options
   -b, --branches        Git branches to release from    [array]
@@ -75,8 +73,8 @@ Options
   });
 });
 
-describe(`display \`${expectedPackageName}\` version`, () => {
-  const expectedVersion = packageManager.version;
+describe(`display \`${PACKAGE_NAME}\` version`, () => {
+  const expectedVersion = PACKAGE_VERSION;
   const cliOptions = ["-v", "--version"];
   let originalConsoleLog: typeof console.log;
 
@@ -117,7 +115,7 @@ describe("CLI behaviour when running with some CLI options", () => {
     vi.mock("../../src/cli/run.js", () => ({
       run: vi.fn()
     }));
-    process.argv = ["pnpm", expectedPackageName, cliOption];
+    process.argv = ["pnpm", PACKAGE_NAME, cliOption];
     cli();
     expect(run).not.toHaveBeenCalled();
   });

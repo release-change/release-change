@@ -2,7 +2,7 @@ import type { LoggerContext } from "./logger.types.js";
 
 import { addLeadingZero } from "./add-leading-zero.js";
 
-import packageManager from "../../package.json" with { type: "json" };
+import { PACKAGE_NAME } from "../shared/constants.js";
 
 /**
  * Sets prefix for messages logged to the console according to the context provided by `loggerContext`:
@@ -14,9 +14,9 @@ import packageManager from "../../package.json" with { type: "json" };
  */
 export const setPrefix = (timestamp: number, loggerContext: LoggerContext) => {
   const { isDebug, feature } = loggerContext;
-  if (isDebug && feature) return `\x1b[1;34m[debug] ${packageManager.name}:${feature}\x1b[0m`;
+  if (isDebug && feature) return `\x1b[1;34m[debug] ${PACKAGE_NAME}:${feature}\x1b[0m`;
   const hours = addLeadingZero(new Date(timestamp).getUTCHours());
   const minutes = addLeadingZero(new Date(timestamp).getUTCMinutes());
   const seconds = addLeadingZero(new Date(timestamp).getUTCSeconds());
-  return `[${hours}:${minutes}:${seconds}] [${packageManager.name}] \u203a`;
+  return `[${hours}:${minutes}:${seconds}] [${PACKAGE_NAME}] \u203a`;
 };

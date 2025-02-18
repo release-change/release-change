@@ -1,6 +1,6 @@
-import packageManager from "../../package.json" with { type: "json" };
+import { PACKAGE_VERSION } from "../shared/constants.js";
 
 /**
  * Shows the current version of `release-change`.
  */
-export const showVersion = (): void => console.log(`v${packageManager.version}`);
+export const showVersion = (): void => console.log(`v${PACKAGE_VERSION}`);
