@@ -1,13 +1,11 @@
-import childProcess from "node:child_process";
+import { getRemoteRepositoryUrl } from "./get-remote-repository-url.js";
+import { getRepositoryUrl } from "./get-repository-url.js";
 
 import { PACKAGE_NAME } from "../shared/constants.js";
 
-import packageManager from "../../package.json" with { type: "json" };
-
 export const DEFAULT_CONFIG = {
   branches: ["alpha", "beta", "main", "master", "next"],
-  repositoryUrl:
-    packageManager.repository.url ?? childProcess.execSync("git remote get-url origin"),
+  repositoryUrl: getRepositoryUrl() ?? (await getRemoteRepositoryUrl()),
   releaseType: {
     alpha: {
       channel: "alpha",
