@@ -1,3 +1,12 @@
+export type Package = {
+  repository?:
+    | string
+    | {
+        type: string;
+        url: string;
+        directory?: string;
+      };
+};
 export type Config = {
   branches: string[];
   repositoryUrl: string;
