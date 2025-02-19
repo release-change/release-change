@@ -1,44 +1,48 @@
-import { execSync } from "node:child_process";
-
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getRemoteRepositoryUrl } from "../../src/config/get-remote-repository-url.js";
-import * as isGitRepositoryModule from "../../src/git/is-git-repository.js";
+import * as getTrackedRepositoriesModule from "../../src/git/get-tracked-repositories.js";
 
 describe("get remote repository URL", () => {
   const mockedRemote = [
     "origin\tgit@github.com:release-change/release-change.git (fetch)",
     "origin\tgit@github.com:release-change/release-change.git (push)"
   ];
-  const mockExecSync = execSync as ReturnType<typeof vi.fn>;
+  const mockedRemoteWithoutPush = [
+    "origin\tgit@github.com:release-change/release-change.git (fetch)"
+  ];
   const expectedMockedRemoteUrl = "git@github.com:release-change/release-change.git";
 
   beforeEach(() => {
-    vi.mock("../../src/git/is-git-repository.js");
-    vi.mock("node:child_process", () => ({ execSync: vi.fn() }));
+    vi.mock("../../src/git/get-tracked-repositories.js");
   });
 
   afterEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should return `null` when the project is not a Git repository", async () => {
-    vi.mocked(isGitRepositoryModule.isGitRepository).mockReturnValue(Promise.resolve(false));
+  it("should return `null` if the project is not a Git repository", async () => {
+    vi.mocked(getTrackedRepositoriesModule.getTrackedRepositories).mockReturnValue(
+      Promise.resolve(null)
+    );
     expect(await getRemoteRepositoryUrl()).toBe(null);
   });
-  it("should return `null` when no remote URL is defined", async () => {
-    vi.mocked(isGitRepositoryModule.isGitRepository).mockReturnValue(Promise.resolve(true));
-    mockExecSync.mockReturnValue("");
+  it("should return `null` when there are no tracked repositories", async () => {
+    vi.mocked(getTrackedRepositoriesModule.getTrackedRepositories).mockReturnValue(
+      Promise.resolve("")
+    );
     expect(await getRemoteRepositoryUrl()).toBe(null);
   });
   it("should return `null` when no remote URL for push is defined", async () => {
-    vi.mocked(isGitRepositoryModule.isGitRepository).mockReturnValue(Promise.resolve(true));
-    mockExecSync.mockReturnValue(mockedRemote[0]);
+    vi.mocked(getTrackedRepositoriesModule.getTrackedRepositories).mockReturnValue(
+      Promise.resolve(mockedRemoteWithoutPush.join("\n"))
+    );
     expect(await getRemoteRepositoryUrl()).toBe(null);
   });
   it("should return the first remote URL for push found", async () => {
-    vi.mocked(isGitRepositoryModule.isGitRepository).mockReturnValue(Promise.resolve(true));
-    mockExecSync.mockReturnValue(mockedRemote.join("\n"));
+    vi.mocked(getTrackedRepositoriesModule.getTrackedRepositories).mockReturnValue(
+      Promise.resolve(mockedRemote.join("\n"))
+    );
     expect(await getRemoteRepositoryUrl()).toBe(expectedMockedRemoteUrl);
   });
 });
