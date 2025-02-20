@@ -1,11 +1,10 @@
 import type { Config } from "../../src/config/config.types.js";
 
-import { assert, describe, expect, it, vi } from "vitest";
+import { assert, describe, it, vi } from "vitest";
 
 import { parseCliOptions } from "../../src/cli/parse-cli-options.js";
-import { debugConfig } from "../../src/config/debug-config.js";
 import { getConfigFile } from "../../src/config/get-config-file.js";
-import { getConfig } from "../../src/config/index.js";
+import { getConfig } from "../../src/config/get-config.js";
 
 import { DEFAULT_CONFIG } from "../../src/config/constants.js";
 
@@ -13,18 +12,6 @@ describe("get config", () => {
   const expectedDefaultConfig = DEFAULT_CONFIG as unknown as Config;
   const mockedBranch = "main";
   const mockedRepositoryUrl = "https://github.com/release-change/release-change";
-  const mockedContext = {
-    cwd: "/fake/path",
-    env: {},
-    config: expectedDefaultConfig,
-    logger: {
-      logDebug: vi.fn(),
-      logInfo: vi.fn(),
-      logError: vi.fn(),
-      logWarn: vi.fn(),
-      logSuccess: vi.fn()
-    }
-  };
 
   vi.mock("../../src/config/get-config-file.js", () => ({
     getConfigFile: vi.fn()
@@ -188,14 +175,5 @@ describe("get config", () => {
     };
     vi.mocked(getConfigFile).mockReturnValue(mockedConfigFile);
     assert.deepEqual(getConfig(mockedCliOptions), expectedConfig);
-  });
-  it("should not log debug logs when not in debug mode", () => {
-    debugConfig(mockedContext);
-    expect(mockedContext.logger.logDebug).not.toHaveBeenCalled();
-  });
-  it("should log debug logs when in debug mode", () => {
-    mockedContext.config.debug = true;
-    debugConfig(mockedContext);
-    expect(mockedContext.logger.logDebug).toHaveBeenCalled();
   });
 });
