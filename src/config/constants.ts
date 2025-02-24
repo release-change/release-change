@@ -1,11 +1,16 @@
-import { getRemoteRepositoryUrl } from "./get-remote-repository-url.js";
-import { getRepositoryUrl } from "./get-repository-url.js";
-
 import { PACKAGE_NAME } from "../shared/constants.js";
 
+export const HTTPS_URL_PATTERN =
+  /^(git\+)?ht{2}ps:\/{2}(?<host>[^\/]+)\/(?<user>[-_./a-z0-9]+)\/(?<repo>[-_./a-z0-9]+)(?<extension>\.git)$/i;
+export const STANDALONE_SSH_URL_PATTERN =
+  /^git@(?<host>[^:]+):(?<user>[-_./a-z0-9]+)\/(?<repo>[-_./a-z0-9]+)(?<extension>\.git)$/i;
+export const SSH_URL_PATTERN =
+  /^(git\+)?s{2}h:\/{2}git@(?<host>[^\/]+)\/(?<user>[-_./a-z0-9]+)\/(?<repo>[-_./a-z0-9]+)(?<extension>\.git)$/i;
+export const GITHUB_URL_PATTERN = /^github:(?<user>[-_./a-z0-9]+)\/(?<repo>[-_./a-z0-9]+)$/i;
+export const HTTPS_GITHUB_URL_REPLACEMENT_PATTERN = "https://github.com/$<user>/$<repo>.git";
+export const SSH_GITHUB_URL_REPLACEMENT_PATTERN = "ssh://git@github.com/$<user>/$<repo>.git";
 export const DEFAULT_CONFIG = {
   branches: ["alpha", "beta", "main", "master", "next"],
-  repositoryUrl: getRepositoryUrl() ?? (await getRemoteRepositoryUrl()),
   releaseType: {
     alpha: {
       channel: "alpha",

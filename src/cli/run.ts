@@ -9,7 +9,7 @@ import { setLogger } from "../logger/index.js";
 import { PACKAGE_NAME, PACKAGE_VERSION } from "../shared/constants.js";
 
 export const run = async (cliOptions: CliOptions, context: Context): Promise<void> => {
-  context.config = getConfig(cliOptions);
+  context.config = await getConfig(cliOptions);
   context.logger = setLogger(context.config.debug);
   const { logger } = context;
   logger.logInfo(`Running ${PACKAGE_NAME} version ${PACKAGE_VERSION}`);

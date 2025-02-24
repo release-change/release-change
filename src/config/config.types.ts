@@ -9,7 +9,6 @@ export type Package = {
 };
 export type Config = {
   branches: string[];
-  repositoryUrl: string;
   releaseType: Record<
     string,
     {
@@ -19,4 +18,5 @@ export type Config = {
   >;
   debug: boolean;
   dryRun: boolean;
+  repositoryUrl: string;
 };
