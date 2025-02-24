@@ -2,6 +2,8 @@ import type { CliOptions } from "../cli/cli.types.js";
 import type { Config } from "./config.types.js";
 
 import { getConfigFile } from "./get-config-file.js";
+import { getRemoteRepositoryUrl } from "./get-remote-repository-url.js";
+import { getRepositoryUrl } from "./get-repository-url.js";
 
 import { DEFAULT_CONFIG } from "./constants.js";
 
@@ -10,9 +12,13 @@ import { DEFAULT_CONFIG } from "./constants.js";
  * @param [cliOptions] - The options from the CLI.
  * @return The config to use based on CLI options, config file and/or default config.
  */
-export const getConfig = (cliOptions: CliOptions = {}): Config => {
+export const getConfig = async (cliOptions: CliOptions = {}): Promise<Config> => {
   const configFile = getConfigFile();
+  const defaultConfig = {
+    ...DEFAULT_CONFIG,
+    repositoryUrl: getRepositoryUrl() ?? (await getRemoteRepositoryUrl())
+  };
   return configFile
-    ? Object.assign({}, DEFAULT_CONFIG, getConfigFile(), cliOptions)
-    : Object.assign({}, DEFAULT_CONFIG, cliOptions);
+    ? Object.assign({}, defaultConfig, getConfigFile(), cliOptions)
+    : Object.assign({}, defaultConfig, cliOptions);
 };

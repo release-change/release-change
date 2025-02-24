@@ -1,8 +1,10 @@
 import { getTrackedRepositories } from "../git/get-tracked-repositories.js";
+import { switchUrlToHttpsProtocol } from "./switch-url-to-https-protocol.js";
+import { switchUrlToSshProtocol } from "./switch-url-to-ssh-protocol.js";
 
 /**
  * Gets the remote repository URL for push from tracked repositories.
- * @return The first URL returned for push if there is at lease one tracked repository, `null` otherwise.
+ * @return The first URL returned for push (using SSH or HTPS protocol) if there is at lease one tracked repository, `null` otherwise.
  */
 export const getRemoteRepositoryUrl = async (): Promise<string | null> => {
   const gitRemote = await getTrackedRepositories();
@@ -13,7 +15,11 @@ export const getRemoteRepositoryUrl = async (): Promise<string | null> => {
       .map(remote => remote.replaceAll(/^(\S+\s)|(\s\(.+\))$/g, ""));
     if (remoteUrls.length) {
       const [remoteUrl] = remoteUrls;
-      return remoteUrl ?? null;
+      if (remoteUrl)
+        return remoteUrl.includes("git@")
+          ? switchUrlToSshProtocol(remoteUrl)
+          : switchUrlToHttpsProtocol(remoteUrl);
+      return null;
     }
     return null;
   }
