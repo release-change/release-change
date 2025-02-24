@@ -7,14 +7,14 @@ describe("get repository URL", () => {
   const mockedPackageWithRepositoryAsObject = {
     repository: {
       type: "git",
-      url: "git+https://github.com/release-change/release-change.git"
+      url: "git+https://github.com/user-id/repo-name.git"
     }
   };
   const mockedPackageWithRepositoryAsString = {
-    repository: "https://github.com/release-change/release-change.git"
+    repository: "https://github.com/user-id/repo-name.git"
   };
-  const expectedUrlFromRepositoryAsObject = mockedPackageWithRepositoryAsObject.repository.url;
-  const expectedUrlFromRepositoryAsString = mockedPackageWithRepositoryAsString.repository;
+  const expectedUrlFromRepositoryAsObject = "https://github.com/user-id/repo-name.git";
+  const expectedUrlFromRepositoryAsString = "https://github.com/user-id/repo-name.git";
 
   beforeEach(() => {
     vi.mock("../../src/config/get-root-package.js", () => ({
