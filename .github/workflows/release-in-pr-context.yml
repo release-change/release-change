@@ -23,6 +23,10 @@ jobs:
         run: |
           node -v
           pnpm -v
+      - name: Check pnpm path (debug)
+        run: which pnpm
+      - name: Test pnpm exec (debug)
+        run: pnpm exec echo "Test"
       - name: Check permissions for bin/ folder (debug)
         run: ls -al ./bin/
       - name: Install dependencies
