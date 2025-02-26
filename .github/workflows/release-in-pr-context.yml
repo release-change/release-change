@@ -38,4 +38,4 @@ jobs:
       - name: Check permissions for bin/ folder after build (debug)
         run: ls -al ./bin
       - name: Release
-        run: pnpm exec release-change --debug --dry-run
+        run: node ./bin/index.js --debug --dry-run
