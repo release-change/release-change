@@ -1,9 +1,8 @@
 import type { Context } from "../cli/cli.types.js";
 
 import childProcess from "node:child_process";
-
-import process from "node:process";
 import { inspect, promisify } from "node:util";
+
 import { setLogger } from "../logger/index.js";
 
 /**
@@ -36,5 +35,6 @@ export const checkAuthorisation = async (
     if (error instanceof Error) logger.logError(error.message);
     else logger.logError(`Unknown error: ${error}`);
     process.exitCode = 1;
+    throw error;
   }
 };
