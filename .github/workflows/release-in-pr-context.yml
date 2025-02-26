@@ -19,8 +19,16 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Install pnpm and setup Node.js
         uses: ./.github/actions/pnpm-node
+      - name: Check Node.js and pnpm versions (debug)
+        run: |
+          node -v
+          pnpm -v
+      - name: Check permissions for bin/ folder (debug)
+        run: ls -al ./bin/
       - name: Install dependencies
         run: pnpm install
+      - name: List installed dependencies (debug)
+        run: pnpm list
       - name: Build the package
         run: pnpm build
       - name: Release
