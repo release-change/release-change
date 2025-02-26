@@ -28,12 +28,14 @@ jobs:
       - name: Test pnpm exec (debug)
         run: pnpm exec echo "Test"
       - name: Check permissions for bin/ folder (debug)
-        run: ls -al ./bin/
+        run: ls -al ./bin
       - name: Install dependencies
         run: pnpm install
       - name: List installed dependencies (debug)
         run: pnpm list
       - name: Build the package
         run: pnpm build
+      - name: Check permissions for bin/ folder after build (debug)
+        run: ls -al ./bin
       - name: Release
         run: pnpm exec release-change --debug --dry-run
