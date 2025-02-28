@@ -11,6 +11,7 @@ describe("debug config", () => {
   const mockedContext = {
     cwd: "/fake/path",
     env: {},
+    branch: null,
     config: expectedDefaultConfig,
     logger: {
       logDebug: vi.fn(),
