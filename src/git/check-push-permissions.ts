@@ -16,8 +16,8 @@ export const checkPushPermissions = async (
   const logger = context.logger ?? setLogger();
   try {
     await checkAuthorisation(repositoryUrl, context);
-    const { branch } = context;
-    if (branch) {
+    const { branch, config } = context;
+    if (branch && config?.branches.includes(branch)) {
       if (!(await isBranchUpToDate(branch))) {
         logger.logWarn(
           `The local branch ${branch} is behind the remote one; therefore, a new version will not be published.`

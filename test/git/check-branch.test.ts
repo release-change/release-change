@@ -23,7 +23,8 @@ describe("check branch", () => {
   beforeEach(() => {
     mockedBasicContext = {
       cwd: "/fake/path",
-      env: {}
+      env: {},
+      branch: null
     };
     mockedContext = {
       ...mockedBasicContext,
@@ -63,15 +64,15 @@ describe("check branch", () => {
     vi.mocked(getBranchName).mockReturnValue("non-eligible-branch");
     expect(mockedContext.config?.dryRun).toBe(true);
   });
-  it("should not set `context.branch` if the branch name is undefined", async () => {
+  it("should set `context.branch` to `undefined` if the branch name is undefined", async () => {
     vi.mocked(getBranchName).mockReturnValue(undefined);
     checkBranch(mockedContext);
     expect(mockedContext.branch).toBe(undefined);
   });
-  it('should not set `context.branch` if the branch name is `"non-eligible-branch"`', () => {
+  it('should set `context.branch` if the branch name is `"non-eligible-branch"`', () => {
     vi.mocked(getBranchName).mockReturnValue("non-eligible-branch");
     checkBranch(mockedContext);
-    expect(mockedContext.branch).toBe(undefined);
+    expect(mockedContext.branch).toBe("non-eligible-branch");
   });
   it('should set `context.branch` if the branch name is `"main"`', () => {
     vi.mocked(getBranchName).mockReturnValue("main");
