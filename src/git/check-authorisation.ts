@@ -14,9 +14,9 @@ export const checkAuthorisation = async (
   repositoryUrl: string,
   context: Context
 ): Promise<void> => {
-  const { branch } = context;
+  const { branch, config } = context;
   const logger = context.logger ?? setLogger();
-  if (!branch) {
+  if (!branch || !config?.branches.includes(branch)) {
     logger.logInfo("Skipping authorisation checking");
     return;
   }
@@ -25,7 +25,7 @@ export const checkAuthorisation = async (
     const gitCommandResult = await promisifiedExec(
       `git push --dry-run --no-verify ${repositoryUrl} ${branch}`
     );
-    if (context.config?.debug)
+    if (config?.debug)
       logger.logDebug(
         inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }),
         "check-authorisation"
