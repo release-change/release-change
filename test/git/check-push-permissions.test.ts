@@ -22,6 +22,7 @@ describe("check permissions for push", () => {
   const mockedContext = {
     cwd: "/fake/path",
     env: {},
+    branch: null,
     config: mockedConfig,
     logger: {
       logDebug: vi.fn(),
@@ -31,7 +32,7 @@ describe("check permissions for push", () => {
       logSuccess: vi.fn()
     }
   } as Context;
-  const mockedContextWithBranch = { ...mockedContext, branch: "main" };
+  const mockedContextWithEligibleBranch = { ...mockedContext, branch: "main" };
 
   beforeEach(() => {
     vi.mock("../../src/git/check-authorisation.js");
@@ -44,20 +45,20 @@ describe("check permissions for push", () => {
 
   it("should log a warning message when the local branch is not up to date", async () => {
     vi.mocked(isBranchUpToDateModule.isBranchUpToDate).mockReturnValue(Promise.resolve(false));
-    await checkPushPermissions(mockedRepositoryUrl, mockedContextWithBranch);
+    await checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch);
     expect(mockedContext.logger?.logWarn).toHaveBeenCalled();
   });
-  it("should not log a warning message when the branch context is not defined", async () => {
+  it("should not log a warning message when the branch context is not one of those from which the CLI is configured to publish", async () => {
     vi.mocked(isBranchUpToDateModule.isBranchUpToDate).mockReturnValue(Promise.resolve(false));
     await checkPushPermissions(mockedRepositoryUrl, mockedContext);
     expect(mockedContext.logger?.logWarn).not.toHaveBeenCalled();
   });
   it("should log a success message when push is allowed and the local branch up to date", async () => {
     vi.mocked(isBranchUpToDateModule.isBranchUpToDate).mockReturnValue(Promise.resolve(true));
-    await checkPushPermissions(mockedRepositoryUrl, mockedContextWithBranch);
+    await checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch);
     expect(mockedContext.logger?.logSuccess).toHaveBeenCalled();
   });
-  it("should not log a success message when the branch context is not defined", async () => {
+  it("should not log a success message when the branch context is not one of those from which the CLI is configured to publish", async () => {
     await checkPushPermissions(mockedRepositoryUrl, mockedContext);
     expect(mockedContext.logger?.logSuccess).not.toHaveBeenCalled();
   });
@@ -65,7 +66,7 @@ describe("check permissions for push", () => {
     vi.mocked(checkAuthorisationModule.checkAuthorisation).mockRejectedValue(
       new Error("Mocked error")
     );
-    await checkPushPermissions(mockedRepositoryUrl, mockedContextWithBranch);
+    await checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch);
     expect(mockedContext.logger?.logError).toHaveBeenCalled();
   });
 });

@@ -20,6 +20,7 @@ describe("check authorisation", () => {
   const mockedContext = {
     cwd: "/fake/path",
     env: {},
+    branch: null,
     config: mockedConfig,
     logger: {
       logDebug: vi.fn(),
@@ -29,7 +30,7 @@ describe("check authorisation", () => {
       logSuccess: vi.fn()
     }
   } as Context;
-  const mockedContextWithBranch = { ...mockedContext, branch: "main" };
+  const mockedContextWithEligibleBranch = { ...mockedContext, branch: "main" };
 
   beforeEach(() => {
     vi.mock("node:child_process");
@@ -39,19 +40,19 @@ describe("check authorisation", () => {
     vi.clearAllMocks();
   });
 
-  it("should skip authorisation checking when the branch is not one of those from which th CLI is configures to publish", async () => {
+  it("should skip authorisation checking when the branch is not one of those from which the CLI is configured to publish", async () => {
     const expectedSkipLogMessage = "Skipping authorisation checking";
     await checkAuthorisation(mockedRepositoryUrl, mockedContext);
     expect(mockedContext.logger?.logInfo).toHaveBeenCalledWith(expectedSkipLogMessage);
   });
   it("should not catch any errors when the Git command does not fail", async () => {
-    await checkAuthorisation(mockedRepositoryUrl, mockedContextWithBranch);
+    await checkAuthorisation(mockedRepositoryUrl, mockedContextWithEligibleBranch);
     expect(mockedContext.logger?.logError).not.toHaveBeenCalled();
   });
   it("should call `logDebug()` when the Git command does not fail and on debug mode", async () => {
     mockedConfig.debug = true;
     await checkAuthorisation(mockedRepositoryUrl, {
-      ...mockedContextWithBranch,
+      ...mockedContextWithEligibleBranch,
       config: mockedConfig
     });
     expect(mockedContext.logger?.logDebug).toHaveBeenCalled();
