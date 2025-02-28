@@ -16,7 +16,7 @@ export const checkBranch = (context: Context): undefined | false => {
   const { config, logger } = context;
   const { branches } = config;
   const branchName = getBranchName(logger);
-  context.branch = branchName ?? "undefined";
+  context.branch = branchName;
   if (config.debug) {
     logger.logDebug(`Branches from where to publish: ${util.inspect(branches)}`, "branch");
     logger.logDebug(`Branch name: ${branchName}`, "branch");

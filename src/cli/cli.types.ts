@@ -46,7 +46,7 @@ export type CliOptions = Omit<ParsedCliOptions, "help" | "version">;
 export type Context = {
   cwd: string;
   env: NodeJS.ProcessEnv;
+  branch: string | null | undefined;
   config?: Config;
   logger?: Logger;
-  branch?: string;
 };
