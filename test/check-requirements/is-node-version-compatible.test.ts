@@ -18,7 +18,7 @@ describe("compatible Node version", () => {
     expect(isNodeVersionCompatible("v18.20.6", REQUIRED_NODE_VERSIONS)).toBe(true);
   });
   it("tests a Node active LTS version", () => {
-    expect(isNodeVersionCompatible("v20.18.2", REQUIRED_NODE_VERSIONS)).toBe(true);
+    expect(isNodeVersionCompatible("v20.18.3", REQUIRED_NODE_VERSIONS)).toBe(true);
   });
   it("tests a Node current version (if even)", () => {
     expect(isNodeVersionCompatible("v22.13.1", REQUIRED_NODE_VERSIONS)).toBe(true);
