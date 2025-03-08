@@ -25,4 +25,6 @@ jobs:
       - name: Build the package
         run: pnpm build
       - name: Release
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: node ./bin/index.js --debug
