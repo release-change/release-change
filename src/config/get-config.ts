@@ -1,6 +1,7 @@
 import type { CliOptions } from "../cli/cli.types.js";
 import type { Config } from "./config.types.js";
 
+import { getRemoteName } from "../git/get-remote-name.js";
 import { getConfigFile } from "./get-config-file.js";
 import { getRemoteRepositoryUrl } from "./get-remote-repository-url.js";
 import { getRepositoryUrl } from "./get-repository-url.js";
@@ -16,7 +17,8 @@ export const getConfig = async (cliOptions: CliOptions = {}): Promise<Config> =>
   const configFile = getConfigFile();
   const defaultConfig = {
     ...DEFAULT_CONFIG,
-    repositoryUrl: getRepositoryUrl() ?? (await getRemoteRepositoryUrl())
+    repositoryUrl: getRepositoryUrl() ?? (await getRemoteRepositoryUrl()),
+    remoteName: await getRemoteName()
   };
   return configFile
     ? Object.assign({}, defaultConfig, getConfigFile(), cliOptions)

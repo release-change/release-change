@@ -11,7 +11,8 @@ import { DEFAULT_CONFIG } from "../../src/config/constants.js";
 describe("get config", () => {
   const expectedDefaultConfig = {
     ...DEFAULT_CONFIG,
-    repositoryUrl: "https://github.com/release-change/release-change.git"
+    repositoryUrl: "https://github.com/release-change/release-change.git",
+    remoteName: "origin"
   } as unknown as Config;
   const mockedRepositoryUrl = "https://github.com/user-id/repo-name.git";
   const mockedBranch = "main";
@@ -98,6 +99,7 @@ describe("get config", () => {
     const expectedConfig = {
       branches: [mockedBranch],
       repositoryUrl: mockedRepositoryUrl,
+      remoteName: "origin",
       releaseType: expectedDefaultConfig.releaseType,
       debug: true,
       dryRun: true
@@ -116,6 +118,7 @@ describe("get config", () => {
     const expectedConfig = {
       branches: [mockedBranch],
       repositoryUrl: mockedRepositoryUrl,
+      remoteName: "origin",
       releaseType: expectedDefaultConfig.releaseType,
       debug: true,
       dryRun: true
@@ -131,6 +134,7 @@ describe("get config", () => {
     const expectedConfig = {
       branches: ["main", "next"],
       repositoryUrl: mockedRepositoryUrl,
+      remoteName: "origin",
       releaseType: expectedDefaultConfig.releaseType,
       debug: false,
       dryRun: false
@@ -142,6 +146,7 @@ describe("get config", () => {
     const mockedConfigFile = {
       branches: ["main", "next"],
       repositoryUrl: mockedRepositoryUrl,
+      remoteName: "origin",
       releaseType: {
         next: {
           channel: "rc"
@@ -152,6 +157,7 @@ describe("get config", () => {
     const expectedConfig = {
       branches: ["main", "next"],
       repositoryUrl: mockedRepositoryUrl,
+      remoteName: "origin",
       releaseType: {
         next: {
           channel: "rc"
@@ -166,12 +172,14 @@ describe("get config", () => {
   it("should get config according to CLI options rather than config file", async () => {
     const mockedConfigFile = {
       branches: ["main", "next"],
-      repositoryUrl: mockedRepositoryUrl
+      repositoryUrl: mockedRepositoryUrl,
+      remoteName: "origin"
     };
     const { help, version, ...mockedCliOptions } = parseCliOptions(["--branches", mockedBranch]);
     const expectedConfig = {
       branches: [mockedBranch],
       repositoryUrl: mockedRepositoryUrl,
+      remoteName: "origin",
       releaseType: expectedDefaultConfig.releaseType,
       debug: false,
       dryRun: false
