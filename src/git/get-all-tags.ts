@@ -1,7 +1,7 @@
 import type { Context } from "../cli/cli.types.js";
 
-import { inspect } from "node:util";
 import { spawnSync } from "node:child_process";
+import { inspect } from "node:util";
 
 import { setLogger } from "../logger/index.js";
 

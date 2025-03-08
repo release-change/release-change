@@ -2,7 +2,7 @@ import type { Context } from "../../src/cli/cli.types.js";
 
 import { spawnSync } from "node:child_process";
 
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAllTags } from "../../src/git/get-all-tags.js";
 
