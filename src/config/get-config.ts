@@ -1,10 +1,10 @@
 import type { CliOptions } from "../cli/cli.types.js";
 import type { Config } from "./config.types.js";
 
+import { getRemoteName } from "../git/get-remote-name.js";
 import { getConfigFile } from "./get-config-file.js";
 import { getRemoteRepositoryUrl } from "./get-remote-repository-url.js";
 import { getRepositoryUrl } from "./get-repository-url.js";
-import { getRemoteName } from "../git/get-remote-name.js";
 
 import { DEFAULT_CONFIG } from "./constants.js";
 
