@@ -19,4 +19,5 @@ export type Config = {
   debug: boolean;
   dryRun: boolean;
   repositoryUrl: string;
+  remoteName: string;
 };
