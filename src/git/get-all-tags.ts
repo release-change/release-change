@@ -8,7 +8,7 @@ import { setLogger } from "../logger/index.js";
 /**
  * Gets all tags for the branch from which the package publishes as they are on the remote repository.
  * @param context - The context where the CLI is running.
- * An array containing the tags if tags are found, an empty array otherwise, false if the package cannot publish from the branch.
+ * @return An array containing the tags if tags are found, an empty array otherwise, false if the package cannot publish from the branch.
  */
 export const getAllTags = (context: Context): string[] | false => {
   const { cwd, branch, config } = context;
