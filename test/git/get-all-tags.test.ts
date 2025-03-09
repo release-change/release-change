@@ -57,21 +57,21 @@ describe("get all tags", () => {
   });
   it("should return all tags if tags are found", () => {
     const mockedTags = [
-      "2.0.0",
-      "2.0.0-rc.2",
-      "2.0.0-rc.1",
-      "2.0.0-beta.3",
-      "2.0.0-beta.2",
-      "2.0.0-beta.1",
-      "2.0.0-alpha.4",
-      "2.0.0-alpha.3",
-      "2.0.0-alpha.2",
-      "2.0.0-alpha.1",
-      "1.1.0",
-      "1.0.1",
-      "1.0.0",
-      "0.2.0",
-      "0.1.0"
+      "v2.0.0",
+      "v2.0.0-rc.2",
+      "v2.0.0-rc.1",
+      "v2.0.0-beta.3",
+      "v2.0.0-beta.2",
+      "v2.0.0-beta.1",
+      "v2.0.0-alpha.4",
+      "v2.0.0-alpha.3",
+      "v2.0.0-alpha.2",
+      "v2.0.0-alpha.1",
+      "v1.1.0",
+      "v1.0.1",
+      "v1.0.0",
+      "v0.2.0",
+      "v0.1.0"
     ];
     const mockedCommandResult = {
       status: 0,
