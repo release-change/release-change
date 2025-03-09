@@ -15,7 +15,8 @@ describe("check authorisation", () => {
     },
     debug: false,
     dryRun: false,
-    repositoryUrl: mockedRepositoryUrl
+    repositoryUrl: mockedRepositoryUrl,
+    remoteName: "origin"
   };
   const mockedContext = {
     cwd: "/fake/path",
