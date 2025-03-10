@@ -5,9 +5,9 @@ import { getConfig } from "../config/index.js";
 import { checkBranch } from "../git/check-branch.js";
 import { checkPushPermissions } from "../git/check-push-permissions.js";
 import { checkRepository } from "../git/check-repository.js";
+import { getCommitsSinceRef } from "../git/get-commits-since-ref.js";
 import { setLogger } from "../logger/index.js";
 import { setLastRelease } from "../release/set-last-release.js";
-import { getCommitsSinceRef } from "../git/get-commits-since-ref.js";
 
 import { PACKAGE_NAME, PACKAGE_VERSION } from "../shared/constants.js";
 

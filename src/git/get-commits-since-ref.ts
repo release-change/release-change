@@ -2,8 +2,8 @@ import type { Context } from "../cli/cli.types.js";
 
 import { inspect } from "node:util";
 
-import { runCommand } from "./run-command.js";
 import { setLogger } from "../logger/index.js";
+import { runCommand } from "./run-command.js";
 
 export const getCommitsSinceRef = (context: Context): string[] => {
   const { config, lastRelease } = context;
