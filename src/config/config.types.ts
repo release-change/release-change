@@ -15,6 +15,7 @@ export type Config = {
     {
       channel?: string;
       prerelease?: true;
+      prereleaseIdentifier?: string;
     }
   >;
   debug: boolean;
