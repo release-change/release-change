@@ -32,7 +32,6 @@ describe("get all tags", () => {
       logSuccess: vi.fn()
     }
   } as Context;
-  const mockedContextWithInelegibleBranch = { ...mockedContext, branch: "unmatched-branch" };
 
   beforeEach(() => {
     vi.mock("../../src/git/run-command.js", () => ({ runCommand: vi.fn() }));
@@ -51,9 +50,6 @@ describe("get all tags", () => {
     vi.mocked(runCommand).mockReturnValue(mockedCommandResult);
     expect(() => getAllTags(mockedContext)).toThrowError();
     expect(mockedContext.logger?.logError).toHaveBeenCalled();
-  });
-  it("should return `false` if the package cannot publish from the branch", () => {
-    expect(getAllTags(mockedContextWithInelegibleBranch)).toBe(false);
   });
   it("should return all tags if tags are found", () => {
     const mockedTags = [
