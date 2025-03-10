@@ -1,5 +1,6 @@
 import type { Config } from "../config/config.types.js";
 import type { Logger } from "../logger/logger.types.js";
+import type { LastRelease } from "../release/release.types.js";
 
 const letters = [
   "a",
@@ -49,4 +50,5 @@ export type Context = {
   branch: string | null | undefined;
   config?: Config;
   logger?: Logger;
+  lastRelease?: LastRelease;
 };

@@ -14,11 +14,13 @@ export const DEFAULT_CONFIG = {
   releaseType: {
     alpha: {
       channel: "alpha",
-      prerelease: true
+      prerelease: true,
+      prereleaseIdentifier: "alpha"
     },
     beta: {
       channel: "beta",
-      prerelease: true
+      prerelease: true,
+      prereleaseIdentifier: "beta"
     },
     main: {
       channel: "default"
@@ -28,7 +30,8 @@ export const DEFAULT_CONFIG = {
     },
     next: {
       channel: "next",
-      prerelease: true
+      prerelease: true,
+      prereleaseIdentifier: "rc"
     }
   },
   debug: false,

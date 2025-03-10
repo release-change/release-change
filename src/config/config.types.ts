@@ -1,4 +1,5 @@
 export type Package = {
+  version?: string;
   repository?:
     | string
     | {
@@ -14,6 +15,7 @@ export type Config = {
     {
       channel?: string;
       prerelease?: true;
+      prereleaseIdentifier?: string;
     }
   >;
   debug: boolean;

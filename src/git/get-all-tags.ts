@@ -8,12 +8,11 @@ import { runCommand } from "./run-command.js";
 /**
  * Gets all tags for the branch from which the package publishes as they are on the remote repository.
  * @param context - The context where the CLI is running.
- * @return An array containing the tags if tags are found, an empty array otherwise, false if the package cannot publish from the branch.
+ * @return An array containing the tags if tags are found, an empty array otherwise.
  */
-export const getAllTags = (context: Context): string[] | false => {
+export const getAllTags = (context: Context): string[] => {
   const { cwd, branch, config } = context;
   const logger = context.logger ?? setLogger();
-  if (!branch || !config?.branches.includes(branch)) return false;
   try {
     const gitCommandResult = runCommand(
       ["tag", "-l", "--sort=v:refname", "--merged", `${config?.remoteName}/${branch}`],
