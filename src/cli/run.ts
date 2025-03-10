@@ -5,6 +5,7 @@ import { getConfig } from "../config/index.js";
 import { checkBranch } from "../git/check-branch.js";
 import { checkPushPermissions } from "../git/check-push-permissions.js";
 import { checkRepository } from "../git/check-repository.js";
+import { getCommitsSinceRef } from "../git/get-commits-since-ref.js";
 import { setLogger } from "../logger/index.js";
 import { setLastRelease } from "../release/set-last-release.js";
 
@@ -22,5 +23,6 @@ export const run = async (cliOptions: CliOptions, context: Context): Promise<voi
   console.log("context.config.dryRun", context.config.dryRun);
   await checkPushPermissions(context.config.repositoryUrl, context);
   setLastRelease(context);
+  getCommitsSinceRef(context);
   console.log("exit", process.exitCode, process.exitCode ?? 0);
 };
