@@ -1,6 +1,5 @@
 import type { Context } from "../cli/cli.types.js";
 
-import { setLogger } from "../logger/index.js";
 import { checkAuthorisation } from "./check-authorisation.js";
 import { isBranchUpToDate } from "./is-branch-up-to-date.js";
 
@@ -13,11 +12,11 @@ export const checkPushPermissions = async (
   repositoryUrl: string,
   context: Context
 ): Promise<void> => {
-  const logger = context.logger ?? setLogger();
+  const { logger } = context;
   try {
     await checkAuthorisation(repositoryUrl, context);
     const { branch, config } = context;
-    if (branch && config?.branches.includes(branch)) {
+    if (branch && config.branches.includes(branch)) {
       if (!(await isBranchUpToDate(branch))) {
         logger.logWarn(
           `The local branch ${branch} is behind the remote one; therefore, a new version will not be published.`

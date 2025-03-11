@@ -5,7 +5,7 @@ import { setLogger } from "../../src/logger/set-logger.js";
 import { PACKAGE_NAME } from "../../src/shared/constants.js";
 
 describe("log messages to the console", () => {
-  const logger = setLogger();
+  const logger = setLogger(false);
   const mockedDateTime = "2025-01-01T13:37:42Z";
   const expectedTime = "13:37:42";
   const debugMessage = "This is a message for debugging purpose.";
@@ -42,8 +42,7 @@ describe("log messages to the console", () => {
   });
 
   it("should display a message in debug mode with its own prefix", () => {
-    const isDebug = true;
-    setLogger(isDebug).logDebug(debugMessage, "test");
+    setLogger(true).logDebug(debugMessage, "test");
     expect(console.debug).toHaveBeenCalledWith(
       `\x1b[1;34m[debug] ${PACKAGE_NAME}:test\x1b[0m ${debugMessage}`
     );

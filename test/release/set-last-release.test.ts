@@ -122,7 +122,7 @@ describe("set last release", () => {
       vi.mocked(getLatestValidTag).mockReturnValue(gitTag);
       setLastRelease(context);
       assert.deepEqual(context, expectedContext);
-      expect(context.logger?.logInfo).toHaveBeenCalledWith(
+      expect(context.logger.logInfo).toHaveBeenCalledWith(
         `Found Git tag ${gitTag} associated with version ${version} on branch ${branch}.`
       );
     }
@@ -141,10 +141,10 @@ describe("set last release", () => {
       vi.mocked(getRootPackageVersion).mockReturnValue(mockedPackageVersion);
       setLastRelease(context);
       assert.deepEqual(context, expectedContext);
-      expect(context.logger?.logInfo).toHaveBeenCalledWith(
+      expect(context.logger.logInfo).toHaveBeenCalledWith(
         `No Git tag version found on branch ${branch}.`
       );
-      expect(context.logger?.logInfo).toHaveBeenCalledWith(
+      expect(context.logger.logInfo).toHaveBeenCalledWith(
         `Found package version ${mockedPackageVersion} on branch ${branch}.`
       );
     }
@@ -159,6 +159,6 @@ describe("set last release", () => {
     vi.mocked(getRootPackageVersion).mockReturnValue(undefined);
     setLastRelease(mockedContext);
     assert.deepEqual(mockedContext, expectedContext);
-    expect(mockedContext.logger?.logInfo).toHaveBeenCalledWith("No package version found.");
+    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("No package version found.");
   });
 });

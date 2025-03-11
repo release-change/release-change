@@ -156,7 +156,7 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
     };
     vi.spyOn(runCommandModule, "runCommand").mockReturnValue(mockedCommandResult);
     expect(() => getCommitsSinceRef(mockedContext)).toThrowError();
-    expect(mockedContext.logger?.logError).toHaveBeenCalled();
+    expect(mockedContext.logger.logError).toHaveBeenCalled();
   });
   it("should return an array of commits", () => {
     const mockedCommandResult = {
@@ -166,7 +166,7 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
     };
     vi.spyOn(runCommandModule, "runCommand").mockReturnValue(mockedCommandResult);
     assert.deepEqual(getCommitsSinceRef(mockedContext), mockedCommitsInArray);
-    expect(mockedContext.logger?.logInfo).toHaveBeenCalledWith("Found 8 commits.");
+    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("Found 8 commits.");
   });
   it("should return an empty array when no commits are found", () => {
     const mockedCommandResult = {
@@ -176,20 +176,20 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
     };
     vi.spyOn(runCommandModule, "runCommand").mockReturnValue(mockedCommandResult);
     assert.deepEqual(getCommitsSinceRef(mockedContext), []);
-    expect(mockedContext.logger?.logInfo).toHaveBeenCalledWith("Found 0 commits.");
+    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("Found 0 commits.");
   });
   it("should run `git log` when there is no Git tag", () => {
     const mockedOptions = { encoding: "utf8" };
     const mockedCommand = vi.spyOn(runCommandModule, "runCommand");
     getCommitsSinceRef(mockedContext);
     expect(mockedCommand).toHaveBeenCalledWith(["log"], mockedOptions);
-    expect(mockedContext.logger?.logInfo).toHaveBeenCalledWith("Retrieving all commits.");
+    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("Retrieving all commits.");
   });
   it('should run `git log v1.0.0..HEAD` when there is a Git tag "v1.0.0"', () => {
     const mockedOptions = { encoding: "utf8" };
     const mockedCommand = vi.spyOn(runCommandModule, "runCommand");
     getCommitsSinceRef({ ...mockedContext, lastRelease: { gitTag: "v1.0.0", version: "1.0.0" } });
     expect(mockedCommand).toHaveBeenCalledWith(["log", "v1.0.0..HEAD"], mockedOptions);
-    expect(mockedContext.logger?.logInfo).toHaveBeenCalledWith("Retrieving commits since v1.0.0.");
+    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("Retrieving commits since v1.0.0.");
   });
 });

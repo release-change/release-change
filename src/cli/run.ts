@@ -1,20 +1,27 @@
-import type { CliOptions, Context } from "./cli.types.js";
+import type { CliOptions, Context, ContextBase } from "./cli.types.js";
 
 import { debugConfig } from "../config/debug-config.js";
 import { getConfig } from "../config/index.js";
 import { checkBranch } from "../git/check-branch.js";
 import { checkPushPermissions } from "../git/check-push-permissions.js";
 import { checkRepository } from "../git/check-repository.js";
+import { getBranchName } from "../git/get-branch-name.js";
 import { getCommitsSinceRef } from "../git/get-commits-since-ref.js";
 import { setLogger } from "../logger/index.js";
 import { setLastRelease } from "../release/set-last-release.js";
 
 import { PACKAGE_NAME, PACKAGE_VERSION } from "../shared/constants.js";
 
-export const run = async (cliOptions: CliOptions, context: Context): Promise<void> => {
-  context.config = await getConfig(cliOptions);
-  context.logger = setLogger(context.config.debug);
-  const { logger } = context;
+export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Promise<void> => {
+  const config = await getConfig(cliOptions);
+  const logger = setLogger(config.debug);
+  const branch = getBranchName(logger);
+  const context: Context = {
+    ...contextBase,
+    branch,
+    config,
+    logger
+  };
   logger.logInfo(`Running ${PACKAGE_NAME} version ${PACKAGE_VERSION}`);
   debugConfig(context);
   await checkRepository(logger);

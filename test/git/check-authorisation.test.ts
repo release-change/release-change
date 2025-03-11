@@ -44,11 +44,11 @@ describe("check authorisation", () => {
   it("should skip authorisation checking when the branch is not one of those from which the CLI is configured to publish", async () => {
     const expectedSkipLogMessage = "Skipping authorisation checking";
     await checkAuthorisation(mockedRepositoryUrl, mockedContext);
-    expect(mockedContext.logger?.logInfo).toHaveBeenCalledWith(expectedSkipLogMessage);
+    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith(expectedSkipLogMessage);
   });
   it("should not catch any errors when the Git command does not fail", async () => {
     await checkAuthorisation(mockedRepositoryUrl, mockedContextWithEligibleBranch);
-    expect(mockedContext.logger?.logError).not.toHaveBeenCalled();
+    expect(mockedContext.logger.logError).not.toHaveBeenCalled();
   });
   it("should call `logDebug()` when the Git command does not fail and on debug mode", async () => {
     mockedConfig.debug = true;
@@ -56,6 +56,6 @@ describe("check authorisation", () => {
       ...mockedContextWithEligibleBranch,
       config: mockedConfig
     });
-    expect(mockedContext.logger?.logDebug).toHaveBeenCalled();
+    expect(mockedContext.logger.logDebug).toHaveBeenCalled();
   });
 });

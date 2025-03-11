@@ -2,12 +2,10 @@ import type { Context } from "../cli/cli.types.js";
 
 import { inspect } from "node:util";
 
-import { setLogger } from "../logger/index.js";
 import { runCommand } from "./run-command.js";
 
 export const getCommitsSinceRef = (context: Context): string[] => {
-  const { config, lastRelease } = context;
-  const logger = context.logger ?? setLogger();
+  const { config, lastRelease, logger } = context;
   try {
     const gitTag = lastRelease?.gitTag ?? null;
     const args = lastRelease ? (gitTag ? ["log", `${gitTag}..HEAD`] : ["log"]) : ["log"];
@@ -22,7 +20,7 @@ export const getCommitsSinceRef = (context: Context): string[] => {
     const totalCommits = commits.length;
     const pluralRule = new Intl.PluralRules("en-US", { type: "cardinal" });
     const commitWord = pluralRule.select(totalCommits) === "one" ? "commit" : "commits";
-    if (config?.debug) {
+    if (config.debug) {
       logger.logDebug(`Command run: git ${args.join(" ")}`, "git/get-commits-since-ref");
       logger.logDebug(
         inspect(commits, { depth: Number.POSITIVE_INFINITY }),

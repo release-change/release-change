@@ -1,4 +1,4 @@
-import type { Args } from "./cli.types.js";
+import type { Args, ContextBase } from "./cli.types.js";
 
 import process from "node:process";
 
@@ -16,7 +16,7 @@ export const cli = async (): Promise<number> => {
   const args = argv.slice(2) as Args;
   const parsedCliOptions = parseCliOptions(args);
   const { help, version, ...cliOptions } = parsedCliOptions;
-  const context = { cwd: cwd(), env, branch: null };
+  const context: ContextBase = { cwd: cwd(), env };
   if (help) {
     showHelp();
     return 0;

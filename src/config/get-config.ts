@@ -21,6 +21,6 @@ export const getConfig = async (cliOptions: CliOptions = {}): Promise<Config> =>
     remoteName: await getRemoteName()
   };
   return configFile
-    ? Object.assign({}, defaultConfig, getConfigFile(), cliOptions)
+    ? Object.assign({}, defaultConfig, configFile, cliOptions)
     : Object.assign({}, defaultConfig, cliOptions);
 };
