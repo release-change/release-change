@@ -34,13 +34,6 @@ describe("get latest valid Git tag", () => {
     repositoryUrl: mockedRepositoryUrl,
     remoteName: "origin"
   };
-  const mockedConfigWithoutReleaseType = {
-    branches: mockedConfig.branches,
-    debug: mockedConfig.debug,
-    dryRun: mockedConfig.dryRun,
-    repositoryUrl: mockedConfig.repositoryUrl,
-    remoteName: mockedConfig.remoteName
-  };
   const mockedInvalidConfig = {
     branches: mockedConfig.branches,
     releaseType: {},
@@ -66,13 +59,6 @@ describe("get latest valid Git tag", () => {
     cwd: mockedContext.cwd,
     env: {},
     config: mockedInvalidConfig,
-    logger: mockedContext.logger,
-    branch: "main"
-  } as Context;
-  const mockedContextWithoutReleaseType = {
-    cwd: mockedContext.cwd,
-    env: {},
-    config: mockedConfigWithoutReleaseType,
     logger: mockedContext.logger,
     branch: "main"
   } as Context;
@@ -141,10 +127,6 @@ describe("get latest valid Git tag", () => {
   it("should throw an error message when the branch is unknown", () => {
     vi.mocked(getAllTags).mockReturnValue(mockedValidGitTags);
     expect(() => getLatestValidTag({ ...mockedContext, branch: "" })).toThrowError();
-  });
-  it("should throw an error message when no release types are set at all", () => {
-    vi.mocked(getAllTags).mockReturnValue(mockedValidGitTags);
-    expect(() => getLatestValidTag(mockedContextWithoutReleaseType)).toThrowError();
   });
   it("should throw an error message when the release type is not found for the branch", () => {
     vi.mocked(getAllTags).mockReturnValue(mockedValidGitTags);

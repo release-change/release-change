@@ -49,7 +49,7 @@ describe("get all tags", () => {
     };
     vi.mocked(runCommand).mockReturnValue(mockedCommandResult);
     expect(() => getAllTags(mockedContext)).toThrowError();
-    expect(mockedContext.logger?.logError).toHaveBeenCalled();
+    expect(mockedContext.logger.logError).toHaveBeenCalled();
   });
   it("should return all tags if tags are found", () => {
     const mockedTags = [

@@ -12,7 +12,7 @@ import { CONFIG_FILE_NAME } from "./constants.js";
  */
 export const debugConfig = (context: Context): void => {
   const { env, config, cwd, logger } = context;
-  if (config && logger && config.debug) {
+  if (config.debug) {
     logger.logDebug("Load environment variables", "env");
     logger.logDebug(util.inspect(env, { depth: Number.POSITIVE_INFINITY }), "env");
     logger.logDebug("Load config", "config");

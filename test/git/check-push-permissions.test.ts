@@ -47,27 +47,27 @@ describe("check permissions for push", () => {
   it("should log a warning message when the local branch is not up to date", async () => {
     vi.mocked(isBranchUpToDateModule.isBranchUpToDate).mockReturnValue(Promise.resolve(false));
     await checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch);
-    expect(mockedContext.logger?.logWarn).toHaveBeenCalled();
+    expect(mockedContext.logger.logWarn).toHaveBeenCalled();
   });
   it("should not log a warning message when the branch context is not one of those from which the CLI is configured to publish", async () => {
     vi.mocked(isBranchUpToDateModule.isBranchUpToDate).mockReturnValue(Promise.resolve(false));
     await checkPushPermissions(mockedRepositoryUrl, mockedContext);
-    expect(mockedContext.logger?.logWarn).not.toHaveBeenCalled();
+    expect(mockedContext.logger.logWarn).not.toHaveBeenCalled();
   });
   it("should log a success message when push is allowed and the local branch up to date", async () => {
     vi.mocked(isBranchUpToDateModule.isBranchUpToDate).mockReturnValue(Promise.resolve(true));
     await checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch);
-    expect(mockedContext.logger?.logSuccess).toHaveBeenCalled();
+    expect(mockedContext.logger.logSuccess).toHaveBeenCalled();
   });
   it("should not log a success message when the branch context is not one of those from which the CLI is configured to publish", async () => {
     await checkPushPermissions(mockedRepositoryUrl, mockedContext);
-    expect(mockedContext.logger?.logSuccess).not.toHaveBeenCalled();
+    expect(mockedContext.logger.logSuccess).not.toHaveBeenCalled();
   });
   it("should log an error message when an error is thrown", async () => {
     vi.mocked(checkAuthorisationModule.checkAuthorisation).mockRejectedValue(
       new Error("Mocked error")
     );
     await checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch);
-    expect(mockedContext.logger?.logError).toHaveBeenCalled();
+    expect(mockedContext.logger.logError).toHaveBeenCalled();
   });
 });

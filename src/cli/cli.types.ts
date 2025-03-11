@@ -44,11 +44,13 @@ export type ParsedCliOptions = {
   help?: true;
 };
 export type CliOptions = Omit<ParsedCliOptions, "help" | "version">;
-export type Context = {
+export interface ContextBase {
   cwd: string;
   env: NodeJS.ProcessEnv;
-  branch: string | null | undefined;
-  config?: Config;
-  logger?: Logger;
+}
+export interface Context extends ContextBase {
+  config: Config;
+  logger: Logger;
+  branch: string | undefined;
   lastRelease?: LastRelease;
-};
+}
