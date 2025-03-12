@@ -7,7 +7,7 @@ import { runCommand } from "./run-command.js";
 export const getCommitsSinceRef = (context: Context): string[] => {
   const { config, lastRelease, logger } = context;
   try {
-    const gitTag = lastRelease?.gitTag ?? null;
+    const gitTag = lastRelease ? lastRelease.gitTag : null;
     const args = lastRelease ? (gitTag ? ["log", `${gitTag}..HEAD`] : ["log"]) : ["log"];
     const infoMessage = `Retrieving ${args.length > 1 ? `commits since ${gitTag}` : "all commits"}.`;
     logger.logInfo(infoMessage);
