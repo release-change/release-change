@@ -1,6 +1,6 @@
 import type { Context } from "../../src/cli/cli.types.js";
 
-import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { assert, describe, expect, it, vi } from "vitest";
 
 import { getCommitsSinceRef } from "../../src/git/get-commits-since-ref.js";
 import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
@@ -92,16 +92,6 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
     refactor(config): add \`version\` optional property to type \`Package\`
 `;
   const mockedCommitsInArray = mockedCommits.split(COMMIT_SEPARATOR);
-
-  beforeEach(() => {
-    vi.mock("../../src/git/run-command.js", () => ({
-      runCommand: vi.fn()
-    }));
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
 
   it("should log an error message when an error is thrown", () => {
     const mockedCommandResult = {
