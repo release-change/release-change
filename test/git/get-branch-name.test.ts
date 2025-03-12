@@ -1,8 +1,7 @@
-import { execSync } from "node:child_process";
-
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { getBranchName } from "../../src/git/get-branch-name.js";
+import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
 
 describe("get branch name", () => {
   const logger = {
@@ -12,45 +11,38 @@ describe("get branch name", () => {
     logWarn: vi.fn(),
     logSuccess: vi.fn()
   };
-  const gitRevParseCommand = "git rev-parse --abbrev-ref HEAD";
-  const gitShowCommand = "git show -s --pretty=%d HEAD";
-  const mockExecSync = execSync as ReturnType<typeof vi.fn>;
-
-  beforeEach(() => {
-    vi.mock("node:child_process", () => ({ execSync: vi.fn() }));
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
+  const gitRevParseCommandArgs = ["rev-parse", "--abbrev-ref", "HEAD"];
+  const gitShowCommandArgs = ["show", "-s", "--pretty=%d", "HEAD"];
 
   it('should return the value of `HEAD` ref when this is not `"HEAD"`', () => {
-    mockExecSync.mockImplementation(gitCommand =>
-      gitCommand === gitRevParseCommand ? "main" : ""
+    vi.spyOn(runCommandSyncModule, "runCommandSync").mockImplementation(gitCommandArgs =>
+      JSON.stringify(gitCommandArgs) === JSON.stringify(gitRevParseCommandArgs)
+        ? { status: 0, stdout: "main", stderr: "" }
+        : { status: 1, stdout: "", stderr: "Error" }
     );
     expect(getBranchName(logger)).toBe("main");
-    expect(execSync).toHaveBeenCalledTimes(1);
-    expect(execSync).toHaveBeenCalledWith(gitRevParseCommand, {
+    expect(runCommandSyncModule.runCommandSync).toHaveBeenCalledTimes(1);
+    expect(runCommandSyncModule.runCommandSync).toHaveBeenCalledWith(gitRevParseCommandArgs, {
       encoding: "utf8"
     });
-    expect(execSync).not.toHaveBeenCalledWith(gitShowCommand, {
+    expect(runCommandSyncModule.runCommandSync).not.toHaveBeenCalledWith(gitShowCommandArgs, {
       encoding: "utf8"
     });
   });
   it('should return the remote branch name if `HEAD` ref returns `"HEAD"', () => {
-    mockExecSync.mockImplementation(gitCommand => {
-      return gitCommand === gitRevParseCommand
-        ? "HEAD"
-        : gitCommand === gitShowCommand
-          ? "(HEAD -> main, origin/main)"
-          : "";
+    vi.spyOn(runCommandSyncModule, "runCommandSync").mockImplementation(gitCommandArgs => {
+      return JSON.stringify(gitCommandArgs) === JSON.stringify(gitRevParseCommandArgs)
+        ? { status: 0, stdout: "HEAD", stderr: "" }
+        : JSON.stringify(gitCommandArgs) === JSON.stringify(gitShowCommandArgs)
+          ? { status: 0, stdout: "(HEAD -> main, origin/main)", stderr: "" }
+          : { status: 1, stdout: "", stderr: "Error" };
     });
     expect(getBranchName(logger)).toBe("main");
-    expect(execSync).toHaveBeenCalledTimes(2);
-    expect(execSync).toHaveBeenCalledWith(gitRevParseCommand, {
+    expect(runCommandSyncModule.runCommandSync).toHaveBeenCalledTimes(2);
+    expect(runCommandSyncModule.runCommandSync).toHaveBeenCalledWith(gitRevParseCommandArgs, {
       encoding: "utf8"
     });
-    expect(execSync).toHaveBeenCalledWith(gitShowCommand, {
+    expect(runCommandSyncModule.runCommandSync).toHaveBeenCalledWith(gitShowCommandArgs, {
       encoding: "utf8"
     });
   });
