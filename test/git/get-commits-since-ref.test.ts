@@ -178,14 +178,14 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
     assert.deepEqual(getCommitsSinceRef(mockedContext), []);
     expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("Found 0 commits.");
   });
-  it("should run `git log` when there is no Git tag", () => {
+  it("should run `git log` when there are no Git tags", () => {
     const mockedOptions = { encoding: "utf8" };
     const mockedCommand = vi.spyOn(runCommandModule, "runCommand");
     getCommitsSinceRef(mockedContext);
     expect(mockedCommand).toHaveBeenCalledWith(["log"], mockedOptions);
     expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("Retrieving all commits.");
   });
-  it('should run `git log v1.0.0..HEAD` when there is a Git tag "v1.0.0"', () => {
+  it('should run `git log v1.0.0..HEAD` when the ref is Git tag "v1.0.0"', () => {
     const mockedOptions = { encoding: "utf8" };
     const mockedCommand = vi.spyOn(runCommandModule, "runCommand");
     getCommitsSinceRef({ ...mockedContext, lastRelease: { gitTag: "v1.0.0", version: "1.0.0" } });
