@@ -1,7 +1,8 @@
 import type { Context } from "../cli/cli.types.js";
 
-import childProcess from "node:child_process";
-import { inspect, promisify } from "node:util";
+import { inspect } from "node:util";
+
+import { runCommand } from "./run-command.js";
 
 /**
  * Checks the authorisation to push commits to the remote repository.
@@ -18,10 +19,13 @@ export const checkAuthorisation = async (
     return;
   }
   try {
-    const promisifiedExec = promisify(childProcess.exec);
-    const gitCommandResult = await promisifiedExec(
-      `git push --dry-run --no-verify ${repositoryUrl} ${branch}`
-    );
+    const gitCommandResult = await runCommand([
+      "push",
+      "--dry-run",
+      "--no-verify",
+      repositoryUrl,
+      branch
+    ]);
     if (config.debug)
       logger.logDebug(
         inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }),
