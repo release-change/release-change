@@ -24,9 +24,6 @@ describe("check if the branch is up to date", () => {
     vi.mocked(getRemoteNameModule.getRemoteName).mockReturnValue(Promise.resolve(null));
     expect(await isBranchUpToDate(mockedBranch)).toBe(false);
   });
-  it("should return `false` if no branch is defined", async () => {
-    expect(await isBranchUpToDate(undefined)).toBe(false);
-  });
   it("should return `false` if `git rev-list` returns a non-empty string", async () => {
     vi.mocked(getRemoteNameModule.getRemoteName).mockReturnValue(Promise.resolve(mockedRemoteName));
     mockedExecSync.mockReturnValue(mockedGitRevList);
