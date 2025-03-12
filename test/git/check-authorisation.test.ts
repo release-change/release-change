@@ -21,7 +21,7 @@ describe("check authorisation", () => {
   const mockedContext = {
     cwd: "/fake/path",
     env: {},
-    branch: null,
+    branch: "branch-name",
     config: mockedConfig,
     logger: {
       logDebug: vi.fn(),
