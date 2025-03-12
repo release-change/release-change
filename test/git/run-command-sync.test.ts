@@ -31,8 +31,8 @@ describe("run git command", () => {
     });
     expectTypeOf(runCommandSync(mockedArgs, mockedOptions)).toMatchTypeOf<{
       status: number | null;
+      stdout: string;
+      stderr: string;
     }>();
-    expectTypeOf(runCommandSync(mockedArgs, mockedOptions)).toMatchTypeOf<{ stdout: string }>();
-    expectTypeOf(runCommandSync(mockedArgs, mockedOptions)).toMatchTypeOf<{ stderr: string }>();
   });
 });

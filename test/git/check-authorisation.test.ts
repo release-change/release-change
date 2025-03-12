@@ -34,7 +34,7 @@ describe("check authorisation", () => {
   const mockedContextWithEligibleBranch = { ...mockedContext, branch: "main" };
 
   beforeEach(() => {
-    vi.mock("node:child_process");
+    vi.mock("../../src/git/run-command.js");
   });
 
   afterEach(() => {
