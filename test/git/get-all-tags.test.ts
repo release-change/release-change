@@ -3,7 +3,7 @@ import type { Context } from "../../src/cli/cli.types.js";
 import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAllTags } from "../../src/git/get-all-tags.js";
-import { runCommand } from "../../src/git/run-command.js";
+import { runCommandSync } from "../../src/git/run-command-sync.js";
 
 describe("get all tags", () => {
   const mockedRepositoryUrl = "https://github.com/user-id/repo-name";
@@ -34,7 +34,7 @@ describe("get all tags", () => {
   } as Context;
 
   beforeEach(() => {
-    vi.mock("../../src/git/run-command.js", () => ({ runCommand: vi.fn() }));
+    vi.mock("../../src/git/run-command-sync.js", () => ({ runCommandSync: vi.fn() }));
   });
 
   afterEach(() => {
@@ -47,7 +47,7 @@ describe("get all tags", () => {
       stdout: "",
       stderr: "Error"
     };
-    vi.mocked(runCommand).mockReturnValue(mockedCommandResult);
+    vi.mocked(runCommandSync).mockReturnValue(mockedCommandResult);
     expect(() => getAllTags(mockedContext)).toThrowError();
     expect(mockedContext.logger.logError).toHaveBeenCalled();
   });
@@ -74,7 +74,7 @@ describe("get all tags", () => {
       stdout: mockedTags.join("\n"),
       stderr: ""
     };
-    vi.mocked(runCommand).mockReturnValue(mockedCommandResult);
+    vi.mocked(runCommandSync).mockReturnValue(mockedCommandResult);
     assert.deepEqual(getAllTags(mockedContext), mockedTags);
   });
   it("should return an empty array if no tags are found", () => {
@@ -83,7 +83,7 @@ describe("get all tags", () => {
       stdout: "",
       stderr: ""
     };
-    vi.mocked(runCommand).mockReturnValue(mockedCommandResult);
+    vi.mocked(runCommandSync).mockReturnValue(mockedCommandResult);
     assert.deepEqual(getAllTags(mockedContext), []);
   });
 });

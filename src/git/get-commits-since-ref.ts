@@ -2,7 +2,7 @@ import type { Context } from "../cli/cli.types.js";
 
 import { inspect } from "node:util";
 
-import { runCommand } from "./run-command.js";
+import { runCommandSync } from "./run-command-sync.js";
 
 import { COMMIT_SEPARATOR } from "./constants.js";
 
@@ -13,7 +13,7 @@ export const getCommitsSinceRef = (context: Context): string[] => {
     const args = gitTag ? ["log", `${gitTag}..HEAD`] : ["log"];
     const infoMessage = `Retrieving ${args.length > 1 ? `commits since ${gitTag}` : "all commits"}.`;
     logger.logInfo(infoMessage);
-    const gitCommandResult = runCommand(args, { encoding: "utf8" });
+    const gitCommandResult = runCommandSync(args, { encoding: "utf8" });
     const { status, stdout, stderr } = gitCommandResult;
     if (status || stderr) {
       throw new Error(stderr);
