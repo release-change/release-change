@@ -1,6 +1,6 @@
 import type { Config } from "../../src/config/config.types.js";
 
-import { assert, describe, it, vi } from "vitest";
+import { assert, afterEach, beforeEach, describe, it, vi } from "vitest";
 
 import { parseCliOptions } from "../../src/cli/parse-cli-options.js";
 import { getConfigFile } from "../../src/config/get-config-file.js";
@@ -17,9 +17,15 @@ describe("get config", () => {
   const mockedRepositoryUrl = "https://github.com/user-id/repo-name.git";
   const mockedBranch = "main";
 
-  vi.mock("../../src/config/get-config-file.js", () => ({
-    getConfigFile: vi.fn()
-  }));
+  beforeEach(() => {
+    vi.mock("../../src/config/get-config-file.js", () => ({
+      getConfigFile: vi.fn()
+    }));
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
   it("should get config with default options when `config()` is called without arguments", async () => {
     assert.deepEqual(await getConfig(), expectedDefaultConfig);
@@ -127,6 +133,7 @@ describe("get config", () => {
   });
   it("should get config according to config file", async () => {
     const mockedConfigFile = {
+      ...expectedDefaultConfig,
       branches: ["main", "next"],
       repositoryUrl: mockedRepositoryUrl
     };
@@ -144,6 +151,7 @@ describe("get config", () => {
   });
   it("should get config according to config file with custom `releaseType`", async () => {
     const mockedConfigFile = {
+      ...expectedDefaultConfig,
       branches: ["main", "next"],
       repositoryUrl: mockedRepositoryUrl,
       remoteName: "origin",
@@ -171,6 +179,7 @@ describe("get config", () => {
   });
   it("should get config according to CLI options rather than config file", async () => {
     const mockedConfigFile = {
+      ...expectedDefaultConfig,
       branches: ["main", "next"],
       repositoryUrl: mockedRepositoryUrl,
       remoteName: "origin"

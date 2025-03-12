@@ -13,17 +13,15 @@ describe("CLI behaviour when running with some CLI options", () => {
 
   beforeEach(() => {
     originalProcessArgv = process.argv;
+    vi.mock("../../src/cli/run.js", () => ({
+      run: vi.fn()
+    }));
   });
-
   afterEach(() => {
     process.argv = originalProcessArgv;
     vi.restoreAllMocks();
   });
-
   it.each(cliOptions)("should not call `run()` when `%s` is used", cliOption => {
-    vi.mock("../../src/cli/run.js", () => ({
-      run: vi.fn()
-    }));
     process.argv = ["pnpm", PACKAGE_NAME, cliOption];
     cli();
     expect(run).not.toHaveBeenCalled();
