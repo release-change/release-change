@@ -2,7 +2,7 @@ import type { Context } from "../cli/cli.types.js";
 
 import { inspect } from "node:util";
 
-import { runCommand } from "./run-command.js";
+import { runCommandSync } from "./run-command-sync.js";
 
 /**
  * Gets all tags for the branch from which the package publishes as they are on the remote repository.
@@ -12,7 +12,7 @@ import { runCommand } from "./run-command.js";
 export const getAllTags = (context: Context): string[] => {
   const { cwd, branch, config, logger } = context;
   try {
-    const gitCommandResult = runCommand(
+    const gitCommandResult = runCommandSync(
       ["tag", "-l", "--sort=v:refname", "--merged", `${config.remoteName}/${branch}`],
       { cwd, encoding: "utf8" }
     );

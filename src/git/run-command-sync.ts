@@ -3,7 +3,7 @@ import type { GitCommandResult } from "./git.types.js";
 
 import { spawnSync } from "node:child_process";
 
-export const runCommand = (
+export const runCommandSync = (
   args: readonly string[],
   options: SpawnSyncOptionsWithStringEncoding
 ): GitCommandResult => {

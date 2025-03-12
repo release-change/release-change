@@ -1,9 +1,9 @@
-import childProcess from "node:child_process";
 import process from "node:process";
 
 import semver from "semver";
 
 import { cli } from "../cli/index.js";
+import { runCommandSync } from "../git/run-command-sync.js";
 import { isGitVersionCompatible } from "./is-git-version-compatible.js";
 import { isNodeVersionCompatible } from "./is-node-version-compatible.js";
 
@@ -26,7 +26,7 @@ export const checkRequirements = async (): Promise<void> => {
     );
     process.exit(1);
   }
-  const gitVersion = semver.coerce(childProcess.execSync("git --version", { encoding: "utf8" }));
+  const gitVersion = semver.coerce(runCommandSync(["--version"], { encoding: "utf8" }).stdout);
   if (!gitVersion || !isGitVersionCompatible(gitVersion)) {
     console.error(
       `[${PACKAGE_NAME}]: Git version ${GIT_MIN_VERSION} required. Found ${gitVersion}.`

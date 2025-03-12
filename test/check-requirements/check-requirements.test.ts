@@ -1,10 +1,11 @@
-import childProcess from "node:child_process";
+import type { GitCommandResult } from "../../src/git/git.types.js";
+
 import process from "node:process";
 
 import semver from "semver";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-
 import { checkRequirements } from "../../src/check-requirements/index.js";
+import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
 
 import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "../../src/check-requirements/constants.js";
 
@@ -58,9 +59,13 @@ describe("check requirements", () => {
   );
 
   it(`should call \`process.exit(1)\` and display an error message if Git version is less than ${GIT_MIN_VERSION}`, () => {
-    const mockedGitVersion = "git version 2.30.0";
-    const coercedVersion = semver.coerce(mockedGitVersion);
-    vi.spyOn(childProcess, "execSync").mockReturnValue(mockedGitVersion);
+    const mockedGitVersion: GitCommandResult = {
+      status: 0,
+      stdout: "git version 2.30.0",
+      stderr: ""
+    };
+    const coercedVersion = semver.coerce(mockedGitVersion.stdout);
+    vi.spyOn(runCommandSyncModule, "runCommandSync").mockReturnValue(mockedGitVersion);
     checkRequirements();
     expect(console.error).toHaveBeenCalledWith(
       `[release-change]: Git version ${GIT_MIN_VERSION} required. Found ${coercedVersion}.`
