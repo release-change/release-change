@@ -1,5 +1,7 @@
 import type { CliOptions, Context, ContextBase } from "./cli.types.js";
 
+import { parseCommit } from "../commit-analyser/parse-commit.js";
+import { setReleaseType } from "../commit-analyser/set-release-type.js";
 import { debugConfig } from "../config/debug-config.js";
 import { getConfig } from "../config/index.js";
 import { checkBranch } from "../git/check-branch.js";
@@ -30,6 +32,11 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   console.log("context.config.dryRun", context.config.dryRun);
   await checkPushPermissions(context.config.repositoryUrl, context);
   setLastRelease(context);
-  getCommitsSinceRef(context);
+  const commits = getCommitsSinceRef(context);
+  console.log("lastRelease", context.lastRelease);
+  for (const commit of commits) {
+    const parsedCommit = parseCommit(commit, context);
+    setReleaseType(parsedCommit, context);
+  }
   console.log("exit", process.exitCode, process.exitCode ?? 0);
 };
