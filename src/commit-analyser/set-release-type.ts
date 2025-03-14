@@ -13,7 +13,7 @@ import {
  * Sets the release type, based on commit description and footer.
  * @param commit - The parsed commit.
  * @param context - The context where the CLI is running.
- * @return One of major, minor and patch if the commit correlates with a version change, `null` otherwise.
+ * @return One of `"major"`, `"minor"` and `"patch"` if the commit correlates with a version change, `null` otherwise.
  */
 export const setReleaseType = (commit: Commit, context: Context): ReleaseType => {
   const { description, footer } = commit;
