@@ -1,5 +1,4 @@
 import type { Config } from "../config/config.types.js";
-import type { Logger } from "../logger/logger.types.js";
 import type { LastRelease } from "../release/release.types.js";
 
 const letters = [
@@ -50,7 +49,6 @@ export interface ContextBase {
 }
 export interface Context extends ContextBase {
   config: Config;
-  logger: Logger;
   branch: string | undefined;
   lastRelease?: LastRelease;
 }

@@ -1,6 +1,7 @@
 import type { Context } from "../cli/cli.types.js";
-
 import type { Commit, ReleaseType } from "./commit-analyser.types.js";
+
+import { setLogger } from "../logger/index.js";
 
 import {
   BREAKING_CHANGE,
@@ -17,7 +18,8 @@ import {
  */
 export const setReleaseType = (commit: Commit, context: Context): ReleaseType => {
   const { description, footer } = commit;
-  const { logger, config } = context;
+  const { config } = context;
+  const logger = setLogger(config.debug);
   logger.logInfo(`Analysing commit: ${description}`);
   let releaseType: ReleaseType;
   let releaseTypeInfoMessage: string;
@@ -34,8 +36,10 @@ export const setReleaseType = (commit: Commit, context: Context): ReleaseType =>
     releaseType = null;
     releaseTypeInfoMessage = "The commit does not trigger a release.";
   }
-  if (config.debug)
-    logger.logDebug(`Release type: ${releaseType}`, "commit-analyser:set-release-type");
+  if (config.debug) {
+    logger.setDebugScope("commit-analyser:set-release-type");
+    logger.logDebug(`Release type: ${releaseType}`);
+  }
   logger.logInfo(releaseTypeInfoMessage);
   return releaseType;
 };

@@ -4,6 +4,7 @@ import type { LastRelease } from "./release.types.js";
 import semver from "semver";
 
 import { getLatestValidTag } from "../git/get-latest-valid-tag.js";
+import { setLogger } from "../logger/index.js";
 import { getRootPackageVersion } from "./get-root-package-version.js";
 
 /**
@@ -11,7 +12,8 @@ import { getRootPackageVersion } from "./get-root-package-version.js";
  * @param context - The context where the CLI is running.
  */
 export const setLastRelease = (context: Context): void => {
-  const { cwd, branch, config, logger } = context;
+  const { cwd, branch, config } = context;
+  const logger = setLogger(config.debug);
   if (!branch || !config.branches.includes(branch)) return;
   try {
     const lastRelease: LastRelease = {

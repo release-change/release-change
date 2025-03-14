@@ -11,9 +11,14 @@ export const setLogger = (isDebug: boolean): Logger => {
   const loggerContext = {
     isDebug: Boolean(isDebug)
   };
+  let debugScope = "";
   return {
-    logDebug: (message: string, feature: string): void => {
-      console.debug(formatMessage(message, { ...loggerContext, feature }));
+    setDebugScope: (scope: string): string => {
+      debugScope = scope;
+      return scope;
+    },
+    logDebug: (message: string): void => {
+      console.debug(formatMessage(message, { ...loggerContext, scope: debugScope }));
     },
     logInfo: (message: string): void => {
       console.info(formatMessage(message, { ...loggerContext, type: "info" }));

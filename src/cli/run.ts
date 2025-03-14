@@ -20,8 +20,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   const context: Context = {
     ...contextBase,
     branch,
-    config,
-    logger
+    config
   };
   logger.logInfo(`Running ${PACKAGE_NAME} version ${PACKAGE_VERSION}`);
   debugConfig(context);

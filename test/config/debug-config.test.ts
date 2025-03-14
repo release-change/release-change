@@ -1,8 +1,10 @@
 import type { Config } from "../../src/config/config.types.js";
+import type { Logger } from "../../src/logger/logger.types.js";
 
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { debugConfig } from "../../src/config/debug-config.js";
+import * as setLoggerModule from "../../src/logger/set-logger.js";
 
 import { DEFAULT_CONFIG } from "../../src/config/constants.js";
 
@@ -12,23 +14,32 @@ describe("debug config", () => {
     cwd: "/fake/path",
     env: {},
     branch: "branch-name",
-    config: expectedDefaultConfig,
-    logger: {
-      logDebug: vi.fn(),
-      logInfo: vi.fn(),
-      logError: vi.fn(),
-      logWarn: vi.fn(),
-      logSuccess: vi.fn()
-    }
+    config: expectedDefaultConfig
   };
+  const mockedLogger: Logger = {
+    setDebugScope: vi.fn(),
+    logDebug: vi.fn(),
+    logInfo: vi.fn(),
+    logError: vi.fn(),
+    logWarn: vi.fn(),
+    logSuccess: vi.fn()
+  };
+
+  beforeEach(() => {
+    vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
   it("should not log debug logs when not in debug mode", () => {
     debugConfig(mockedContext);
-    expect(mockedContext.logger.logDebug).not.toHaveBeenCalled();
+    expect(mockedLogger.logDebug).not.toHaveBeenCalled();
   });
   it("should log debug logs when in debug mode", () => {
     mockedContext.config.debug = true;
     debugConfig(mockedContext);
-    expect(mockedContext.logger.logDebug).toHaveBeenCalled();
+    expect(mockedLogger.logDebug).toHaveBeenCalled();
   });
 });

@@ -1,9 +1,11 @@
 import type { Commit } from "../../src/commit-analyser/commit-analyser.types.js";
 import type { Config } from "../../src/config/config.types.js";
+import type { Logger } from "../../src/logger/logger.types.js";
 
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { setReleaseType } from "../../src/commit-analyser/set-release-type.js";
+import * as setLoggerModule from "../../src/logger/set-logger.js";
 
 import { DEFAULT_CONFIG } from "../../src/config/constants.js";
 
@@ -21,7 +23,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: false,
       hasBang: true,
       prefix: "feat!",
-      title: "add feature with breaking change"
+      title: "add scope with breaking change"
     },
     {
       isMajorChange: true,
@@ -29,7 +31,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: false,
       hasBang: true,
       prefix: "feat(scope)!",
-      title: "add feature with breaking change"
+      title: "add scope with breaking change"
     },
     {
       isMajorChange: true,
@@ -37,7 +39,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: true,
       hasBang: true,
       prefix: "feat!",
-      title: "merge feature with breaking change (#42)"
+      title: "merge scope with breaking change (#42)"
     },
     {
       isMajorChange: true,
@@ -45,7 +47,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: true,
       hasBang: true,
       prefix: "feat(scope)!",
-      title: "merge feature with breaking change (#42)"
+      title: "merge scope with breaking change (#42)"
     },
     {
       isMajorChange: true,
@@ -117,7 +119,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: false,
       hasBang: false,
       prefix: "feat",
-      title: "add feature with breaking change"
+      title: "add scope with breaking change"
     },
     {
       isMajorChange: false,
@@ -125,7 +127,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: false,
       hasBang: false,
       prefix: "feat(scope)",
-      title: "add feature with breaking change"
+      title: "add scope with breaking change"
     },
     {
       isMajorChange: false,
@@ -133,7 +135,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: true,
       hasBang: false,
       prefix: "feat",
-      title: "merge feature with breaking change (#42)"
+      title: "merge scope with breaking change (#42)"
     },
     {
       isMajorChange: false,
@@ -141,7 +143,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: true,
       hasBang: false,
       prefix: "feat(scope)",
-      title: "merge feature with breaking change (#42)"
+      title: "merge scope with breaking change (#42)"
     },
     {
       isMajorChange: false,
@@ -213,7 +215,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: false,
       hasBang: false,
       prefix: "feat",
-      title: "add feature"
+      title: "add scope"
     },
     {
       isMajorChange: false,
@@ -221,7 +223,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: false,
       hasBang: false,
       prefix: "feat(scope)",
-      title: "add feature"
+      title: "add scope"
     },
     {
       isMajorChange: false,
@@ -229,7 +231,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: true,
       hasBang: false,
       prefix: "feat",
-      title: "merge feature (#42)"
+      title: "merge scope (#42)"
     },
     {
       isMajorChange: false,
@@ -237,7 +239,7 @@ describe("set the release type of the commit", () => {
       isMergeCommit: true,
       hasBang: false,
       prefix: "feat(scope)",
-      title: "merge feature (#42)"
+      title: "merge scope (#42)"
     },
     {
       isMajorChange: false,
@@ -375,62 +377,71 @@ describe("set the release type of the commit", () => {
     cwd: "/fake/path",
     env: {},
     branch: "main",
-    config: expectedDefaultConfig,
-    logger: {
-      logDebug: vi.fn(),
-      logInfo: vi.fn(),
-      logError: vi.fn(),
-      logWarn: vi.fn(),
-      logSuccess: vi.fn()
-    }
+    config: expectedDefaultConfig
+  };
+  const mockedLogger: Logger = {
+    setDebugScope: vi.fn(),
+    logDebug: vi.fn(),
+    logInfo: vi.fn(),
+    logError: vi.fn(),
+    logWarn: vi.fn(),
+    logSuccess: vi.fn()
   };
   const expectedMajorLogMessage = "The release type for the commit is major.";
   const expectedMinorLogMessage = "The release type for the commit is minor.";
   const expectedPatchLogMessage = "The release type for the commit is patch.";
   const expectedNoReleaseLogMessage = "The commit does not trigger a release.";
 
+  beforeEach(() => {
+    vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it.each(majorTypeCommits)("should trigger a major release for commit %#", majorTypeCommit => {
     expect(setReleaseType(majorTypeCommit, mockedContext)).toBe("major");
-    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith(expectedMajorLogMessage);
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedMajorLogMessage);
   });
   it.each(minorTypeCommits)("should trigger a minor release for commit %#", minorTypeCommit => {
     expect(setReleaseType(minorTypeCommit, mockedContext)).toBe("minor");
-    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith(expectedMinorLogMessage);
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedMinorLogMessage);
   });
   it.each(patchTypeCommits)("should trigger a patch release for commit %#", patchTypeCommit => {
     expect(setReleaseType(patchTypeCommit, mockedContext)).toBe("patch");
-    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith(expectedPatchLogMessage);
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedPatchLogMessage);
   });
   it.each(otherTypeCommits)("should not trigger a release for commit %#", otherTypeCommit => {
     expect(setReleaseType(otherTypeCommit, mockedContext)).toBe(null);
-    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith(expectedNoReleaseLogMessage);
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedNoReleaseLogMessage);
   });
   it.each(majorTypeCommitsWithUpperCasePrefix)(
     "should trigger a major release for commit %# with upper case prefix",
     majorTypeCommitWithUpperCasePrefix => {
       expect(setReleaseType(majorTypeCommitWithUpperCasePrefix, mockedContext)).toBe("major");
-      expect(mockedContext.logger.logInfo).toHaveBeenCalledWith(expectedMajorLogMessage);
+      expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedMajorLogMessage);
     }
   );
   it.each(minorTypeCommitsWithUpperCasePrefix)(
     "should trigger a minor release for commit %# with upper case prefix",
     minorTypeCommitWithUpperCasePrefix => {
       expect(setReleaseType(minorTypeCommitWithUpperCasePrefix, mockedContext)).toBe("minor");
-      expect(mockedContext.logger.logInfo).toHaveBeenCalledWith(expectedMinorLogMessage);
+      expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedMinorLogMessage);
     }
   );
   it.each(patchTypeCommitsWithUpperCasePrefix)(
     "should trigger a patch release for commit %# with upper case prefix",
     patchTypeCommitWithUpperCasePrefix => {
       expect(setReleaseType(patchTypeCommitWithUpperCasePrefix, mockedContext)).toBe("patch");
-      expect(mockedContext.logger.logInfo).toHaveBeenCalledWith(expectedPatchLogMessage);
+      expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedPatchLogMessage);
     }
   );
   it.each(otherTypeCommitsWithUpperCasePrefix)(
     "should not trigger a release for commit %# with upper case prefix",
     otherTypeCommitWithUpperCasePrefix => {
       expect(setReleaseType(otherTypeCommitWithUpperCasePrefix, mockedContext)).toBe(null);
-      expect(mockedContext.logger.logInfo).toHaveBeenCalledWith(expectedNoReleaseLogMessage);
+      expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedNoReleaseLogMessage);
     }
   );
   it("should not trigger a release for commits not following Conventional Commits syntax", () => {
@@ -443,6 +454,6 @@ describe("set the release type of the commit", () => {
       footer: []
     };
     expect(setReleaseType(unconventionalCommit, mockedContext)).toBe(null);
-    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith(expectedNoReleaseLogMessage);
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedNoReleaseLogMessage);
   });
 });

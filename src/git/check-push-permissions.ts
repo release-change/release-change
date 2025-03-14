@@ -1,5 +1,6 @@
 import type { Context } from "../cli/cli.types.js";
 
+import { setLogger } from "../logger/index.js";
 import { checkAuthorisation } from "./check-authorisation.js";
 import { isBranchUpToDate } from "./is-branch-up-to-date.js";
 
@@ -12,10 +13,10 @@ export const checkPushPermissions = async (
   repositoryUrl: string,
   context: Context
 ): Promise<void> => {
-  const { logger } = context;
+  const { branch, config } = context;
+  const logger = setLogger(config.debug);
   try {
     await checkAuthorisation(repositoryUrl, context);
-    const { branch, config } = context;
     if (branch && config.branches.includes(branch)) {
       if (!(await isBranchUpToDate(branch))) {
         logger.logWarn(

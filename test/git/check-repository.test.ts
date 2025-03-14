@@ -1,12 +1,16 @@
+import type { Logger } from "../../src/logger/logger.types.js";
+
 import process from "node:process";
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { checkRepository } from "../../src/git/check-repository.js";
 import * as runCommandModule from "../../src/git/run-command.js";
+import * as setLoggerModule from "../../src/logger/set-logger.js";
 
 describe("check repository", () => {
-  const mockedLogger = {
+  const mockedLogger: Logger = {
+    setDebugScope: vi.fn(),
     logDebug: vi.fn(),
     logInfo: vi.fn(),
     logError: vi.fn(),
@@ -16,6 +20,7 @@ describe("check repository", () => {
   let originalProcessExit: typeof process.exit;
 
   beforeEach(() => {
+    vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
     vi.mock("../../src/git/run-command.js");
     originalProcessExit = process.exit;
     Object.defineProperty(process, "exit", {
@@ -28,6 +33,7 @@ describe("check repository", () => {
   afterEach(() => {
     process.exit = originalProcessExit;
     vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should call `process.exit(128)` if this is not a Git repository", async () => {

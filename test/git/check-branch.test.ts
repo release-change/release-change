@@ -9,13 +9,6 @@ import { DEFAULT_CONFIG } from "../../src/config/constants.js";
 
 describe("check branch", () => {
   const mockedConfig = DEFAULT_CONFIG as unknown as Config;
-  const mockedLogger = {
-    logDebug: vi.fn(),
-    logInfo: vi.fn(),
-    logError: vi.fn(),
-    logWarn: vi.fn(),
-    logSuccess: vi.fn()
-  };
   const mockedBasicContext: ContextBase = {
     cwd: "/fake/path",
     env: {}
@@ -23,8 +16,7 @@ describe("check branch", () => {
   const mockedContext: Context = {
     ...mockedBasicContext,
     branch: undefined,
-    config: mockedConfig,
-    logger: mockedLogger
+    config: mockedConfig
   };
   const mockedContextWithNonEligibleBranch = { ...mockedContext, branch: "non-eligible-branch" };
   const mockedContextWithMainBranch = { ...mockedContext, branch: "main" };

@@ -11,7 +11,7 @@ import { setPrefix } from "./set-prefix.js";
  *   - `\u26a0` if the message is of type `warn`,
  *   - `\u2714` if the message is of type `success`.
  * @param message - The message to format.
- * @param loggerContext - The logger context: whether the debug mode is activated or not, what feature is concerned (optional) and the message type (optional).
+ * @param loggerContext - The logger context: whether the debug mode is activated or not, what scope is concerned (optional) and the message type (optional).
  * @return The formatted message.
  */
 export const formatMessage = (message: string, loggerContext: LoggerContext): string => {

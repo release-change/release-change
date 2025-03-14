@@ -1,8 +1,9 @@
 import type { Context } from "../cli/cli.types.js";
+import type { Commit } from "./commit-analyser.types.js";
 
 import { inspect } from "node:util";
 
-import type { Commit } from "./commit-analyser.types.js";
+import { setLogger } from "../logger/index.js";
 
 import {
   BLANK_LINE_SEPARATOR,
@@ -18,7 +19,8 @@ import {
  * @return The commit as an object, with the description and the footer.
  */
 export const parseCommit = (commit: string, context: Context): Commit => {
-  const { config, logger } = context;
+  const { config } = context;
+  const logger = setLogger(config.debug);
   const parsedCommit: Commit = {
     description: "",
     footer: []
@@ -37,10 +39,8 @@ export const parseCommit = (commit: string, context: Context): Commit => {
     );
     parsedCommit.footer = commitFooter.flatMap(line => line.split("\n").map(line => line.trim()));
     if (config.debug) {
-      logger.logDebug(
-        inspect(parsedCommit, { depth: Number.POSITIVE_INFINITY }),
-        "commit-analyser:parse-commit"
-      );
+      logger.setDebugScope("commit-analyser:parse-commit");
+      logger.logDebug(inspect(parsedCommit, { depth: Number.POSITIVE_INFINITY }));
     }
     return parsedCommit;
   }

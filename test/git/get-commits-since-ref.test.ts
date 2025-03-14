@@ -1,9 +1,11 @@
 import type { Context } from "../../src/cli/cli.types.js";
+import type { Logger } from "../../src/logger/logger.types.js";
 
-import { assert, describe, expect, it, vi } from "vitest";
+import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getCommitsSinceRef } from "../../src/git/get-commits-since-ref.js";
 import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
+import * as setLoggerModule from "../../src/logger/set-logger.js";
 
 import { COMMIT_SEPARATOR } from "../../src/git/constants.js";
 
@@ -26,18 +28,19 @@ describe("get commits since the previous release or the beginning", () => {
     env: {},
     branch: "main",
     config: mockedConfig,
-    logger: {
-      logDebug: vi.fn(),
-      logInfo: vi.fn(),
-      logError: vi.fn(),
-      logWarn: vi.fn(),
-      logSuccess: vi.fn()
-    },
     lastRelease: {
       gitTag: null,
       version: "0.0.0"
     }
   } as Context;
+  const mockedLogger: Logger = {
+    setDebugScope: vi.fn(),
+    logDebug: vi.fn(),
+    logInfo: vi.fn(),
+    logError: vi.fn(),
+    logWarn: vi.fn(),
+    logSuccess: vi.fn()
+  };
   const mockedCommits = `commit 4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5
 Merge: 7908467 72f01b7
 Author: Contributor <0+userId@users.noreply.github.com>
@@ -93,6 +96,14 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
 `;
   const mockedCommitsInArray = mockedCommits.split(COMMIT_SEPARATOR);
 
+  beforeEach(() => {
+    vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should log an error message when an error is thrown", () => {
     const mockedCommandResult = {
       status: 1,
@@ -101,7 +112,7 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
     };
     vi.spyOn(runCommandSyncModule, "runCommandSync").mockReturnValue(mockedCommandResult);
     expect(() => getCommitsSinceRef(mockedContext)).toThrowError();
-    expect(mockedContext.logger.logError).toHaveBeenCalled();
+    expect(mockedLogger.logError).toHaveBeenCalled();
   });
   it("should return an array of commits", () => {
     const mockedCommandResult = {
@@ -111,7 +122,7 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
     };
     vi.spyOn(runCommandSyncModule, "runCommandSync").mockReturnValue(mockedCommandResult);
     assert.deepEqual(getCommitsSinceRef(mockedContext), mockedCommitsInArray);
-    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("Found 8 commits.");
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith("Found 8 commits.");
   });
   it("should return an empty array when no commits are found", () => {
     const mockedCommandResult = {
@@ -121,20 +132,20 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
     };
     vi.spyOn(runCommandSyncModule, "runCommandSync").mockReturnValue(mockedCommandResult);
     assert.deepEqual(getCommitsSinceRef(mockedContext), []);
-    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("Found 0 commits.");
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith("Found 0 commits.");
   });
   it("should run `git log` when there are no Git tags", () => {
     const mockedOptions = { encoding: "utf8" };
     const mockedCommand = vi.spyOn(runCommandSyncModule, "runCommandSync");
     getCommitsSinceRef(mockedContext);
     expect(mockedCommand).toHaveBeenCalledWith(["log"], mockedOptions);
-    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("Retrieving all commits.");
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving all commits.");
   });
   it('should run `git log v1.0.0..HEAD` when the ref is Git tag "v1.0.0"', () => {
     const mockedOptions = { encoding: "utf8" };
     const mockedCommand = vi.spyOn(runCommandSyncModule, "runCommandSync");
     getCommitsSinceRef({ ...mockedContext, lastRelease: { gitTag: "v1.0.0", version: "1.0.0" } });
     expect(mockedCommand).toHaveBeenCalledWith(["log", "v1.0.0..HEAD"], mockedOptions);
-    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("Retrieving commits since v1.0.0.");
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving commits since v1.0.0.");
   });
 });

@@ -46,20 +46,12 @@ describe("get latest valid Git tag", () => {
     cwd: "/fake/path",
     env: {},
     config: mockedConfig,
-    logger: {
-      logDebug: vi.fn(),
-      logInfo: vi.fn(),
-      logError: vi.fn(),
-      logWarn: vi.fn(),
-      logSuccess: vi.fn()
-    },
     branch: "main"
   } as Context;
   const mockedContextWithInvalidConfig = {
     cwd: mockedContext.cwd,
     env: {},
     config: mockedInvalidConfig,
-    logger: mockedContext.logger,
     branch: "main"
   } as Context;
   const mockedValidGitTags = [
