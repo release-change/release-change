@@ -3,6 +3,7 @@ import type { ReleaseType } from "./commit-analyser.types.js";
 
 import { inspect } from "node:util";
 
+import { setLogger } from "../logger/index.js";
 import { parseCommit } from "./parse-commit.js";
 import { setReleaseType } from "./set-release-type.js";
 
@@ -18,7 +19,8 @@ import { setReleaseType } from "./set-release-type.js";
  * @return The most important release type found if commits are parsed successfully, `null` if there are no commits or an error is thrown.
  */
 export const getReleaseType = (commits: string[], context: Context): ReleaseType => {
-  const { config, logger } = context;
+  const { config } = context;
+  const logger = setLogger(config.debug);
   try {
     const releaseTypes = new Set<ReleaseType>();
     const totalCommits = commits.length;
@@ -27,7 +29,10 @@ export const getReleaseType = (commits: string[], context: Context): ReleaseType
         const parsedCommit = parseCommit(commit, context);
         releaseTypes.add(setReleaseType(parsedCommit, context));
       }
-      if (config.debug) logger.logDebug(inspect(releaseTypes), "commit-analyser:get-release-type");
+      if (config.debug) {
+        logger.setDebugScope("git/get-release-type");
+        logger.logDebug(inspect(releaseTypes));
+      }
       const pluralRule = new Intl.PluralRules("en-GB", { type: "cardinal" });
       const commitWord = pluralRule.select(totalCommits) === "one" ? "commit" : "commits";
       const completeAnalysisSentence = `Analysis of ${totalCommits} ${commitWord} complete:`;

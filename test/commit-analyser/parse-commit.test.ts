@@ -1,6 +1,6 @@
 import type { Config } from "../../src/config/config.types.js";
 
-import { assert, describe, expect, it, vi } from "vitest";
+import { assert, describe, expect, it } from "vitest";
 
 import { parseCommit } from "../../src/commit-analyser/parse-commit.js";
 
@@ -19,14 +19,7 @@ describe("parse commit", () => {
     cwd: "/fake/path",
     env: {},
     branch: "main",
-    config: expectedDefaultConfig,
-    logger: {
-      logDebug: vi.fn(),
-      logInfo: vi.fn(),
-      logError: vi.fn(),
-      logWarn: vi.fn(),
-      logSuccess: vi.fn()
-    }
+    config: expectedDefaultConfig
   };
   const description = commitDescription.trim();
   const keyValueFooter = commitKeyValueFooter.trim();

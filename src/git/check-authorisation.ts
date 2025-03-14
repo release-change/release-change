@@ -2,6 +2,7 @@ import type { Context } from "../cli/cli.types.js";
 
 import { inspect } from "node:util";
 
+import { setLogger } from "../logger/index.js";
 import { runCommand } from "./run-command.js";
 
 /**
@@ -13,7 +14,8 @@ export const checkAuthorisation = async (
   repositoryUrl: string,
   context: Context
 ): Promise<void> => {
-  const { branch, config, logger } = context;
+  const { branch, config } = context;
+  const logger = setLogger(config.debug);
   if (!branch || !config.branches.includes(branch)) {
     logger.logInfo("Skipping authorisation checking");
     return;
@@ -26,11 +28,10 @@ export const checkAuthorisation = async (
       repositoryUrl,
       branch
     ]);
-    if (config.debug)
-      logger.logDebug(
-        inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }),
-        "check-authorisation"
-      );
+    if (config.debug) {
+      logger.setDebugScope("check-authorisation");
+      logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
+    }
   } catch (error) {
     process.exitCode = 1;
     throw error;

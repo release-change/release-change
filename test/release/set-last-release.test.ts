@@ -1,10 +1,12 @@
 import type { Context } from "../../src/cli/cli.types.js";
+import type { Logger } from "../../src/logger/logger.types.js";
 import type { LastRelease } from "../../src/release/release.types.js";
 
 import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAllTags } from "../../src/git/get-all-tags.js";
 import { getLatestValidTag } from "../../src/git/get-latest-valid-tag.js";
+import * as setLoggerModule from "../../src/logger/set-logger.js";
 import { getRootPackageVersion } from "../../src/release/get-root-package-version.js";
 import { setLastRelease } from "../../src/release/set-last-release.js";
 
@@ -41,16 +43,17 @@ describe("set last release", () => {
     cwd: "/fake/path",
     env: {},
     config: mockedConfig,
-    logger: {
-      logDebug: vi.fn(),
-      logInfo: vi.fn(),
-      logError: vi.fn(),
-      logWarn: vi.fn(),
-      logSuccess: vi.fn()
-    },
     branch: "main"
   } as Context;
   const mockedContextWithInelegibleBranch = { ...mockedContext, branch: "unmatched-branch" };
+  const mockedLogger: Logger = {
+    setDebugScope: vi.fn(),
+    logDebug: vi.fn(),
+    logInfo: vi.fn(),
+    logError: vi.fn(),
+    logWarn: vi.fn(),
+    logSuccess: vi.fn()
+  };
   const mockedGitTags = [
     "v2.0.0",
     "v2.0.0-rc.2",
@@ -93,6 +96,7 @@ describe("set last release", () => {
   ];
 
   beforeEach(() => {
+    vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
     vi.mock("../../src/git/get-all-tags.js", () => ({
       getAllTags: vi.fn()
     }));
@@ -122,7 +126,7 @@ describe("set last release", () => {
       vi.mocked(getLatestValidTag).mockReturnValue(gitTag);
       setLastRelease(context);
       assert.deepEqual(context, expectedContext);
-      expect(context.logger.logInfo).toHaveBeenCalledWith(
+      expect(mockedLogger.logInfo).toHaveBeenCalledWith(
         `Found Git tag ${gitTag} associated with version ${version} on branch ${branch}.`
       );
     }
@@ -141,10 +145,10 @@ describe("set last release", () => {
       vi.mocked(getRootPackageVersion).mockReturnValue(mockedPackageVersion);
       setLastRelease(context);
       assert.deepEqual(context, expectedContext);
-      expect(context.logger.logInfo).toHaveBeenCalledWith(
+      expect(mockedLogger.logInfo).toHaveBeenCalledWith(
         `No Git tag version found on branch ${branch}.`
       );
-      expect(context.logger.logInfo).toHaveBeenCalledWith(
+      expect(mockedLogger.logInfo).toHaveBeenCalledWith(
         `Found package version ${mockedPackageVersion} on branch ${branch}.`
       );
     }
@@ -159,6 +163,6 @@ describe("set last release", () => {
     vi.mocked(getRootPackageVersion).mockReturnValue(undefined);
     setLastRelease(mockedContext);
     assert.deepEqual(mockedContext, expectedContext);
-    expect(mockedContext.logger.logInfo).toHaveBeenCalledWith("No package version found.");
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith("No package version found.");
   });
 });

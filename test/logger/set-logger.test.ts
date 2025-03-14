@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import * as formatMessageModule from "../../src/logger/format-message.js";
 import { setLogger } from "../../src/logger/set-logger.js";
 
 import { PACKAGE_NAME } from "../../src/shared/constants.js";
@@ -42,10 +43,17 @@ describe("log messages to the console", () => {
   });
 
   it("should display a message in debug mode with its own prefix", () => {
-    setLogger(true).logDebug(debugMessage, "test");
-    expect(console.debug).toHaveBeenCalledWith(
-      `\x1b[1;34m[debug] ${PACKAGE_NAME}:test\x1b[0m ${debugMessage}`
-    );
+    const expectedOutput = `\x1b[1;34m[debug] ${PACKAGE_NAME}:test\x1b[0m ${debugMessage}`;
+    vi.spyOn(formatMessageModule, "formatMessage").mockImplementationOnce(() => expectedOutput);
+    setLogger(true).setDebugScope("test");
+    setLogger(true).logDebug(debugMessage);
+    expect(console.debug).toHaveBeenCalledWith(expectedOutput);
+  });
+  it("should display a message in debug mode without any prefix", () => {
+    const expectedOutput = `\x1b[1;34m[debug] ${PACKAGE_NAME}:\x1b[0m ${debugMessage}`;
+    vi.spyOn(formatMessageModule, "formatMessage").mockImplementationOnce(() => expectedOutput);
+    setLogger(true).logDebug(debugMessage);
+    expect(console.debug).toHaveBeenCalledWith(expectedOutput);
   });
   it("should display leading zeros for the time", () => {
     vi.spyOn(Date, "now").mockImplementationOnce(() => new Date("2025-01-01T00:07:09Z").getTime());

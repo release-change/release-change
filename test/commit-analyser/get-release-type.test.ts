@@ -1,6 +1,6 @@
 import type { Config } from "../../src/config/config.types.js";
 
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { getReleaseType } from "../../src/commit-analyser/get-release-type.js";
 
@@ -17,14 +17,7 @@ describe("get release type", () => {
     cwd: "/fake/path",
     env: {},
     branch: "main",
-    config: expectedDefaultConfig,
-    logger: {
-      logDebug: vi.fn(),
-      logInfo: vi.fn(),
-      logError: vi.fn(),
-      logWarn: vi.fn(),
-      logSuccess: vi.fn()
-    }
+    config: expectedDefaultConfig
   };
   const mockedCommitHead = `${commitId}\n${commitAuthor}\n${commitDate}`;
   const mockedMajorCommit = `${mockedCommitHead}\n\n${commitIndent}feat!: add new breaking change feature`;

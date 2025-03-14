@@ -9,8 +9,8 @@ import { PACKAGE_NAME } from "../../src/shared/constants.js";
 
 describe("format message", () => {
   const expectedTime = "13:37:42";
-  const mockedLoggerContextForDebugMode: LoggerContext = { isDebug: true, feature: "my-feature" };
-  const expectedFeature = mockedLoggerContextForDebugMode.feature;
+  const mockedLoggerContextForDebugMode: LoggerContext = { isDebug: true, scope: "my-scope" };
+  const expectedFeature = mockedLoggerContextForDebugMode.scope;
 
   beforeEach(() => {
     vi.mock("../../src/logger/set-prefix.js", () => ({
