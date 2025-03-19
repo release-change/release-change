@@ -10,6 +10,7 @@ import { getBranchName } from "../git/get-branch-name.js";
 import { getCommitsSinceRef } from "../git/get-commits-since-ref.js";
 import { setLogger } from "../logger/index.js";
 import { setLastRelease } from "../release/set-last-release.js";
+import { setNextRelease } from "../release/set-next-release.js";
 
 import { PACKAGE_NAME, PACKAGE_VERSION } from "../shared/constants.js";
 
@@ -32,6 +33,8 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   setLastRelease(context);
   const commits = getCommitsSinceRef(context);
   console.log("lastRelease", context.lastRelease);
-  getReleaseType(commits, context);
+  const releaseType = getReleaseType(commits, context);
+  setNextRelease(releaseType, context);
+  console.log("nextRelease", context.nextRelease);
   console.log("exit", process.exitCode, process.exitCode ?? 0);
 };
