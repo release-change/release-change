@@ -26,7 +26,6 @@ export const setNextRelease = (releaseType: ReleaseType, context: Context): void
           gitTag: `v${version}`,
           version
         };
-        console.log("Oui !", releaseType, context.lastRelease, context.nextRelease);
       } else new Error("Failed to increment version.");
     } else new Error(`Failed to retrieve release type config for branch ${branch}.`);
   } catch (error) {
