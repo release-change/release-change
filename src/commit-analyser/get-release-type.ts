@@ -4,6 +4,7 @@ import type { ReleaseType } from "./commit-analyser.types.js";
 import { inspect } from "node:util";
 
 import { setLogger } from "../logger/index.js";
+import { agreeInNumber } from "../shared/agree-in-number.js";
 import { parseCommit } from "./parse-commit.js";
 import { setReleaseType } from "./set-release-type.js";
 
@@ -33,8 +34,7 @@ export const getReleaseType = (commits: string[], context: Context): ReleaseType
         logger.setDebugScope("git/get-release-type");
         logger.logDebug(inspect(releaseTypes));
       }
-      const pluralRule = new Intl.PluralRules("en-GB", { type: "cardinal" });
-      const commitWord = pluralRule.select(totalCommits) === "one" ? "commit" : "commits";
+      const commitWord = agreeInNumber(totalCommits, ["commit", "commits"]);
       const completeAnalysisSentence = `Analysis of ${totalCommits} ${commitWord} complete:`;
       switch (true) {
         case releaseTypes.has("major"):
