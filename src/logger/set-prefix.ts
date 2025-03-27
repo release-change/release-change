@@ -12,7 +12,7 @@ import { PACKAGE_NAME } from "../shared/constants.js";
  * @param loggerContext - The logger context (whether the debug mode is activated or not, what scope is concerned).
  * @return The prefix in the appropriate format.
  */
-export const setPrefix = (timestamp: number, loggerContext: LoggerContext) => {
+export const setPrefix = (timestamp: number, loggerContext: LoggerContext): string => {
   const { isDebug, scope } = loggerContext;
   if (isDebug && typeof scope === "string") {
     if (scope) return `\x1b[1;34m[debug] ${PACKAGE_NAME}:${scope}\x1b[0m`;
