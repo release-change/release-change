@@ -53,7 +53,7 @@ import semver from "semver";
  * @param currentVersion - The current version.
  * @param releaseType - The release type.
  * @param branchConfig - The target branch configuration in terms of releases.
- * The next version if there is a release and the increment is valid, `false` otherwise.
+ * @return The next version if there is a release and the increment is valid, `false` otherwise.
  */
 export const incrementVersion = (
   currentVersion: string,
