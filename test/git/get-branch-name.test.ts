@@ -5,6 +5,7 @@ import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
 
 describe("get branch name", () => {
   const logger = {
+    setDebugScope: vi.fn(),
     logDebug: vi.fn(),
     logInfo: vi.fn(),
     logError: vi.fn(),
