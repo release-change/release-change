@@ -1,7 +1,7 @@
 import type { CliOptions, Context, ContextBase } from "./cli.types.js";
 
-import { checkCiEnvironment } from "../ci/check-ci-environment.js";
 import { configureCiEnvironment } from "../ci/configure-ci-environment.js";
+import { isUsableCiEnvironment } from "../ci/is-usable-ci-environment.js";
 import { getReleaseType } from "../commit-analyser/get-release-type.js";
 import { debugConfig } from "../config/debug-config.js";
 import { getConfig } from "../config/index.js";
@@ -30,7 +30,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   logger.logInfo(`Running ${PACKAGE_NAME} version ${PACKAGE_VERSION}`);
   debugConfig(context);
   await checkRepository(logger);
-  if (checkCiEnvironment(context)) {
+  if (isUsableCiEnvironment(context)) {
     checkBranch(context);
     console.log("context.branch", context.branch);
     console.log("context.config.dryRun", context.config.dryRun);
