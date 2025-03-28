@@ -19,6 +19,10 @@ describe("parse commit", () => {
     cwd: "/fake/path",
     env: {},
     branch: "main",
+    ci: {
+      isCi: true,
+      isPullRequest: false
+    },
     config: expectedDefaultConfig
   };
   const description = commitDescription.trim();

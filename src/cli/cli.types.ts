@@ -1,3 +1,4 @@
+import type { CiConfig } from "../ci/ci.types.js";
 import type { Config } from "../config/config.types.js";
 import type { LastRelease, NextRelease } from "../release/release.types.js";
 
@@ -50,6 +51,7 @@ export interface ContextBase {
 export interface Context extends ContextBase {
   config: Config;
   branch: string | undefined;
+  ci: CiConfig;
   lastRelease?: LastRelease;
   nextRelease?: NextRelease;
 }

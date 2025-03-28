@@ -17,6 +17,10 @@ describe("get release type", () => {
     cwd: "/fake/path",
     env: {},
     branch: "main",
+    ci: {
+      isCi: true,
+      isPullRequest: false
+    },
     config: expectedDefaultConfig
   };
   const mockedCommitHead = `${commitId}\n${commitAuthor}\n${commitDate}`;
