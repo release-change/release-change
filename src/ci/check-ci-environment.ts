@@ -21,5 +21,6 @@ export const checkCiEnvironment = (context: Context): void => {
     logger.logWarn(
       "This run is triggered by a pull request; therefore, a new version will not be published."
     );
+    process.exit();
   }
 };
