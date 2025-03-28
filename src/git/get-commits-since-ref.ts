@@ -25,7 +25,7 @@ export const getCommitsSinceRef = (context: Context): string[] => {
     const totalCommits = commits.length;
     const commitWord = agreeInNumber(totalCommits, ["commit", "commits"]);
     if (config.debug) {
-      logger.setDebugScope("git/get-commits-since-ref");
+      logger.setDebugScope("git:get-commits-since-ref");
       logger.logDebug(`Command run: git ${args.join(" ")}`);
       logger.logDebug(inspect(commits, { depth: Number.POSITIVE_INFINITY }));
     }

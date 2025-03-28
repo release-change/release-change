@@ -31,7 +31,7 @@ export const getReleaseType = (commits: string[], context: Context): ReleaseType
         releaseTypes.add(setReleaseType(parsedCommit, context));
       }
       if (config.debug) {
-        logger.setDebugScope("git/get-release-type");
+        logger.setDebugScope("git:get-release-type");
         logger.logDebug(inspect(releaseTypes));
       }
       const commitWord = agreeInNumber(totalCommits, ["commit", "commits"]);
