@@ -62,7 +62,7 @@ describe("check CI environment", () => {
     );
   });
   it("should log a warning message if the CI environment is run within a pull request context", () => {
-    checkCiEnvironment(mockedContextWithCiOnPullRequestEvent);
+    expect(checkCiEnvironment(mockedContextWithCiOnPullRequestEvent)).toBe(false);
     expect(mockedLogger.logWarn).toHaveBeenCalledWith(
       "This run is triggered by a pull request; therefore, a new version will not be published."
     );
