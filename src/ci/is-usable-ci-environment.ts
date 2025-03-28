@@ -5,11 +5,13 @@ import { inspect } from "node:util";
 import { setLogger } from "../logger/index.js";
 
 /**
- * Checks the CI environment, checking whether the CI environment is known and whether a pull request triggers the run or not.
+ * Checks whether the CI environment is usable for the run to proceed.
+ * A usable CI environment does not provide any context when the run is triggered by a pull request.
+ * An unknown CI environment does not prevent the run to proceed, but activates the dry-run mode.
  * @param context - The context where the CLI is running.
- * @return `false` is the CI environment has a pull request context, `undefined` otherwise.
+ * @return `true` if the CI environment is usable, `false` otherwise.
  */
-export const checkCiEnvironment = (context: Context): undefined | false => {
+export const isUsableCiEnvironment = (context: Context): boolean => {
   const { config, ci } = context;
   const { isCi, isPullRequest } = ci;
   const logger = setLogger(config.debug);
@@ -17,16 +19,17 @@ export const checkCiEnvironment = (context: Context): undefined | false => {
     logger.setDebugScope("ci");
     logger.logDebug(inspect(ci, { depth: Number.POSITIVE_INFINITY }));
   }
-  if (!isCi) {
-    config.dryRun = true;
-    logger.logWarn(
-      "This run is not triggered in a known CI environment; therefore, the dry-run mode is enabled."
-    );
-  } else if (isPullRequest) {
+  if (isCi && isPullRequest) {
     logger.logWarn(
       "This run is triggered by a pull request; therefore, a new version will not be published."
     );
     return false;
   }
-  return;
+  if (!isCi) {
+    config.dryRun = true;
+    logger.logWarn(
+      "This run is not triggered in a known CI environment; therefore, the dry-run mode is enabled."
+    );
+  }
+  return true;
 };
