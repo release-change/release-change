@@ -20,20 +20,20 @@ export const checkAuthorisation = async (
     logger.logInfo("Skipping authorisation checking");
     return;
   }
-  try {
-    const gitCommandResult = await runCommand([
-      "push",
-      "--dry-run",
-      "--no-verify",
-      repositoryUrl,
-      branch
-    ]);
-    if (config.debug) {
-      logger.setDebugScope("check-authorisation");
-      logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
-    }
-  } catch (error) {
-    process.exitCode = 1;
-    throw error;
+  const gitCommandResult = await runCommand([
+    "push",
+    "--dry-run",
+    "--no-verify",
+    repositoryUrl,
+    branch
+  ]);
+  if (config.debug) {
+    logger.setDebugScope("check-authorisation");
+    logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
+  }
+  const { status, stderr } = gitCommandResult;
+  if (status) {
+    process.exitCode = status;
+    new Error(stderr);
   }
 };

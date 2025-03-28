@@ -28,6 +28,6 @@ export const checkPushPermissions = async (
     logger.logError("Not allowed to push to the Git repository");
     if (error instanceof Error) logger.logError(error.message);
     else logger.logError(`Unknown error: ${error}`);
-    process.exitCode = 1;
+    process.exit(process.exitCode ?? 1);
   }
 };

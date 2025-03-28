@@ -72,10 +72,14 @@ describe("check permissions for push", () => {
     expect(mockedLogger.logSuccess).not.toHaveBeenCalled();
   });
   it("should log an error message when an error is thrown", async () => {
-    vi.mocked(checkAuthorisationModule.checkAuthorisation).mockRejectedValue(
-      new Error("Mocked error")
-    );
-    await checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch);
-    expect(mockedLogger.logError).toHaveBeenCalled();
+    vi.spyOn(process, "exit").mockImplementation(code => {
+      throw new Error(`process.exit called with code ${code}`);
+    });
+    vi.mocked(checkAuthorisationModule.checkAuthorisation).mockRejectedValue(new Error("Error"));
+    await expect(
+      checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch)
+    ).rejects.toThrow("process.exit called with code 1");
+    expect(mockedLogger.logError).toHaveBeenCalledWith("Not allowed to push to the Git repository");
+    expect(process.exit).toHaveBeenCalledWith(1);
   });
 });

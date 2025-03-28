@@ -16,6 +16,10 @@ export const runCommandSync = (
 ): GitCommandResult => {
   const command = spawnSync("git", args, options);
   const { status, stdout, stderr } = command;
+  if (status) {
+    process.exitCode = status;
+    throw new Error(stderr);
+  }
   return {
     status,
     stdout,
