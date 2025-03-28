@@ -25,6 +25,10 @@ describe("get all tags", () => {
     cwd: "/fake/path",
     env: {},
     branch: "main",
+    ci: {
+      isCi: true,
+      isPullRequest: false
+    },
     config: mockedConfig
   } as Context;
   const mockedLogger: Logger = {

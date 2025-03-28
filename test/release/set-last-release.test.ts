@@ -43,6 +43,10 @@ describe("set last release", () => {
     cwd: "/fake/path",
     env: {},
     config: mockedConfig,
+    ci: {
+      isCi: true,
+      isPullRequest: false
+    },
     branch: "main"
   } as Context;
   const mockedContextWithInelegibleBranch = { ...mockedContext, branch: "unmatched-branch" };

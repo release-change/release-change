@@ -27,6 +27,10 @@ describe("get commits since the previous release or the beginning", () => {
     cwd: "/fake/path",
     env: {},
     branch: "main",
+    ci: {
+      isCi: true,
+      isPullRequest: false
+    },
     config: mockedConfig,
     lastRelease: {
       gitTag: null,

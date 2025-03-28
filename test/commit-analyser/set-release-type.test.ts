@@ -377,6 +377,10 @@ describe("set the release type of the commit", () => {
     cwd: "/fake/path",
     env: {},
     branch: "main",
+    ci: {
+      isCi: true,
+      isPullRequest: false
+    },
     config: expectedDefaultConfig
   };
   const mockedLogger: Logger = {

@@ -46,6 +46,10 @@ describe("get latest valid Git tag", () => {
     cwd: "/fake/path",
     env: {},
     config: mockedConfig,
+    ci: {
+      isCi: true,
+      isPullRequest: false
+    },
     branch: "main"
   } as Context;
   const mockedContextWithInvalidConfig = {

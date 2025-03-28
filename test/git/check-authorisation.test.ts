@@ -24,6 +24,10 @@ describe("check authorisation", () => {
     cwd: "/fake/path",
     env: {},
     branch: "branch-name",
+    ci: {
+      isCi: true,
+      isPullRequest: false
+    },
     config: mockedConfig
   } as Context;
   const mockedContextWithEligibleBranch = { ...mockedContext, branch: "main" };

@@ -14,6 +14,10 @@ describe("debug config", () => {
     cwd: "/fake/path",
     env: {},
     branch: "branch-name",
+    ci: {
+      isCi: true,
+      isPullRequest: false
+    },
     config: expectedDefaultConfig
   };
   const mockedLogger: Logger = {

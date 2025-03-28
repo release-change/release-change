@@ -16,6 +16,10 @@ describe("check branch", () => {
   const mockedContext: Context = {
     ...mockedBasicContext,
     branch: undefined,
+    ci: {
+      isCi: true,
+      isPullRequest: false
+    },
     config: mockedConfig
   };
   const mockedContextWithNonEligibleBranch = { ...mockedContext, branch: "non-eligible-branch" };
