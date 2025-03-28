@@ -62,14 +62,10 @@ describe("check CI environment", () => {
     );
   });
   it("should log a warning message if the CI environment is run within a pull request context", () => {
-    const exitSpy = vi
-      .spyOn(process, "exit")
-      .mockImplementation((code?: string | number | null) => code as never);
-    checkCiEnvironment(mockedContextWithCiOnPullRequestEvent);
+    expect(checkCiEnvironment(mockedContextWithCiOnPullRequestEvent)).toBe(false);
     expect(mockedLogger.logWarn).toHaveBeenCalledWith(
       "This run is triggered by a pull request; therefore, a new version will not be published."
     );
-    expect(exitSpy).toHaveBeenCalled();
   });
   it("should not log any warning messages if the CI environment is run outside a pull request context", () => {
     checkCiEnvironment(mockedContextWithCiOnPushEvent);

@@ -4,7 +4,7 @@ import { inspect } from "node:util";
 
 import { setLogger } from "../logger/index.js";
 
-export const checkCiEnvironment = (context: Context): void => {
+export const checkCiEnvironment = (context: Context): undefined | false => {
   const { config, ci } = context;
   const { isCi, isPullRequest } = ci;
   const logger = setLogger(config.debug);
@@ -21,6 +21,7 @@ export const checkCiEnvironment = (context: Context): void => {
     logger.logWarn(
       "This run is triggered by a pull request; therefore, a new version will not be published."
     );
-    process.exit();
+    return false;
   }
+  return;
 };

@@ -30,16 +30,17 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   logger.logInfo(`Running ${PACKAGE_NAME} version ${PACKAGE_VERSION}`);
   debugConfig(context);
   await checkRepository(logger);
-  checkCiEnvironment(context);
-  checkBranch(context);
-  console.log("context.branch", context.branch);
-  console.log("context.config.dryRun", context.config.dryRun);
-  await checkPushPermissions(context.config.repositoryUrl, context);
-  setLastRelease(context);
-  const commits = getCommitsSinceRef(context);
-  console.log("lastRelease", context.lastRelease);
-  const releaseType = getReleaseType(commits, context);
-  setNextRelease(releaseType, context);
-  console.log("nextRelease", context.nextRelease);
+  if (checkCiEnvironment(context)) {
+    checkBranch(context);
+    console.log("context.branch", context.branch);
+    console.log("context.config.dryRun", context.config.dryRun);
+    await checkPushPermissions(context.config.repositoryUrl, context);
+    setLastRelease(context);
+    const commits = getCommitsSinceRef(context);
+    console.log("lastRelease", context.lastRelease);
+    const releaseType = getReleaseType(commits, context);
+    setNextRelease(releaseType, context);
+    console.log("nextRelease", context.nextRelease);
+  }
   console.log("exit", process.exitCode, process.exitCode ?? 0);
 };
