@@ -4,6 +4,11 @@ import { inspect } from "node:util";
 
 import { setLogger } from "../logger/index.js";
 
+/**
+ * Checks the CI environment, checking whether the CI environment is known and whether a pull request triggers the run or not.
+ * @param context - The context where the CLI is running.
+ * @return `false` is the CI environment has a pull request context, `undefined` otherwise.
+ */
 export const checkCiEnvironment = (context: Context): undefined | false => {
   const { config, ci } = context;
   const { isCi, isPullRequest } = ci;
