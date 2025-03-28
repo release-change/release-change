@@ -19,7 +19,7 @@ export const getAllTags = (context: Context): string[] => {
       { cwd, encoding: "utf8" }
     );
     if (config.debug) {
-      logger.setDebugScope("git/get-all-tags");
+      logger.setDebugScope("git:get-all-tags");
       logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
     }
     const { status, stdout, stderr } = gitCommandResult;
