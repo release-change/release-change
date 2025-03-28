@@ -17,10 +17,7 @@ export const getCommitsSinceRef = (context: Context): string[] => {
     const infoMessage = `Retrieving ${args.length > 1 ? `commits since ${gitTag}` : "all commits"}.`;
     logger.logInfo(infoMessage);
     const gitCommandResult = runCommandSync(args, { encoding: "utf8" });
-    const { status, stdout, stderr } = gitCommandResult;
-    if (status || stderr) {
-      throw new Error(stderr);
-    }
+    const { stdout } = gitCommandResult;
     const commits = stdout ? stdout.split(COMMIT_SEPARATOR) : [];
     const totalCommits = commits.length;
     const commitWord = agreeInNumber(totalCommits, ["commit", "commits"]);
@@ -34,7 +31,6 @@ export const getCommitsSinceRef = (context: Context): string[] => {
   } catch (error) {
     if (error instanceof Error) logger.logError(error.message);
     else logger.logError(`Unknown error: ${error}`);
-    process.exitCode = 1;
-    throw error;
+    process.exit(process.exitCode);
   }
 };

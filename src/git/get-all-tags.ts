@@ -22,15 +22,11 @@ export const getAllTags = (context: Context): string[] => {
       logger.setDebugScope("git:get-all-tags");
       logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
     }
-    const { status, stdout, stderr } = gitCommandResult;
-    if (status || stderr) {
-      throw new Error(stderr);
-    }
+    const { stdout } = gitCommandResult;
     return stdout ? stdout.split("\n") : [];
   } catch (error) {
     if (error instanceof Error) logger.logError(error.message);
     else logger.logError(`Unknown error: ${error}`);
-    process.exitCode = 1;
-    throw error;
+    process.exit(process.exitCode);
   }
 };
