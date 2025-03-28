@@ -34,6 +34,6 @@ export const checkAuthorisation = async (
   const { status, stderr } = gitCommandResult;
   if (status) {
     process.exitCode = status;
-    new Error(stderr);
+    throw new Error(stderr);
   }
 };
