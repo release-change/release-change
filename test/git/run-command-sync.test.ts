@@ -2,7 +2,7 @@ import type { SpawnSyncOptionsWithStringEncoding } from "node:child_process";
 
 import { spawnSync } from "node:child_process";
 
-import { afterEach, beforeEach, describe, expectTypeOf, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from "vitest";
 import { runCommandSync } from "../../src/git/run-command-sync.js";
 
 describe("run git command", () => {
@@ -21,6 +21,16 @@ describe("run git command", () => {
     vi.clearAllMocks();
   });
 
+  it("should throw an error if the command return a non-zero status", () => {
+    mockSpawnSync.mockImplementation((_command, _args, _options) => {
+      return {
+        status: 1,
+        stdout: "Stdout",
+        stderr: "Stderr"
+      };
+    });
+    expect(runCommandSync).toThrowError();
+  });
   it("should return an object with status, stdout and stderr properties and correct types", () => {
     mockSpawnSync.mockImplementation((_command, _args, _options) => {
       return {

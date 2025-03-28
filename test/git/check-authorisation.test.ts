@@ -4,6 +4,7 @@ import type { Logger } from "../../src/logger/logger.types.js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { checkAuthorisation } from "../../src/git/check-authorisation.js";
+import { runCommand } from "../../src/git/run-command.js";
 import * as setLoggerModule from "../../src/logger/set-logger.js";
 
 describe("check authorisation", () => {
@@ -55,6 +56,13 @@ describe("check authorisation", () => {
     expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedSkipLogMessage);
   });
   it("should not catch any errors when the Git command does not fail", async () => {
+    vi.mocked(runCommand).mockReturnValue(
+      Promise.resolve({
+        status: 0,
+        stdout: "",
+        stderr: ""
+      })
+    );
     await checkAuthorisation(mockedRepositoryUrl, mockedContextWithEligibleBranch);
     expect(mockedLogger.logError).not.toHaveBeenCalled();
   });

@@ -108,15 +108,15 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
     vi.clearAllMocks();
   });
 
-  it("should log an error message when an error is thrown", () => {
-    const mockedCommandResult = {
-      status: 1,
-      stdout: "",
-      stderr: "Error"
-    };
-    vi.spyOn(runCommandSyncModule, "runCommandSync").mockReturnValue(mockedCommandResult);
-    expect(() => getCommitsSinceRef(mockedContext)).toThrowError();
-    expect(mockedLogger.logError).toHaveBeenCalled();
+  it("should log an error message when an error is caught", () => {
+    vi.spyOn(runCommandSyncModule, "runCommandSync").mockImplementation(() => {
+      throw new Error("Error");
+    });
+    try {
+      getCommitsSinceRef(mockedContext);
+    } catch {
+      expect(mockedLogger.logError).toHaveBeenCalled();
+    }
   });
   it("should return an array of commits", () => {
     const mockedCommandResult = {

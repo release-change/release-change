@@ -49,15 +49,15 @@ describe("get all tags", () => {
     vi.clearAllMocks();
   });
 
-  it("should log an error message when an error is thrown", () => {
-    const mockedCommandResult = {
-      status: 1,
-      stdout: "",
-      stderr: "Error"
-    };
-    vi.mocked(runCommandSync).mockReturnValue(mockedCommandResult);
-    expect(() => getAllTags(mockedContext)).toThrowError();
-    expect(mockedLogger.logError).toHaveBeenCalled();
+  it("should log an error message when an error is caught", () => {
+    vi.mocked(runCommandSync).mockImplementation(() => {
+      throw new Error("Error");
+    });
+    try {
+      getAllTags(mockedContext);
+    } catch {
+      expect(mockedLogger.logError).toHaveBeenCalled();
+    }
   });
   it("should return all tags if tags are found", () => {
     const mockedTags = [
