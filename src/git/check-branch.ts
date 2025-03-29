@@ -23,12 +23,12 @@ export const checkBranch = (context: Context): undefined | false => {
     logger.logDebug(`Branch name: ${branch}`);
   }
   if (!branch || !branches.includes(branch)) {
-    const runTriggeredOnWrongBranchText = `This run is triggered on the branch ${branch}, while ${PACKAGE_NAME} is configured to only publish from ${branches.join(", ")}; therefore, a new version will not be published`;
+    const runTriggeredOnWrongBranchText = `This run is triggered on the branch ${branch}, while ${PACKAGE_NAME} is configured to only publish from ${branches.join(", ")}; therefore, a new version will not be published.`;
     logger.logWarn(runTriggeredOnWrongBranchText);
     context.config.dryRun = true;
     return false;
   }
   const runAutomatedReleaseText = `Run automated release from branch ${branch} on repository ${config.repositoryUrl}`;
-  if (config.dryRun) logger.logWarn(`${runAutomatedReleaseText} in dry run mode`);
-  else logger.logSuccess(runAutomatedReleaseText);
+  if (config.dryRun) logger.logWarn(`${runAutomatedReleaseText} in dry-run mode.`);
+  else logger.logSuccess(`${runAutomatedReleaseText}.`);
 };

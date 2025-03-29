@@ -11,7 +11,7 @@ export const checkRepository = async (logger: Logger): Promise<string | number |
   const gitCommandResult = await runCommand(["rev-parse", "--git-dir"]);
   const { status } = gitCommandResult;
   if (status) {
-    logger.logError("The current directory is not a Git repository");
+    logger.logError("The current directory is not a Git repository.");
     process.exit(status);
   }
   return process.exitCode;

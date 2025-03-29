@@ -17,7 +17,7 @@ export const checkAuthorisation = async (
   const { branch, config } = context;
   const logger = setLogger(config.debug);
   if (!branch || !config.branches.includes(branch)) {
-    logger.logInfo("Skipping authorisation checking");
+    logger.logInfo("Skipping authorisation checking.");
     return;
   }
   const gitCommandResult = await runCommand([
