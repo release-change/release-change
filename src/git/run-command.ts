@@ -8,7 +8,7 @@ import { spawn } from "node:child_process";
  * @return The Git command result with the exit code, the standard output and the standard error.
  */
 export const runCommand = async (args: readonly string[]): Promise<GitCommandResult> => {
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const gitCommandResult: GitCommandResult = {
       status: null,
       stdout: "",
@@ -23,11 +23,12 @@ export const runCommand = async (args: readonly string[]): Promise<GitCommandRes
     });
     command.on("close", code => {
       gitCommandResult.status = code;
+      process.exitCode = Number(code);
       resolve(gitCommandResult);
     });
     command.on("error", error => {
-      gitCommandResult.stderr = error.message;
-      resolve(gitCommandResult);
+      process.exitCode = Number(command.exitCode);
+      reject(new Error(error.message));
     });
   });
 };
