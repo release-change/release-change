@@ -2,7 +2,7 @@ import process from "node:process";
 
 import semver from "semver";
 
-import { cli } from "../cli/index.js";
+import { cli } from "../cli/cli.js";
 import { runCommandSync } from "../git/run-command-sync.js";
 import { isGitVersionCompatible } from "./is-git-version-compatible.js";
 import { isNodeVersionCompatible } from "./is-node-version-compatible.js";

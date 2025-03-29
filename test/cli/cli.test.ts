@@ -2,7 +2,7 @@ import process from "node:process";
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { cli } from "../../src/cli/index.js";
+import { cli } from "../../src/cli/cli.js";
 import { run } from "../../src/cli/run.js";
 
 import { PACKAGE_NAME } from "../../src/shared/constants.js";
