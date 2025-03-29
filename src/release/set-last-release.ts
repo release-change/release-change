@@ -4,8 +4,10 @@ import type { LastRelease } from "./release.types.js";
 import semver from "semver";
 
 import { getLatestValidTag } from "../git/get-latest-valid-tag.js";
+import { checkErrorType } from "../logger/check-error-type.js";
 import { setLogger } from "../logger/index.js";
 import { getRootPackageVersion } from "./get-root-package-version.js";
+import { getVersionFromTag } from "./get-version-from-tag.js";
 
 /**
  * Sets the last release from the latest valid Git tag or the root package version and adds it to the context where the CLI is running.
@@ -22,14 +24,12 @@ export const setLastRelease = (context: Context): void => {
     };
     const latestValidGitTag = getLatestValidTag(context);
     if (latestValidGitTag) {
-      const version = semver.valid(latestValidGitTag);
-      if (version) {
-        logger.logInfo(
-          `Found Git tag ${latestValidGitTag} associated with version ${version} on branch ${branch}.`
-        );
-        lastRelease.gitTag = latestValidGitTag;
-        lastRelease.version = version;
-      } else throw new Error("Failed to extract the version from the latest Git tag.");
+      const version = getVersionFromTag(latestValidGitTag);
+      logger.logInfo(
+        `Found Git tag ${latestValidGitTag} associated with version ${version} on branch ${branch}.`
+      );
+      lastRelease.gitTag = latestValidGitTag;
+      lastRelease.version = version;
     } else {
       logger.logInfo(`No Git tag version found on branch ${branch}.`);
       const rootPackageVersion = semver.valid(getRootPackageVersion(cwd));
@@ -40,8 +40,7 @@ export const setLastRelease = (context: Context): void => {
     }
     context.lastRelease = lastRelease;
   } catch (error) {
-    if (error instanceof Error) logger.logError(error.message);
-    else logger.logError(`Unknown error: ${error}`);
+    logger.logError(checkErrorType(error));
     process.exitCode = 1;
   }
 };

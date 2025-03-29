@@ -1,5 +1,6 @@
 import type { Logger } from "../logger/logger.types.js";
 
+import { checkErrorType } from "../logger/check-error-type.js";
 import { runCommandSync } from "./run-command-sync.js";
 
 /**
@@ -23,11 +24,7 @@ export const getBranchName = (logger: Logger): string | undefined => {
     }
     return headRef;
   } catch (error) {
-    const errorOutput =
-      error instanceof Error
-        ? `An error occurred when running the Git command: ${error.message}`
-        : `An unknown error occurred when running the Git command: ${error}`;
-    logger.logError(errorOutput);
+    logger.logError(checkErrorType(error));
     return undefined;
   }
 };

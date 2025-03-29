@@ -53,13 +53,13 @@ import semver from "semver";
  * @param currentVersion - The current version.
  * @param releaseType - The release type.
  * @param branchConfig - The target branch configuration in terms of releases.
- * @return The next version if there is a release and the increment is valid, `false` otherwise.
+ * @return The next version if there is a release and the increment is valid.
  */
 export const incrementVersion = (
   currentVersion: string,
   releaseType: ReleaseType,
   branchConfig: BranchConfig
-): string | false => {
+): string => {
   if (releaseType) {
     const { prerelease, prereleaseIdentifier } = branchConfig;
     const currentVersionPrereleaseComponents = semver.prerelease(currentVersion);
@@ -77,7 +77,8 @@ export const incrementVersion = (
         : isCurrentVersionPrerelease
           ? semver.inc(currentVersion, "patch")
           : semver.inc(currentVersion, releaseType);
-    return nextVersion ? nextVersion : false;
+    if (nextVersion) return nextVersion;
+    throw new Error(`Failed to increment version from ${currentVersion}: no next version given.`);
   }
-  return false;
+  throw new Error(`Failed to increment version from ${currentVersion}: no release type retrieved.`);
 };

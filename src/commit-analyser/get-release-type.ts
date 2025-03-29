@@ -3,6 +3,7 @@ import type { ReleaseType } from "./commit-analyser.types.js";
 
 import { inspect } from "node:util";
 
+import { checkErrorType } from "../logger/check-error-type.js";
 import { setLogger } from "../logger/index.js";
 import { agreeInNumber } from "../shared/agree-in-number.js";
 import { parseCommit } from "./parse-commit.js";
@@ -54,8 +55,7 @@ export const getReleaseType = (commits: string[], context: Context): ReleaseType
     logger.logWarn("No commits to analyse: no release.");
     return null;
   } catch (error) {
-    if (error instanceof Error) logger.logError(error.message);
-    else logger.logError(`Unknwon error: ${error}`);
+    logger.logError(checkErrorType(error));
     process.exitCode = 1;
     return null;
   }

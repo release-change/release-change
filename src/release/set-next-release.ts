@@ -1,6 +1,7 @@
 import type { Context } from "../cli/cli.types.js";
 import type { ReleaseType } from "../commit-analyser/commit-analyser.types.js";
 
+import { checkErrorType } from "../logger/check-error-type.js";
 import { setLogger } from "../logger/index.js";
 import { incrementVersion } from "./increment-version.js";
 
@@ -19,18 +20,15 @@ export const setNextRelease = (releaseType: ReleaseType, context: Context): void
   }
   try {
     const branchConfig = config.releaseType[branch];
-    if (branchConfig) {
+    if (branchConfig && releaseType) {
       const version = incrementVersion(lastRelease.version, releaseType, branchConfig);
-      if (version) {
-        context.nextRelease = {
-          gitTag: `v${version}`,
-          version
-        };
-      } else new Error("Failed to increment version.");
-    } else new Error(`Failed to retrieve release type config for branch ${branch}.`);
+      context.nextRelease = {
+        gitTag: `v${version}`,
+        version
+      };
+    }
   } catch (error) {
-    if (error instanceof Error) logger.logError(error.message);
-    else logger.logError(`Unknown error: ${error}`);
+    logger.logError(checkErrorType(error));
     process.exitCode = 1;
   }
 };
