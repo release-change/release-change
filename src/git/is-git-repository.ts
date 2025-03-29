@@ -1,3 +1,5 @@
+import { checkErrorType } from "../logger/check-error-type.js";
+import { setLogger } from "../logger/index.js";
 import { runCommand } from "./run-command.js";
 
 /**
@@ -5,6 +7,11 @@ import { runCommand } from "./run-command.js";
  * @return `true` if it is a Git repository, `false` otherwise.
  */
 export const isGitRepository = async (): Promise<boolean> => {
-  const gitCommandResult = await runCommand(["rev-parse", "--git-dir"]);
-  return !gitCommandResult.status;
+  try {
+    const gitCommandResult = await runCommand(["rev-parse", "--git-dir"]);
+    return !gitCommandResult.status;
+  } catch (error) {
+    setLogger(false).logError(checkErrorType(error));
+    process.exit(process.exitCode);
+  }
 };
