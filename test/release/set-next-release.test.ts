@@ -405,6 +405,13 @@ describe("set next release", () => {
     setNextRelease("major", mockedContextWithInelegibleBranch);
     expect(incrementVersion).not.toHaveBeenCalled();
   });
+  it("should not call `incrementVersion()` if the `releaseType` argument is set to `null`", () => {
+    setNextRelease(null, { ...mockedContext, lastRelease: { gitTag: null, version: "0.0.0" } });
+    expect(incrementVersion).not.toHaveBeenCalled();
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith(
+      "There are no relevant changes; therefore, no new version is released."
+    );
+  });
   it("should log a warning message if no last release is found", () => {
     setNextRelease("major", { ...mockedContext, branch: "main" });
     expect(mockedLogger.logWarn).toHaveBeenCalledWith(
@@ -433,11 +440,17 @@ describe("set next release", () => {
                   };
                   const context = { ...mockedContext, branch: key, lastRelease };
                   const expectedContext = { ...context, nextRelease: expectedNextRelease };
+                  const expectedPreviousReleaseInfoMessage = lastRelease.gitTag
+                    ? `The previous release is ${lastRelease.version}`
+                    : "There is no previous release";
                   vi.spyOn(incrementVersionModule, "incrementVersion").mockReturnValue(
                     expectedVersion
                   );
                   setNextRelease(releaseType as ReleaseType, context);
                   assert.deepEqual(context, expectedContext);
+                  expect(mockedLogger.logInfo).toHaveBeenCalledWith(
+                    `${expectedPreviousReleaseInfoMessage} and the next release version is ${expectedVersion}.`
+                  );
                 });
               }
             }
