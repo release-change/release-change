@@ -51,7 +51,7 @@ describe("check authorisation", () => {
   });
 
   it("should skip authorisation checking when the branch is not one of those from which the CLI is configured to publish", async () => {
-    const expectedSkipLogMessage = "Skipping authorisation checking";
+    const expectedSkipLogMessage = "Skipping authorisation checking.";
     await checkAuthorisation(mockedRepositoryUrl, mockedContext);
     expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedSkipLogMessage);
   });

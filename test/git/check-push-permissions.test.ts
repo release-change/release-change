@@ -79,7 +79,9 @@ describe("check permissions for push", () => {
     await expect(
       checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch)
     ).rejects.toThrow("process.exit called with code 1");
-    expect(mockedLogger.logError).toHaveBeenCalledWith("Not allowed to push to the Git repository");
+    expect(mockedLogger.logError).toHaveBeenCalledWith(
+      "Not allowed to push to the Git repository."
+    );
     expect(process.exit).toHaveBeenCalledWith(1);
   });
 });

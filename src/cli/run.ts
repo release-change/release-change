@@ -27,7 +27,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
     config,
     ci
   };
-  logger.logInfo(`Running ${PACKAGE_NAME} version ${PACKAGE_VERSION}`);
+  logger.logInfo(`Running ${PACKAGE_NAME} version ${PACKAGE_VERSION}…`);
   debugConfig(context);
   await checkRepository(logger);
   if (isUsableCiEnvironment(context)) {

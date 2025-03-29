@@ -20,7 +20,7 @@ export const setReleaseType = (commit: Commit, context: Context): ReleaseType =>
   const { description, footer } = commit;
   const { config } = context;
   const logger = setLogger(config.debug);
-  logger.logInfo(`Analysing commit: ${description}`);
+  logger.logInfo(`Analysing commit “${description}”…`);
   let releaseType: ReleaseType;
   let releaseTypeInfoMessage: string;
   if (footer.some(line => line.match(BREAKING_CHANGE)) || description.match(COMMIT_PREFIX_MAJOR)) {

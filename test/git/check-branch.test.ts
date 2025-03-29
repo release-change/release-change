@@ -39,10 +39,10 @@ describe("check branch", () => {
   it('should return `undefined` if the branch name is `"main"`', () => {
     expect(checkBranch(mockedContextWithMainBranch)).toBe(undefined);
   });
-  it("should activate dry run mode if the branch name is undefined", async () => {
+  it("should activate dry-run mode if the branch name is undefined", async () => {
     expect(mockedContext.config.dryRun).toBe(true);
   });
-  it('should activate dry run mode if the branch name is `"non-eligible-branch"`', () => {
+  it('should activate dry-run mode if the branch name is `"non-eligible-branch"`', () => {
     expect(mockedContextWithNonEligibleBranch.config.dryRun).toBe(true);
   });
 });
