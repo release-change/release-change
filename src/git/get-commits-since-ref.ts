@@ -30,6 +30,7 @@ export const getCommitsSinceRef = (context: Context): string[] => {
     logger.logInfo(`Found ${totalCommits} ${commitWord}.`);
     return commits;
   } catch (error) {
+    logger.logError("Failed to find commits.");
     logger.logError(checkErrorType(error));
     process.exit(process.exitCode);
   }
