@@ -362,8 +362,11 @@ describe("increment version", () => {
     }
   ];
 
-  it("should return false if the release type is set to `null`", () => {
-    expect(incrementVersion("0.0.0", null, {})).toBe(false);
+  it("should throw an error if the release type is set to `null`", () => {
+    expect(() => incrementVersion("0.0.0", null, {})).toThrowError();
+  });
+  it("should throw an error if the current version is invalid", () => {
+    expect(() => incrementVersion("0", "patch", {})).toThrowError();
   });
 
   describe.each(mockedVersions)(
