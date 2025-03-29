@@ -1,5 +1,6 @@
 import type { Context } from "../cli/cli.types.js";
 
+import { checkErrorType } from "../logger/check-error-type.js";
 import { setLogger } from "../logger/index.js";
 import { checkAuthorisation } from "./check-authorisation.js";
 import { isBranchUpToDate } from "./is-branch-up-to-date.js";
@@ -26,8 +27,7 @@ export const checkPushPermissions = async (
     }
   } catch (error) {
     logger.logError("Not allowed to push to the Git repository.");
-    if (error instanceof Error) logger.logError(error.message);
-    else logger.logError(`Unknown error: ${error}`);
+    logger.logError(checkErrorType(error));
     process.exit(process.exitCode ?? 1);
   }
 };

@@ -1,6 +1,7 @@
 import type { Context } from "../cli/cli.types.js";
 import type { ReleaseType } from "../commit-analyser/commit-analyser.types.js";
 
+import { checkErrorType } from "../logger/check-error-type.js";
 import { setLogger } from "../logger/index.js";
 import { incrementVersion } from "./increment-version.js";
 
@@ -29,8 +30,7 @@ export const setNextRelease = (releaseType: ReleaseType, context: Context): void
       } else new Error("Failed to increment version.");
     } else new Error(`Failed to retrieve release type config for branch ${branch}.`);
   } catch (error) {
-    if (error instanceof Error) logger.logError(error.message);
-    else logger.logError(`Unknown error: ${error}`);
+    logger.logError(checkErrorType(error));
     process.exitCode = 1;
   }
 };

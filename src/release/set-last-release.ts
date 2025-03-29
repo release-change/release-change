@@ -4,6 +4,7 @@ import type { LastRelease } from "./release.types.js";
 import semver from "semver";
 
 import { getLatestValidTag } from "../git/get-latest-valid-tag.js";
+import { checkErrorType } from "../logger/check-error-type.js";
 import { setLogger } from "../logger/index.js";
 import { getRootPackageVersion } from "./get-root-package-version.js";
 
@@ -40,8 +41,7 @@ export const setLastRelease = (context: Context): void => {
     }
     context.lastRelease = lastRelease;
   } catch (error) {
-    if (error instanceof Error) logger.logError(error.message);
-    else logger.logError(`Unknown error: ${error}`);
+    logger.logError(checkErrorType(error));
     process.exitCode = 1;
   }
 };

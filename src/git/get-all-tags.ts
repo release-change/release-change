@@ -2,6 +2,7 @@ import type { Context } from "../cli/cli.types.js";
 
 import { inspect } from "node:util";
 
+import { checkErrorType } from "../logger/check-error-type.js";
 import { setLogger } from "../logger/index.js";
 import { runCommandSync } from "./run-command-sync.js";
 
@@ -25,8 +26,7 @@ export const getAllTags = (context: Context): string[] => {
     const { stdout } = gitCommandResult;
     return stdout ? stdout.split("\n") : [];
   } catch (error) {
-    if (error instanceof Error) logger.logError(error.message);
-    else logger.logError(`Unknown error: ${error}`);
+    logger.logError(checkErrorType(error));
     process.exit(process.exitCode);
   }
 };
