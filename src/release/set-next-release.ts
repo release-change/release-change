@@ -21,12 +21,17 @@ export const setNextRelease = (releaseType: ReleaseType, context: Context): void
   try {
     const branchConfig = config.releaseType[branch];
     if (branchConfig && releaseType) {
-      const version = incrementVersion(lastRelease.version, releaseType, branchConfig);
+      const currentVersion = lastRelease.version;
+      const version = incrementVersion(currentVersion, releaseType, branchConfig);
       context.nextRelease = {
         gitTag: `v${version}`,
         version
       };
-    }
+      const previousReleaseInfoMessage = lastRelease.gitTag
+        ? `The previous release is ${currentVersion}`
+        : "There is no previous release";
+      logger.logInfo(`${previousReleaseInfoMessage} and the next release version is ${version}.`);
+    } else logger.logInfo("There are no relevant changes; therefore, no new version is released.");
   } catch (error) {
     logger.logError(checkErrorType(error));
     process.exitCode = 1;
