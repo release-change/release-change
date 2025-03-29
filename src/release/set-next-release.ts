@@ -20,15 +20,13 @@ export const setNextRelease = (releaseType: ReleaseType, context: Context): void
   }
   try {
     const branchConfig = config.releaseType[branch];
-    if (branchConfig) {
+    if (branchConfig && releaseType) {
       const version = incrementVersion(lastRelease.version, releaseType, branchConfig);
-      if (version) {
-        context.nextRelease = {
-          gitTag: `v${version}`,
-          version
-        };
-      } else new Error("Failed to increment version.");
-    } else new Error(`Failed to retrieve release type config for branch ${branch}.`);
+      context.nextRelease = {
+        gitTag: `v${version}`,
+        version
+      };
+    }
   } catch (error) {
     logger.logError(checkErrorType(error));
     process.exitCode = 1;
