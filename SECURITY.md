@@ -32,6 +32,10 @@ Also note the following recommendations to complete the requirements above:
 
 If the issue is confirmed, a patch will be released as soon as possible, depending on complexity.
 
+### Third-party modules
+
+Security vulnerabilities in third-party modules must be reported to the person or team maintaining the module.
+
 ## Other reporting platforms and bounties
 
 release-change does not support other reporting platforms: all security vulnerabilities must be made via GitHub Advisory system.
