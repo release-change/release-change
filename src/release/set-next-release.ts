@@ -1,6 +1,8 @@
 import type { Context } from "../cli/cli.types.js";
 import type { ReleaseType } from "../commit-analyser/commit-analyser.types.js";
 
+import { inspect } from "node:util";
+
 import { checkErrorType } from "../logger/check-error-type.js";
 import { setLogger } from "../logger/index.js";
 import { incrementVersion } from "./increment-version.js";
@@ -32,6 +34,10 @@ export const setNextRelease = (releaseType: ReleaseType, context: Context): void
         : "There is no previous release";
       logger.logInfo(`${previousReleaseInfoMessage} and the next release version is ${version}.`);
     } else logger.logInfo("There are no relevant changes; therefore, no new version is released.");
+    if (config.debug) {
+      logger.setDebugScope("release:set-next-release");
+      logger.logDebug(inspect(context.nextRelease, { depth: Number.POSITIVE_INFINITY }));
+    }
   } catch (error) {
     logger.logError(checkErrorType(error));
     process.exitCode = 1;

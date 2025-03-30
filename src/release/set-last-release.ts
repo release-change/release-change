@@ -1,6 +1,8 @@
 import type { Context } from "../cli/cli.types.js";
 import type { LastRelease } from "./release.types.js";
 
+import { inspect } from "node:util";
+
 import semver from "semver";
 
 import { getLatestValidTag } from "../git/get-latest-valid-tag.js";
@@ -39,6 +41,10 @@ export const setLastRelease = (context: Context): void => {
       } else logger.logInfo("No package version found.");
     }
     context.lastRelease = lastRelease;
+    if (config.debug) {
+      logger.setDebugScope("release:set-last-release");
+      logger.logDebug(inspect(context.lastRelease, { depth: Number.POSITIVE_INFINITY }));
+    }
   } catch (error) {
     logger.logError(checkErrorType(error));
     process.exitCode = 1;
