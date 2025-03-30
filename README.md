@@ -22,10 +22,6 @@ You can also install it using `npm`:
 ```
 npm install --save-dev release-change
 ```
-or using `yarn` if you prefer:
-```
-yarn add --dev release-change
-```
 
 ## Get help
 
