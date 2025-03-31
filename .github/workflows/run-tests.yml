@@ -18,10 +18,10 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
     steps:
-      - name: Harden runner
-        uses: ./.github/actions/harden-runner
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Harden runner
+        uses: ./.github/actions/harden-runner
       - name: Install pnpm and setup Node.js
         uses: ./.github/actions/pnpm-node
       - name: Install TypeScript
