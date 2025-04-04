@@ -4,7 +4,7 @@ import type { ReleaseType } from "./commit-analyser.types.js";
 import { inspect } from "node:util";
 
 import { checkErrorType } from "../logger/check-error-type.js";
-import { setLogger } from "../logger/index.js";
+import { setLogger } from "../logger/set-logger.js";
 import { agreeInNumber } from "../shared/agree-in-number.js";
 import { parseCommit } from "./parse-commit.js";
 import { setReleaseType } from "./set-release-type.js";

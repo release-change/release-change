@@ -7,7 +7,7 @@ import semver from "semver";
 
 import { getLatestValidTag } from "../git/get-latest-valid-tag.js";
 import { checkErrorType } from "../logger/check-error-type.js";
-import { setLogger } from "../logger/index.js";
+import { setLogger } from "../logger/set-logger.js";
 import { getRootPackageVersion } from "./get-root-package-version.js";
 import { getVersionFromTag } from "./get-version-from-tag.js";
 

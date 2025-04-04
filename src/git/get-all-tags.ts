@@ -3,7 +3,7 @@ import type { Context } from "../cli/cli.types.js";
 import { inspect } from "node:util";
 
 import { checkErrorType } from "../logger/check-error-type.js";
-import { setLogger } from "../logger/index.js";
+import { setLogger } from "../logger/set-logger.js";
 import { runCommandSync } from "./run-command-sync.js";
 
 /**

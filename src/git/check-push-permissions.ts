@@ -1,7 +1,7 @@
 import type { Context } from "../cli/cli.types.js";
 
 import { checkErrorType } from "../logger/check-error-type.js";
-import { setLogger } from "../logger/index.js";
+import { setLogger } from "../logger/set-logger.js";
 import { checkAuthorisation } from "./check-authorisation.js";
 import { isBranchUpToDate } from "./is-branch-up-to-date.js";
 

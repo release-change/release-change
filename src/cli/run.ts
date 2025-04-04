@@ -10,7 +10,7 @@ import { checkPushPermissions } from "../git/check-push-permissions.js";
 import { checkRepository } from "../git/check-repository.js";
 import { getBranchName } from "../git/get-branch-name.js";
 import { getCommitsSinceRef } from "../git/get-commits-since-ref.js";
-import { setLogger } from "../logger/index.js";
+import { setLogger } from "../logger/set-logger.js";
 import { setLastRelease } from "../release/set-last-release.js";
 import { setNextRelease } from "../release/set-next-release.js";
 

@@ -1,5 +1,5 @@
 import { checkErrorType } from "../logger/check-error-type.js";
-import { setLogger } from "../logger/index.js";
+import { setLogger } from "../logger/set-logger.js";
 import { runCommand } from "./run-command.js";
 
 /**

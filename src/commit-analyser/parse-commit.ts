@@ -3,7 +3,7 @@ import type { Commit } from "./commit-analyser.types.js";
 
 import { inspect } from "node:util";
 
-import { setLogger } from "../logger/index.js";
+import { setLogger } from "../logger/set-logger.js";
 
 import {
   BLANK_LINE_SEPARATOR,
