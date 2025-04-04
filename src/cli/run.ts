@@ -4,7 +4,7 @@ import { configureCiEnvironment } from "../ci/configure-ci-environment.js";
 import { isUsableCiEnvironment } from "../ci/is-usable-ci-environment.js";
 import { getReleaseType } from "../commit-analyser/get-release-type.js";
 import { debugConfig } from "../config/debug-config.js";
-import { getConfig } from "../config/index.js";
+import { getConfig } from "../config/get-config.js";
 import { checkBranch } from "../git/check-branch.js";
 import { checkPushPermissions } from "../git/check-push-permissions.js";
 import { checkRepository } from "../git/check-repository.js";
