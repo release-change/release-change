@@ -4,10 +4,10 @@ import { formatMessage } from "./format-message.js";
 
 /**
  * Sets the logger object.
- * @param isDebug - Whether the debug mode is activated or not.
+ * @param [isDebug] - Whether the debug mode is activated or not.
  * @return The logger object.
  */
-export const setLogger = (isDebug: boolean): Logger => {
+export const setLogger = (isDebug?: boolean): Logger => {
   const loggerContext = {
     isDebug: Boolean(isDebug)
   };
