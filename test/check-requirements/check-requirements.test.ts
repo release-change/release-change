@@ -4,7 +4,7 @@ import process from "node:process";
 
 import semver from "semver";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { checkRequirements } from "../../src/check-requirements/index.js";
+import { checkRequirements } from "../../src/check-requirements/check-requirements";
 import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
 
 import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "../../src/check-requirements/constants.js";

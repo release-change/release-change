@@ -2,7 +2,7 @@ import type { Context } from "../cli/cli.types.js";
 
 import util from "node:util";
 
-import { setLogger } from "../logger/index.js";
+import { setLogger } from "../logger/set-logger.js";
 import { getConfigFile } from "./get-config-file.js";
 
 import { CONFIG_FILE_NAME } from "./constants.js";

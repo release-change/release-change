@@ -1,1 +1,1 @@
-export { checkRequirements } from "./check-requirements/index.js";
+export { checkRequirements } from "./check-requirements/check-requirements.js";

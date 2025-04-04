@@ -1,7 +1,7 @@
 import type { Context } from "../cli/cli.types.js";
 import type { Commit, ReleaseType } from "./commit-analyser.types.js";
 
-import { setLogger } from "../logger/index.js";
+import { setLogger } from "../logger/set-logger.js";
 
 import {
   BREAKING_CHANGE,
