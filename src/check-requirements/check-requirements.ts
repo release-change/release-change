@@ -14,7 +14,7 @@ import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "./constants.js";
  * Checks whether Node and Git versions match the versions required.
  */
 export const checkRequirements = async (): Promise<void> => {
-  const logger = setLogger(false);
+  const logger = setLogger();
   const { version } = process;
   if (!isNodeVersionCompatible(version, REQUIRED_NODE_VERSIONS)) {
     const formattedRequiredNodeVersions = REQUIRED_NODE_VERSIONS.replaceAll(

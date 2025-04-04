@@ -11,7 +11,7 @@ export const isGitRepository = async (): Promise<boolean> => {
     const gitCommandResult = await runCommand(["rev-parse", "--git-dir"]);
     return !gitCommandResult.status;
   } catch (error) {
-    setLogger(false).logError(checkErrorType(error));
+    setLogger().logError(checkErrorType(error));
     process.exit(process.exitCode);
   }
 };
