@@ -1,11 +1,13 @@
 import type { GitCommandResult } from "../../src/git/git.types.js";
+import type { Logger } from "../../src/logger/logger.types.js";
 
 import process from "node:process";
-
 import semver from "semver";
+
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { checkRequirements } from "../../src/check-requirements/check-requirements";
+import { checkRequirements } from "../../src/check-requirements/check-requirements.js";
 import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
+import * as setLoggerModule from "../../src/logger/set-logger.js";
 
 import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "../../src/check-requirements/constants.js";
 
@@ -19,23 +21,28 @@ describe("check requirements", () => {
     "14.21.3",
     "16.20.2"
   ];
+  const mockedLogger: Logger = {
+    setDebugScope: vi.fn(),
+    logDebug: vi.fn(),
+    logInfo: vi.fn(),
+    logError: vi.fn(),
+    logWarn: vi.fn(),
+    logSuccess: vi.fn()
+  };
   let originalProcessExit: typeof process.exit;
-  let originalConsoleError: typeof console.error;
 
   beforeEach(() => {
+    vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
     originalProcessExit = process.exit;
-    originalConsoleError = console.error;
     Object.defineProperty(process, "exit", {
       value: vi.fn(),
       configurable: true,
       writable: true
     });
-    console.error = vi.fn();
   });
 
   afterEach(() => {
     process.exit = originalProcessExit;
-    console.error = originalConsoleError;
     vi.restoreAllMocks();
   });
 
@@ -51,8 +58,8 @@ describe("check requirements", () => {
         configurable: true
       });
       checkRequirements();
-      expect(console.error).toHaveBeenCalledWith(
-        `[release-change]: Required one of the following Node versions: ${formattedRequiredNodeVersions}. Found ${mockedNodeVersion}.`
+      expect(mockedLogger.logError).toHaveBeenCalledWith(
+        `Required one of the following Node versions: ${formattedRequiredNodeVersions}. Found ${mockedNodeVersion}.`
       );
       expect(process.exit).toHaveBeenCalledWith(1);
     }
@@ -67,8 +74,8 @@ describe("check requirements", () => {
     const coercedVersion = semver.coerce(mockedGitVersion.stdout);
     vi.spyOn(runCommandSyncModule, "runCommandSync").mockReturnValue(mockedGitVersion);
     checkRequirements();
-    expect(console.error).toHaveBeenCalledWith(
-      `[release-change]: Git version ${GIT_MIN_VERSION} required. Found ${coercedVersion}.`
+    expect(mockedLogger.logError).toHaveBeenCalledWith(
+      `Git version ${GIT_MIN_VERSION} required. Found ${coercedVersion}.`
     );
     expect(process.exit).toHaveBeenCalledWith(1);
   });
