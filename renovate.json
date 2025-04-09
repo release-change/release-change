@@ -20,5 +20,8 @@
       "matchPackageNames": ["node", "npm", "pnpm"],
       "enabled": false
     }
-  ]
+  ],
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }
