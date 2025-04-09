@@ -47,7 +47,7 @@ body:
     attributes:
       label: npm / pnpm version
       description: The version of npm / pnpm you are using (please check the [versions supported](https://github.com/release-change/release-change/blob/main/SECURITY.md#supported-package-manager-versions)).
-      placeholder: pnpm 10.7.1
+      placeholder: pnpm 10.8.0
     validations:
       required: true
   - type: textarea
