@@ -16,11 +16,11 @@ release-change is using [GitHub issues](https://github.com/release-change/releas
 
 ### Feature requests
 
-Feature requests by the community are highly encouraged. Feel free to submit a new one filling the information requested in the [feature request template](https://github.com/release-change/release-change/issues/new?template=feature-request.md).
+Feature requests by the community are highly encouraged. Feel free to submit a new one filling the information requested in the [feature request template](https://github.com/release-change/release-change/issues/new?template=feature-request.yml).
 
 ### Bug reports
 
-Please try to be as detailed as possible in your report and fill the information requested in the [bug report template](https://github.com/release-change/release-change/issues/new?template=bug-report.md).
+Please try to be as detailed as possible in your report and fill the information requested in the [bug report template](https://github.com/release-change/release-change/issues/new?template=bug-report.yml).
 
 ## Submitting a pull request
 
@@ -87,9 +87,9 @@ A complex feature can be broken down into multiple commits as long as each one m
 
 release-change follows the rules defined by the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
 
-The footer can contain a [closing reference to an issue](https://help.github.com/articles/closing-issues-via-commit-messages).
+The footer can contain a [closing reference to an issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/using-issues/linking-a-pull-request-to-an-issue).
 
-release-change uses [commitlint](https://github.com/conventional-changelog/commitlint) to help you create valid commit messages.
+release-change uses [commitlint](https://commitlint.js.org) to help you create valid commit messages.
 
 #### Type
 
@@ -154,4 +154,4 @@ release-change uses [Biome](https://biomejs.dev) for linting and formatting. Bio
 > [!NOTE]
 > Before pushing your code changes make sure **all tests pass.**
 
-release-change uses [Vitest](https://github.com/vitest-dev/vitest) for writing and running tests.
+release-change uses [Vitest](https://vitest.dev) for writing and running tests.
