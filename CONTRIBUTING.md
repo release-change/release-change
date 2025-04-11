@@ -85,7 +85,7 @@ A complex feature can be broken down into multiple commits as long as each one m
 
 ### Commit messages
 
-release-changes follows the rules defined by the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
+release-change follows the rules defined by the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification.
 
 The footer can contain a [closing reference to an issue](https://help.github.com/articles/closing-issues-via-commit-messages).
 
