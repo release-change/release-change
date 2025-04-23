@@ -4,7 +4,7 @@ import { inspect } from "node:util";
 
 import { checkErrorType } from "../logger/check-error-type.js";
 import { setLogger } from "../logger/set-logger.js";
-import { runCommandSync } from "./run-command-sync.js";
+import { runCommandSync } from "../shared/run-command-sync.js";
 
 /**
  * Gets all tags for the branch from which the package publishes as they are on the remote repository.
@@ -16,8 +16,9 @@ export const getAllTags = (context: Context): string[] => {
   const logger = setLogger(config.debug);
   try {
     const gitCommandResult = runCommandSync(
+      "git",
       ["tag", "-l", "--sort=v:refname", "--merged", `${config.remoteName}/${branch}`],
-      { cwd, encoding: "utf8" }
+      { cwd }
     );
     if (config.debug) {
       logger.setDebugScope("git:get-all-tags");

@@ -1,7 +1,7 @@
 import type { Logger } from "../logger/logger.types.js";
 
 import { checkErrorType } from "../logger/check-error-type.js";
-import { runCommand } from "./run-command.js";
+import { runCommand } from "../shared/run-command.js";
 
 /**
  * Checks the repository.
@@ -10,7 +10,7 @@ import { runCommand } from "./run-command.js";
  */
 export const checkRepository = async (logger: Logger): Promise<string | number | undefined> => {
   try {
-    const gitCommandResult = await runCommand(["rev-parse", "--git-dir"]);
+    const gitCommandResult = await runCommand("git", ["rev-parse", "--git-dir"]);
     const { status } = gitCommandResult;
     if (status) {
       logger.logError("The current directory is not a Git repository.");

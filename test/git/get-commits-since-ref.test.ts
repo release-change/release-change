@@ -4,8 +4,8 @@ import type { Logger } from "../../src/logger/logger.types.js";
 import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getCommitsSinceRef } from "../../src/git/get-commits-since-ref.js";
-import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
 import * as setLoggerModule from "../../src/logger/set-logger.js";
+import * as runCommandSyncModule from "../../src/shared/run-command-sync.js";
 
 import { COMMIT_SEPARATOR } from "../../src/git/constants.js";
 
@@ -139,17 +139,15 @@ Date:   Mon Mar 10 04:42:01 2025 +0100
     expect(mockedLogger.logInfo).toHaveBeenCalledWith("Found 0 commits.");
   });
   it("should run `git log` when there are no Git tags", () => {
-    const mockedOptions = { encoding: "utf8" };
     const mockedCommand = vi.spyOn(runCommandSyncModule, "runCommandSync");
     getCommitsSinceRef(mockedContext);
-    expect(mockedCommand).toHaveBeenCalledWith(["log"], mockedOptions);
+    expect(mockedCommand).toHaveBeenCalledWith("git", ["log"]);
     expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving all commits.");
   });
   it('should run `git log v1.0.0..HEAD` when the ref is Git tag "v1.0.0"', () => {
-    const mockedOptions = { encoding: "utf8" };
     const mockedCommand = vi.spyOn(runCommandSyncModule, "runCommandSync");
     getCommitsSinceRef({ ...mockedContext, lastRelease: { gitTag: "v1.0.0", version: "1.0.0" } });
-    expect(mockedCommand).toHaveBeenCalledWith(["log", "v1.0.0..HEAD"], mockedOptions);
+    expect(mockedCommand).toHaveBeenCalledWith("git", ["log", "v1.0.0..HEAD"]);
     expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving commits since v1.0.0.");
   });
 });

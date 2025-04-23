@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getTrackedRepositories } from "../../src/git/get-tracked-repositories.js";
 import * as isGitRepositoryModule from "../../src/git/is-git-repository.js";
-import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
+import * as runCommandSyncModule from "../../src/shared/run-command-sync.js";
 
 describe("get tracked repositories", () => {
   const mockedRemote = [

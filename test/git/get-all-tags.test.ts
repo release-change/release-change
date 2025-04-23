@@ -4,8 +4,8 @@ import type { Logger } from "../../src/logger/logger.types.js";
 import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAllTags } from "../../src/git/get-all-tags.js";
-import { runCommandSync } from "../../src/git/run-command-sync.js";
 import * as setLoggerModule from "../../src/logger/set-logger.js";
+import { runCommandSync } from "../../src/shared/run-command-sync.js";
 
 describe("get all tags", () => {
   const mockedRepositoryUrl = "https://github.com/user-id/repo-name";
@@ -42,7 +42,7 @@ describe("get all tags", () => {
 
   beforeEach(() => {
     vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
-    vi.mock("../../src/git/run-command-sync.js", () => ({ runCommandSync: vi.fn() }));
+    vi.mock("../../src/shared/run-command-sync.js", () => ({ runCommandSync: vi.fn() }));
   });
 
   afterEach(() => {

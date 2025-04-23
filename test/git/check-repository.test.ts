@@ -3,8 +3,8 @@ import type { Logger } from "../../src/logger/logger.types.js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { checkRepository } from "../../src/git/check-repository.js";
-import * as runCommandModule from "../../src/git/run-command.js";
 import * as setLoggerModule from "../../src/logger/set-logger.js";
+import * as runCommandModule from "../../src/shared/run-command.js";
 
 describe("check repository", () => {
   const mockedLogger: Logger = {
@@ -18,7 +18,7 @@ describe("check repository", () => {
 
   beforeEach(() => {
     vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
-    vi.mock("../../src/git/run-command.js");
+    vi.mock("../../src/shared/run-command.js");
   });
 
   afterEach(() => {

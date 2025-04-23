@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { isGitRepository } from "../../src/git/is-git-repository.js";
-import { runCommand } from "../../src/git/run-command.js";
+import { runCommand } from "../../src/shared/run-command.js";
 
 describe("check if this is a Git repository", () => {
   beforeEach(() => {
-    vi.mock("../../src/git/run-command.js");
+    vi.mock("../../src/shared/run-command.js");
   });
 
   it("should return `false` if it is not a Git repository", async () => {
