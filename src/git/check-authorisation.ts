@@ -3,7 +3,7 @@ import type { Context } from "../cli/cli.types.js";
 import { inspect } from "node:util";
 
 import { setLogger } from "../logger/set-logger.js";
-import { runCommand } from "./run-command.js";
+import { runCommand } from "../shared/run-command.js";
 
 /**
  * Checks the authorisation to push commits to the remote repository.
@@ -20,7 +20,7 @@ export const checkAuthorisation = async (
     logger.logInfo("Skipping authorisation checking.");
     return;
   }
-  const gitCommandResult = await runCommand([
+  const gitCommandResult = await runCommand("git", [
     "push",
     "--dry-run",
     "--no-verify",

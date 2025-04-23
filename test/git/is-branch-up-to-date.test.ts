@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as getRemoteNameModule from "../../src/git/get-remote-name.js";
 import { isBranchUpToDate } from "../../src/git/is-branch-up-to-date.js";
-import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
+import * as runCommandSyncModule from "../../src/shared/run-command-sync.js";
 
 describe("check if the branch is up to date", () => {
   const mockedRemoteName = "origin";

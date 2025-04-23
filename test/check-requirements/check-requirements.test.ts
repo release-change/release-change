@@ -1,13 +1,13 @@
-import type { GitCommandResult } from "../../src/git/git.types.js";
 import type { Logger } from "../../src/logger/logger.types.js";
+import type { CommandResult } from "../../src/shared/shared.types.js";
 
 import process from "node:process";
 import semver from "semver";
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { checkRequirements } from "../../src/check-requirements/check-requirements.js";
-import * as runCommandSyncModule from "../../src/git/run-command-sync.js";
 import * as setLoggerModule from "../../src/logger/set-logger.js";
+import * as runCommandSyncModule from "../../src/shared/run-command-sync.js";
 
 import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "../../src/check-requirements/constants.js";
 
@@ -66,7 +66,7 @@ describe("check requirements", () => {
   );
 
   it(`should call \`process.exit(1)\` and display an error message if Git version is less than ${GIT_MIN_VERSION}`, () => {
-    const mockedGitVersion: GitCommandResult = {
+    const mockedGitVersion: CommandResult = {
       status: 0,
       stdout: "git version 2.30.0",
       stderr: ""

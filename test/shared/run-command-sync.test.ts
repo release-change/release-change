@@ -3,9 +3,10 @@ import type { SpawnSyncOptionsWithStringEncoding } from "node:child_process";
 import { spawnSync } from "node:child_process";
 
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from "vitest";
-import { runCommandSync } from "../../src/git/run-command-sync.js";
+import { runCommandSync } from "../../src/shared/run-command-sync.js";
 
 describe("run git command", () => {
+  const mockedCommand = "git";
   const mockedArgs = ["tag", "-l", "--sort=v:refname", "--merged", "origin/main"];
   const mockedOptions = {
     cwd: "/fake/path",
@@ -39,7 +40,7 @@ describe("run git command", () => {
         stderr: "Stderr"
       };
     });
-    expectTypeOf(runCommandSync(mockedArgs, mockedOptions)).toMatchTypeOf<{
+    expectTypeOf(runCommandSync(mockedCommand, mockedArgs, mockedOptions)).toMatchObjectType<{
       status: number | null;
       stdout: string;
       stderr: string;

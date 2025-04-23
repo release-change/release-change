@@ -3,8 +3,8 @@ import process from "node:process";
 import semver from "semver";
 
 import { cli } from "../cli/cli.js";
-import { runCommandSync } from "../git/run-command-sync.js";
 import { setLogger } from "../logger/set-logger.js";
+import { runCommandSync } from "../shared/run-command-sync.js";
 import { isGitVersionCompatible } from "./is-git-version-compatible.js";
 import { isNodeVersionCompatible } from "./is-node-version-compatible.js";
 
@@ -27,7 +27,7 @@ export const checkRequirements = async (): Promise<void> => {
     );
     process.exit(1);
   }
-  const gitVersion = semver.coerce(runCommandSync(["--version"], { encoding: "utf8" }).stdout);
+  const gitVersion = semver.coerce(runCommandSync("git", ["--version"]).stdout);
   if (!gitVersion || !isGitVersionCompatible(gitVersion)) {
     logger.logError(`Git version ${GIT_MIN_VERSION} required. Found ${gitVersion}.`);
     process.exit(1);

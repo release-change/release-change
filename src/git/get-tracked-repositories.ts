@@ -1,11 +1,11 @@
+import { runCommandSync } from "../shared/run-command-sync.js";
 import { isGitRepository } from "./is-git-repository.js";
-import { runCommandSync } from "./run-command-sync.js";
 
 /**
- * Gets the tracks repositories.
+ * Gets the tracked repositories.
  * @return The value returned by `git remote -v` if this is a Git repository, `null` otherwise.
  */
 export const getTrackedRepositories = async (): Promise<string | null> => {
-  if (await isGitRepository()) return runCommandSync(["remote", "-v"], { encoding: "utf8" }).stdout;
+  if (await isGitRepository()) return runCommandSync("git", ["remote", "-v"]).stdout;
   return null;
 };

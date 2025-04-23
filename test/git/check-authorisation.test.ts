@@ -4,8 +4,8 @@ import type { Logger } from "../../src/logger/logger.types.js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { checkAuthorisation } from "../../src/git/check-authorisation.js";
-import { runCommand } from "../../src/git/run-command.js";
 import * as setLoggerModule from "../../src/logger/set-logger.js";
+import { runCommand } from "../../src/shared/run-command.js";
 
 describe("check authorisation", () => {
   const mockedRepositoryUrl = "https://github.com/user-id/repo-name";
@@ -43,7 +43,7 @@ describe("check authorisation", () => {
 
   beforeEach(() => {
     vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
-    vi.mock("../../src/git/run-command.js");
+    vi.mock("../../src/shared/run-command.js");
   });
 
   afterEach(() => {
