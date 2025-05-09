@@ -65,7 +65,7 @@
     "semver": "7.7.1"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "0.18.0",
+    "@arethetypeswrong/cli": "0.18.1",
     "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
