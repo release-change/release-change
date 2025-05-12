@@ -62,7 +62,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "semver": "7.7.1"
+    "semver": "7.7.2"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.1",
