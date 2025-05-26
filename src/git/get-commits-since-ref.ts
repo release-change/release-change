@@ -9,6 +9,11 @@ import { runCommandSync } from "../shared/run-command-sync.js";
 
 import { COMMIT_SEPARATOR } from "./constants.js";
 
+/**
+ * Gets the commits since the reference (Git tag or the whole history).
+ * @param context - The context where the CLI is running.
+ * @return An array containing the commits found.
+ */
 export const getCommitsSinceRef = (context: Context): string[] => {
   const { config, lastRelease } = context;
   const logger = setLogger(config.debug);
