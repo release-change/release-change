@@ -49,10 +49,10 @@ describe("check requirements", () => {
   it.each(formerLtsReleases)(
     "should call `process.exit(1)` and display an error message if Node version %s is not compatible with those required",
     mockedNodeVersion => {
-      const formattedRequiredNodeVersions = REQUIRED_NODE_VERSIONS.replaceAll(
-        /\^([.0-9]+)/gi,
-        "$1+"
-      ).replaceAll(" || ", " or ");
+      const formattedRequiredNodeVersions = new Intl.ListFormat("en-GB", {
+        style: "long",
+        type: "disjunction"
+      }).format(REQUIRED_NODE_VERSIONS.replaceAll(/\^([.0-9]+)/gi, "$1+").split(" || "));
       Object.defineProperty(process, "version", {
         value: mockedNodeVersion,
         configurable: true

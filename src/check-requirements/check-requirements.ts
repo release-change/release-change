@@ -17,10 +17,10 @@ export const checkRequirements = async (): Promise<void> => {
   const logger = setLogger();
   const { version } = process;
   if (!isNodeVersionCompatible(version, REQUIRED_NODE_VERSIONS)) {
-    const formattedRequiredNodeVersions = REQUIRED_NODE_VERSIONS.replaceAll(
-      /\^([.0-9]+)/gi,
-      "$1+"
-    ).replaceAll(" || ", " or ");
+    const formattedRequiredNodeVersions = new Intl.ListFormat("en-GB", {
+      style: "long",
+      type: "disjunction"
+    }).format(REQUIRED_NODE_VERSIONS.replaceAll(/\^([.0-9]+)/gi, "$1+").split(" || "));
     const foundVersion = version.replace("v", "");
     logger.logError(
       `Required one of the following Node versions: ${formattedRequiredNodeVersions}. Found ${foundVersion}.`
