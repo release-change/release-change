@@ -5,7 +5,7 @@ import { spawnSync } from "node:child_process";
 import type { CommandResult } from "./shared.types.js";
 
 /**
- * Runs a command asynchronously.
+ * Runs a command synchronously.
  * @param command - The command to run.
  * @param args - The command arguments.
  * @param [options] - The options for the synchronous command.
