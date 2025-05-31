@@ -2,7 +2,7 @@ import { describe, expectTypeOf, it } from "vitest";
 
 import { runCommand } from "../../src/shared/run-command.js";
 
-describe("run git command asynchronously", () => {
+describe("run Git command asynchronously", () => {
   const mockedCommand = "git";
   const mockedArgs = ["tag", "-l", "--sort=v:refname", "--merged", "origin/main"];
 

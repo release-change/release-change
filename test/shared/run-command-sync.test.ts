@@ -5,7 +5,7 @@ import { spawnSync } from "node:child_process";
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from "vitest";
 import { runCommandSync } from "../../src/shared/run-command-sync.js";
 
-describe("run git command", () => {
+describe("run Git command synchronously", () => {
   const mockedCommand = "git";
   const mockedArgs = ["tag", "-l", "--sort=v:refname", "--merged", "origin/main"];
   const mockedOptions = {
@@ -22,7 +22,7 @@ describe("run git command", () => {
     vi.clearAllMocks();
   });
 
-  it("should throw an error if the command return a non-zero status", () => {
+  it("should throw an error if the command returns a non-zero status", () => {
     mockSpawnSync.mockImplementation((_command, _args, _options) => {
       return {
         status: 1,
