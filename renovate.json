@@ -11,6 +11,7 @@
   "semanticCommitType": "build",
   "reviewers": ["renovate-approve"],
   "platformAutomerge": true,
+  "rebaseWhen": "behind-base-branch",
   "packageRules": [
     {
       "matchUpdateTypes": ["digest", "minor", "patch", "pin"],
