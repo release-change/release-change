@@ -10,6 +10,28 @@
     "useIgnoreFile": true,
     "defaultBranch": "main"
   },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              { "type": true },
+              ":BLANK_LINE:",
+              [":BUN:", ":NODE:"],
+              ":BLANK_LINE:",
+              ":PACKAGE:",
+              ":BLANK_LINE:",
+              { "source": [":PATH:", "!./constants.{js,ts}", "!../**/constants.{js,ts}"] },
+              ":BLANK_LINE:",
+              ":PATH:"
+            ]
+          }
+        }
+      }
+    }
+  },
   "formatter": {
     "indentStyle": "space",
     "lineWidth": 100
