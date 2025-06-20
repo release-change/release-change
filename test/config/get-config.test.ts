@@ -1,10 +1,10 @@
 import type { Config } from "../../src/config/config.types.js";
 
-import { assert, afterEach, beforeEach, describe, it, vi } from "vitest";
+import { afterEach, assert, beforeEach, describe, it, vi } from "vitest";
 
 import { parseCliOptions } from "../../src/cli/parse-cli-options.js";
-import { getConfigFile } from "../../src/config/get-config-file.js";
 import { getConfig } from "../../src/config/get-config.js";
+import { getConfigFile } from "../../src/config/get-config-file.js";
 
 import { DEFAULT_CONFIG } from "../../src/config/constants.js";
 

@@ -3,6 +3,7 @@ import type { SpawnSyncOptionsWithStringEncoding } from "node:child_process";
 import { spawnSync } from "node:child_process";
 
 import { afterEach, beforeEach, describe, expect, expectTypeOf, it, vi } from "vitest";
+
 import { runCommandSync } from "../../src/shared/run-command-sync.js";
 
 describe("run Git command synchronously", () => {

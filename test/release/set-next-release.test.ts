@@ -4,7 +4,8 @@ import type { Config } from "../../src/config/config.types.js";
 import type { Logger } from "../../src/logger/logger.types.js";
 import type { NextRelease } from "../../src/release/release.types.js";
 
-import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+
 import * as setLoggerModule from "../../src/logger/set-logger.js";
 import * as incrementVersionModule from "../../src/release/increment-version.js";
 import { incrementVersion } from "../../src/release/increment-version.js";

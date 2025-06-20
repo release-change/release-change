@@ -1,7 +1,7 @@
 import type { Context } from "../../src/cli/cli.types.js";
 import type { Logger } from "../../src/logger/logger.types.js";
 
-import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getCommitsSinceRef } from "../../src/git/get-commits-since-ref.js";
 import * as setLoggerModule from "../../src/logger/set-logger.js";

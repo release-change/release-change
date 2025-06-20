@@ -1,6 +1,7 @@
+import type { Context } from "../cli/cli.types.js";
+
 import semver from "semver";
 
-import type { Context } from "../cli/cli.types.js";
 import { getAllTags } from "./get-all-tags.js";
 
 /**

@@ -1,8 +1,7 @@
 import type { SpawnSyncOptions } from "node:child_process";
+import type { CommandResult } from "./shared.types.js";
 
 import { spawnSync } from "node:child_process";
-
-import type { CommandResult } from "./shared.types.js";
 
 /**
  * Runs a command synchronously.
