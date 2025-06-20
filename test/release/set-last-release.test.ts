@@ -2,7 +2,7 @@ import type { Context } from "../../src/cli/cli.types.js";
 import type { Logger } from "../../src/logger/logger.types.js";
 import type { LastRelease } from "../../src/release/release.types.js";
 
-import { assert, afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAllTags } from "../../src/git/get-all-tags.js";
 import { getLatestValidTag } from "../../src/git/get-latest-valid-tag.js";

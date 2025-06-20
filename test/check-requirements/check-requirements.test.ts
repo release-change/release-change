@@ -2,9 +2,10 @@ import type { Logger } from "../../src/logger/logger.types.js";
 import type { CommandResult } from "../../src/shared/shared.types.js";
 
 import process from "node:process";
-import semver from "semver";
 
+import semver from "semver";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import { checkRequirements } from "../../src/check-requirements/check-requirements.js";
 import * as setLoggerModule from "../../src/logger/set-logger.js";
 import * as runCommandSyncModule from "../../src/shared/run-command-sync.js";

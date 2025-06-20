@@ -1,5 +1,7 @@
 import type { SemVer } from "semver";
+
 import { describe, expect, it } from "vitest";
+
 import { isGitVersionCompatible } from "../../src/check-requirements/is-git-version-compatible.js";
 
 describe("git version", () => {
