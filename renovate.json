@@ -18,7 +18,7 @@
       "automerge": true
     },
     {
-      "matchPackageNames": ["node", "npm", "pnpm", "@biomejs/biome"],
+      "matchPackageNames": ["node", "npm", "pnpm"],
       "enabled": false
     }
   ],
