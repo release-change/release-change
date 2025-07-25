@@ -1,0 +1,61 @@
+{
+  "name": "@release-change/cli",
+  "version": "0.0.0",
+  "description": "Fully automated version management, changelogs management and package publishing with a focus on monorepos, pre-releases and major version zero",
+  "keywords": [
+    "automation",
+    "changelog",
+    "cli",
+    "major-version-zero",
+    "monorepo",
+    "package",
+    "pre-release",
+    "publish",
+    "release",
+    "release-automation",
+    "release-workflow",
+    "semantic",
+    "semantic-version",
+    "semver",
+    "semver-release",
+    "tags",
+    "version",
+    "versioning"
+  ],
+  "homepage": "https://github.com/webdevbynight/zz-top",
+  "bugs": {
+    "url": "https://github.com/webdevbynight/zz-top/issues"
+  },
+  "author": "Victor Brito (https://victor-brito.dev)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webdevbynight/zz-top.git"
+  },
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "import": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "bin": {
+    "release-change": "./bin/index.js"
+  },
+  "engines": {
+    "node": "^20.18.3 || ^22.12.0",
+    "npm": ">=10.8.2",
+    "pnpm": ">=10.13.1"
+  },
+  "scripts": {
+    "dev": "tsc --watch --preserveWatchOutput & vitest",
+    "release-change": "./bin/index.js"
+  },
+  "dependencies": {
+    "semver": "7.7.2"
+  },
+  "devDependencies": {
+    "@types/semver": "7.7.0"
+  }
+}

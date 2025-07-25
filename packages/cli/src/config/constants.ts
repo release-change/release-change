@@ -1,4 +1,4 @@
-import { PACKAGE_NAME } from "../shared/constants.js";
+import { WORKSPACE_NAME } from "../shared/constants.js";
 
 export const HTTPS_URL_PATTERN =
   /^(git\+)?ht{2}ps:\/{2}(?<host>[^/]+)\/(?<user>[-_./a-z0-9]+)\/(?<repo>[-_./a-z0-9]+)(?<extension>\.git)$/i;
@@ -37,4 +37,4 @@ export const DEFAULT_CONFIG = {
   debug: false,
   dryRun: false
 } as const;
-export const CONFIG_FILE_NAME = `${PACKAGE_NAME}.config.json`;
+export const CONFIG_FILE_NAME = `${WORKSPACE_NAME}.config.json`;

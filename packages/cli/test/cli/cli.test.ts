@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cli } from "../../src/cli/cli.js";
 import { run } from "../../src/cli/run.js";
 
-import { PACKAGE_NAME } from "../../src/shared/constants.js";
+import { WORKSPACE_NAME } from "../../src/shared/constants.js";
 
 describe("CLI behaviour when running with some CLI options", () => {
   const cliOptions = ["-h", "--help", "-v", "--version"];
@@ -22,7 +22,7 @@ describe("CLI behaviour when running with some CLI options", () => {
     vi.restoreAllMocks();
   });
   it.each(cliOptions)("should not call `run()` when `%s` is used", cliOption => {
-    process.argv = ["pnpm", PACKAGE_NAME, cliOption];
+    process.argv = ["pnpm", WORKSPACE_NAME, cliOption];
     cli();
     expect(run).not.toHaveBeenCalled();
   });

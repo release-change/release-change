@@ -2,7 +2,7 @@ import type { LoggerContext } from "./logger.types.js";
 
 import { addLeadingZero } from "./add-leading-zero.js";
 
-import { PACKAGE_NAME } from "../shared/constants.js";
+import { WORKSPACE_NAME } from "../shared/constants.js";
 
 /**
  * Sets prefix for messages logged to the console according to the context provided by `loggerContext`:
@@ -15,11 +15,11 @@ import { PACKAGE_NAME } from "../shared/constants.js";
 export const setPrefix = (timestamp: number, loggerContext: LoggerContext): string => {
   const { isDebug, scope } = loggerContext;
   if (isDebug && typeof scope === "string") {
-    if (scope) return `\x1b[1;34m[debug] ${PACKAGE_NAME}:${scope}\x1b[0m`;
-    return `\x1b[1;34m[debug] ${PACKAGE_NAME}\x1b[0m`;
+    if (scope) return `\x1b[1;34m[debug] ${WORKSPACE_NAME}:${scope}\x1b[0m`;
+    return `\x1b[1;34m[debug] ${WORKSPACE_NAME}\x1b[0m`;
   }
   const hours = addLeadingZero(new Date(timestamp).getUTCHours());
   const minutes = addLeadingZero(new Date(timestamp).getUTCMinutes());
   const seconds = addLeadingZero(new Date(timestamp).getUTCSeconds());
-  return `[${hours}:${minutes}:${seconds}] [${PACKAGE_NAME}] \u203a`;
+  return `[${hours}:${minutes}:${seconds}] [${WORKSPACE_NAME}] \u203a`;
 };

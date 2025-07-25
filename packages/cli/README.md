@@ -6,6 +6,8 @@ Fully automated version management, changelogs management and package publishing
 [![ESM-only package](https://img.shields.io/badge/package-ESM--only-ffe536)](https://nodejs.org/api/esm.html)
 [![Conventional Commits 1.0.0](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 [![Formatted with Biome](https://img.shields.io/badge/Formatted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev/)
+![NPM latest version](https://img.shields.io/npm/v/%40release-change%2Frelease-change/latest)
+![Node support](https://img.shields.io/node/v/%40release-change%2Frelease-change)
 ![Build status](https://img.shields.io/github/actions/workflow/status/release-change/release-change/run-tests.yml)
 
 **release-change** automates the release workflow, determining the next version number, generating release notes and publishing the package.
@@ -31,8 +33,8 @@ In order to use release-change, you need:
 - to host your code in a GitHub repository,
 - to use GitHub Actions,
 - Git 2.48.1+,
-- a [Node.js](https://nodejs.org) which meets the [version requirements](./SECURITY.md#supported-nodejs-versions),
-- a package manager which meets the [version requirements](./SECURITY.md#supported-package-manager-versions).
+- a [Node.js](https://nodejs.org) which meets the [version requirements](../../SECURITY.md#supported-nodejs-versions),
+- a package manager which meets the [version requirements](../../SECURITY.md#supported-package-manager-versions).
 
 ## Installation
 
