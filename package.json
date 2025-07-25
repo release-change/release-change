@@ -1,6 +1,7 @@
 {
   "name": "release-change",
   "version": "0.0.0",
+  "private": true,
   "description": "Fully automated version management, changelogs management and package publishing with a focus on monorepos, pre-releases and major version zero",
   "keywords": [
     "automation",
@@ -31,19 +32,15 @@
     "type": "git",
     "url": "git+https://github.com/release-change/release-change.git"
   },
-  "files": [
-    "dist"
-  ],
   "type": "module",
   "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
   "engines": {
     "node": "^20.18.3 || ^22.12.0",
     "npm": ">=10.8.2",
     "pnpm": ">=10.13.1"
-  },
-  "main": "./dist/index.js",
-  "bin": {
-    "release-change": "./bin/index.js"
   },
   "scripts": {
     "biome": "biome check --write .",
@@ -52,23 +49,19 @@
     "biome:format:check": "biome format .",
     "biome:lint": "biome lint --write .",
     "biome:lint:check": "biome lint .",
-    "build": "tsc",
+    "build": "tsc --build",
     "dev": "pnpm tsc:watch & pnpm test:watch",
     "prepare": "husky",
-    "release-change": "./bin/index.js",
-    "tsc:watch": "tsc --watch --preserveWatchOutput",
+    "release-change": "packages/cli/bin/index.js",
+    "tsc:watch": "tsc --build --watch --preserveWatchOutput",
     "test": "vitest run",
     "test:watch": "vitest"
-  },
-  "dependencies": {
-    "semver": "7.7.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.1.2",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
     "@types/node": "22.16.5",
-    "@types/semver": "7.7.0",
     "husky": "9.1.7",
     "typescript": "5.8.3",
     "vitest": "3.2.4"

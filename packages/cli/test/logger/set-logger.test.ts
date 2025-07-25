@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as formatMessageModule from "../../src/logger/format-message.js";
 import { setLogger } from "../../src/logger/set-logger.js";
 
-import { PACKAGE_NAME } from "../../src/shared/constants.js";
+import { WORKSPACE_NAME } from "../../src/shared/constants.js";
 
 describe("log messages to the console", () => {
   const logger = setLogger();
@@ -43,14 +43,14 @@ describe("log messages to the console", () => {
   });
 
   it("should display a message in debug mode with its own prefix", () => {
-    const expectedOutput = `\x1b[1;34m[debug] ${PACKAGE_NAME}:test\x1b[0m ${debugMessage}`;
+    const expectedOutput = `\x1b[1;34m[debug] ${WORKSPACE_NAME}:test\x1b[0m ${debugMessage}`;
     vi.spyOn(formatMessageModule, "formatMessage").mockImplementationOnce(() => expectedOutput);
     setLogger(true).setDebugScope("test");
     setLogger(true).logDebug(debugMessage);
     expect(console.debug).toHaveBeenCalledWith(expectedOutput);
   });
   it("should display a message in debug mode without any prefix", () => {
-    const expectedOutput = `\x1b[1;34m[debug] ${PACKAGE_NAME}:\x1b[0m ${debugMessage}`;
+    const expectedOutput = `\x1b[1;34m[debug] ${WORKSPACE_NAME}:\x1b[0m ${debugMessage}`;
     vi.spyOn(formatMessageModule, "formatMessage").mockImplementationOnce(() => expectedOutput);
     setLogger(true).logDebug(debugMessage);
     expect(console.debug).toHaveBeenCalledWith(expectedOutput);
@@ -59,14 +59,14 @@ describe("log messages to the console", () => {
     vi.spyOn(Date, "now").mockImplementationOnce(() => new Date("2025-01-01T00:07:09Z").getTime());
     logger.logInfo(infoMessage);
     expect(console.info).toHaveBeenCalledWith(
-      `[00:07:09] [${PACKAGE_NAME}] \u203a \u2139 ${infoMessage}`
+      `[00:07:09] [${WORKSPACE_NAME}] \u203a \u2139 ${infoMessage}`
     );
   });
   it("should display an info message to the console", () => {
     vi.spyOn(Date, "now").mockImplementationOnce(() => new Date(mockedDateTime).getTime());
     logger.logInfo(infoMessage);
     expect(console.info).toHaveBeenCalledWith(
-      `[${expectedTime}] [${PACKAGE_NAME}] \u203a \u2139 ${infoMessage}`
+      `[${expectedTime}] [${WORKSPACE_NAME}] \u203a \u2139 ${infoMessage}`
     );
   });
   it("should display an error message to the console", () => {
@@ -74,7 +74,7 @@ describe("log messages to the console", () => {
     logger.logError(errorMessage);
     expect(console.error).toHaveBeenCalledWith(
       "\x1b[1;31m%s\x1b[0m",
-      `[${expectedTime}] [${PACKAGE_NAME}] \u203a \u2718 ${errorMessage}`
+      `[${expectedTime}] [${WORKSPACE_NAME}] \u203a \u2718 ${errorMessage}`
     );
   });
   it("should display a warning message to the console", () => {
@@ -82,7 +82,7 @@ describe("log messages to the console", () => {
     logger.logWarn(warningMessage);
     expect(console.warn).toHaveBeenCalledWith(
       "\x1b[33m%s\x1b[0m",
-      `[${expectedTime}] [${PACKAGE_NAME}] \u203a \u26a0 ${warningMessage}`
+      `[${expectedTime}] [${WORKSPACE_NAME}] \u203a \u26a0 ${warningMessage}`
     );
   });
   it("should display a success message to the console", () => {
@@ -90,7 +90,7 @@ describe("log messages to the console", () => {
     logger.logSuccess(successMessage);
     expect(console.log).toHaveBeenCalledWith(
       "\x1b[32m%s\x1b[0m",
-      `[${expectedTime}] [${PACKAGE_NAME}] \u203a \u2714 ${successMessage}`
+      `[${expectedTime}] [${WORKSPACE_NAME}] \u203a \u2714 ${successMessage}`
     );
   });
 });

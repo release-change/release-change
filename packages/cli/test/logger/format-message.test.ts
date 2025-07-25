@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { formatMessage } from "../../src/logger/format-message.js";
 import { setPrefix } from "../../src/logger/set-prefix.js";
 
-import { PACKAGE_NAME } from "../../src/shared/constants.js";
+import { WORKSPACE_NAME } from "../../src/shared/constants.js";
 
 describe("format message", () => {
   const expectedTime = "13:37:42";
@@ -24,7 +24,7 @@ describe("format message", () => {
 
   it("should format debug message", () => {
     const mockedMessage = "Debug message";
-    const expectedPrefix = `\x1b[1;34m[debug] ${PACKAGE_NAME}:${expectedFeature}\x1b[0m`;
+    const expectedPrefix = `\x1b[1;34m[debug] ${WORKSPACE_NAME}:${expectedFeature}\x1b[0m`;
     vi.mocked(setPrefix).mockReturnValue(expectedPrefix);
     expect(formatMessage(mockedMessage, mockedLoggerContextForDebugMode)).toBe(
       `${expectedPrefix} ${mockedMessage}`
@@ -32,7 +32,7 @@ describe("format message", () => {
   });
 
   describe("format message when debug mode is deactivated", () => {
-    const expectedPrefix = `[${expectedTime}] [${PACKAGE_NAME}] \u203a`;
+    const expectedPrefix = `[${expectedTime}] [${WORKSPACE_NAME}] \u203a`;
     const messageTypes = [
       { type: "info", message: "Informational message", symbol: "\u2139" },
       { type: "error", message: "Error message", symbol: "\u2718" },

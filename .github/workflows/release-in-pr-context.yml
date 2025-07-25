@@ -31,4 +31,4 @@ jobs:
       - name: Release
         env:
           RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        run: node ./bin/index.js
+        run: node ./packages/cli/bin/index.js

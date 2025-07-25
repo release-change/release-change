@@ -4,7 +4,7 @@ import util from "node:util";
 
 import { setLogger } from "../logger/set-logger.js";
 
-import { PACKAGE_NAME } from "../shared/constants.js";
+import { WORKSPACE_NAME } from "../shared/constants.js";
 
 /**
  * Checks whether the current branch is part of the branches from which the package can publish.
@@ -23,7 +23,7 @@ export const checkBranch = (context: Context): undefined | false => {
     logger.logDebug(`Branch name: ${branch}`);
   }
   if (!branch || !branches.includes(branch)) {
-    const runTriggeredOnWrongBranchText = `This run is triggered on the branch ${branch}, while ${PACKAGE_NAME} is configured to only publish from ${branches.join(", ")}; therefore, a new version will not be published.`;
+    const runTriggeredOnWrongBranchText = `This run is triggered on the branch ${branch}, while ${WORKSPACE_NAME} is configured to only publish from ${branches.join(", ")}; therefore, a new version will not be published.`;
     logger.logWarn(runTriggeredOnWrongBranchText);
     context.config.dryRun = true;
     return false;

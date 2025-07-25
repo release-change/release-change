@@ -4,13 +4,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { showHelp } from "../../src/cli/show-help.js";
 
-import { PACKAGE_NAME } from "../../src/shared/constants.js";
+import { WORKSPACE_NAME } from "../../src/shared/constants.js";
 
-describe(`display help for \`${PACKAGE_NAME}\` command`, () => {
+describe(`display help for \`${WORKSPACE_NAME}\` command`, () => {
   const expectedOutput = `Runs automated package release and publishing
 
 Usage:
-  ${PACKAGE_NAME} [options]
+  ${WORKSPACE_NAME} [options]
 
 Options
   -b, --branches        Git branches to release from    [array]

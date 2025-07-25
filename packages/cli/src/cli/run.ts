@@ -14,7 +14,7 @@ import { setLogger } from "../logger/set-logger.js";
 import { setLastRelease } from "../release/set-last-release.js";
 import { setNextRelease } from "../release/set-next-release.js";
 
-import { PACKAGE_NAME, PACKAGE_VERSION } from "../shared/constants.js";
+import { WORKSPACE_NAME, WORKSPACE_VERSION } from "../shared/constants.js";
 
 export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Promise<void> => {
   const config = await getConfig(cliOptions);
@@ -27,7 +27,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
     config,
     ci
   };
-  logger.logInfo(`Running ${PACKAGE_NAME} version ${PACKAGE_VERSION}…`);
+  logger.logInfo(`Running ${WORKSPACE_NAME} version ${WORKSPACE_VERSION}…`);
   debugConfig(context);
   await checkRepository(logger);
   if (isUsableCiEnvironment(context)) {

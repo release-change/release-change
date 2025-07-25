@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      semver:
-        specifier: 7.7.2
-        version: 7.7.2
     devDependencies:
       '@biomejs/biome':
         specifier: 2.1.2
@@ -24,9 +20,6 @@ importers:
       '@types/node':
         specifier: 22.16.5
         version: 22.16.5
-      '@types/semver':
-        specifier: 7.7.0
-        version: 7.7.0
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -36,6 +29,16 @@ importers:
       vitest:
         specifier: 3.2.4
         version: 3.2.4(@types/node@22.16.5)(jiti@2.4.2)
+
+  packages/cli:
+    dependencies:
+      semver:
+        specifier: 7.7.2
+        version: 7.7.2
+    devDependencies:
+      '@types/semver':
+        specifier: 7.7.0
+        version: 7.7.0
 
 packages:
 

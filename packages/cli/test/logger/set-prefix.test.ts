@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import { setPrefix } from "../../src/logger/set-prefix.js";
 
-import { PACKAGE_NAME } from "../../src/shared/constants.js";
+import { WORKSPACE_NAME } from "../../src/shared/constants.js";
 
 describe("set prefix", () => {
   const mockedTimestamp = 1735738662000;
@@ -16,17 +16,17 @@ describe("set prefix", () => {
 
   it("should return the appropriate prefix when debug mode is activated", () => {
     expect(setPrefix(mockedTimestamp, mockedLoggerContextForDebugMode)).toBe(
-      `\x1b[1;34m[debug] ${PACKAGE_NAME}:${expectedFeature}\x1b[0m`
+      `\x1b[1;34m[debug] ${WORKSPACE_NAME}:${expectedFeature}\x1b[0m`
     );
   });
   it("should return the appropriate prefix when debug mode is activated and there is no scope", () => {
     expect(setPrefix(mockedTimestamp, mockedLoggerContextForDebugModeWithoutScope)).toBe(
-      `\x1b[1;34m[debug] ${PACKAGE_NAME}\x1b[0m`
+      `\x1b[1;34m[debug] ${WORKSPACE_NAME}\x1b[0m`
     );
   });
   it("should return the appropriate prefix when debug mode is deactivated", () => {
     expect(setPrefix(mockedTimestamp, mockedLoggerContextNotForDebugMode)).toBe(
-      `[${expectedTime}] [${PACKAGE_NAME}] \u203a`
+      `[${expectedTime}] [${WORKSPACE_NAME}] \u203a`
     );
   });
 });
