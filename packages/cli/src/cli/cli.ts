@@ -1,4 +1,5 @@
-import type { Args, ContextBase } from "./cli.types.js";
+import type { ContextBase } from "@release-change/shared";
+import type { Args } from "./cli.types.js";
 
 import process from "node:process";
 

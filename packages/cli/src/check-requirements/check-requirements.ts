@@ -1,10 +1,10 @@
 import process from "node:process";
 
+import { setLogger } from "@release-change/logger";
+import { runCommandSync } from "@release-change/shared";
 import semver from "semver";
 
 import { cli } from "../cli/cli.js";
-import { setLogger } from "../logger/set-logger.js";
-import { runCommandSync } from "../shared/run-command-sync.js";
 import { isGitVersionCompatible } from "./is-git-version-compatible.js";
 import { isNodeVersionCompatible } from "./is-node-version-compatible.js";
 

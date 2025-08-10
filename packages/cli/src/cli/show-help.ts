@@ -1,6 +1,7 @@
+import { WORKSPACE_NAME } from "@release-change/shared";
+
 import { displayCliOptions } from "./display-cli-options.js";
 
-import { WORKSPACE_NAME } from "../shared/constants.js";
 import { TAB } from "./constants.js";
 
 /**

@@ -1,4 +1,4 @@
-import { WORKSPACE_VERSION } from "../shared/constants.js";
+import { WORKSPACE_VERSION } from "@release-change/shared";
 
 /**
  * Shows the current version of `release-change`.

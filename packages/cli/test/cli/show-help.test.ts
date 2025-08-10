@@ -1,10 +1,9 @@
 import childProcess from "node:child_process";
 
+import { WORKSPACE_NAME } from "@release-change/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { showHelp } from "../../src/cli/show-help.js";
-
-import { WORKSPACE_NAME } from "../../src/shared/constants.js";
 
 describe(`display help for \`${WORKSPACE_NAME}\` command`, () => {
   const expectedOutput = `Runs automated package release and publishing

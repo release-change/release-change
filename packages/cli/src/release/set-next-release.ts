@@ -1,10 +1,10 @@
-import type { Context } from "../cli/cli.types.js";
-import type { ReleaseType } from "../commit-analyser/commit-analyser.types.js";
+import type { ReleaseType } from "@release-change/commit-analyser";
+import type { Context } from "@release-change/shared";
 
 import { inspect } from "node:util";
 
-import { checkErrorType } from "../logger/check-error-type.js";
-import { setLogger } from "../logger/set-logger.js";
+import { checkErrorType, setLogger } from "@release-change/logger";
+
 import { incrementVersion } from "./increment-version.js";
 
 /**

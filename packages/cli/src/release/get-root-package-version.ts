@@ -1,4 +1,4 @@
-import { getRootPackage } from "../config/get-root-package.js";
+import { getRootPackage } from "@release-change/config";
 
 /**
  * Gets the package version of the root package file.

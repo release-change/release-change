@@ -1,13 +1,13 @@
-import type { Context } from "../cli/cli.types.js";
+import type { Context } from "@release-change/shared";
 
 import { inspect } from "node:util";
 
-import { setLogger } from "../logger/set-logger.js";
+import { setLogger } from "@release-change/logger";
 
 /**
  * Checks whether the CI environment is usable for the run to proceed.
  * A usable CI environment does not provide any context when the run is triggered by a pull request.
- * An unknown CI environment does not prevent the run to proceed, but activates the dry-run mode.
+ * An unknown CI environment does not prevent the run from proceeding but activates the dry-run mode.
  * @param context - The context where the CLI is running.
  * @return `true` if the CI environment is usable, `false` otherwise.
  */

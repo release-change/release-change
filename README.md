@@ -1,6 +1,6 @@
 # release-change
 
-Fully automated version management, changelogs management and package publishing with a focus on monorepos, pre-releases and major version zero
+Fully automated version management, changelog management and package publishing with a focus on monorepos, pre-releases and major version zero
 
 ![License: MIT](https://img.shields.io/github/license/release-change/release-change)
 [![ESM-only package](https://img.shields.io/badge/package-ESM--only-ffe536)](https://nodejs.org/api/esm.html)
@@ -12,7 +12,7 @@ Fully automated version management, changelogs management and package publishing
 
 ## How does it work?
 
-release-change uses the commit messages to determine the type of change in the codebase. It automatically determines the next [semantic version](https://semver.org).
+It uses the commit messages to determine the type of change in the codebase. It automatically determines the next [semantic version](https://semver.org).
 
 It uses the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. The following table shows which release type is got from which commit message when `release-change` runs:
 
@@ -27,7 +27,7 @@ It is meant to be integrated in a CI environment. For each new commit added to o
 
 ## Requirements
 
-In order to use release-change, you need:
+To use release-change, you need:
 - to host your code in a GitHub repository,
 - to use GitHub Actions,
 - Git 2.48.1+,
@@ -60,7 +60,7 @@ npx release-change
 
 ### CI configuration
 
-release-change requires access to the project repository. The Git authentication is set with the `RELEASE_TOKEN` environment variable, which is a [GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
+It requires access to the project repository. The Git authentication is set with the `RELEASE_TOKEN` environment variable, which is a [GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 Here are examples of the workflow configuration (the file must be saved in the `.github/workflows/` directory):
 - using `pnpm`:
@@ -190,7 +190,7 @@ Type: `boolean`
 Default: `false`  
 CLI arguments: `-d`, `--dry-run`
 
-The goal of the dry-run mode is to get a preview of the pending release. The dry-run mode skips the release and the publication steps, but checks the repository push permissions.
+The goal of the dry-run mode is to get a preview of the pending release. The dry-run mode skips the release and the publication steps but checks the repository push permissions.
 
 ##### releaseType
 
@@ -233,4 +233,4 @@ Sets an object whose properties are the names of the branches on which the relea
 
 ## Copyright & licence
 
-© 2025 Victor Brito - Released under the [MIT licence](./LICENSE).
+© 2025 Victor Brito — Released under the [MIT licence](./LICENSE).

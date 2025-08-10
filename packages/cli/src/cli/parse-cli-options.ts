@@ -1,4 +1,5 @@
-import type { Args, CliOptionCommand, ParsedCliOptions } from "./cli.types.js";
+import type { ParsedCliOptions } from "@release-change/shared";
+import type { Args, CliOptionCommand } from "./cli.types.js";
 
 import { AVAILABLE_CLI_OPTIONS } from "./constants.js";
 

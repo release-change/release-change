@@ -20,6 +20,21 @@
   "files": [],
   "references": [
     {
+      "path": "./packages/shared"
+    },
+    {
+      "path": "./packages/logger"
+    },
+    {
+      "path": "./packages/git"
+    },
+    {
+      "path": "./packages/config"
+    },
+    {
+      "path": "./packages/commit-analyser"
+    },
+    {
       "path": "./packages/cli"
     }
   ]

@@ -22,14 +22,14 @@
     "version",
     "versioning"
   ],
-  "homepage": "https://github.com/webdevbynight/zz-top",
+  "homepage": "https://github.com/release-change/release-change",
   "bugs": {
-    "url": "https://github.com/webdevbynight/zz-top/issues"
+    "url": "https://github.com/release-change/release-change/issues"
   },
   "author": "Victor Brito (https://victor-brito.dev)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/webdevbynight/zz-top.git"
+    "url": "git+https://github.com/release-change/release-change.git"
   },
   "type": "module",
   "license": "MIT",
@@ -49,13 +49,15 @@
     "pnpm": ">=10.14.0"
   },
   "scripts": {
+    "build": "tsc",
     "dev": "tsc --watch --preserveWatchOutput & vitest",
     "release-change": "./bin/index.js"
   },
   "dependencies": {
-    "semver": "7.7.2"
-  },
-  "devDependencies": {
-    "@types/semver": "7.7.0"
+    "@release-change/commit-analyser": "workspace:*",
+    "@release-change/config": "workspace:*",
+    "@release-change/git": "workspace:*",
+    "@release-change/logger": "workspace:*",
+    "@release-change/shared": "workspace:*"
   }
 }

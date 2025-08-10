@@ -1,0 +1,24 @@
+import type { Logger } from "@release-change/logger";
+
+import { checkErrorType } from "@release-change/logger";
+import { runCommand } from "@release-change/shared";
+
+/**
+ * Checks the repository.
+ * @param logger - The logger object to log errors.
+ * @return The current exit code if it is a Git repository, the exit code set to `1` with immediate effect otherwise.
+ */
+export const checkRepository = async (logger: Logger): Promise<string | number | undefined> => {
+  try {
+    const gitCommandResult = await runCommand("git", ["rev-parse", "--git-dir"]);
+    const { status } = gitCommandResult;
+    if (status) {
+      logger.logError("The current directory is not a Git repository.");
+      process.exit(process.exitCode);
+    }
+    return process.exitCode;
+  } catch (error) {
+    logger.logError(checkErrorType(error));
+    process.exit(process.exitCode);
+  }
+};

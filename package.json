@@ -2,7 +2,7 @@
   "name": "release-change",
   "version": "0.0.0",
   "private": true,
-  "description": "Fully automated version management, changelogs management and package publishing with a focus on monorepos, pre-releases and major version zero",
+  "description": "Fully automated version management, changelog management and package publishing with a focus on monorepos, pre-releases and major version zero",
   "keywords": [
     "automation",
     "changelog",
@@ -57,11 +57,15 @@
     "test": "vitest run",
     "test:watch": "vitest"
   },
+  "dependencies": {
+    "semver": "7.7.2"
+  },
   "devDependencies": {
     "@biomejs/biome": "2.1.4",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
     "@types/node": "22.17.1",
+    "@types/semver": "7.7.0",
     "husky": "9.1.7",
     "typescript": "5.9.2",
     "vitest": "3.2.4"

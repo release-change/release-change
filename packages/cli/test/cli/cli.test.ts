@@ -1,11 +1,10 @@
 import process from "node:process";
 
+import { WORKSPACE_NAME } from "@release-change/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { cli } from "../../src/cli/cli.js";
 import { run } from "../../src/cli/run.js";
-
-import { WORKSPACE_NAME } from "../../src/shared/constants.js";
 
 describe("CLI behaviour when running with some CLI options", () => {
   const cliOptions = ["-h", "--help", "-v", "--version"];
