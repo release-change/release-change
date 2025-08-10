@@ -1,12 +1,10 @@
-import type { Context } from "../../src/cli/cli.types.js";
-import type { ReleaseType } from "../../src/commit-analyser/commit-analyser.types.js";
-import type { Config } from "../../src/config/config.types.js";
-import type { Logger } from "../../src/logger/logger.types.js";
-import type { NextRelease } from "../../src/release/release.types.js";
+import type { ReleaseType } from "@release-change/commit-analyser";
+import type { Logger } from "@release-change/logger";
+import type { Config, Context, NextRelease } from "@release-change/shared";
 
+import { setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as setLoggerModule from "../../src/logger/set-logger.js";
 import * as incrementVersionModule from "../../src/release/increment-version.js";
 import { incrementVersion } from "../../src/release/increment-version.js";
 import { setNextRelease } from "../../src/release/set-next-release.js";
@@ -392,10 +390,14 @@ describe("set next release", () => {
   ];
 
   beforeEach(() => {
-    vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
+    vi.mock("@release-change/logger", () => ({
+      checkErrorType: vi.fn(),
+      setLogger: vi.fn()
+    }));
     vi.mock("../../src/release/increment-version.js", () => ({
       incrementVersion: vi.fn()
     }));
+    vi.mocked(setLogger).mockReturnValue(mockedLogger);
   });
 
   afterEach(() => {

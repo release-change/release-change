@@ -1,12 +1,10 @@
-import type { Context } from "../../src/cli/cli.types.js";
-import type { Logger } from "../../src/logger/logger.types.js";
-import type { LastRelease } from "../../src/release/release.types.js";
+import type { Logger } from "@release-change/logger";
+import type { Context, LastRelease } from "@release-change/shared";
 
+import { getAllTags, getLatestValidTag } from "@release-change/git";
+import { setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getAllTags } from "../../src/git/get-all-tags.js";
-import { getLatestValidTag } from "../../src/git/get-latest-valid-tag.js";
-import * as setLoggerModule from "../../src/logger/set-logger.js";
 import { getRootPackageVersion } from "../../src/release/get-root-package-version.js";
 import { setLastRelease } from "../../src/release/set-last-release.js";
 
@@ -100,16 +98,18 @@ describe("set last release", () => {
   ];
 
   beforeEach(() => {
-    vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
-    vi.mock("../../src/git/get-all-tags.js", () => ({
-      getAllTags: vi.fn()
+    vi.mock("@release-change/logger", () => ({
+      checkErrorType: vi.fn(),
+      setLogger: vi.fn()
     }));
-    vi.mock("../../src/git/get-latest-valid-tag.js", () => ({
+    vi.mock("@release-change/git", () => ({
+      getAllTags: vi.fn(),
       getLatestValidTag: vi.fn()
     }));
     vi.mock("../../src/release/get-root-package-version.js", () => ({
       getRootPackageVersion: vi.fn()
     }));
+    vi.mocked(setLogger).mockReturnValue(mockedLogger);
   });
 
   afterEach(() => {

@@ -1,6 +1,6 @@
+import { getRootPackage } from "@release-change/config";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getRootPackage } from "../../src/config/get-root-package.js";
 import { getRootPackageVersion } from "../../src/release/get-root-package-version.js";
 
 describe("get root package version", () => {
@@ -11,7 +11,7 @@ describe("get root package version", () => {
   const expectedVersion = "1.0.0";
 
   beforeEach(() => {
-    vi.mock("../../src/config/get-root-package.js", () => ({
+    vi.mock("@release-change/config", () => ({
       getRootPackage: vi.fn()
     }));
   });

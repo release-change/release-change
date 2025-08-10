@@ -1,5 +1,5 @@
-import type { ReleaseType } from "../../src/commit-analyser/commit-analyser.types.js";
-import type { BranchConfig } from "../../src/config/config.types.js";
+import type { ReleaseType } from "@release-change/commit-analyser";
+import type { BranchConfig } from "@release-change/shared";
 
 import { describe, expect, it } from "vitest";
 

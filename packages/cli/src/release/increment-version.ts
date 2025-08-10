@@ -1,5 +1,5 @@
-import type { ReleaseType } from "../commit-analyser/commit-analyser.types.js";
-import type { BranchConfig } from "../config/config.types.js";
+import type { ReleaseType } from "@release-change/commit-analyser";
+import type { BranchConfig } from "@release-change/shared";
 
 import semver from "semver";
 

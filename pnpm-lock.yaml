@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      semver:
+        specifier: 7.7.2
+        version: 7.7.2
     devDependencies:
       '@biomejs/biome':
         specifier: 2.1.4
@@ -20,6 +24,9 @@ importers:
       '@types/node':
         specifier: 22.17.1
         version: 22.17.1
+      '@types/semver':
+        specifier: 7.7.0
+        version: 7.7.0
       husky:
         specifier: 9.1.7
         version: 9.1.7
@@ -32,13 +39,62 @@ importers:
 
   packages/cli:
     dependencies:
-      semver:
-        specifier: 7.7.2
-        version: 7.7.2
-    devDependencies:
-      '@types/semver':
-        specifier: 7.7.0
-        version: 7.7.0
+      '@release-change/commit-analyser':
+        specifier: workspace:*
+        version: link:../commit-analyser
+      '@release-change/config':
+        specifier: workspace:*
+        version: link:../config
+      '@release-change/git':
+        specifier: workspace:*
+        version: link:../git
+      '@release-change/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@release-change/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/commit-analyser:
+    dependencies:
+      '@release-change/config':
+        specifier: workspace:*
+        version: link:../config
+      '@release-change/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@release-change/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/config:
+    dependencies:
+      '@release-change/git':
+        specifier: workspace:*
+        version: link:../git
+      '@release-change/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@release-change/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/git:
+    dependencies:
+      '@release-change/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@release-change/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/logger:
+    dependencies:
+      '@release-change/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/shared: {}
 
 packages:
 

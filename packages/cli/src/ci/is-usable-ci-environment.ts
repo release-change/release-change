@@ -1,8 +1,8 @@
-import type { Context } from "../cli/cli.types.js";
+import type { Context } from "@release-change/shared";
 
 import { inspect } from "node:util";
 
-import { setLogger } from "../logger/set-logger.js";
+import { setLogger } from "@release-change/logger";
 
 /**
  * Checks whether the CI environment is usable for the run to proceed.

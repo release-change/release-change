@@ -1,14 +1,14 @@
-import type { Logger } from "../../src/logger/logger.types.js";
-import type { CommandResult } from "../../src/shared/shared.types.js";
+import type { Logger } from "@release-change/logger";
+import type { CommandResult } from "@release-change/shared";
 
 import process from "node:process";
 
+import { setLogger } from "@release-change/logger";
+import { runCommandSync } from "@release-change/shared";
 import semver from "semver";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { checkRequirements } from "../../src/check-requirements/check-requirements.js";
-import * as setLoggerModule from "../../src/logger/set-logger.js";
-import * as runCommandSyncModule from "../../src/shared/run-command-sync.js";
+import { checkRequirements } from "../../src/index.js";
 
 import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "../../src/check-requirements/constants.js";
 
@@ -33,23 +33,45 @@ describe("check requirements", () => {
   let originalProcessExit: typeof process.exit;
 
   beforeEach(() => {
-    vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
+    vi.mock("@release-change/logger", () => ({
+      setLogger: vi.fn(),
+      checkErrorType: vi.fn()
+    }));
+    vi.mock("@release-change/shared", () => ({
+      runCommandSync: vi.fn(() => ({
+        status: 0,
+        stdout: "git version 2.48.1",
+        stderr: ""
+      })),
+      ROOT_PACKAGE_MANIFEST: {
+        engines: {
+          node: "^20.18.3 || ^22.12.0",
+          npm: ">=10.8.2",
+          pnpm: ">=10.13.1"
+        }
+      },
+      WORKSPACE_NAME: "release-change",
+      WORKSPACE_VERSION: "0.0.0"
+    }));
+    vi.mock("../../src/cli/cli.js", () => ({
+      cli: vi.fn(() => Promise.resolve(0))
+    }));
+    vi.mocked(setLogger).mockReturnValue(mockedLogger);
     originalProcessExit = process.exit;
-    Object.defineProperty(process, "exit", {
-      value: vi.fn(),
-      configurable: true,
-      writable: true
+    process.exit = vi.fn((code?: number | string) => {
+      throw new Error(`process.exit called with ${code}`);
     });
   });
 
   afterEach(() => {
     process.exit = originalProcessExit;
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it.each(formerLtsReleases)(
     "should call `process.exit(1)` and display an error message if Node version %s is not compatible with those required",
-    mockedNodeVersion => {
+    async mockedNodeVersion => {
       const formattedRequiredNodeVersions = new Intl.ListFormat("en-GB", {
         style: "long",
         type: "disjunction"
@@ -58,26 +80,34 @@ describe("check requirements", () => {
         value: mockedNodeVersion,
         configurable: true
       });
-      checkRequirements();
+      await expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
       expect(mockedLogger.logError).toHaveBeenCalledWith(
         `Required one of the following Node versions: ${formattedRequiredNodeVersions}. Found ${mockedNodeVersion}.`
       );
-      expect(process.exit).toHaveBeenCalledWith(1);
     }
   );
-
-  it(`should call \`process.exit(1)\` and display an error message if Git version is less than ${GIT_MIN_VERSION}`, () => {
+  it(`should call \`process.exit(1)\` and display an error message if Git version is less than ${GIT_MIN_VERSION}`, async () => {
+    Object.defineProperty(process, "version", {
+      value: "v20.18.3",
+      configurable: true
+    });
     const mockedGitVersion: CommandResult = {
       status: 0,
       stdout: "git version 2.30.0",
       stderr: ""
     };
     const coercedVersion = semver.coerce(mockedGitVersion.stdout);
-    vi.spyOn(runCommandSyncModule, "runCommandSync").mockReturnValue(mockedGitVersion);
-    checkRequirements();
+    vi.mocked(runCommandSync).mockReturnValue(mockedGitVersion);
+    await expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
     expect(mockedLogger.logError).toHaveBeenCalledWith(
       `Git version ${GIT_MIN_VERSION} required. Found ${coercedVersion}.`
     );
-    expect(process.exit).toHaveBeenCalledWith(1);
+  });
+  it("should complete successfully when requirements are met", async () => {
+    Object.defineProperty(process, "version", {
+      value: "v20.18.3",
+      configurable: true
+    });
+    await expect(checkRequirements()).resolves.not.toThrow();
   });
 });

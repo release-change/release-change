@@ -1,10 +1,9 @@
 import childProcess from "node:child_process";
 
+import { WORKSPACE_NAME, WORKSPACE_VERSION } from "@release-change/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { showVersion } from "../../src/cli/show-version.js";
-
-import { WORKSPACE_NAME, WORKSPACE_VERSION } from "../../src/shared/constants.js";
 
 describe(`display \`${WORKSPACE_NAME}\` version`, () => {
   const expectedVersion = WORKSPACE_VERSION;

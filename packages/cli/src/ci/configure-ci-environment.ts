@@ -1,4 +1,4 @@
-import type { CiConfig } from "./ci.types.js";
+import type { CiConfig } from "@release-change/shared";
 
 import { isCiToolDetected } from "./is-ci-tool-detected.js";
 

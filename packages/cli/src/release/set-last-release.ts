@@ -1,13 +1,11 @@
-import type { Context } from "../cli/cli.types.js";
-import type { LastRelease } from "./release.types.js";
+import type { Context, LastRelease } from "@release-change/shared";
 
 import { inspect } from "node:util";
 
+import { getLatestValidTag } from "@release-change/git";
+import { checkErrorType, setLogger } from "@release-change/logger";
 import semver from "semver";
 
-import { getLatestValidTag } from "../git/get-latest-valid-tag.js";
-import { checkErrorType } from "../logger/check-error-type.js";
-import { setLogger } from "../logger/set-logger.js";
 import { getRootPackageVersion } from "./get-root-package-version.js";
 import { getVersionFromTag } from "./get-version-from-tag.js";
 

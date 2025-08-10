@@ -1,12 +1,11 @@
-import type { Config } from "../../src/config/config.types.js";
-import type { Logger } from "../../src/logger/logger.types.js";
+import type { Logger } from "@release-change/logger";
+import type { Config } from "@release-change/shared";
 
+import { DEFAULT_CONFIG } from "@release-change/config";
+import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { isUsableCiEnvironment } from "../../src/ci/is-usable-ci-environment.js";
-import * as setLoggerModule from "../../src/logger/set-logger.js";
-
-import { DEFAULT_CONFIG } from "../../src/config/constants.js";
 
 describe("check if the CI environment is usable", () => {
   const mockedLogger: Logger = {
@@ -47,7 +46,11 @@ describe("check if the CI environment is usable", () => {
   };
 
   beforeEach(() => {
-    vi.spyOn(setLoggerModule, "setLogger").mockReturnValue(mockedLogger);
+    vi.mock("@release-change/logger", () => ({
+      checkErrorType: vi.fn(),
+      setLogger: vi.fn()
+    }));
+    vi.mocked(setLogger).mockReturnValue(mockedLogger);
   });
 
   afterEach(() => {
