@@ -5,7 +5,7 @@ import { switchUrlToSshProtocol } from "./switch-url-to-ssh-protocol.js";
 
 /**
  * Gets the remote repository URL for push from tracked repositories.
- * @return The first URL returned for push (using SSH or HTPS protocol) if there is at lease one tracked repository, `null` otherwise.
+ * @return The first URL returned for push (using SSH or HTTPS protocol) if there is at lease one tracked repository, `null` otherwise.
  */
 export const getRemoteRepositoryUrl = async (): Promise<string | null> => {
   const gitRemote = await getTrackedRepositories();

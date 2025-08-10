@@ -47,7 +47,7 @@ describe("set last release", () => {
     },
     branch: "main"
   } as Context;
-  const mockedContextWithInelegibleBranch = { ...mockedContext, branch: "unmatched-branch" };
+  const mockedContextWithIneligibleBranch = { ...mockedContext, branch: "unmatched-branch" };
   const mockedLogger: Logger = {
     setDebugScope: vi.fn(),
     logDebug: vi.fn(),
@@ -117,7 +117,7 @@ describe("set last release", () => {
   });
 
   it("should not call `getLatestValidTag()` if the package cannot publish from the branch", () => {
-    setLastRelease(mockedContextWithInelegibleBranch);
+    setLastRelease(mockedContextWithIneligibleBranch);
     expect(getLatestValidTag).not.toHaveBeenCalled();
   });
   it.each(mockedContexts)(

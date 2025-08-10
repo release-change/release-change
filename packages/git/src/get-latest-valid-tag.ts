@@ -5,7 +5,7 @@ import semver from "semver";
 import { getAllTags } from "./get-all-tags.js";
 
 /**
- * Gets latest valid Git tag for the branch.
+ * Gets the latest valid Git tag for the branch.
  * @param context - The context where the CLI is running.
  * @return The latest valid Git tag if found, `null` otherwise.
  */

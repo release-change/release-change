@@ -9,7 +9,7 @@ import { parseCommit } from "./parse-commit.js";
 import { setReleaseType } from "./set-release-type.js";
 
 /**
- * Gets the release type from the commits committed since the previous release or the beginning.
+ * Gets the release type from the commits which have been committed since the previous release or the beginning.
  * The release type can be one of the following, from most to least important:
  * 1. `"major"`,
  * 2. `"minor"`,

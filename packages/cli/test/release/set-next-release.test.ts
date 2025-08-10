@@ -45,7 +45,7 @@ describe("set next release", () => {
     config: mockedConfig,
     branch: "main"
   } as Context;
-  const mockedContextWithInelegibleBranch = { ...mockedContext, branch: "unmatched-branch" };
+  const mockedContextWithIneligibleBranch = { ...mockedContext, branch: "unmatched-branch" };
   const mockedLogger: Logger = {
     setDebugScope: vi.fn(),
     logDebug: vi.fn(),
@@ -405,7 +405,7 @@ describe("set next release", () => {
   });
 
   it("should not call `incrementVersion()` if the package cannot publish from the branch", () => {
-    setNextRelease("major", mockedContextWithInelegibleBranch);
+    setNextRelease("major", mockedContextWithIneligibleBranch);
     expect(incrementVersion).not.toHaveBeenCalled();
   });
   it("should not call `incrementVersion()` if the `releaseType` argument is set to `null`", () => {

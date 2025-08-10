@@ -22,7 +22,7 @@ During the public disclosure, the reporter can be given credit and a link can be
 
 Please note the following requirements (all are required):
 - summary of the suspected vulnerability and its impact (who does this impact and how),
-- information about whether the problem has been patched (and what versions should users upgrade to),
+- information about whether the problem has been patched (and what versions users should upgrade to),
 - description of possible workarounds (if there is a way for users to fix or remediate the vulnerability without upgrading),
 - information about references and any links users can visit to find out more.
 

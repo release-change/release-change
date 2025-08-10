@@ -455,7 +455,6 @@ describe("set the release type of the commit", () => {
     const unconventionalCommitDescription = "Commit not following Conventional Commits syntax";
     const unconventionalCommit = {
       sha: "0123456789abcdef0123456789abcdef01234567",
-      mergeShas: [],
       description: unconventionalCommitDescription,
       body: [],
       footer: []
