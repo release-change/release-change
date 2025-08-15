@@ -380,7 +380,7 @@ describe("increment version", () => {
             for (const releaseType in branch) {
               const expectedVersion = branch[releaseType];
               it.runIf(mockedReleaseTypes.includes(releaseType))(
-                `should return \"${expectedVersion}\" if release type is "${releaseType}"`,
+                `should return "${expectedVersion}" if release type is "${releaseType}"`,
                 () => {
                   expect(
                     incrementVersion(currentVersion, releaseType as ReleaseType, mockedBranchConfig)
