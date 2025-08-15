@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "files": {
-    "includes": ["**", "!**/.gitignore", "!**/node_modules/**"],
+    "includes": ["**", "!**/.gitignore", "!**/node_modules"],
     "ignoreUnknown": true
   },
   "vcs": {
