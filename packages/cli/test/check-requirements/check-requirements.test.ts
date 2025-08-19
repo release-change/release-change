@@ -47,7 +47,7 @@ describe("check requirements", () => {
         engines: {
           node: "^20.18.3 || ^22.12.0",
           npm: ">=10.8.2",
-          pnpm: ">=10.13.1"
+          pnpm: ">=10.15.0"
         }
       },
       WORKSPACE_NAME: "release-change",
