@@ -46,7 +46,6 @@ export const COERCE_INCLUDING_PRERELEASE_RTL = new RegExp(
 export const RANGE_OPERATORS_PATTERN = /=|[<>]=?/;
 export const TILDE_COMPARATOR_PATTERN = /~>?/;
 export const CARET_COMPARATOR_PATTERN = /\^/;
-export const STAR_COMPARATOR_PATTERN = /[<>]?=?\s*\*/;
 export const SPACE_FOLLOWED_COMPARATORS_PATTERN = new RegExp(
   `(${RANGE_OPERATORS_PATTERN.source}|${TILDE_COMPARATOR_PATTERN.source}|${CARET_COMPARATOR_PATTERN.source})\\s*`,
   "g"

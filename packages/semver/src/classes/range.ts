@@ -19,7 +19,6 @@ import {
   PARTIAL_PATTERN_LOOSE,
   RANGE_OPERATORS_PATTERN,
   SPACE_FOLLOWED_COMPARATORS_PATTERN,
-  STAR_COMPARATOR_PATTERN,
   TILDE_COMPARATOR_PATTERN,
   TILDE_PATTERN,
   TILDE_PATTERN_LOOSE,
@@ -453,7 +452,7 @@ export class Range {
    * @return A string containing the range without stars.
    */
   removeStars(comparator: string): string {
-    return comparator.trim().replace(STAR_COMPARATOR_PATTERN, "");
+    return comparator.trim().replaceAll("*", "");
   }
 
   /**
