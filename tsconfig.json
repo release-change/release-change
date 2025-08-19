@@ -26,6 +26,9 @@
       "path": "./packages/logger"
     },
     {
+      "path": "./packages/semver"
+    },
+    {
       "path": "./packages/git"
     },
     {

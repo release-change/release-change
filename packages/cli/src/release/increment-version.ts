@@ -1,7 +1,7 @@
 import type { ReleaseType } from "@release-change/commit-analyser";
 import type { BranchConfig } from "@release-change/shared";
 
-import semver from "semver";
+import { getPrerelease, increase } from "@release-change/semver";
 
 /**
  * Increments the version.
@@ -62,7 +62,7 @@ export const incrementVersion = (
 ): string => {
   if (releaseType) {
     const { prerelease, prereleaseIdentifier } = branchConfig;
-    const currentVersionPrereleaseComponents = semver.prerelease(currentVersion);
+    const currentVersionPrereleaseComponents = getPrerelease(currentVersion);
     const isCurrentVersionPrerelease = Boolean(currentVersionPrereleaseComponents?.length);
     const prereleaseType = isCurrentVersionPrerelease
       ? "prerelease"
@@ -73,10 +73,13 @@ export const incrementVersion = (
           : "prerelease";
     const nextVersion =
       prerelease && prereleaseIdentifier
-        ? semver.inc(currentVersion, prereleaseType, prereleaseIdentifier, "1")
+        ? increase(currentVersion, prereleaseType, {
+            prefix: prereleaseIdentifier,
+            identifierBase: 1
+          })
         : isCurrentVersionPrerelease
-          ? semver.inc(currentVersion, "patch")
-          : semver.inc(currentVersion, releaseType);
+          ? increase(currentVersion, "patch")
+          : increase(currentVersion, releaseType);
     if (nextVersion) return nextVersion;
     throw new Error(`Failed to increment version from ${currentVersion}: no next version given.`);
   }
