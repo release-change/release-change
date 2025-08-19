@@ -10,7 +10,7 @@ Node.js 20.18.3+ and 22.12.0+ are supported. **Odd major versions are not suppor
 
 ### Supported package manager versions
 
-`npm` 10.8.2+ and `pnpm` 10.14.0+ are supported. **`yarn` is not supported.**
+`npm` 10.8.2+ and `pnpm` 10.15.0+ are supported. **`yarn` is not supported.**
 
 ## Reporting a vulnerability
 
