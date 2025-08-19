@@ -58,6 +58,7 @@
     "@release-change/config": "workspace:*",
     "@release-change/git": "workspace:*",
     "@release-change/logger": "workspace:*",
+    "@release-change/semver": "workspace:*",
     "@release-change/shared": "workspace:*"
   }
 }

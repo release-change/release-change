@@ -1,4 +1,4 @@
-import semver from "semver";
+import { satisfies } from "@release-change/semver";
 
 /**
  * Checks whether the version of Node installed matches the versions required by `engines.node` in root `package.json`.
@@ -10,5 +10,5 @@ export const isNodeVersionCompatible = (
   nodeVersion: string,
   nodeVersionsRequired: string
 ): boolean => {
-  return semver.satisfies(nodeVersion, nodeVersionsRequired);
+  return satisfies(nodeVersion, nodeVersionsRequired);
 };

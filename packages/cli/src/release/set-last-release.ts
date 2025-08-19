@@ -4,7 +4,7 @@ import { inspect } from "node:util";
 
 import { getLatestValidTag } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import semver from "semver";
+import { validate } from "@release-change/semver";
 
 import { getRootPackageVersion } from "./get-root-package-version.js";
 import { getVersionFromTag } from "./get-version-from-tag.js";
@@ -32,7 +32,7 @@ export const setLastRelease = (context: Context): void => {
       lastRelease.version = version;
     } else {
       logger.logInfo(`No Git tag version found on branch ${branch}.`);
-      const rootPackageVersion = semver.valid(getRootPackageVersion(cwd));
+      const rootPackageVersion = validate(getRootPackageVersion(cwd));
       if (rootPackageVersion) {
         logger.logInfo(`Found package version ${rootPackageVersion} on branch ${branch}.`);
         lastRelease.version = rootPackageVersion;

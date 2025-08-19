@@ -4,8 +4,8 @@ import type { CommandResult } from "@release-change/shared";
 import process from "node:process";
 
 import { setLogger } from "@release-change/logger";
+import { coerce } from "@release-change/semver";
 import { runCommandSync } from "@release-change/shared";
-import semver from "semver";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { checkRequirements } from "../../src/index.js";
@@ -96,7 +96,7 @@ describe("check requirements", () => {
       stdout: "git version 2.30.0",
       stderr: ""
     };
-    const coercedVersion = semver.coerce(mockedGitVersion.stdout);
+    const coercedVersion = coerce(mockedGitVersion.stdout);
     vi.mocked(runCommandSync).mockReturnValue(mockedGitVersion);
     await expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
     expect(mockedLogger.logError).toHaveBeenCalledWith(
