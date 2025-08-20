@@ -1,9 +1,7 @@
-import type { Config } from "@release-change/shared";
-
-import { DEFAULT_CONFIG } from "@release-change/config";
 import { assert, expect, it } from "vitest";
 
 import { parseCommit } from "../src/parse-commit.js";
+import { mockedContext } from "./fixtures/mocked-context.js";
 
 const commitIndent = " ".repeat(4);
 const commitId = "commit 0123456789abcdef";
@@ -12,17 +10,6 @@ const commitDate = "Date:   Wed Jan 1 13:37:42 2025 +0000";
 const commitDescription = `${commitIndent}docs: some description`;
 const commitKeyValueFooter = `${commitIndent}Footer-key: value`;
 const commitBreakingChangeFooter = `${commitIndent}BREAKING CHANGE: some explanation.`;
-const expectedDefaultConfig = DEFAULT_CONFIG as unknown as Config;
-const mockedContext = {
-  cwd: "/fake/path",
-  env: {},
-  branch: "main",
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  config: expectedDefaultConfig
-};
 const description = commitDescription.trim();
 const keyValueFooter = commitKeyValueFooter.trim();
 const breakingChangeFooter = commitBreakingChangeFooter.trim();

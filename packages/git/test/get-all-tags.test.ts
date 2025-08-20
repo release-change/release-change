@@ -1,43 +1,10 @@
-import type { Logger } from "@release-change/logger";
-import type { Context } from "@release-change/shared";
-
 import { setLogger } from "@release-change/logger";
 import { runCommandSync } from "@release-change/shared";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getAllTags } from "../src/index.js";
-
-const mockedRepositoryUrl = "https://github.com/user-id/repo-name";
-const mockedConfig = {
-  branches: ["main"],
-  releaseType: {
-    main: {
-      channel: "latest"
-    }
-  },
-  debug: false,
-  dryRun: false,
-  repositoryUrl: mockedRepositoryUrl,
-  remoteName: "origin"
-};
-const mockedContext = {
-  cwd: "/fake/path",
-  env: {},
-  branch: "main",
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  config: mockedConfig
-} as Context;
-const mockedLogger: Logger = {
-  setDebugScope: vi.fn(),
-  logDebug: vi.fn(),
-  logInfo: vi.fn(),
-  logError: vi.fn(),
-  logWarn: vi.fn(),
-  logSuccess: vi.fn()
-};
+import { mockedContext } from "./fixtures/mocked-context.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({

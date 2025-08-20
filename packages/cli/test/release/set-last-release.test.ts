@@ -1,5 +1,4 @@
-import type { Logger } from "@release-change/logger";
-import type { Context, LastRelease } from "@release-change/shared";
+import type { LastRelease } from "@release-change/shared";
 
 import { getAllTags, getLatestValidTag } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
@@ -7,54 +6,9 @@ import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getRootPackageVersion } from "../../src/release/get-root-package-version.js";
 import { setLastRelease } from "../../src/release/set-last-release.js";
+import { mockedContext, mockedContextWithIneligibleBranch } from "../fixtures/mocked-context.js";
+import { mockedLogger } from "../fixtures/mocked-logger.js";
 
-const mockedRepositoryUrl = "https://github.com/user-id/repo-name";
-const mockedConfig = {
-  branches: ["alpha", "beta", "main", "master", "next"],
-  releaseType: {
-    alpha: {
-      channel: "alpha",
-      prerelease: true,
-      prereleaseIdentifier: "alpha"
-    },
-    beta: {
-      channel: "beta",
-      prerelease: true,
-      prereleaseIdentifier: "beta"
-    },
-    main: {
-      channel: "default"
-    },
-    next: {
-      channel: "next",
-      prerelease: true,
-      prereleaseIdentifier: "rc"
-    }
-  },
-  debug: false,
-  dryRun: false,
-  repositoryUrl: mockedRepositoryUrl,
-  remoteName: "origin"
-};
-const mockedContext = {
-  cwd: "/fake/path",
-  env: {},
-  config: mockedConfig,
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  branch: "main"
-} as Context;
-const mockedContextWithIneligibleBranch = { ...mockedContext, branch: "unmatched-branch" };
-const mockedLogger: Logger = {
-  setDebugScope: vi.fn(),
-  logDebug: vi.fn(),
-  logInfo: vi.fn(),
-  logError: vi.fn(),
-  logWarn: vi.fn(),
-  logSuccess: vi.fn()
-};
 const mockedGitTags = [
   "v2.0.0",
   "v2.0.0-rc.2",

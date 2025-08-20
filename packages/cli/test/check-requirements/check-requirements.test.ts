@@ -1,4 +1,3 @@
-import type { Logger } from "@release-change/logger";
 import type { CommandResult } from "@release-change/shared";
 
 import process from "node:process";
@@ -9,6 +8,7 @@ import { runCommandSync } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { checkRequirements } from "../../src/index.js";
+import { mockedLogger } from "../fixtures/mocked-logger.js";
 
 import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "../../src/check-requirements/constants.js";
 
@@ -21,14 +21,6 @@ const formerLtsReleases = [
   "14.21.3",
   "16.20.2"
 ];
-const mockedLogger: Logger = {
-  setDebugScope: vi.fn(),
-  logDebug: vi.fn(),
-  logInfo: vi.fn(),
-  logError: vi.fn(),
-  logWarn: vi.fn(),
-  logSuccess: vi.fn()
-};
 let originalProcessExit: typeof process.exit;
 
 beforeEach(() => {

@@ -1,4 +1,3 @@
-import type { Logger } from "@release-change/logger";
 import type { Config } from "@release-change/shared";
 
 import { DEFAULT_CONFIG } from "@release-change/config";
@@ -6,15 +5,8 @@ import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { isUsableCiEnvironment } from "../../src/ci/is-usable-ci-environment.js";
+import { mockedLogger } from "../fixtures/mocked-logger.js";
 
-const mockedLogger: Logger = {
-  setDebugScope: vi.fn(),
-  logDebug: vi.fn(),
-  logInfo: vi.fn(),
-  logError: vi.fn(),
-  logWarn: vi.fn(),
-  logSuccess: vi.fn()
-};
 const expectedDefaultConfig = DEFAULT_CONFIG as unknown as Config;
 const mockedContext = {
   cwd: "/fake/path",

@@ -1,15 +1,8 @@
 import { expect, it } from "vitest";
 
 import { switchUrlToHttpsProtocol } from "../src/switch-url-to-https-protocol.js";
+import { mockedRemoteUrls } from "./fixtures/mocked-remote-urls.js";
 
-const mockedRemoteUrls = [
-  "git@github.com:user-id/repo-name.git",
-  "ssh://git@github.com/user-id/repo-name.git",
-  "git+ssh://git@github.com/user-id/repo-name.git",
-  "https://github.com/user-id/repo-name.git",
-  "git+https://github.com/user-id/repo-name.git",
-  "github:user-id/repo-name"
-];
 const expectedHttpsRemoteUrl = "https://github.com/user-id/repo-name.git";
 
 it.each(mockedRemoteUrls)(

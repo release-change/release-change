@@ -3,8 +3,8 @@ import type { Context } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { getAllTags, getLatestValidTag } from "../src/index.js";
+import { mockedRepositoryUrl } from "./fixtures/mocked-repository-url.js";
 
-const mockedRepositoryUrl = "https://github.com/user-id/repo-name";
 const mockedConfig = {
   branches: ["alpha", "beta", "main", "master", "next"],
   releaseType: {
