@@ -2,8 +2,6 @@ import type { LoggerContext } from "./logger.types.js";
 
 import { WORKSPACE_NAME } from "@release-change/shared";
 
-import { addLeadingZero } from "./add-leading-zero.js";
-
 /**
  * Sets prefix for messages logged to the console according to the context provided by `loggerContext`:
  * - if the debug mode is activated, the prefix uses the following format: `\x1b[1;34m[debug] <package name>:<scope name>\x1b[0m`;
@@ -18,8 +16,12 @@ export const setPrefix = (timestamp: number, loggerContext: LoggerContext): stri
     if (scope) return `\x1b[1;34m[debug] ${WORKSPACE_NAME}:${scope}\x1b[0m`;
     return `\x1b[1;34m[debug] ${WORKSPACE_NAME}\x1b[0m`;
   }
-  const hours = addLeadingZero(new Date(timestamp).getUTCHours());
-  const minutes = addLeadingZero(new Date(timestamp).getUTCMinutes());
-  const seconds = addLeadingZero(new Date(timestamp).getUTCSeconds());
-  return `[${hours}:${minutes}:${seconds}] [${WORKSPACE_NAME}] \u203a`;
+  const time = Intl.DateTimeFormat(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "UTC"
+  }).format(timestamp);
+  return `[${time}] [${WORKSPACE_NAME}] \u203a`;
 };
