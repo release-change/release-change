@@ -1,19 +1,9 @@
-import type { Logger } from "@release-change/logger";
-
 import { setLogger } from "@release-change/logger";
 import { runCommand } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { checkRepository } from "../src/index.js";
-
-const mockedLogger: Logger = {
-  setDebugScope: vi.fn(),
-  logDebug: vi.fn(),
-  logInfo: vi.fn(),
-  logError: vi.fn(),
-  logWarn: vi.fn(),
-  logSuccess: vi.fn()
-};
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 beforeEach(() => {
   vi.spyOn({ setLogger }, "setLogger").mockReturnValue(mockedLogger);

@@ -1,49 +1,13 @@
-import type { Logger } from "@release-change/logger";
-import type { Context } from "@release-change/shared";
-
 import { setLogger } from "@release-change/logger";
 import { runCommandSync } from "@release-change/shared";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getCommitsSinceRef } from "../src/index.js";
+import { mockedContext } from "./fixtures/mocked-context.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 import { COMMIT_SEPARATOR } from "../src/constants.js";
 
-const mockedRepositoryUrl = "https://github.com/user-id/repo-name";
-const mockedConfig = {
-  branches: ["main"],
-  releaseType: {
-    main: {
-      channel: "latest"
-    }
-  },
-  debug: false,
-  dryRun: false,
-  repositoryUrl: mockedRepositoryUrl,
-  remoteName: "origin"
-};
-const mockedContext = {
-  cwd: "/fake/path",
-  env: {},
-  branch: "main",
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  config: mockedConfig,
-  lastRelease: {
-    gitTag: null,
-    version: "0.0.0"
-  }
-} as Context;
-const mockedLogger: Logger = {
-  setDebugScope: vi.fn(),
-  logDebug: vi.fn(),
-  logInfo: vi.fn(),
-  logError: vi.fn(),
-  logWarn: vi.fn(),
-  logSuccess: vi.fn()
-};
 const mockedCommits = `commit 4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5
 Merge: 7908467 72f01b7
 Author: Contributor <0+userId@users.noreply.github.com>

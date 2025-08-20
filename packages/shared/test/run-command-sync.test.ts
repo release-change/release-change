@@ -6,7 +6,6 @@ import { afterEach, beforeEach, expect, expectTypeOf, it, vi } from "vitest";
 
 import { runCommandSync } from "../src/index.js";
 
-const mockedCommand = "git";
 const mockedArgs = ["tag", "-l", "--sort=v:refname", "--merged", "origin/main"];
 const mockedOptions = {
   cwd: "/fake/path",
@@ -40,7 +39,7 @@ it("should return an object with status, stdout and stderr properties and correc
       stderr: "Stderr"
     };
   });
-  expectTypeOf(runCommandSync(mockedCommand, mockedArgs, mockedOptions)).toMatchObjectType<{
+  expectTypeOf(runCommandSync("git", mockedArgs, mockedOptions)).toMatchObjectType<{
     status: number | null;
     stdout: string;
     stderr: string;

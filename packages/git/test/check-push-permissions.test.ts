@@ -1,45 +1,12 @@
-import type { Logger } from "@release-change/logger";
-import type { Context } from "@release-change/shared";
-
 import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import * as checkAuthorisationModule from "../src/check-authorisation.js";
 import { checkPushPermissions } from "../src/index.js";
 import * as isBranchUpToDateModule from "../src/is-branch-up-to-date.js";
-
-const mockedRepositoryUrl = "https://github.com/user-id/repo-name";
-const mockedConfig = {
-  branches: ["main"],
-  releaseType: {
-    main: {
-      channel: "latest"
-    }
-  },
-  debug: false,
-  dryRun: false,
-  repositoryUrl: mockedRepositoryUrl,
-  remoteName: "origin"
-};
-const mockedContext = {
-  cwd: "/fake/path",
-  env: {},
-  branch: "branch-name",
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  config: mockedConfig
-} as Context;
-const mockedContextWithEligibleBranch = { ...mockedContext, branch: "main" };
-const mockedLogger: Logger = {
-  setDebugScope: vi.fn(),
-  logDebug: vi.fn(),
-  logInfo: vi.fn(),
-  logError: vi.fn(),
-  logWarn: vi.fn(),
-  logSuccess: vi.fn()
-};
+import { mockedContext, mockedContextWithEligibleBranch } from "./fixtures/mocked-context.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
+import { mockedRepositoryUrl } from "./fixtures/mocked-repository-url.js";
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({

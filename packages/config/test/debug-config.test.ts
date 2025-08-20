@@ -1,10 +1,10 @@
-import type { Logger } from "@release-change/logger";
 import type { Config } from "@release-change/shared";
 
 import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { DEFAULT_CONFIG, debugConfig } from "../src/index.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const expectedDefaultConfig = DEFAULT_CONFIG as unknown as Config;
 const mockedContext = {
@@ -16,14 +16,6 @@ const mockedContext = {
     isPullRequest: false
   },
   config: expectedDefaultConfig
-};
-const mockedLogger: Logger = {
-  setDebugScope: vi.fn(),
-  logDebug: vi.fn(),
-  logInfo: vi.fn(),
-  logError: vi.fn(),
-  logWarn: vi.fn(),
-  logSuccess: vi.fn()
 };
 
 beforeEach(() => {

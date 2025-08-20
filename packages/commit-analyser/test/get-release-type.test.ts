@@ -1,26 +1,13 @@
-import type { Config } from "@release-change/shared";
-
-import { DEFAULT_CONFIG } from "@release-change/config";
 import { expect, it } from "vitest";
 
 import { getReleaseType } from "../src/index.js";
+import { mockedContext } from "./fixtures/mocked-context.js";
 
 const commitIndent = " ".repeat(4);
 const commitId = "commit 0123456789abcdef";
 const commitAuthor = "Author: Contributor <0+userId@users.noreply.github.com>";
 const commitDate = "Date:   Wed Jan 1 13:37:42 2025 +0000";
 const commitBreakingChangeFooter = `${commitIndent}BREAKING CHANGE: some explanation.`;
-const expectedDefaultConfig = DEFAULT_CONFIG as unknown as Config;
-const mockedContext = {
-  cwd: "/fake/path",
-  env: {},
-  branch: "main",
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  config: expectedDefaultConfig
-};
 const mockedCommitHead = `${commitId}\n${commitAuthor}\n${commitDate}`;
 const mockedMajorCommit = `${mockedCommitHead}\n\n${commitIndent}feat!: add new breaking change feature`;
 const mockedMajorCommitWithBreakingChangeFooter = `${mockedCommitHead}\n\n${commitIndent}feat: add new feature\n${commitIndent}\n${commitBreakingChangeFooter}`;

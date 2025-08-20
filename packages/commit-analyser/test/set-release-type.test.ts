@@ -1,12 +1,11 @@
-import type { Logger } from "@release-change/logger";
-import type { Config } from "@release-change/shared";
 import type { Commit } from "../src/commit-analyser.types.js";
 
-import { DEFAULT_CONFIG } from "@release-change/config";
 import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { setReleaseType } from "../src/set-release-type.js";
+import { mockedContext } from "./fixtures/mocked-context.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const commitBody = "Some text for the commit body.";
 const commitFooter = "Footer-key: value";
@@ -370,25 +369,6 @@ for (const commitType of commitTypes) {
     }
   }
 }
-const expectedDefaultConfig = DEFAULT_CONFIG as unknown as Config;
-const mockedContext = {
-  cwd: "/fake/path",
-  env: {},
-  branch: "main",
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  config: expectedDefaultConfig
-};
-const mockedLogger: Logger = {
-  setDebugScope: vi.fn(),
-  logDebug: vi.fn(),
-  logInfo: vi.fn(),
-  logError: vi.fn(),
-  logWarn: vi.fn(),
-  logSuccess: vi.fn()
-};
 const expectedMajorLogMessage = "The release type for the commit is major.";
 const expectedMinorLogMessage = "The release type for the commit is minor.";
 const expectedPatchLogMessage = "The release type for the commit is patch.";
