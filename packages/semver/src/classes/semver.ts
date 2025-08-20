@@ -141,22 +141,22 @@ export class Semver {
    * Increases the version.
    *
    * The increment follows the following rules:
-   * - if the release type is `"major"`: if this is a pre-major version, it bumps up to the same major version, increments major otherwise;
-   * - if the release type is `"minor"`: if this is a pre-minor version, it bumps up to the same minor version, increments minor otherwise;
-   * - if the release type is `"patch"`: if this is a pre-patch version, it bumps up to the same patch version, increments patch otherwise;
-   * - if the release type is `"release"`: it bumps up to the same version core (major, minor and patch) and removes all pre-release components;
-   * - if the release type is `"premajor"`, `"preminor"` or `"prepatch"`, it bumps the version up to the next major, minor or patch release and immediately down to pre-release.
+   * - if the release type is `major`: if this is a pre-major version, it bumps up to the same major version, increments major otherwise;
+   * - if the release type is `minor`: if this is a pre-minor version, it bumps up to the same minor version, increments minor otherwise;
+   * - if the release type is `patch`: if this is a pre-patch version, it bumps up to the same patch version, increments patch otherwise;
+   * - if the release type is `release`: it bumps up to the same version core (major, minor and patch) and removes all pre-release components;
+   * - if the release type is `premajor`, `preminor` or `prepatch`, it bumps the version up to the next major, minor or patch release and immediately down to pre-release.
    * - otherwise: if this is not a pre-release version, it does the same as a pre-patch, increments the pre-release number otherwise.
    * @example
    * Major releases:
-   * 1.0.0-5 bumps to 1.0.0,
-   * 1.1.0 bumps to 2.0.0.
+   * `1.0.0-5` bumps to `1.0.0`,
+   * `1.1.0` bumps to `2.0.0`.
    * Minor releases:
-   * 1.2.0-5 bumps to 1.2.0,
-   * 1.2.1 bumps to 1.3.0.
+   * `1.2.0-5` bumps to `1.2.0`,
+   * `1.2.1` bumps to `1.3.0`.
    * Patch releases:
-   * 1.2.0-5 bumps to 1.2.0,
-   * 1.2.0 bumps to 1.2.1.
+   * `1.2.0-5` bumps to `1.2.0`,
+   * `1.2.0` bumps to `1.2.1`.
    * @param releaseType - The release type to use for the increment.
    * @param prereleaseIdentifiers - When using pre-releases, an object containing the prefix and the identifier to use, the identifier being the increment base.
    * @return A plain object containing only the data properties matching the new version.

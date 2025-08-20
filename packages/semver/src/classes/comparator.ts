@@ -47,7 +47,7 @@ export class Comparator {
   /**
    * Parses the comparator string.
    *
-   * If the comparator is an empty string, the `Semver` object is treated like version 0.0.0-0. The `"="` operator is ignored.
+   * If the comparator is an empty string, the `Semver` object is treated like version 0.0.0-0. The `=` operator is ignored.
    * @param comparator - The comparator string to parse.
    * @param [options] - The options to use (`loose`: whether to use loose mode or not).
    */

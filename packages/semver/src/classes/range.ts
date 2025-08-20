@@ -65,9 +65,9 @@ export class Range {
   }
 
   /**
-   * Checks whether a comparator has a range value of `"<0.0.0-0"` (i.e. a null set).
+   * Checks whether a comparator has a range value of `<0.0.0-0` (i.e. a null set).
    * @param comparator - The comparator to check.
-   * @return `true` if the range value is `"<0.0.0-0"`, `false` otherwise.
+   * @return `true` if the range value is `<0.0.0-0`, `false` otherwise.
    */
   isNullSet(comparator: SemverComparatorData | undefined): boolean {
     return comparator ? comparator.value === "<0.0.0-0" : false;
@@ -122,7 +122,7 @@ export class Range {
   /**
    * Formats the `range` property.
    *
-   * Any empty value from a comparator is replaced by `"*"`.
+   * Any empty value from a comparator is replaced by `*`.
    * @param comparatorSet - The formatted comparator set to use.
    * @return The formatted `range` property.
    */
@@ -152,14 +152,14 @@ export class Range {
    *
    * The replacement follows the following rules:
    * - concerning the left range:
-   *    - a single major-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, (e.g.: `"1"`, `"1.x"` and `"1.x.x"` become `">=1.0.0"`);
-   *    - a major-and-minor-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to this version, with patch at `0`, (e.g.: `"1.2"` and `"1.2.x"` become `">=1.2.0"`);
-   *    - a complete version range (major, minor and patch) is replaced by a range greater than or equal to this version (e.g.: `"1.2.3"` becomes `">=1.2.3"`);
+   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, (e.g.: `1`, `1.x` and `1.x.x` become `>=1.0.0`);
+   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`, (e.g.: `1.2` and `1.2.x` become `>=1.2.0`);
+   *    - a complete version range (major, minor and patch) is replaced by a range greater than or equal to this version (e.g.: `1.2.3` becomes `>=1.2.3`);
    * - concerning the right range:
-   *    - a single major-version range, whether completed by an `"x"` or not, is replaced by a range less than the next pre-major version (e.g.: `"3"`, `"3.x"` and `"3.x.x"` become `"<4.0.0-0"`);
-   *    - a major-and-minor-version range, whether completed by an `"x"` or not, is replaced by a range less than the next pre-minor version (e.g.: `"3.4"` and `"3.4.x"` become `"<3.5.0-0"`);
-   *    - a complete version range (major, minor and patch) is replaced by a range less or equal to this version (e.g.: `"3.4.5"` becomes `"<=3.4.5"`);
-   * - a range consisting of just an `"x"` is replaced by `"*"`;
+   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range less than the next pre-major version (e.g.: `3`, `3.x` and `3.x.x` become `<4.0.0-0`);
+   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than the next pre-minor version (e.g.: `3.4` and `3.4.x` become `<3.5.0-0`);
+   *    - a complete version range (major, minor and patch) is replaced by a range less or equal to this version (e.g.: `3.4.5` becomes `<=3.4.5`);
+   * - a range consisting of just an `x` is replaced by `*`;
    * - any prerelease identifiers are kept, even tough the `includePrerelease` option is set to `false` or not declared.
    * @param comparator - The range string with a comparator to parse.
    * @param [options] - The options to use (`includePrerelease`: whether to include pre-release versions or not, `loose`: whether to use loose mode or not).
@@ -222,20 +222,20 @@ export class Range {
    * Replaces a range beginning with a tilde, whether followed by a right arrow or not, by a range with greater-than-or-equal and less-than operators.
    *
    * The replacement follows the following rules:
-   * - a range consisting of just a tilde, whether followed by a right arrow or not, is replaced by `"*"`;
-   * - a tilde followed by a single major-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, and less than the next pre-major version;
-   * - a tilde followed by a major-and-minor-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-minor version;
+   * - a range consisting of just a tilde, whether followed by a right arrow or not, is replaced by `*`;
+   * - a tilde followed by a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, and less than the next pre-major version;
+   * - a tilde followed by a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-minor version;
    * - a tilde followed by a complete version range (major, minor and patch) is replaced by a range greater than or equal to this version and less than the next pre-minor version;
    * - a tilde followed by a zero-version range is replaced by a range greater than or equal to this version and less than the next pre-minor version;
    * - any prerelease identifiers are kept, even tough the `includePrerelease` option is set to `false` or not declared.
    * @example
-   * `"~2"`, `"~2.x"`, `"~2.x.x"`, `"~>2"`, `"~>2.x"` and `"~>2.x.x"` become `">=2.0.0 <3.0.0-0"`,
-   * `"~2.0"`, `~2.0.x`, "~>2.0"` and `~>2.0.x` become `">=2.0.0 <2.1.0-0"`,
-   * `"~1.2"`, `~1.2.x`, `"~>1.2"` and `~>1.2.x` become `">=1.2.0 <1.3.0-0"`,
-   * `"~1.2.3"` and `"~>1.2.3"` become `">=1.2.3 <1.3.0-0"`,
-   * `"~1.2.0"` and `"~>1.2.0"` become `">=1.2.0 <1.3.0-0"`,
-   * `"~0.0.1"` and `"~>0.0.1"` become `">=0.0.1 <0.1.0-0"`,
-   * `"~1.2.3-beta.4"` and `"~>1.2.3-beta.4"` become `">=1.2.3-beta.4 <1.3.0-0"`.
+   * `~2`, `~2.x`, `~2.x.x`, `~>2`, `~>2.x` and `~>2.x.x` become `>=2.0.0 <3.0.0-0`,
+   * `~2.0`, `~2.0.x`, "~>2.0"` and `~>2.0.x` become `>=2.0.0 <2.1.0-0`,
+   * `~1.2`, `~1.2.x`, `~>1.2` and `~>1.2.x` become `>=1.2.0 <1.3.0-0`,
+   * `~1.2.3` and `~>1.2.3` become `>=1.2.3 <1.3.0-0`,
+   * `~1.2.0` and `~>1.2.0` become `>=1.2.0 <1.3.0-0`,
+   * `~0.0.1` and `~>0.0.1` become `>=0.0.1 <0.1.0-0`,
+   * `~1.2.3-beta.4` and `~>1.2.3-beta.4` become `>=1.2.3-beta.4 <1.3.0-0`.
    * @param comparator - The range string with a comparator to parse.
    * @param [options] - The options to use (`includePrerelease`: whether to include pre-release versions or not, `loose`: whether to use loose mode or not).
    * @return A string containing the range with greater-than-or-equal and less-than operators if a tilde is present, the original string otherwise.
@@ -281,25 +281,25 @@ export class Range {
    * Replaces a range beginning with a caret by a range with greater-than-or-equal and less-than operators.
    *
    * The replacement follows the following rules:
-   * - a range consisting of just a caret is replaced by `"*"`;
-   * - a range consisting of a caret followed by an `"x"` is replaced by `"*"`;
-   * - a caret followed by a single major-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, and less than the next pre-major version;
-   * - a caret followed by a major-and-minor-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-major version;
+   * - a range consisting of just a caret is replaced by `*`;
+   * - a range consisting of a caret followed by an `x` is replaced by `*`;
+   * - a caret followed by a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, and less than the next pre-major version;
+   * - a caret followed by a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-major version;
    * - a caret followed by a complete version range (major, minor and patch) is replaced by a range greater than or equal to this version and less than the next pre-major version;
    * - a caret followed by a single zero-version range is replaced by a range less than the next pre-major version;
    * - a caret followed by a zero-version range with minor at `0` is replaced by a range greater than or equal to this version and less than the next pre-patch version;
    * - a caret followed by a complete zero-version range is replaced by a range greater than or equal to this version and less than the next pre-minor version;
    * - any prerelease identifiers are kept, even tough the `includePrerelease` option is set to `false` or not declared.
    * @example
-   * `"^2"`, `"^2.x"` and `"^2.x.x"` become `">=2.0.0 <3.0.0-0"`,
-   * `"^2.0"` and `^2.0.x` become `">=2.0.0 <3.0.0-0"`,
-   * `"^1.2"` and `^1.2.x` become `">=1.2.0 <2.0.0-0"`,
-   * `"^1.2.3"` becomes `">=1.2.3 <2.0.0-0"`,
-   * `"^1.2.0"` becomes `">=1.2.0 <2.0.0-0"`,
-   * `"^0"` becomes `<1.0.0-0"`,
-   * `"^0.0.1"` becomes `">=0.0.1 <0.0.2-0"`,
-   * `"^0.1.0"` becomes `">=0.1.0 <0.2.0-0"`,
-   * `"^1.2.3-beta.4"` becomes `">=1.2.3-beta.4 <2.0.0-0"`.
+   * `^2`, `^2.x` and `^2.x.x` become `>=2.0.0 <3.0.0-0`,
+   * `^2.0` and `^2.0.x` become `>=2.0.0 <3.0.0-0`,
+   * `^1.2` and `^1.2.x` become `>=1.2.0 <2.0.0-0`,
+   * `^1.2.3` becomes `>=1.2.3 <2.0.0-0`,
+   * `^1.2.0` becomes `>=1.2.0 <2.0.0-0`,
+   * `^0` becomes `<1.0.0-0"`,
+   * `^0.0.1` becomes `>=0.0.1 <0.0.2-0`,
+   * `^0.1.0` becomes `>=0.1.0 <0.2.0-0`,
+   * `^1.2.3-beta.4` becomes `>=1.2.3-beta.4 <2.0.0-0`.
    * @param comparator - The range string with a comparator to parse.
    * @param [options] - The options to use (`includePrerelease`: whether to include pre-release versions or not, `loose`: whether to use loose mode or not).
    * @return A string containing the range with greater-than-or-equal and less-than operators if a caret is present, the original string otherwise.
@@ -340,34 +340,34 @@ export class Range {
    * Replaces a range containing X-ranges with a range with greater-than-or-equal and/or less-than operators.
    *
    * The replacement follows the following rules:
-   * - without any operator or with the `"="` operator:
-   *    - a range consisting of just an `"x"` or a `"*"` is replaced by `"*"`;
-   *    - a single major-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, and less than the next pre-major version;
-   *    - a major-and-minor-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-minor version;
+   * - without any operator or with the `=` operator:
+   *    - a range consisting of just an `x` or a `*` is replaced by `*`;
+   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, and less than the next pre-major version;
+   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-minor version;
    * - if the operator is greater-than:
-   *    - a single major-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to the next major version;
-   *    - a major-and-minor-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to the next minor version;
+   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to the next major version;
+   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to the next minor version;
    * - if the operator is greater-than-or-equal:
-   *    - a single major-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`;
-   *    - a major-and-minor-version range, whether completed by an `"x"` or not, is replaced by a range greater than or equal to this version, with patch at `0`;
+   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`;
+   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`;
    * - if the operator is less-than:
-   *    - a single major-version range, whether completed by an `"x"` or not, is replaced by a range less than this pre-major version;
-   *    - a major-and-minor-version range, whether completed by an `"x"` or not, is replaced by a range less than this pre-minor version;
+   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range less than this pre-major version;
+   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than this pre-minor version;
    * - if the operator is less-than-or-equal:
-   *    - a single major-version range, whether completed by an `"x"` or not, is replaced by a range less than or equal to the next major version, with minor and patch at `0`;
-   *    - a major-and-minor-version range, whether completed by an `"x"` or not, is replaced by a range less than or equal to the next minor version, with patch at `0`;
+   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range less than or equal to the next major version, with minor and patch at `0`;
+   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than or equal to the next minor version, with patch at `0`;
    * - any prerelease identifiers are kept, even tough the `includePrerelease` option is set to `false` or not declared.
    * @example
-   * `"2"`, `"2.x"`, `"2.x.x"`, `"=2"`, `"=2.x"` and `"=2.x.x"` become `">=2.0.0 <3.0.0-0"`,
-   * `"1.2"`, `1.2.x`, `"1.2"` and `1.2.x` become `">=1.2.0 <1.3.0-0"`,
-   * `">2"`, `">2.x"` and `">2.x.x"` become `">=3.0.0"`,
-   * `">1.2"` and `>1.2.x` become `">=1.3.0"`,
-   * `">=2"`, `">=2.x"` and `">=2.x.x"` become `">=2.0.0"`,
-   * `">=1.2"` and `>=1.2.x` become `">=1.2.0"`,
-   * `"<2"`, `"<2.x"` and `"<2.x.x"` become `"<2.0.0-0"`,
-   * `"<1.2"` and `<1.2.x` become `"<1.2.0-0"`,
-   * `"<=2"`, `"<=2.x"` and `"<=2.x.x"` become `"<3.0.0-0"`,
-   * `"<=1.2"` and `<=1.2.x` become `"<1.3.0-0"`.
+   * `2`, `2.x`, `2.x.x`, `=2`, `=2.x` and `=2.x.x` become `>=2.0.0 <3.0.0-0`,
+   * `1.2`, `1.2.x`, `1.2` and `1.2.x` become `>=1.2.0 <1.3.0-0`,
+   * `>2`, `>2.x` and `>2.x.x` become `>=3.0.0`,
+   * `>1.2` and `>1.2.x` become `>=1.3.0`,
+   * `>=2`, `>=2.x` and `>=2.x.x` become `>=2.0.0`,
+   * `>=1.2` and `>=1.2.x` become `>=1.2.0`,
+   * `<2`, `<2.x` and `<2.x.x` become `<2.0.0-0`,
+   * `<1.2` and `<1.2.x` become `<1.2.0-0`,
+   * `<=2`, `<=2.x` and `<=2.x.x` become `<3.0.0-0`,
+   * `<=1.2` and `<=1.2.x` become `<1.3.0-0`.
    * @param comparator - The range string with a comparator to parse.
    * @param [options] - The options to use (`includePrerelease`: whether to include pre-release versions or not, `loose`: whether to use loose mode or not).
    * @return A string containing the range with greater-than-or-equal and/or less-than operators if partial versions are present, the original string otherwise.
@@ -447,7 +447,7 @@ export class Range {
   /**
    * Removes the stars from a comparator.
    *
-   * `"*"` is related with everything else in the comparator as logical “and” and an empty string means “any version”.
+   * `*` is related with everything else in the comparator as logical “and” and an empty string means “any version”.
    * @param comparator - The range string with a comparator to parse.
    * @return A string containing the range without stars.
    */
@@ -504,7 +504,7 @@ export class Range {
   /**
    * Tests if the version matches the comparator set.
    *
-   * If the version provides a pre-release identifier, this finds the set of versions which are allowed to have pre-releases (e.g.: `"^1.2.3-pr.1"` desugars to `">=1.2.3-pr.1 <2.0.0"`, which allows `"1.2.3-pr.2"` to pass, but not `"1.2.4-alpha"`, even though it is within the range set by the comparators).
+   * If the version provides a pre-release identifier, this finds the set of versions which are allowed to have pre-releases (e.g.: `^1.2.3-pr.1` desugars to `>=1.2.3-pr.1 <2.0.0`, which allows `1.2.3-pr.2` to pass, but not `1.2.4-alpha`, even though it is within the range set by the comparators).
    * @param set - The comparator set to test against.
    * @param version - The version to test.
    * @param [options] - The options to use (`includePrerelease`: whether to include pre-release versions or not, `loose`: whether to use loose mode or not).
