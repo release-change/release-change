@@ -19,8 +19,8 @@ afterEach(() => {
   process.argv = originalProcessArgv;
   vi.restoreAllMocks();
 });
-it.each(cliOptions)("should not call `run()` when `%s` is used", cliOption => {
+it.each(cliOptions)("should not call `run()` when `%s` is used", async cliOption => {
   process.argv = ["pnpm", WORKSPACE_NAME, cliOption];
-  cli();
+  await cli();
   expect(run).not.toHaveBeenCalled();
 });
