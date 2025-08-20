@@ -198,7 +198,7 @@ Note that, since ranges may be non-contiguous, a version might not be greater th
 
 If you want to know whether a version satisfies a range or not, use the `satisfies` function.
 
-### Coercion
+#### Coercion
 
 - `coerce(version, options)`: coerces a string to a semantic version if possible.
 
