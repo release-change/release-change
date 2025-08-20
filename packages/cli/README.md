@@ -1,6 +1,6 @@
 # release-change
 
-Fully automated version management, changelogs management and package publishing with a focus on monorepos, pre-releases and major version zero
+Fully automated version management, changelog management and package publishing with a focus on monorepos, pre-releases and major version zero
 
 ![License: MIT](https://img.shields.io/github/license/release-change/release-change)
 [![ESM-only package](https://img.shields.io/badge/package-ESM--only-ffe536)](https://nodejs.org/api/esm.html)
@@ -29,7 +29,7 @@ It is meant to be integrated in a CI environment. For each new commit added to o
 
 ## Requirements
 
-In order to use release-change, you need:
+To use release-change, you need:
 - to host your code in a GitHub repository,
 - to use GitHub Actions,
 - Git 2.48.1+,
@@ -192,12 +192,12 @@ Type: `boolean`
 Default: `false`  
 CLI arguments: `-d`, `--dry-run`
 
-The goal of the dry-run mode is to get a preview of the pending release. The dry-run mode skips the release and the publication steps, but checks the repository push permissions.
+The goal of the dry-run mode is to get a preview of the pending release. The dry-run mode skips the release and the publication steps but checks the repository push permissions.
 
 ##### releaseType
 
 Type: `object`  
-Default:  
+Default:
 ```
 {
   alpha: {
@@ -235,4 +235,4 @@ Sets an object whose properties are the names of the branches on which the relea
 
 ## Copyright & licence
 
-© 2025 Victor Brito - Released under the [MIT licence](./LICENSE).
+© 2025 Victor Brito — Released under the [MIT licence](./LICENSE).

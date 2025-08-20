@@ -12,7 +12,7 @@ Fully automated version management, changelog management and package publishing 
 
 ## How does it work?
 
-It uses the commit messages to determine the type of change in the codebase. It automatically determines the next [semantic version](https://semver.org).
+release-change uses the commit messages to determine the type of change in the codebase. It automatically determines the next [semantic version](https://semver.org).
 
 It uses the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. The following table shows which release type is got from which commit message when `release-change` runs:
 
@@ -60,7 +60,7 @@ npx release-change
 
 ### CI configuration
 
-It requires access to the project repository. The Git authentication is set with the `RELEASE_TOKEN` environment variable, which is a [GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
+release-change requires access to the project repository. The Git authentication is set with the `RELEASE_TOKEN` environment variable, which is a [GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 Here are examples of the workflow configuration (the file must be saved in the `.github/workflows/` directory):
 - using `pnpm`:
