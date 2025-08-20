@@ -30,4 +30,4 @@ logger.logSuccess("Everything done successfully.");
 
 ## Copyright & licence
 
-© 2025 Victor Brito - Released under the [MIT licence](./LICENSE).
+© 2025 Victor Brito — Released under the [MIT licence](./LICENSE).
