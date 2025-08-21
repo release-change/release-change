@@ -1,4 +1,4 @@
-# release-change
+# @release-change/cli
 
 Fully automated version management, changelog management and package publishing with a focus on monorepos, pre-releases and major version zero
 
