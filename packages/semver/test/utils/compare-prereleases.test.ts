@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { comparePrereleases } from "../../src/index.js";
+import { comparePrereleases } from "../../src/utils/compare-prereleases.js";
 import { prereleaseComparisons } from "../fixtures/prerelease-comparisons.js";
 import { prereleaseEqualities } from "../fixtures/prerelease-equalities.js";
 

@@ -1,4 +1,4 @@
-import { Semver } from "../../src/index.js";
+import { Semver } from "../../src/classes/semver.js";
 
 export const coercedValues = [
   {

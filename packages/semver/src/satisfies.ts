@@ -1,6 +1,7 @@
 import type { SemverOptionsIncludePrerelease, SemverOptionsLoose } from "./semver.types.js";
 
-import { Range, Semver } from "./classes/index.js";
+import { Range } from "./classes/range.js";
+import { Semver } from "./classes/semver.js";
 
 /**
  * Tests if the version satisfies the range.

@@ -1,6 +1,6 @@
 import { assert, expect, it, test } from "vitest";
 
-import { Comparator } from "../../src/index.js";
+import { Comparator } from "../../src/classes/comparator.js";
 
 const invalidComparators = ["invalid", "^invalid", "~invalid"];
 

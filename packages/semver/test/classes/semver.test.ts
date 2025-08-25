@@ -1,6 +1,6 @@
 import { assert, it } from "vitest";
 
-import { Semver } from "../../src/index.js";
+import { Semver } from "../../src/classes/semver.js";
 import { invalidIncrements } from "../fixtures/invalid-increments.js";
 import { invalidVersions } from "../fixtures/invalid-versions.js";
 import { validIncrements } from "../fixtures/valid-increments.js";
