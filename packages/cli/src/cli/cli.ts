@@ -17,7 +17,7 @@ export const cli = async (): Promise<number> => {
   const args = argv.slice(2) as Args;
   const parsedCliOptions = parseCliOptions(args);
   const { help, version, ...cliOptions } = parsedCliOptions;
-  const context: ContextBase = { cwd: cwd(), env };
+  const context: ContextBase = { cwd: cwd(), env, config: { debug: Boolean(cliOptions.debug) } };
   if (help) {
     showHelp();
     return 0;

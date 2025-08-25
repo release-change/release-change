@@ -35,6 +35,9 @@
       "path": "./packages/config"
     },
     {
+      "path": "./packages/get-packages"
+    },
+    {
       "path": "./packages/commit-analyser"
     },
     {

@@ -11,5 +11,6 @@ export const mockedContext: Context = {
     isCi: true,
     isPullRequest: false
   },
-  config: expectedDefaultConfig
+  config: expectedDefaultConfig,
+  packages: ["."]
 };

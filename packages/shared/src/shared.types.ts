@@ -17,9 +17,12 @@ export type BranchConfig = {
   prerelease?: true;
   prereleaseIdentifier?: string;
 };
+export type DependencyUpdateMethod = "pin" | "workspace" | "caret-range" | "tilde-range" | null;
 export type Config = {
   branches: string[];
   releaseType: Record<string, BranchConfig>;
+  isMonorepo: boolean;
+  dependencyUpdateMethod?: DependencyUpdateMethod;
   debug: boolean;
   dryRun: boolean;
   repositoryUrl: string;
@@ -40,11 +43,15 @@ export type NextRelease = {
 export interface ContextBase {
   cwd: string;
   env: NodeJS.ProcessEnv;
+  config: {
+    debug: boolean;
+  };
 }
 export interface Context extends ContextBase {
   config: Config;
   branch: string | undefined;
   ci: CiConfig;
+  packages: string[];
   lastRelease?: LastRelease;
   nextRelease?: NextRelease;
 }

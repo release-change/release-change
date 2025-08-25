@@ -7,6 +7,8 @@ export const mockedConfig = {
       channel: "latest"
     }
   },
+  isMonorepo: false,
+  dependencyUpdateMethod: null,
   debug: false,
   dryRun: false,
   repositoryUrl: mockedRepositoryUrl,

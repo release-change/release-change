@@ -24,6 +24,8 @@ export const mockedConfig: Config = {
       prereleaseIdentifier: "rc"
     }
   },
+  isMonorepo: false,
+  dependencyUpdateMethod: null,
   debug: false,
   dryRun: false,
   repositoryUrl: mockedRepositoryUrl,

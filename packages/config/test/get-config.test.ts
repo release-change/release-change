@@ -1,6 +1,6 @@
-import type { Config } from "@release-change/shared";
+import type { Config, DependencyUpdateMethod } from "@release-change/shared";
 
-import { afterEach, assert, beforeEach, it, vi } from "vitest";
+import { afterEach, assert, beforeEach, describe, it, vi } from "vitest";
 
 import { parseCliOptions } from "../../cli/src/cli/parse-cli-options.js";
 import { getConfigFile } from "../src/get-config-file.js";
@@ -13,6 +13,13 @@ const expectedDefaultConfig = {
 } as unknown as Config;
 const mockedRepositoryUrl = "https://github.com/user-id/repo-name.git";
 const mockedBranch = "main";
+const dependencyUpdateMethods: DependencyUpdateMethod[] = [
+  null,
+  "pin",
+  "workspace",
+  "caret-range",
+  "tilde-range"
+];
 
 beforeEach(() => {
   vi.mock("../src/get-config-file.js", () => ({
@@ -104,6 +111,8 @@ it("should get config according to all CLI options when all of them are set", as
     repositoryUrl: mockedRepositoryUrl,
     remoteName: "origin",
     releaseType: expectedDefaultConfig.releaseType,
+    isMonorepo: expectedDefaultConfig.isMonorepo,
+    dependencyUpdateMethod: expectedDefaultConfig.dependencyUpdateMethod,
     debug: true,
     dryRun: true
   };
@@ -123,57 +132,73 @@ it("should get config according to all CLI options when all of them are set usin
     repositoryUrl: mockedRepositoryUrl,
     remoteName: "origin",
     releaseType: expectedDefaultConfig.releaseType,
+    isMonorepo: expectedDefaultConfig.isMonorepo,
+    dependencyUpdateMethod: expectedDefaultConfig.dependencyUpdateMethod,
     debug: true,
     dryRun: true
   };
   assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
 });
-it("should get config according to config file", async () => {
-  const mockedConfigFile = {
-    ...expectedDefaultConfig,
-    branches: ["main", "next"],
-    repositoryUrl: mockedRepositoryUrl
-  };
-  const { help, version, ...mockedCliOptions } = parseCliOptions([]);
-  const expectedConfig = {
-    branches: ["main", "next"],
-    repositoryUrl: mockedRepositoryUrl,
-    remoteName: "origin",
-    releaseType: expectedDefaultConfig.releaseType,
-    debug: false,
-    dryRun: false
-  };
-  vi.mocked(getConfigFile).mockReturnValue(mockedConfigFile);
-  assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
-});
-it("should get config according to config file with custom `releaseType`", async () => {
-  const mockedConfigFile = {
-    ...expectedDefaultConfig,
-    branches: ["main", "next"],
-    repositoryUrl: mockedRepositoryUrl,
-    remoteName: "origin",
-    releaseType: {
-      next: {
-        channel: "rc"
-      }
-    }
-  };
-  const { help, version, ...mockedCliOptions } = parseCliOptions([]);
-  const expectedConfig = {
-    branches: ["main", "next"],
-    repositoryUrl: mockedRepositoryUrl,
-    remoteName: "origin",
-    releaseType: {
-      next: {
-        channel: "rc"
-      }
-    },
-    debug: false,
-    dryRun: false
-  };
-  vi.mocked(getConfigFile).mockReturnValue(mockedConfigFile);
-  assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
-});
+describe.each(dependencyUpdateMethods)(
+  "with `dependencyUpdateMethod` set to %s",
+  dependencyUpdateMethod => {
+    const mockedIsMonorepo = !!dependencyUpdateMethod;
+    it("should get config according to config file", async () => {
+      const mockedConfigFile = {
+        ...expectedDefaultConfig,
+        branches: ["main", "next"],
+        repositoryUrl: mockedRepositoryUrl,
+        isMonorepo: mockedIsMonorepo,
+        dependencyUpdateMethod
+      };
+      const { help, version, ...mockedCliOptions } = parseCliOptions([]);
+      const expectedConfig = {
+        branches: ["main", "next"],
+        repositoryUrl: mockedRepositoryUrl,
+        remoteName: "origin",
+        releaseType: expectedDefaultConfig.releaseType,
+        isMonorepo: mockedIsMonorepo,
+        dependencyUpdateMethod,
+        debug: false,
+        dryRun: false
+      };
+      vi.mocked(getConfigFile).mockReturnValue(mockedConfigFile);
+      assert.deepEqual(await getConfig(mockedCliOptions, mockedIsMonorepo), expectedConfig);
+    });
+    it("should get config according to config file with custom `releaseType`", async () => {
+      const mockedConfigFile = {
+        ...expectedDefaultConfig,
+        branches: ["main", "next"],
+        repositoryUrl: mockedRepositoryUrl,
+        remoteName: "origin",
+        releaseType: {
+          next: {
+            channel: "rc"
+          }
+        },
+        isMonorepo: mockedIsMonorepo,
+        dependencyUpdateMethod
+      };
+      const { help, version, ...mockedCliOptions } = parseCliOptions([]);
+      const expectedConfig = {
+        branches: ["main", "next"],
+        repositoryUrl: mockedRepositoryUrl,
+        remoteName: "origin",
+        releaseType: {
+          next: {
+            channel: "rc"
+          }
+        },
+        isMonorepo: mockedIsMonorepo,
+        dependencyUpdateMethod,
+        debug: false,
+        dryRun: false
+      };
+      vi.mocked(getConfigFile).mockReturnValue(mockedConfigFile);
+      assert.deepEqual(await getConfig(mockedCliOptions, mockedIsMonorepo), expectedConfig);
+    });
+  }
+);
 it("should get config according to CLI options rather than config file", async () => {
   const mockedConfigFile = {
     ...expectedDefaultConfig,
@@ -187,6 +212,8 @@ it("should get config according to CLI options rather than config file", async (
     repositoryUrl: mockedRepositoryUrl,
     remoteName: "origin",
     releaseType: expectedDefaultConfig.releaseType,
+    isMonorepo: expectedDefaultConfig.isMonorepo,
+    dependencyUpdateMethod: expectedDefaultConfig.dependencyUpdateMethod,
     debug: false,
     dryRun: false
   };

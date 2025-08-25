@@ -34,6 +34,8 @@ export const DEFAULT_CONFIG = {
       prereleaseIdentifier: "rc"
     }
   },
+  isMonorepo: false,
+  dependencyUpdateMethod: null,
   debug: false,
   dryRun: false
 } as const;

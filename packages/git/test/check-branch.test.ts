@@ -6,7 +6,10 @@ import { checkBranch } from "../src/index.js";
 
 const mockedBasicContext: ContextBase = {
   cwd: "/fake/path",
-  env: {}
+  env: {},
+  config: {
+    debug: false
+  }
 };
 const mockedContext: Context = {
   ...mockedBasicContext,
@@ -15,6 +18,7 @@ const mockedContext: Context = {
     isCi: true,
     isPullRequest: false
   },
+  packages: ["."],
   config: {
     branches: ["alpha", "beta", "main", "master", "next"],
     releaseType: {
@@ -40,6 +44,8 @@ const mockedContext: Context = {
         prereleaseIdentifier: "rc"
       }
     },
+    isMonorepo: false,
+    dependencyUpdateMethod: null,
     debug: false,
     dryRun: false,
     repositoryUrl: "https://github.com/user-id/repo-name",

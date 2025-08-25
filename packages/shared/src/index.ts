@@ -6,6 +6,7 @@ export type {
   Config,
   Context,
   ContextBase,
+  DependencyUpdateMethod,
   LastRelease,
   NextRelease,
   ParsedCliOptions

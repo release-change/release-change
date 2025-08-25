@@ -15,7 +15,8 @@ const mockedContext = {
     isCi: true,
     isPullRequest: false
   },
-  config: expectedDefaultConfig
+  config: expectedDefaultConfig,
+  packages: ["."]
 };
 
 beforeEach(() => {
