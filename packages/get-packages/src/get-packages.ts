@@ -12,6 +12,11 @@ import { getPnpmGlobPatterns } from "./get-pnpm-glob-patterns.js";
 import { getRootPackageManifest } from "./get-root-package-manifest.js";
 import { getRootPnpmWorkspaceManifest } from "./get-root-pnpm-workspace-manifest.js";
 
+/**
+ * Gets the packages within the current working directory.
+ * @param context - The context where the CLI is running.
+ * @return An array of paths to the packages found, including the root package.
+ */
 export const getPackages = async (context: ContextBase): Promise<string[]> => {
   const { cwd, env, config } = context;
   const { debug } = config;
