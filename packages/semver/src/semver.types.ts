@@ -14,7 +14,7 @@ export type SemverPrereleaseIdentifiers = {
   prefix?: string;
   identifierBase?: SemverIdentifierBase;
 };
-type SemverBuild = ReadonlyArray<string>;
+export type SemverBuild = ReadonlyArray<string>;
 export type SemverData = {
   raw: string;
   version: string;
@@ -42,14 +42,15 @@ export type SemverReleaseType =
   | "prerelease";
 export type SemverOperator = "===" | "!==" | "" | "=" | "==" | "!=" | ">" | ">=" | "<" | "<=";
 export type SemverComparatorOperator = "" | "=" | ">" | ">=" | "<" | "<=";
-export type SemverComparatorData = {
+export interface SemverComparatorData {
   operator: SemverComparatorOperator;
   semver: SemverData;
   value: string;
-};
-export type SemverRangeData = {
+}
+export interface SemverRangeData {
   raw: string;
   range: string;
   includePrerelease: boolean;
   set: SemverComparatorData[][];
-};
+  options: SemverOptionsLoose & SemverOptionsIncludePrerelease;
+}
