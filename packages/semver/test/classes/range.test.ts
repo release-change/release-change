@@ -1,6 +1,6 @@
 import { assert, it } from "vitest";
 
-import { Range } from "../../src/index.js";
+import { Range } from "../../src/classes/range.js";
 import { invalidRanges } from "../fixtures/invalid-ranges.js";
 import { validRanges } from "../fixtures/valid-ranges.js";
 import { validRangesInLooseMode } from "../fixtures/valid-ranges-in-loose-mode.js";

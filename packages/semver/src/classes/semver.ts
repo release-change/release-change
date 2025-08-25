@@ -1,4 +1,5 @@
 import type {
+  SemverBuild,
   SemverData,
   SemverIdentifierBase,
   SemverOptionsLoose,
@@ -17,14 +18,14 @@ import {
 /**
  * `Semver` object.
  */
-export class Semver {
+export class Semver implements SemverData {
   raw = "";
   version = "";
   major = 0;
   minor = 0;
   patch = 0;
   prerelease: SemverPrerelease = [];
-  build: ReadonlyArray<string> = [];
+  build: SemverBuild = [];
 
   /**
    * Creates a new `Semver` instance.
@@ -85,14 +86,6 @@ export class Semver {
     const buildComponents = build.length ? `+${build.join(".")}` : "";
     this.raw = `${major}.${minor}.${patch}${prereleaseComponents}${buildComponents}`;
     this.version = `${major}.${minor}.${patch}${prereleaseComponents}`;
-  }
-
-  /**
-   * Converts this `Semver` instance to a plain data object.
-   * @return A plain object containing only the data properties.
-   */
-  toData(): SemverData {
-    return this;
   }
 
   /**
@@ -234,7 +227,7 @@ export class Semver {
       prerelease: this.prerelease,
       build: this.build
     });
-    return this.toData();
+    return this;
   }
 }
 

@@ -12,9 +12,9 @@ export const parse = (
   version: string | Semver | null | undefined,
   options?: SemverOptionsLoose
 ): SemverData | null => {
-  if (version instanceof Semver) return version.toData();
+  if (version instanceof Semver) return version;
   try {
-    return new Semver(version, options).toData();
+    return new Semver(version, options);
   } catch {
     return null;
   }

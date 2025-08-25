@@ -35,7 +35,7 @@ export const coerce = (
   version: string | number | Semver,
   options?: Omit<SemverOptions, "loose">
 ): SemverData | null => {
-  if (version instanceof Semver) return version.toData();
+  if (version instanceof Semver) return version;
   if (typeof version === "number") {
     return parse(`${version.toString()}${".0".repeat(Number.isInteger(version) ? 2 : 1)}`);
   }

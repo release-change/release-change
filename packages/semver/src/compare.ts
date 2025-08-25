@@ -16,8 +16,8 @@ export const compare = (
   version2: string | Semver,
   options?: SemverOptionsLoose
 ): 1 | 0 | -1 => {
-  const a = version1 instanceof Semver ? version1 : new Semver(version1, options).toData();
-  const b = version2 instanceof Semver ? version2 : new Semver(version2, options).toData();
+  const a = version1 instanceof Semver ? version1 : new Semver(version1, options);
+  const b = version2 instanceof Semver ? version2 : new Semver(version2, options);
   const { version: versionA } = a;
   const { version: versionB } = b;
   if (versionA === versionB) return 0;

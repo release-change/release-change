@@ -29,7 +29,7 @@ import {
 /**
  * `Range` object.
  */
-export class Range {
+export class Range implements SemverRangeData {
   raw = "";
   range = "";
   includePrerelease = false;
@@ -137,14 +137,6 @@ export class Range {
           .join(" ")
       )
       .join("||");
-  }
-
-  /**
-   * Converts this `Range` instance to a plain data object.
-   * @return A plain data object containing only the data properties.
-   */
-  toData(): SemverRangeData {
-    return this;
   }
 
   /**
@@ -491,7 +483,7 @@ export class Range {
   ): SemverComparatorData[] {
     const rangeList = this.parseComparator(range, options)
       .split(" ")
-      .map(comparator => new Comparator(comparator, options).toData());
+      .map(comparator => new Comparator(comparator, options));
     const rangeMap = new Map<string, SemverComparatorData>();
     for (const comparator of rangeList) {
       if (this.isNullSet(comparator)) return [comparator];
@@ -546,7 +538,7 @@ export class Range {
   test(version: string): boolean {
     if (version) {
       try {
-        const semver = new Semver(version, this.options).toData();
+        const semver = new Semver(version, this.options);
         const { includePrerelease } = this.options;
         for (const comparatorSet of this.set) {
           if (this.testSet(comparatorSet, semver, { includePrerelease })) return true;

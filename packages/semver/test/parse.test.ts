@@ -1,6 +1,7 @@
 import { assert, expect, it } from "vitest";
 
-import { parse, Semver } from "../src/index.js";
+import { Semver } from "../src/classes/semver.js";
+import { parse } from "../src/index.js";
 import { invalidVersions } from "./fixtures/invalid-versions.js";
 import { validVersions } from "./fixtures/valid-versions.js";
 import { validVersionsInLooseMode } from "./fixtures/valid-versions-in-loose-mode.js";

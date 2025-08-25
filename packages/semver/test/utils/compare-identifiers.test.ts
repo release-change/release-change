@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { compareIdentifiers } from "../../src/index.js";
+import { compareIdentifiers } from "../../src/utils/compare-identifiers.js";
 
 const numberComparisons = [
   [1, 2],

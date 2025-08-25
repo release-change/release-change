@@ -14,7 +14,7 @@ import { COMPARATOR_PATTERN, COMPARATOR_PATTERN_LOOSE } from "../constants.js";
 /**
  * `Comparator` object.
  */
-export class Comparator {
+export class Comparator implements SemverComparatorData {
   operator: SemverComparatorOperator = "";
   semver: SemverData = {
     raw: "0.0.0-0",
@@ -37,14 +37,6 @@ export class Comparator {
   }
 
   /**
-   * Converts this `Comparator` instance to a plain data object.
-   * @return A plain data object containing only the data properties.
-   */
-  toData(): SemverComparatorData {
-    return this;
-  }
-
-  /**
    * Parses the comparator string.
    *
    * If the comparator is an empty string, the `Semver` object is treated like version 0.0.0-0. The `=` operator is ignored.
@@ -64,7 +56,7 @@ export class Comparator {
           ? ""
           : (operator as SemverComparatorOperator)
         : "";
-      this.semver = new Semver(version, options).toData();
+      this.semver = new Semver(version, options);
       this.value = this.operator + this.semver.version;
     }
   }

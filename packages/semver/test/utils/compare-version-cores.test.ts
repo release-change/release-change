@@ -1,6 +1,6 @@
 import { expect, test } from "vitest";
 
-import { compareVersionCores } from "../../src/index.js";
+import { compareVersionCores } from "../../src/utils/compare-version-cores.js";
 import { versionCoreComparisons } from "../fixtures/version-core-comparisons.js";
 import { versionCoreEqualities } from "../fixtures/version-core-equalities.js";
 

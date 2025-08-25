@@ -2,7 +2,8 @@ import type { SemverOperator } from "../src/semver.types.js";
 
 import { assert, describe, expect, it, test } from "vitest";
 
-import { compareWithOperator, Semver } from "../src/index.js";
+import { Semver } from "../src/classes/semver.js";
+import { compareWithOperator } from "../src/index.js";
 import { comparisons } from "./fixtures/comparisons.js";
 import { comparisonsInLooseMode } from "./fixtures/comparisons-in-loose-mode.js";
 import { equalities } from "./fixtures/equalities.js";

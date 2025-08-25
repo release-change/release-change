@@ -1,4 +1,3 @@
-import { Comparator, Range, Semver } from "./classes/index.js";
 import { cmp } from "./cmp.js";
 import { coerce } from "./coerce.js";
 import { compare } from "./compare.js";
@@ -15,20 +14,13 @@ import { neq } from "./neq.js";
 import { parse } from "./parse.js";
 import { prerelease } from "./prerelease.js";
 import { satisfies } from "./satisfies.js";
-import { compareIdentifiers } from "./utils/compare-identifiers.js";
-import { comparePrereleases } from "./utils/compare-prereleases.js";
-import { compareVersionCores } from "./utils/compare-version-cores.js";
 import { valid } from "./valid.js";
 import { validate } from "./validate.js";
 
 export {
   cmp,
   coerce,
-  Comparator,
   compare,
-  compareIdentifiers,
-  comparePrereleases,
-  compareVersionCores,
   compareWithOperator,
   eq,
   getPrerelease,
@@ -41,9 +33,7 @@ export {
   neq,
   parse,
   prerelease,
-  Range,
   satisfies,
-  Semver,
   valid,
   validate
 };
@@ -54,11 +44,7 @@ export {
 export default {
   cmp,
   coerce,
-  Comparator,
   compare,
-  compareIdentifiers,
-  comparePrereleases,
-  compareVersionCores,
   compareWithOperator,
   eq,
   getPrerelease,
@@ -71,9 +57,7 @@ export default {
   neq,
   parse,
   prerelease,
-  Range,
   satisfies,
-  Semver,
   valid,
   validate
 };
