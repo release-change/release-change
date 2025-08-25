@@ -10,10 +10,9 @@ export const getPnpmGlobPatterns = (content: string): GlobPatterns => {
     include: [],
     exclude: ["**/node_modules/**"]
   };
-  const contentWithoutComments = content.replace(/^\s*#.+$/gm, "");
-  const matches = contentWithoutComments.matchAll(
-    /^\s*-\s*(?<quote>['"])(?<pattern>[^']+)\k<quote>/gm
-  );
+  const matches = content
+    .replace(/^\s*#.+$/gm, "")
+    .matchAll(/^\s*-\s*(?<quote>['"])(?<pattern>[^']+)\k<quote>/gm);
   for (const match of matches) {
     if (match?.groups) {
       const { pattern } = match.groups;
