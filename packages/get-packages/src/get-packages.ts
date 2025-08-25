@@ -16,7 +16,7 @@ export const getPackages = async (context: ContextBase): Promise<string[]> => {
   const { cwd, env, config } = context;
   const { debug } = config;
   const logger = setLogger(debug);
-  const packageManager = getPackageManager(env);
+  const packageManager = getPackageManager(cwd, env);
   if (packageManager) {
     const packages: string[] = ["."];
     if (debug) {
