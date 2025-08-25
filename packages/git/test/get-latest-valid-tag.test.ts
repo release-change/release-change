@@ -27,6 +27,8 @@ const mockedConfig = {
       prereleaseIdentifier: "rc"
     }
   },
+  isMonorepo: false,
+  dependencyUpdateMethod: null,
   debug: false,
   dryRun: false,
   repositoryUrl: mockedRepositoryUrl,
@@ -48,12 +50,14 @@ const mockedContext = {
     isCi: true,
     isPullRequest: false
   },
+  packages: ["."],
   branch: "main"
 } as Context;
 const mockedContextWithInvalidConfig = {
   cwd: mockedContext.cwd,
   env: {},
   config: mockedInvalidConfig,
+  packages: ["."],
   branch: "main"
 } as Context;
 const mockedValidGitTags = [

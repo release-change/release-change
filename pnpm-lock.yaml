@@ -38,6 +38,9 @@ importers:
       '@release-change/config':
         specifier: workspace:*
         version: link:../config
+      '@release-change/get-packages':
+        specifier: workspace:*
+        version: link:../get-packages
       '@release-change/git':
         specifier: workspace:*
         version: link:../git
@@ -68,6 +71,18 @@ importers:
       '@release-change/git':
         specifier: workspace:*
         version: link:../git
+      '@release-change/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@release-change/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/get-packages:
+    dependencies:
+      '@release-change/config':
+        specifier: workspace:*
+        version: link:../config
       '@release-change/logger':
         specifier: workspace:*
         version: link:../logger

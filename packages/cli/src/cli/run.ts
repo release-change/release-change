@@ -2,6 +2,7 @@ import type { CliOptions, Context, ContextBase } from "@release-change/shared";
 
 import { getReleaseType } from "@release-change/commit-analyser";
 import { debugConfig, getConfig } from "@release-change/config";
+import { getPackages, isMonorepo } from "@release-change/get-packages";
 import {
   checkBranch,
   checkPushPermissions,
@@ -18,17 +19,19 @@ import { setLastRelease } from "../release/set-last-release.js";
 import { setNextRelease } from "../release/set-next-release.js";
 
 export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Promise<void> => {
-  const config = await getConfig(cliOptions);
-  const logger = setLogger(config.debug);
+  const logger = setLogger(contextBase.config.debug);
+  logger.logInfo(`Running ${WORKSPACE_NAME} version ${WORKSPACE_VERSION}…`);
+  const packages = await getPackages(contextBase);
+  const config = await getConfig(cliOptions, isMonorepo(packages));
   const branch = getBranchName(logger);
   const ci = configureCiEnvironment(contextBase.env);
   const context: Context = {
     ...contextBase,
     branch,
     config,
-    ci
+    ci,
+    packages
   };
-  logger.logInfo(`Running ${WORKSPACE_NAME} version ${WORKSPACE_VERSION}…`);
   debugConfig(context);
   await checkRepository(logger);
   if (isUsableCiEnvironment(context)) {

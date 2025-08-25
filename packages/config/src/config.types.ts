@@ -7,4 +7,5 @@ export type Package = {
         url: string;
         directory?: string;
       };
+  workspaces?: string[];
 };

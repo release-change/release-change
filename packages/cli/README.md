@@ -229,6 +229,19 @@ Sets an object whose properties are the names of the branches on which the relea
 - `prerelease`: `true` if the release should be treated like a pre-release (e.g.: for unstable versions), `false` otherwise;
 - `prereleaseIdentifier`: the identifier to use when tagging a pre-release version (for example, `"beta"` if the pre-release should be tagged as something like `2.0.0-beta.1`).
 
+##### dependencyUpdateMethod
+
+Type: `string` or `null`  
+Default: `"pin"` if it is a monorepo, `null` otherwise
+
+This optional option sets a string telling how dependencies in each `package.json` file of the monorepo should be updated as far as the monorepo packages are concerned. Its value can be one of the following:
+- `"pin"`: the dependencies will be updated using their exact new version (e.g.: `"@my-monorepo/my-package": "1.2.3"`);
+- `"caret-range"`: the dependencies will be updated using their new version within a caret range (e.g.: `"@my-monorepo/my-package": "^1.2.3"`);
+- `"tilde-range"`: the dependencies will be updated using their new version within a tilde range (e.g.: `"@my-monorepo/my-package": "~1.2.3"`);
+- `"workspace"`: the dependencies will be updated using the `workspace` keyword (e.g.: `"@my-monorepo/my-package": "workspace:*"`).
+
+If the repository is not a monorepo, the option is ignored.
+
 ## Get help
 
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/release-change)
