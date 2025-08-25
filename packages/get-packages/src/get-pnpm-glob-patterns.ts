@@ -11,9 +11,7 @@ export const getPnpmGlobPatterns = (content: string): GlobPatterns => {
     exclude: ["**/node_modules/**"]
   };
   const contentWithoutComments = content.replace(/^\s*#.+$/gm, "");
-  const matches = contentWithoutComments.matchAll(
-    /(?<=^packages:(\s+-\s*'[^']*'\s+)*)\s+-\s*'(?<pattern>[^']+)'/gm
-  );
+  const matches = contentWithoutComments.matchAll(/^\s*-\s*'(?<pattern>[^']+)'/gm);
   for (const match of matches) {
     if (match?.groups) {
       const { pattern } = match.groups;
