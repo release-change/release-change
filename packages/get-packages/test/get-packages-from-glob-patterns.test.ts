@@ -3,11 +3,13 @@ import fs from "node:fs/promises";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { browseDirectories } from "../src/browse-directories.js";
+import { getPackageName } from "../src/get-package-name.js";
 import { getPackagesFromGlobPatterns } from "../src/get-packages-from-glob-patterns.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 beforeEach(() => {
   vi.mock("../src/browse-directories.js", () => ({ browseDirectories: vi.fn() }));
+  vi.mock("../src/get-package-name.js", () => ({ getPackageName: vi.fn() }));
   vi.spyOn(fs, "access").mockResolvedValue(undefined);
 });
 afterEach(() => {
@@ -20,8 +22,9 @@ it("should filter directories according to including glob patterns", async () =>
     `${mockedCwd}/directory1/subdirectory1`,
     `${mockedCwd}/directory2/subdirectory2`
   ]);
+  vi.mocked(getPackageName).mockReturnValue("@monorepo/subdirectory1");
   expect(await getPackagesFromGlobPatterns(mockedGlobPatterns, mockedCwd)).toStrictEqual([
-    "directory1/subdirectory1"
+    { name: "@monorepo/subdirectory1", path: "directory1/subdirectory1" }
   ]);
 });
 it("should exclude directories according to excluding glob patterns", async () => {
@@ -34,8 +37,9 @@ it("should exclude directories according to excluding glob patterns", async () =
     `${mockedCwd}/directory2/subdirectory2`,
     `${mockedCwd}/node_modules/package`
   ]);
+  vi.mocked(getPackageName).mockReturnValue("@monorepo/subdirectory2");
   expect(await getPackagesFromGlobPatterns(mockedGlobPatterns, mockedCwd)).toStrictEqual([
-    "directory2/subdirectory2"
+    { name: "@monorepo/subdirectory2", path: "directory2/subdirectory2" }
   ]);
 });
 it("should only return directories with package.json", async () => {
@@ -44,12 +48,13 @@ it("should only return directories with package.json", async () => {
     `${mockedCwd}/with-package`,
     `${mockedCwd}/without-package`
   ]);
+  vi.mocked(getPackageName).mockReturnValue("@monorepo/with-package");
   vi.spyOn(fs, "access").mockImplementation(filePath => {
     if (filePath.toString().includes("with-package")) return Promise.resolve(undefined);
     return Promise.reject(new Error("ENOENT: no such file"));
   });
   expect(await getPackagesFromGlobPatterns(mockedGlobPatterns, mockedCwd)).toStrictEqual([
-    "with-package"
+    { name: "@monorepo/with-package", path: "with-package" }
   ]);
 });
 it("should return an empty array when no directories match", async () => {

@@ -1,7 +1,7 @@
-import type { Package } from "@release-change/config";
+import type { PackageManifest } from "@release-change/config";
 
 export const packageManifestFiles: {
-  content: Package;
+  content: PackageManifest;
   patterns: { include: string[]; exclude: string[] } | null;
 }[] = [
   {

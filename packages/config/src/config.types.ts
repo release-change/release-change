@@ -1,4 +1,4 @@
-export type Package = {
+export type PackageManifest = {
   version?: string;
   repository?:
     | string

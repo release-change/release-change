@@ -10,7 +10,7 @@ export const mockedContext: Context = {
     isCi: true,
     isPullRequest: false
   },
-  packages: ["."],
+  packages: [{ name: "", path: "." }],
   branch: "main"
 };
 export const mockedContextWithIneligibleBranch = { ...mockedContext, branch: "unmatched-branch" };

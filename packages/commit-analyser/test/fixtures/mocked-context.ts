@@ -12,5 +12,5 @@ export const mockedContext: Context = {
     isPullRequest: false
   },
   config: expectedDefaultConfig,
-  packages: ["."]
+  packages: [{ name: "", path: "." }]
 };

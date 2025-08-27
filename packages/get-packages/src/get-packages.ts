@@ -1,4 +1,4 @@
-import type { ContextBase } from "@release-change/shared";
+import type { ContextBase, Package } from "@release-change/shared";
 
 import path from "node:path";
 import { inspect } from "node:util";
@@ -15,15 +15,15 @@ import { getRootPnpmWorkspaceManifest } from "./get-root-pnpm-workspace-manifest
 /**
  * Gets the packages within the current working directory.
  * @param context - The context where the CLI is running.
- * @return An array of paths to the packages found, including the root package.
+ * @return An array of package names and paths to the packages found, including the root package.
  */
-export const getPackages = async (context: ContextBase): Promise<string[]> => {
+export const getPackages = async (context: ContextBase): Promise<Package[]> => {
   const { cwd, env, config } = context;
   const { debug } = config;
   const logger = setLogger(debug);
   const packageManager = getPackageManager(cwd, env);
   if (packageManager) {
-    const packages: string[] = ["."];
+    const packages: Package[] = [{ name: "", path: "." }];
     if (debug) {
       logger.setDebugScope("get-packages");
       logger.logDebug(`Package manager: ${packageManager}`);

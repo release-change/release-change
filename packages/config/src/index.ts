@@ -1,4 +1,4 @@
-export type { Package } from "./config.types.js";
+export type { PackageManifest } from "./config.types.js";
 
 export { debugConfig } from "./debug-config.js";
 export { getConfig } from "./get-config.js";
