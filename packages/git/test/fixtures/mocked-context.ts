@@ -1,6 +1,6 @@
 import type { Context } from "@release-change/shared/";
 
-import { mockedConfig } from "./mocked-config.js";
+import { mockedConfig, mockedConfigInMonorepo } from "./mocked-config.js";
 
 export const mockedContext = {
   cwd: "/fake/path",
@@ -14,3 +14,4 @@ export const mockedContext = {
   config: mockedConfig
 } as Context;
 export const mockedContextWithEligibleBranch = { ...mockedContext, branch: "main" };
+export const mockedContextInMonorepo = { ...mockedContext, config: mockedConfigInMonorepo };
