@@ -1,4 +1,4 @@
-import type { Package } from "./config.types.js";
+import type { PackageManifest } from "./config.types.js";
 
 import fs from "node:fs";
 
@@ -7,6 +7,6 @@ import fs from "node:fs";
  * @param path - The path to the root package file.
  * @return The content of the package file as JSON if the file is found, `null` otherwise.
  */
-export const getRootPackage = (path: string): Package | null => {
+export const getRootPackage = (path: string): PackageManifest | null => {
   return fs.existsSync(path) ? JSON.parse(fs.readFileSync(path, "utf8")) : null;
 };
