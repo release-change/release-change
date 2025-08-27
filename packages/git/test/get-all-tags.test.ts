@@ -26,11 +26,8 @@ it("should log an error message when an error is caught", () => {
   vi.mocked(runCommandSync).mockImplementation(() => {
     throw new Error("Error");
   });
-  try {
-    getAllTags(mockedContext);
-  } catch {
-    expect(mockedLogger.logError).toHaveBeenCalled();
-  }
+  assert.throw(() => getAllTags(mockedContext));
+  expect(mockedLogger.logError).toHaveBeenCalled();
 });
 it("should return all tags if tags are found", () => {
   const mockedTags = [
@@ -50,20 +47,18 @@ it("should return all tags if tags are found", () => {
     "v0.2.0",
     "v0.1.0"
   ];
-  const mockedCommandResult = {
+  vi.mocked(runCommandSync).mockReturnValue({
     status: 0,
     stdout: mockedTags.join("\n"),
     stderr: ""
-  };
-  vi.mocked(runCommandSync).mockReturnValue(mockedCommandResult);
+  });
   assert.deepEqual(getAllTags(mockedContext), mockedTags);
 });
 it("should return an empty array if no tags are found", () => {
-  const mockedCommandResult = {
+  vi.mocked(runCommandSync).mockReturnValue({
     status: 0,
     stdout: "",
     stderr: ""
-  };
-  vi.mocked(runCommandSync).mockReturnValue(mockedCommandResult);
+  });
   assert.deepEqual(getAllTags(mockedContext), []);
 });
