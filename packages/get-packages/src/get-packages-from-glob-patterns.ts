@@ -1,21 +1,23 @@
+import type { Package } from "@release-change/shared/";
 import type { GlobPatterns } from "./get-packages.types.js";
 
 import fs from "node:fs/promises";
 import path from "node:path";
 
 import { browseDirectories } from "./browse-directories.js";
+import { getPackageName } from "./get-package-name.js";
 import { patternToRegex } from "./pattern-to-regex.js";
 
 /**
  * Gets the packages from the given glob patterns.
  * @param globPatterns - The glob patterns to use.
  * @param cwd - The current working directory.
- * @return An array of package paths whose directory contains a `package.json` file.
+ * @return An array of package names and paths whose directory contains a `package.json` file with a `name` property.
  */
 export const getPackagesFromGlobPatterns = async (
   globPatterns: GlobPatterns,
   cwd: string
-): Promise<string[]> => {
+): Promise<Package[]> => {
   const { include, exclude } = globPatterns;
   const includeRegexps = include.map(patternToRegex);
   const excludeRegexps = exclude.map(patternToRegex);
@@ -26,12 +28,15 @@ export const getPackagesFromGlobPatterns = async (
       const filePath = path.join(directory, "package.json");
       try {
         await fs.access(filePath);
-        return path.relative(cwd, directory);
+        const packageName = getPackageName(filePath) ?? "";
+        return { name: packageName, path: path.relative(cwd, directory) };
       } catch {
-        return "";
+        return { name: "", path: "" };
       }
     }
-    return "";
+    return { name: "", path: "" };
   });
-  return (await Promise.all(directories)).filter(Boolean);
+  return (await Promise.all(directories)).filter(
+    directory => Boolean(directory.name) && Boolean(directory.path)
+  );
 };

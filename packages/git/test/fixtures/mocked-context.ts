@@ -10,7 +10,7 @@ export const mockedContext = {
     isCi: true,
     isPullRequest: false
   },
-  packages: ["."],
+  packages: [{ name: "", path: "." }],
   config: mockedConfig
 } as Context;
 export const mockedContextWithEligibleBranch = { ...mockedContext, branch: "main" };

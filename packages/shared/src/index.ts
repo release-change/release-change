@@ -9,6 +9,7 @@ export type {
   DependencyUpdateMethod,
   LastRelease,
   NextRelease,
+  Package,
   ParsedCliOptions
 } from "./shared.types.js";
 

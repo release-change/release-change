@@ -12,7 +12,7 @@ const mockedContext = {
   cwd: "/fake/path",
   env: {},
   branch: "main",
-  packages: ["."],
+  packages: [{ name: "", path: "." }],
   config: expectedDefaultConfig
 };
 const mockedContextWithNoCi = {

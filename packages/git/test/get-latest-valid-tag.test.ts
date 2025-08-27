@@ -50,14 +50,14 @@ const mockedContext = {
     isCi: true,
     isPullRequest: false
   },
-  packages: ["."],
+  packages: [{ name: "", path: "." }],
   branch: "main"
 } as Context;
 const mockedContextWithInvalidConfig = {
   cwd: mockedContext.cwd,
   env: {},
   config: mockedInvalidConfig,
-  packages: ["."],
+  packages: [{ name: "", path: "." }],
   branch: "main"
 } as Context;
 const mockedValidGitTags = [

@@ -32,6 +32,10 @@ export type CiConfig = {
   isCi: boolean;
   isPullRequest: boolean;
 };
+export type Package = {
+  name: string;
+  path: string;
+};
 export type LastRelease = {
   gitTag: string | null;
   version: string;
@@ -51,7 +55,7 @@ export interface Context extends ContextBase {
   config: Config;
   branch: string | undefined;
   ci: CiConfig;
-  packages: string[];
+  packages: Package[];
   lastRelease?: LastRelease;
   nextRelease?: NextRelease;
 }
