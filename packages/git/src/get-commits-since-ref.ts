@@ -12,18 +12,22 @@ import { COMMIT_SEPARATOR } from "./constants.js";
  */
 export const getCommitsSinceRef = (context: Context): string[] => {
   const { config, lastRelease } = context;
-  const logger = setLogger(config.debug);
+  const { debug, isMonorepo } = config;
+  const logger = setLogger(debug);
   try {
     const gitTag = lastRelease ? lastRelease.gitTag : null;
-    const args = gitTag ? ["log", `${gitTag}..HEAD`] : ["log"];
-    const infoMessage = `Retrieving ${args.length > 1 ? `commits since ${gitTag}` : "all commits"}.`;
+    const revisionRange = `${gitTag}..HEAD`;
+    const args = ["log"];
+    if (isMonorepo) args.push("--name-only");
+    if (gitTag) args.push(revisionRange);
+    const infoMessage = `Retrieving ${args.includes(revisionRange) ? `commits since ${gitTag}` : "all commits"}…`;
     logger.logInfo(infoMessage);
     const gitCommandResult = runCommandSync("git", args);
     const { stdout } = gitCommandResult;
     const commits = stdout ? stdout.split(COMMIT_SEPARATOR) : [];
     const totalCommits = commits.length;
     const commitWord = agreeInNumber(totalCommits, ["commit", "commits"]);
-    if (config.debug) {
+    if (debug) {
       logger.setDebugScope("git:get-commits-since-ref");
       logger.logDebug(`Command run: git ${args.join(" ")}`);
       logger.logDebug(inspect(commits, { depth: Number.POSITIVE_INFINITY }));

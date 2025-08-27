@@ -14,3 +14,4 @@ export const mockedConfig = {
   repositoryUrl: mockedRepositoryUrl,
   remoteName: "origin"
 };
+export const mockedConfigInMonorepo = { ...mockedConfig, isMonorepo: true };
