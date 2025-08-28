@@ -16,7 +16,7 @@ export const getAllTags = (context: Context): string[] => {
   try {
     const gitCommandResult = runCommandSync(
       "git",
-      ["tag", "-l", "--sort=-version:refname", "--merged", `${config.remoteName}/${branch}`],
+      ["tag", "-l", "--sort=-creatordate", "--merged", `${config.remoteName}/${branch}`],
       { cwd }
     );
     if (config.debug) {
