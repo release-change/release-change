@@ -37,8 +37,7 @@ export type Package = {
   path: string;
 };
 export type LastRelease = {
-  gitTag: string | null;
-  version: string;
+  ref: string | null;
 };
 export type NextRelease = {
   gitTag: string;

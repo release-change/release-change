@@ -11,13 +11,14 @@ import { getAllTags } from "./get-all-tags.js";
  */
 export const getLatestValidTag = (context: Context): string | null => {
   const { branch, config } = context;
-  const gitTags = getAllTags(context).filter(gitTag => validate(gitTag.replace(/^v/, "")));
+  const tagPattern = /^(@[^@]+@)?v/;
+  const gitTags = getAllTags(context).filter(gitTag => validate(gitTag.replace(tagPattern, "")));
   if (gitTags.length) {
     if (branch) {
       const branchReleaseType = config.releaseType[branch];
       if (branchReleaseType) {
         const validGitTagsForBranch = gitTags.filter(gitTag => {
-          const prereleaseIdentifiers = getPrerelease(gitTag.replace(/^v/, ""));
+          const prereleaseIdentifiers = getPrerelease(gitTag.replace(tagPattern, ""));
           if (branchReleaseType.prerelease) {
             if (prereleaseIdentifiers) {
               const [prereleaseIdentifier] = prereleaseIdentifiers;

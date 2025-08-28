@@ -23,13 +23,13 @@ export const setNextRelease = (releaseType: ReleaseType, context: Context): void
   try {
     const branchConfig = config.releaseType[branch];
     if (branchConfig && releaseType) {
-      const currentVersion = lastRelease.version;
-      const version = incrementVersion(currentVersion, releaseType, branchConfig);
+      const currentVersion = lastRelease.ref?.replace(/^(@[^@]+@)?v/, "");
+      const version = incrementVersion(currentVersion ?? "0.0.0", releaseType, branchConfig);
       context.nextRelease = {
         gitTag: `v${version}`,
         version
       };
-      const previousReleaseInfoMessage = lastRelease.gitTag
+      const previousReleaseInfoMessage = lastRelease.ref
         ? `The previous release is ${currentVersion}`
         : "There is no previous release";
       logger.logInfo(`${previousReleaseInfoMessage} and the next release version is ${version}.`);
