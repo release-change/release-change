@@ -4,40 +4,21 @@ import { inspect } from "node:util";
 
 import { getLatestValidTag } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import { validate } from "@release-change/semver";
-
-import { getRootPackageVersion } from "./get-root-package-version.js";
-import { getVersionFromTag } from "./get-version-from-tag.js";
 
 /**
- * Sets the last release from the latest valid Git tag or the root package version and adds it to the context where the CLI is running.
+ * Sets the last release from the latest valid Git tag and adds it to the context where the CLI is running.
  * @param context - The context where the CLI is running.
  */
 export const setLastRelease = (context: Context): void => {
-  const { cwd, branch, config } = context;
+  const { branch, config } = context;
   const logger = setLogger(config.debug);
   if (!branch || !config.branches.includes(branch)) return;
   try {
     const lastRelease: LastRelease = {
-      gitTag: null,
-      version: "0.0.0"
+      ref: null
     };
     const latestValidGitTag = getLatestValidTag(context);
-    if (latestValidGitTag) {
-      const version = getVersionFromTag(latestValidGitTag);
-      logger.logInfo(
-        `Found Git tag ${latestValidGitTag} associated with version ${version} on branch ${branch}.`
-      );
-      lastRelease.gitTag = latestValidGitTag;
-      lastRelease.version = version;
-    } else {
-      logger.logInfo(`No Git tag version found on branch ${branch}.`);
-      const rootPackageVersion = validate(getRootPackageVersion(cwd));
-      if (rootPackageVersion) {
-        logger.logInfo(`Found package version ${rootPackageVersion} on branch ${branch}.`);
-        lastRelease.version = rootPackageVersion;
-      } else logger.logInfo("No package version found.");
-    }
+    if (latestValidGitTag) lastRelease.ref = latestValidGitTag;
     context.lastRelease = lastRelease;
     if (config.debug) {
       logger.setDebugScope("release:set-last-release");

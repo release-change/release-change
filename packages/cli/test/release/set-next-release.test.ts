@@ -34,7 +34,7 @@ it("should not call `incrementVersion()` if the package cannot publish from the 
   expect(incrementVersion).not.toHaveBeenCalled();
 });
 it("should not call `incrementVersion()` if the `releaseType` argument is set to `null`", () => {
-  setNextRelease(null, { ...mockedContext, lastRelease: { gitTag: null, version: "0.0.0" } });
+  setNextRelease(null, { ...mockedContext, lastRelease: { ref: null } });
   expect(incrementVersion).not.toHaveBeenCalled();
   expect(mockedLogger.logInfo).toHaveBeenCalledWith(
     "There are no relevant changes; therefore, no new version is released."
@@ -58,8 +58,7 @@ describe.each(mockedReleases)(
           if (mockedReleaseTypes.includes(releaseType) && expectedVersion) {
             it(`should add the next release to the context with \`gitTag\` set to 'v${expectedVersion}' and \`version\` set to '${expectedVersion}' when release type is '${releaseType}' for branch ${key}`, () => {
               const lastRelease = {
-                gitTag: currentVersion === "0.0.0" ? null : `v${currentVersion}`,
-                version: currentVersion
+                ref: currentVersion === "0.0.0" ? null : `v${currentVersion}`
               };
               const expectedNextRelease: NextRelease = {
                 gitTag: `v${expectedVersion}`,
@@ -67,8 +66,8 @@ describe.each(mockedReleases)(
               };
               const context = { ...mockedContext, branch: key, lastRelease };
               const expectedContext = { ...context, nextRelease: expectedNextRelease };
-              const expectedPreviousReleaseInfoMessage = lastRelease.gitTag
-                ? `The previous release is ${lastRelease.version}`
+              const expectedPreviousReleaseInfoMessage = lastRelease.ref
+                ? `The previous release is ${currentVersion}`
                 : "There is no previous release";
               vi.spyOn(incrementVersionModule, "incrementVersion").mockReturnValue(expectedVersion);
               setNextRelease(releaseType as ReleaseType, context);

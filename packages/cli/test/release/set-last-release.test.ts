@@ -4,7 +4,6 @@ import { getAllTags, getLatestValidTag } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
-import { getRootPackageVersion } from "../../src/release/get-root-package-version.js";
 import { setLastRelease } from "../../src/release/set-last-release.js";
 import { mockedContext, mockedContextWithIneligibleBranch } from "../fixtures/mocked-context.js";
 import { mockedLogger } from "../fixtures/mocked-logger.js";
@@ -26,27 +25,22 @@ const mockedGitTags = [
   "v0.2.0",
   "v0.1.0"
 ];
-const mockedPackageVersion = "1.0.0";
 const mockedContexts = [
   {
     branch: "main",
-    gitTag: "v2.0.0",
-    version: "2.0.0"
+    ref: "v2.0.0"
   },
   {
     branch: "next",
-    gitTag: "v2.0.0-rc.2",
-    version: "2.0.0-rc.2"
+    ref: "v2.0.0-rc.2"
   },
   {
     branch: "beta",
-    gitTag: "v2.0.0-beta.3",
-    version: "2.0.0-beta.3"
+    ref: "v2.0.0-beta.3"
   },
   {
     branch: "alpha",
-    gitTag: "v2.0.0-alpha.4",
-    version: "2.0.0-alpha.4"
+    ref: "v2.0.0-alpha.4"
   }
 ];
 
@@ -74,51 +68,29 @@ it("should not call `getLatestValidTag()` if the package cannot publish from the
   expect(getLatestValidTag).not.toHaveBeenCalled();
 });
 it.each(mockedContexts)(
-  "should add the last release to the context with `gitTag` set to the Git tag value and `version` set to the version inferred from the Git tag if a Git tag is found on branch $branch",
-  ({ branch, gitTag, version }) => {
+  "should add the last release to the context with `ref` set to the Git tag value if a Git tag is found on branch $branch",
+  ({ branch, ref }) => {
     const context = { ...mockedContext, branch };
-    const expectedLastRelease: LastRelease = { gitTag, version: version };
+    const expectedLastRelease: LastRelease = { ref };
     const expectedContext = { ...context, lastRelease: expectedLastRelease };
     vi.mocked(getAllTags).mockReturnValue(mockedGitTags);
-    vi.mocked(getLatestValidTag).mockReturnValue(gitTag);
+    vi.mocked(getLatestValidTag).mockReturnValue(ref);
     setLastRelease(context);
     assert.deepEqual(context, expectedContext);
-    expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-      `Found Git tag ${gitTag} associated with version ${version} on branch ${branch}.`
-    );
   }
 );
 it.each(mockedContexts)(
-  "should add the last release to the context with `gitTag` set to `null` and `version` set to the package version value if no Git tags are found on branch $branch, but a package version is found",
+  "should add the last release to the context with `ref` set to `null` if no Git tags are found on branch $branch, but a package version is found",
   ({ branch }) => {
     const context = { ...mockedContext, branch };
-    const expectedLastRelease: LastRelease = { gitTag: null, version: mockedPackageVersion };
+    const expectedLastRelease: LastRelease = { ref: null };
     const expectedContext = {
       ...context,
       lastRelease: expectedLastRelease
     };
     vi.mocked(getAllTags).mockReturnValue([]);
     vi.mocked(getLatestValidTag).mockReturnValue(null);
-    vi.mocked(getRootPackageVersion).mockReturnValue(mockedPackageVersion);
     setLastRelease(context);
     assert.deepEqual(context, expectedContext);
-    expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-      `No Git tag version found on branch ${branch}.`
-    );
-    expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-      `Found package version ${mockedPackageVersion} on branch ${branch}.`
-    );
   }
 );
-it('should add the last release to the context with `gitTag` set to `null` and `version` set to "0.0.0" if no Git tags nor package versions are found', () => {
-  const expectedLastRelease: LastRelease = { gitTag: null, version: "0.0.0" };
-  const expectedContext = {
-    ...mockedContext,
-    lastRelease: expectedLastRelease
-  };
-  vi.mocked(getAllTags).mockReturnValue([]);
-  vi.mocked(getRootPackageVersion).mockReturnValue(undefined);
-  setLastRelease(mockedContext);
-  assert.deepEqual(mockedContext, expectedContext);
-  expect(mockedLogger.logInfo).toHaveBeenCalledWith("No package version found.");
-});

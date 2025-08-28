@@ -15,7 +15,7 @@ export const getCommitsSinceRef = (context: Context): string[] => {
   const { debug, isMonorepo } = config;
   const logger = setLogger(debug);
   try {
-    const gitTag = lastRelease ? lastRelease.gitTag : null;
+    const gitTag = lastRelease ? lastRelease.ref : null;
     const revisionRange = `${gitTag}..HEAD`;
     const args = ["log"];
     if (isMonorepo) args.push("--name-only");
