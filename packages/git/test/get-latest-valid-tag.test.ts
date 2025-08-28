@@ -53,6 +53,10 @@ const mockedContext = {
   packages: [{ name: "", path: "." }],
   branch: "main"
 } as Context;
+const mockedContextInMonorepo = {
+  ...mockedContext,
+  config: { ...mockedConfig, isMonorepo: true }
+} as Context;
 const mockedContextWithInvalidConfig = {
   cwd: mockedContext.cwd,
   env: {},
@@ -76,6 +80,38 @@ const mockedValidGitTags = [
   "v1.0.0",
   "v0.2.0",
   "v0.1.0"
+];
+const mockedValidGitTagsInMonorepo = [
+  "@monorepo/a@v2.0.0",
+  "@monorepo/b@v2.0.0",
+  "@monorepo/a@v2.0.0-rc.2",
+  "@monorepo/b@v2.0.0-rc.2",
+  "@monorepo/a@v2.0.0-rc.1",
+  "@monorepo/b@v2.0.0-rc.1",
+  "@monorepo/a@v2.0.0-beta.3",
+  "@monorepo/b@v2.0.0-beta.3",
+  "@monorepo/a@v2.0.0-beta.2",
+  "@monorepo/b@v2.0.0-beta.2",
+  "@monorepo/a@v2.0.0-beta.1",
+  "@monorepo/b@v2.0.0-beta.1",
+  "@monorepo/a@v2.0.0-alpha.4",
+  "@monorepo/b@v2.0.0-alpha.4",
+  "@monorepo/a@v2.0.0-alpha.3",
+  "@monorepo/b@v2.0.0-alpha.3",
+  "@monorepo/a@v2.0.0-alpha.2",
+  "@monorepo/b@v2.0.0-alpha.2",
+  "@monorepo/a@v2.0.0-alpha.1",
+  "@monorepo/b@v2.0.0-alpha.1",
+  "@monorepo/a@v1.1.0",
+  "@monorepo/b@v1.1.0",
+  "@monorepo/a@v1.0.1",
+  "@monorepo/b@v1.0.1",
+  "@monorepo/a@v1.0.0",
+  "@monorepo/b@v1.0.0",
+  "@monorepo/a@v0.2.0",
+  "@monorepo/b@v0.2.0",
+  "@monorepo/a@v0.1.0",
+  "@monorepo/b@v0.1.0"
 ];
 const mockedInvalidGitTags = [
   "v2",
@@ -111,6 +147,24 @@ const mockedContexts = [
     gitTag: "v2.0.0-alpha.4"
   }
 ];
+const mockedContextsInMonorepo = [
+  {
+    branch: "main",
+    gitTag: "@monorepo/a@v2.0.0"
+  },
+  {
+    branch: "next",
+    gitTag: "@monorepo/a@v2.0.0-rc.2"
+  },
+  {
+    branch: "beta",
+    gitTag: "@monorepo/a@v2.0.0-beta.3"
+  },
+  {
+    branch: "alpha",
+    gitTag: "@monorepo/a@v2.0.0-alpha.4"
+  }
+];
 
 beforeEach(() => {
   vi.mock("../src/get-all-tags.js", () => ({
@@ -139,6 +193,14 @@ it.each(mockedContexts)(
   ({ branch, gitTag }) => {
     const context = { ...mockedContext, branch };
     vi.mocked(getAllTags).mockReturnValue(mockedValidGitTags);
+    expect(getLatestValidTag(context)).toBe(gitTag);
+  }
+);
+it.each(mockedContextsInMonorepo)(
+  "should return the first relevant Git tag for branch $branch",
+  ({ branch, gitTag }) => {
+    const context = { ...mockedContextInMonorepo, branch };
+    vi.mocked(getAllTags).mockReturnValue(mockedValidGitTagsInMonorepo);
     expect(getLatestValidTag(context)).toBe(gitTag);
   }
 );
