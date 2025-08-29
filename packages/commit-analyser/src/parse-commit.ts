@@ -16,11 +16,12 @@ import {
  * Parses a commit.
  * @param commit - The commit to parse.
  * @param context - The context where the CLI is running.
- * @return The commit as an object, with the description and the footer.
+ * @return The commit as an object, with the description, the footer and the modified files (if in a monorepo context).
  */
 export const parseCommit = (commit: string, context: Context): Commit => {
   const { config } = context;
-  const logger = setLogger(config.debug);
+  const { debug, isMonorepo } = config;
+  const logger = setLogger(debug);
   const parsedCommit: Commit = {
     description: "",
     footer: []
@@ -28,7 +29,7 @@ export const parseCommit = (commit: string, context: Context): Commit => {
   const commitSections = commit
     .replaceAll(INDENTED_BLANK_LINE_SEPARATOR, BLANK_LINE_SEPARATOR)
     .split(BLANK_LINE_SEPARATOR);
-  const [_, ...commitRest] = commitSections;
+  const [commitHeader, ...commitRest] = commitSections;
   const [commitDescription, ...commitOptionalSections] = commitRest
     .map(line => line.trim())
     .filter(Boolean);
@@ -38,7 +39,24 @@ export const parseCommit = (commit: string, context: Context): Commit => {
       Boolean(line.match(COMMIT_FOOTER_KEY) || line.match(BREAKING_CHANGE))
     );
     parsedCommit.footer = commitFooter.flatMap(line => line.split("\n").map(line => line.trim()));
-    if (config.debug) {
+    if (isMonorepo) {
+      const commitModifiedFiles = commitOptionalSections
+        .slice(-1)
+        .filter(line => !line.match(COMMIT_FOOTER_KEY) && !line.match(BREAKING_CHANGE))
+        .flatMap(line =>
+          line
+            .split("\n")
+            .map(line => line.trim())
+            .filter(file => file.match(/^[0-9a-zA-Z-_./]+$/))
+        );
+      if (commitModifiedFiles.length) parsedCommit.modifiedFiles = commitModifiedFiles;
+      else if (!commitHeader?.match(/^merge:/im)) {
+        throw new Error(
+          "Failed to parse commit: no modified files found while this repository is a monorepo."
+        );
+      }
+    }
+    if (debug) {
       logger.setDebugScope("commit-analyser:parse-commit");
       logger.logDebug(inspect(parsedCommit, { depth: Number.POSITIVE_INFINITY }));
     }
