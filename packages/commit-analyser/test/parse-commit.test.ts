@@ -1,4 +1,4 @@
-import { assert, expect, it } from "vitest";
+import { assert, it } from "vitest";
 
 import { parseCommit } from "../src/parse-commit.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
@@ -45,6 +45,38 @@ const mockedCommits = [
   {
     type: "commit with a description and both footers",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}`,
+    expected: {
+      description,
+      footer: [keyValueFooter, breakingChangeFooter]
+    }
+  },
+  {
+    type: "commit with just a description and a body",
+    commit: `${mockedCommitSampleWithBody}\n\n${modifiedFile}`,
+    expected: {
+      description,
+      footer: []
+    }
+  },
+  {
+    type: "commit with a description, a body and a key/value footer",
+    commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n\n${modifiedFile}`,
+    expected: {
+      description,
+      footer: [keyValueFooter]
+    }
+  },
+  {
+    type: "commit with a description, a body and a breaking change footer",
+    commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
+    expected: {
+      description,
+      footer: [breakingChangeFooter]
+    }
+  },
+  {
+    type: "commit with a description, a body and both footers",
+    commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
     expected: {
       description,
       footer: [keyValueFooter, breakingChangeFooter]
@@ -136,9 +168,10 @@ it.each(mockedCommitsInMonorepo)(
   }
 );
 it("should throw an error if the commit has no description", () => {
-  expect(() =>
-    parseCommit(`${commitId}\n${commitAuthor}\n${commitDate}`, mockedContext)
-  ).toThrowError("Failed to parse commit: no description found.");
+  assert.throws(
+    () => parseCommit(`${commitId}\n${commitAuthor}\n${commitDate}`, mockedContext),
+    "Failed to parse commit: no description found."
+  );
 });
 it("should throw an error if the commit has no modified files in a monorepo context", () => {
   assert.throws(
