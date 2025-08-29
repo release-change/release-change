@@ -14,3 +14,7 @@ export const mockedContext: Context = {
   config: expectedDefaultConfig,
   packages: [{ name: "", path: "." }]
 };
+export const mockedContextInMonorepo: Context = {
+  ...mockedContext,
+  config: { ...expectedDefaultConfig, isMonorepo: true }
+};
