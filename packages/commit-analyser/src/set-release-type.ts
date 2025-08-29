@@ -21,21 +21,17 @@ export const setReleaseType = (commit: Commit, context: Context): ReleaseType =>
   const { config } = context;
   const logger = setLogger(config.debug);
   logger.logInfo(`Analysing commit “${description}”…`);
-  let releaseType: ReleaseType;
-  let releaseTypeInfoMessage: string;
-  if (footer.some(line => line.match(BREAKING_CHANGE)) || description.match(COMMIT_PREFIX_MAJOR)) {
-    releaseType = "major";
-    releaseTypeInfoMessage = "The release type for the commit is major.";
-  } else if (description.match(COMMIT_PREFIX_MINOR)) {
-    releaseType = "minor";
-    releaseTypeInfoMessage = "The release type for the commit is minor.";
-  } else if (description.match(COMMIT_PREFIX_PATCH)) {
-    releaseType = "patch";
-    releaseTypeInfoMessage = "The release type for the commit is patch.";
-  } else {
-    releaseType = null;
-    releaseTypeInfoMessage = "The commit does not trigger a release.";
-  }
+  const releaseType: ReleaseType =
+    footer.some(line => line.match(BREAKING_CHANGE)) || description.match(COMMIT_PREFIX_MAJOR)
+      ? "major"
+      : description.match(COMMIT_PREFIX_MINOR)
+        ? "minor"
+        : description.match(COMMIT_PREFIX_PATCH)
+          ? "patch"
+          : null;
+  const releaseTypeInfoMessage = releaseType
+    ? `The release type for the commit is ${releaseType}.`
+    : "The commit does not trigger a release.";
   if (config.debug) {
     logger.setDebugScope("commit-analyser:set-release-type");
     logger.logDebug(`Release type: ${releaseType}`);
