@@ -26,7 +26,7 @@ it("should log an error message when an error is caught", () => {
   vi.mocked(runCommandSync).mockImplementation(() => {
     throw new Error("Error");
   });
-  assert.throw(() => getAllTags(mockedContext));
+  assert.throws(() => getAllTags(mockedContext));
   expect(mockedLogger.logError).toHaveBeenCalled();
 });
 it("should return all tags if tags are found", () => {

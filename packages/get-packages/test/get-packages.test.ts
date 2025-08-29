@@ -47,7 +47,7 @@ it("should throw an error if the package manager is npm and no `package.json` fi
   vi.mocked(getRootPackageManifest).mockImplementation(() => {
     throw new Error("Failed to get the root package manifest (`package.json`): file not found.");
   });
-  assert.throw(() => getRootPackageManifest(`${mockedCwd}/package.json`));
+  assert.throws(() => getRootPackageManifest(`${mockedCwd}/package.json`));
   await expect(getPackages(mockedContextBase)).rejects.toThrow();
 });
 it("should throw an error if the package manager is pnpm and the glob patterns do not return anything", async () => {
