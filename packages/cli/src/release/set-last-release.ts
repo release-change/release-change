@@ -1,5 +1,6 @@
 import type { Context, LastRelease, PackageLastRelease } from "@release-change/shared";
 
+import path from "node:path";
 import { inspect } from "node:util";
 
 import { getPackageVersion } from "@release-change/get-packages";
@@ -24,7 +25,7 @@ export const setLastRelease = (context: Context): void => {
     };
     const latestValidGitTag = getLatestValidTag(context);
     if (latestValidGitTag) lastRelease.ref = latestValidGitTag;
-    for (const { name } of packages) {
+    for (const { name, path: packagePath } of packages) {
       const packageName = name || "root";
       const packageLastRelease: PackageLastRelease = {
         name,
@@ -41,7 +42,9 @@ export const setLastRelease = (context: Context): void => {
         packageLastRelease.version = version;
       } else {
         logger.logInfo(`No Git tag version found for ${packageName} package on branch ${branch}.`);
-        const packageVersion = validate(getPackageVersion(`${cwd}/package.json`));
+        const packageVersion = validate(
+          getPackageVersion(path.join(cwd, packagePath, "package.json"))
+        );
         if (packageVersion) {
           logger.logInfo(
             `Found package version ${packageVersion} for ${packageName} package on branch ${branch}.`
