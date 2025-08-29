@@ -14,3 +14,7 @@ export const mockedContext: Context = {
   branch: "main"
 };
 export const mockedContextWithIneligibleBranch = { ...mockedContext, branch: "unmatched-branch" };
+export const mockedContextInMonorepo = {
+  ...mockedContext,
+  config: { ...mockedConfig, isMonorepo: true }
+};
