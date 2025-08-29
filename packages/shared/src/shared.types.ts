@@ -36,8 +36,14 @@ export type Package = {
   name: string;
   path: string;
 };
+export type PackageLastRelease = {
+  name: string;
+  gitTag: string | null;
+  version: string;
+};
 export type LastRelease = {
   ref: string | null;
+  packages: PackageLastRelease[];
 };
 export type NextRelease = {
   gitTag: string;

@@ -34,7 +34,10 @@ it("should not call `incrementVersion()` if the package cannot publish from the 
   expect(incrementVersion).not.toHaveBeenCalled();
 });
 it("should not call `incrementVersion()` if the `releaseType` argument is set to `null`", () => {
-  setNextRelease(null, { ...mockedContext, lastRelease: { ref: null } });
+  setNextRelease(null, {
+    ...mockedContext,
+    lastRelease: { ref: null, packages: [{ name: "", gitTag: null, version: "0.0.0" }] }
+  });
   expect(incrementVersion).not.toHaveBeenCalled();
   expect(mockedLogger.logInfo).toHaveBeenCalledWith(
     "There are no relevant changes; therefore, no new version is released."
@@ -57,8 +60,10 @@ describe.each(mockedReleases)(
           const expectedVersion = branch[releaseType];
           if (mockedReleaseTypes.includes(releaseType) && expectedVersion) {
             it(`should add the next release to the context with \`gitTag\` set to 'v${expectedVersion}' and \`version\` set to '${expectedVersion}' when release type is '${releaseType}' for branch ${key}`, () => {
+              const ref = currentVersion === "0.0.0" ? null : `v${currentVersion}`;
               const lastRelease = {
-                ref: currentVersion === "0.0.0" ? null : `v${currentVersion}`
+                ref,
+                packages: [{ name: "", gitTag: ref, version: currentVersion }]
               };
               const expectedNextRelease: NextRelease = {
                 gitTag: `v${expectedVersion}`,

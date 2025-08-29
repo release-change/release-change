@@ -10,6 +10,7 @@ export type {
   LastRelease,
   NextRelease,
   Package,
+  PackageLastRelease,
   ParsedCliOptions
 } from "./shared.types.js";
 
