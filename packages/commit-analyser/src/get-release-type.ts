@@ -1,61 +1,112 @@
-import type { ReleaseType } from "./commit-analyser.types.js";
+import type { PackageReleaseType, ReleaseType } from "./commit-analyser.types.js";
 
 import { inspect } from "node:util";
 
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { agreeInNumber, type Context } from "@release-change/shared";
 
+import { adjustReleaseType } from "./adjust-release-type.js";
 import { parseCommit } from "./parse-commit.js";
 import { setReleaseType } from "./set-release-type.js";
 
 /**
  * Gets the release type from the commits which have been committed since the previous release or the beginning.
+ *
  * The release type can be one of the following, from most to least important:
  * 1. `"major"`,
  * 2. `"minor"`,
  * 3. `"patch"`,
  * 4. `null`.
+ *
+ * In a monorepo context, the release type is also determined according to the internal dependencies.
  * @param commits - The commits to analyse.
  * @param context - The context where the CLI is running.
- * @return The most important release type found if commits are parsed successfully, `null` if there are no commits or an error is thrown.
+ * @return  An array of objects containing the most important release type found for each package if commits are parsed successfully, `null` if there are no commits or an error is thrown.
  */
-export const getReleaseType = (commits: string[], context: Context): ReleaseType => {
-  const { config } = context;
-  const logger = setLogger(config.debug);
+export const getReleaseType = (commits: string[], context: Context): PackageReleaseType[] => {
+  const { config, packages } = context;
+  const { debug } = config;
+  const logger = setLogger(debug);
+  const packageReleaseTypes: PackageReleaseType[] = packages.map(packageItem => ({
+    name: packageItem.name,
+    releaseType: null
+  }));
   try {
-    const releaseTypes = new Set<ReleaseType>();
+    if (debug) logger.setDebugScope("commit-analyser:get-release-type");
     const totalCommits = commits.length;
     if (totalCommits) {
+      const packagesPaths = packages.map(packageItem => packageItem.path);
+      const releaseTypesPerPackage = new Map<string, Set<ReleaseType>>();
       for (const commit of commits) {
         const parsedCommit = parseCommit(commit, context);
-        releaseTypes.add(setReleaseType(parsedCommit, context));
+        const { modifiedFiles } = parsedCommit;
+        const commitReleaseType = setReleaseType(parsedCommit, context);
+        if (modifiedFiles?.length) {
+          for (const modifiedFile of modifiedFiles) {
+            const relatedPackagePath = packagesPaths.find(packagePath =>
+              modifiedFile.startsWith(packagePath)
+            );
+            const relatedPackageName =
+              packages.find(packageItem => packageItem.path === relatedPackagePath)?.name ?? "";
+            const releaseTypes =
+              releaseTypesPerPackage.get(relatedPackageName) ?? new Set<ReleaseType>();
+            releaseTypes.add(commitReleaseType);
+            releaseTypesPerPackage.set(relatedPackageName, releaseTypes);
+          }
+        } else {
+          const releaseTypes = releaseTypesPerPackage.get("") ?? new Set<ReleaseType>();
+          releaseTypes.add(commitReleaseType);
+          releaseTypesPerPackage.set("", releaseTypes);
+        }
+        if (debug) {
+          logger.logDebug(`Release types by package for commit “${parsedCommit.description}”:`);
+          logger.logDebug(inspect(releaseTypesPerPackage));
+        }
       }
-      if (config.debug) {
-        logger.setDebugScope("git:get-release-type");
-        logger.logDebug(inspect(releaseTypes));
+      const adjustedReleaseTypesPerPackage = new Map(
+        adjustReleaseType(context, releaseTypesPerPackage)
+      );
+      if (debug) {
+        logger.logDebug("Overall adjusted release types by package:");
+        logger.logDebug(inspect(adjustedReleaseTypesPerPackage));
       }
       const commitWord = agreeInNumber(totalCommits, ["commit", "commits"]);
-      const completeAnalysisSentence = `Analysis of ${totalCommits} ${commitWord} complete:`;
-      switch (true) {
-        case releaseTypes.has("major"):
-          logger.logSuccess(`${completeAnalysisSentence} major release.`);
-          return "major";
-        case releaseTypes.has("minor"):
-          logger.logSuccess(`${completeAnalysisSentence} minor release.`);
-          return "minor";
-        case releaseTypes.has("patch"):
-          logger.logSuccess(`${completeAnalysisSentence} patch release.`);
-          return "patch";
-        default:
-          logger.logSuccess(`${completeAnalysisSentence} no release.`);
-          return null;
+      logger.logSuccess(`Analysis of ${totalCommits} ${commitWord} complete.`);
+      const packageReleaseTypes: PackageReleaseType[] = [];
+      for (const [name, releaseTypes] of adjustedReleaseTypesPerPackage) {
+        const packageName = `${name ? name : "root"} package`;
+        let releaseType: ReleaseType;
+        switch (true) {
+          case releaseTypes.has("major"): {
+            releaseType = "major";
+            logger.logSuccess(`For ${packageName}: major release.`);
+            break;
+          }
+          case releaseTypes.has("minor"): {
+            releaseType = "minor";
+            logger.logSuccess(`For ${packageName}: minor release.`);
+            break;
+          }
+          case releaseTypes.has("patch"): {
+            releaseType = "patch";
+            logger.logSuccess(`For ${packageName}: patch release.`);
+            break;
+          }
+          default: {
+            releaseType = null;
+            logger.logSuccess(`For ${packageName}: no release.`);
+            break;
+          }
+        }
+        packageReleaseTypes.push({ name, releaseType });
       }
+      return packageReleaseTypes;
     }
     logger.logWarn("No commits to analyse: no release.");
-    return null;
+    return packageReleaseTypes;
   } catch (error) {
     logger.logError(checkErrorType(error));
     process.exitCode = 1;
-    return null;
+    return packageReleaseTypes;
   }
 };

@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@release-change/config": "workspace:*",
+    "@release-change/get-packages": "workspace:*",
     "@release-change/logger": "workspace:*",
     "@release-change/shared": "workspace:*"
   }

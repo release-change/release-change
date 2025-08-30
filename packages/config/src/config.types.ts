@@ -8,4 +8,6 @@ export type PackageManifest = {
         directory?: string;
       };
   workspaces?: string[];
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
 };
