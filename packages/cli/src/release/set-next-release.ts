@@ -40,7 +40,7 @@ export const setNextRelease = (
           const version = incrementVersion(currentVersion, releaseType, branchConfig);
           nextRelease.push({
             name,
-            gitTag: `${name ? `${name}/` : ""}v${version}`,
+            gitTag: `${name ? `${name}@` : ""}v${version}`,
             version
           });
           const previousReleaseInfoMessage = gitTag

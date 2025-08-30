@@ -66,7 +66,7 @@ describe.each(mockedNextReleases)(
           };
           const expectedNextRelease: NextRelease = nextReleases.map(nextRelease => ({
             name: nextRelease.name,
-            gitTag: `${nextRelease.name}${nextRelease.name ? "/" : ""}v${nextRelease.version}`,
+            gitTag: `${nextRelease.name}${nextRelease.name ? "@" : ""}v${nextRelease.version}`,
             version: nextRelease.version
           }));
           for (const nextRelease of nextReleases) {
