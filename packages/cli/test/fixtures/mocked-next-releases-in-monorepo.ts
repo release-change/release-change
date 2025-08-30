@@ -343,7 +343,7 @@ export const mockedNextReleasesInMonorepo: {
         },
         {
           name: "@monorepo/a",
-          gitTag: "v0.1.0",
+          gitTag: "@monorepo/a@v0.1.0",
           version: "0.1.0"
         }
       ]
@@ -502,7 +502,7 @@ export const mockedNextReleasesInMonorepo: {
         },
         {
           name: "@monorepo/a",
-          gitTag: null,
+          gitTag: "@monorepo/a@0.9.8",
           version: "0.9.8"
         }
       ]
