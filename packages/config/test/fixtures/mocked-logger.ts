@@ -8,5 +8,6 @@ export const mockedLogger: Logger = {
   logInfo: vi.fn(),
   logError: vi.fn(),
   logWarn: vi.fn(),
-  logSuccess: vi.fn()
+  logSuccess: vi.fn(),
+  logWithoutFormatting: vi.fn()
 };
