@@ -54,7 +54,7 @@ export const setNextRelease = (
       context.nextRelease = nextRelease;
     } else logger.logInfo("There are no relevant changes; therefore, no new version is released.");
     if (config.debug) {
-      logger.setDebugScope("release:set-next-release");
+      logger.setDebugScope("cli:release:set-next-release");
       logger.logDebug(inspect(context.nextRelease, { depth: Number.POSITIVE_INFINITY }));
     }
   } catch (error) {

@@ -16,7 +16,7 @@ export const isUsableCiEnvironment = (context: Context): boolean => {
   const { isCi, isPullRequest } = ci;
   const logger = setLogger(config.debug);
   if (config.debug) {
-    logger.setDebugScope("ci");
+    logger.setDebugScope("ci:is-usable-ci-environment");
     logger.logDebug(inspect(ci, { depth: Number.POSITIVE_INFINITY }));
   }
   if (isCi && isPullRequest) {
