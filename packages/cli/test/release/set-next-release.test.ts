@@ -1,18 +1,14 @@
-import type { ReleaseType } from "@release-change/commit-analyser";
 import type { NextRelease } from "@release-change/shared";
 
 import { setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
-import * as incrementVersionModule from "../../src/release/increment-version.js";
 import { incrementVersion } from "../../src/release/increment-version.js";
 import { setNextRelease } from "../../src/release/set-next-release.js";
 import { mockedConfig } from "../fixtures/mocked-config.js";
 import { mockedContext, mockedContextWithIneligibleBranch } from "../fixtures/mocked-context.js";
 import { mockedLogger } from "../fixtures/mocked-logger.js";
-import { mockedReleases } from "../fixtures/mocked-releases.js";
-
-const mockedReleaseTypes = ["major", "minor", "patch"];
+import { mockedNextReleases } from "../fixtures/mocked-next-releases.js";
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({
@@ -30,11 +26,11 @@ afterEach(() => {
 });
 
 it("should not call `incrementVersion()` if the package cannot publish from the branch", () => {
-  setNextRelease("major", mockedContextWithIneligibleBranch);
+  setNextRelease([{ name: "", releaseType: "major" }], mockedContextWithIneligibleBranch);
   expect(incrementVersion).not.toHaveBeenCalled();
 });
 it("should not call `incrementVersion()` if the `releaseType` argument is set to `null`", () => {
-  setNextRelease(null, {
+  setNextRelease([{ name: "", releaseType: null }], {
     ...mockedContext,
     lastRelease: { ref: null, packages: [{ name: "", gitTag: null, version: "0.0.0" }] }
   });
@@ -44,46 +40,60 @@ it("should not call `incrementVersion()` if the `releaseType` argument is set to
   );
 });
 it("should log a warning message if no last release is found", () => {
-  setNextRelease("major", { ...mockedContext, branch: "main" });
+  setNextRelease([{ name: "", releaseType: "major" }], mockedContext);
   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
     "No last release found; therefore, a new version will not be published."
   );
 });
-describe.each(mockedReleases)(
-  "add release to context from $currentVersion",
-  ({ currentVersion, branches }) => {
-    for (const key in branches) {
-      const branch = branches[key];
-      const mockedBranchConfig = mockedConfig.releaseType[key];
-      if (branch && mockedBranchConfig) {
-        for (const releaseType in branch) {
-          const expectedVersion = branch[releaseType];
-          if (mockedReleaseTypes.includes(releaseType) && expectedVersion) {
-            it(`should add the next release to the context with \`gitTag\` set to 'v${expectedVersion}' and \`version\` set to '${expectedVersion}' when release type is '${releaseType}' for branch ${key}`, () => {
-              const ref = currentVersion === "0.0.0" ? null : `v${currentVersion}`;
-              const lastRelease = {
-                ref,
-                packages: [{ name: "", gitTag: ref, version: currentVersion }]
-              };
-              const expectedNextRelease: NextRelease = {
-                gitTag: `v${expectedVersion}`,
-                version: expectedVersion
-              };
-              const context = { ...mockedContext, branch: key, lastRelease };
-              const expectedContext = { ...context, nextRelease: expectedNextRelease };
-              const expectedPreviousReleaseInfoMessage = lastRelease.ref
-                ? `The previous release is ${currentVersion}`
-                : "There is no previous release";
-              vi.spyOn(incrementVersionModule, "incrementVersion").mockReturnValue(expectedVersion);
-              setNextRelease(releaseType as ReleaseType, context);
-              assert.deepEqual(context, expectedContext);
-              expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-                `${expectedPreviousReleaseInfoMessage} and the next release version is ${expectedVersion}.`
-              );
-            });
+it("should log a warning message if no last release is found concerning the packages", () => {
+  setNextRelease([{ name: "", releaseType: "major" }], {
+    ...mockedContext,
+    lastRelease: { ref: null, packages: [{ name: "@monorepo/a", gitTag: null, version: "0.0.0" }] }
+  });
+  expect(mockedLogger.logWarn).toHaveBeenCalledWith("No last release found for root package.");
+});
+describe.each(mockedNextReleases)(
+  "add release to context (ref: $lastRelease.ref)",
+  ({ lastRelease, branches }) => {
+    describe.each(branches)("for branch $branch", ({ branch, releaseTypes }) => {
+      describe.each(releaseTypes)("for $releaseType", ({ releaseType, nextReleases }) => {
+        it("should set nextRelease with the appropriate values", () => {
+          const context = {
+            ...mockedContext,
+            config: { ...mockedConfig, isMonorepo: true },
+            branch,
+            lastRelease
+          };
+          const expectedNextRelease: NextRelease = nextReleases.map(nextRelease => ({
+            name: nextRelease.name,
+            gitTag: `${nextRelease.name}${nextRelease.name ? "/" : ""}v${nextRelease.version}`,
+            version: nextRelease.version
+          }));
+          for (const nextRelease of nextReleases) {
+            vi.mocked(incrementVersion).mockReturnValue(nextRelease.version);
           }
-        }
-      }
-    }
+          setNextRelease(releaseType, context);
+          assert.deepEqual(context.nextRelease, expectedNextRelease);
+          for (const nextRelease of nextReleases) {
+            const { name, version } = nextRelease;
+            const packageLastRelease = lastRelease.packages.find(
+              packageItem => packageItem.name === name
+            );
+            const packageName = name ? name : "root";
+            if (packageLastRelease) {
+              if (packageLastRelease.gitTag) {
+                expect(mockedLogger.logInfo).toHaveBeenCalledWith(
+                  `For ${packageName} package, the previous release is ${packageLastRelease.version} and the next release version is ${version}.`
+                );
+              } else {
+                expect(mockedLogger.logInfo).toHaveBeenCalledWith(
+                  `For ${packageName} package, there is no previous release and the next release version is ${version}.`
+                );
+              }
+            }
+          }
+        });
+      });
+    });
   }
 );
