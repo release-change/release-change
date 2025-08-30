@@ -102,7 +102,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.0.0-alpha.1",
+          gitTag: "v1.0.0-alpha.1",
           version: "1.0.0-alpha.1"
         }
       ]
@@ -184,7 +184,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.0.0-beta.1",
+          gitTag: "v1.0.0-beta.1",
           version: "1.0.0-beta.1"
         }
       ]
@@ -266,7 +266,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.0.0-rc.1",
+          gitTag: "v1.0.0-rc.1",
           version: "1.0.0-rc.1"
         }
       ]
@@ -348,7 +348,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.0.0",
+          gitTag: "v1.0.0",
           version: "1.0.0"
         }
       ]
@@ -430,7 +430,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.0.1-alpha.1",
+          gitTag: "v1.0.1-alpha.1",
           version: "1.0.1-alpha.1"
         }
       ]
@@ -512,7 +512,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.0.1-beta.1",
+          gitTag: "v1.0.1-beta.1",
           version: "1.0.1-beta.1"
         }
       ]
@@ -594,7 +594,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.0.1-rc.1",
+          gitTag: "v1.0.1-rc.1",
           version: "1.0.1-rc.1"
         }
       ]
@@ -676,7 +676,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.0.1",
+          gitTag: "v1.0.1",
           version: "1.0.1"
         }
       ]
@@ -758,7 +758,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.1.0-alpha.1",
+          gitTag: "v1.1.0-alpha.1",
           version: "1.1.0-alpha.1"
         }
       ]
@@ -840,7 +840,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.1.0-beta.1",
+          gitTag: "v1.1.0-beta.1",
           version: "1.1.0-beta.1"
         }
       ]
@@ -922,7 +922,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.1.0-rc.1",
+          gitTag: "v1.1.0-rc.1",
           version: "1.1.0-rc.1"
         }
       ]
@@ -1004,7 +1004,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          gitTag: "1.1.0",
+          gitTag: "v1.1.0",
           version: "1.1.0"
         }
       ]
