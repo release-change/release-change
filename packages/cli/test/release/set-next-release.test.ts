@@ -9,6 +9,7 @@ import { mockedConfig } from "../fixtures/mocked-config.js";
 import { mockedContext, mockedContextWithIneligibleBranch } from "../fixtures/mocked-context.js";
 import { mockedLogger } from "../fixtures/mocked-logger.js";
 import { mockedNextReleases } from "../fixtures/mocked-next-releases.js";
+import { mockedNextReleasesInMonorepo } from "../fixtures/mocked-next-releases-in-monorepo.js";
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({
@@ -52,7 +53,7 @@ it("should log a warning message if no last release is found concerning the pack
   });
   expect(mockedLogger.logWarn).toHaveBeenCalledWith("No last release found for root package.");
 });
-describe.each(mockedNextReleases)(
+describe.each([...mockedNextReleases, ...mockedNextReleasesInMonorepo])(
   "add release to context (ref: $lastRelease.ref)",
   ({ lastRelease, branches }) => {
     describe.each(branches)("for branch $branch", ({ branch, releaseTypes }) => {
@@ -70,7 +71,7 @@ describe.each(mockedNextReleases)(
             version: nextRelease.version
           }));
           for (const nextRelease of nextReleases) {
-            vi.mocked(incrementVersion).mockReturnValue(nextRelease.version);
+            vi.mocked(incrementVersion).mockReturnValueOnce(nextRelease.version);
           }
           setNextRelease(releaseType, context);
           assert.deepEqual(context.nextRelease, expectedNextRelease);
