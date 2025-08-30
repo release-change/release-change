@@ -17,7 +17,7 @@ export const checkBranch = (context: Context): undefined | false => {
   const { branches } = config;
   context.branch = branch;
   if (config.debug) {
-    logger.setDebugScope("branch");
+    logger.setDebugScope("git:check-branch");
     logger.logDebug(`Branches from where to publish: ${util.inspect(branches)}`);
     logger.logDebug(`Branch name: ${branch}`);
   }

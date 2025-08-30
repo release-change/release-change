@@ -25,7 +25,7 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
   if (packageManager) {
     const packages: Package[] = [{ name: "", path: "." }];
     if (debug) {
-      logger.setDebugScope("get-packages");
+      logger.setDebugScope("get-packages:get-packages");
       logger.logDebug(`Package manager: ${packageManager}`);
     }
     if (packageManager === "pnpm") {

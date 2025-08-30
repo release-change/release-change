@@ -28,7 +28,7 @@ export const checkAuthorisation = async (
     branch
   ]);
   if (config.debug) {
-    logger.setDebugScope("check-authorisation");
+    logger.setDebugScope("git:check-authorisation");
     logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
   }
   const { status, stderr } = gitCommandResult;
