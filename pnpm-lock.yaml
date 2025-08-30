@@ -59,6 +59,9 @@ importers:
       '@release-change/config':
         specifier: workspace:*
         version: link:../config
+      '@release-change/get-packages':
+        specifier: workspace:*
+        version: link:../get-packages
       '@release-change/logger':
         specifier: workspace:*
         version: link:../logger

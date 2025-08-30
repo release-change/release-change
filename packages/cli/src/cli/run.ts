@@ -40,7 +40,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
     setLastRelease(context);
     const commits = getCommitsSinceRef(context);
     const releaseType = getReleaseType(commits, context);
-    setNextRelease(releaseType, context);
+    setNextRelease(releaseType[0]?.releaseType ?? "patch", context);
     console.log("context.branch", context.branch);
     console.log("context.config.dryRun", context.config.dryRun);
   }
