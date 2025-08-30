@@ -16,5 +16,11 @@ export const mockedContext: Context = {
 };
 export const mockedContextInMonorepo: Context = {
   ...mockedContext,
-  config: { ...expectedDefaultConfig, isMonorepo: true }
+  config: { ...expectedDefaultConfig, isMonorepo: true },
+  packages: [
+    { name: "", path: "." },
+    { name: "@monorepo/a", path: "packages/a" },
+    { name: "@monorepo/b", path: "packages/b" },
+    { name: "@monorepo/c", path: "packages/c" }
+  ]
 };
