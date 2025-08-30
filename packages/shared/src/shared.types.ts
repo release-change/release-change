@@ -41,14 +41,16 @@ export type PackageLastRelease = {
   gitTag: string | null;
   version: string;
 };
+export type PackageNextRelease = {
+  name: string;
+  gitTag: string;
+  version: string;
+};
 export type LastRelease = {
   ref: string | null;
   packages: PackageLastRelease[];
 };
-export type NextRelease = {
-  gitTag: string;
-  version: string;
-};
+export type NextRelease = PackageNextRelease[];
 export interface ContextBase {
   cwd: string;
   env: NodeJS.ProcessEnv;
