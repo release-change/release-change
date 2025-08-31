@@ -37,6 +37,9 @@ export const setLogger = (isDebug?: boolean): Logger => {
         "\x1b[32m%s\x1b[0m",
         formatMessage(message, { ...loggerContext, type: "success" })
       );
+    },
+    logWithoutFormatting: (message: string): void => {
+      console.log(message);
     }
   };
 };

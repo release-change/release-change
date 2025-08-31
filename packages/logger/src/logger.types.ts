@@ -14,4 +14,5 @@ export type Logger = {
   logError: LoggerFunction;
   logWarn: LoggerFunction;
   logSuccess: LoggerFunction;
+  logWithoutFormatting: LoggerFunction;
 };

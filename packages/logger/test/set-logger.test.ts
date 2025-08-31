@@ -12,6 +12,7 @@ const infoMessage = "This is an informational message.";
 const errorMessage = "This is an error message.";
 const warningMessage = "This is a warning message.";
 const successMessage = "This is a success message.";
+const unformattedMessage = "This is a message without formatting.";
 let originalConsoleDebug: typeof console.debug;
 let originalConsoleInfo: typeof console.info;
 let originalConsoleError: typeof console.error;
@@ -90,4 +91,8 @@ it("should display a success message to the console", () => {
     "\x1b[32m%s\x1b[0m",
     `[${expectedTime}] [${WORKSPACE_NAME}] \u203a \u2714 ${successMessage}`
   );
+});
+it("should display an unformatted message to the console", () => {
+  logger.logWithoutFormatting(unformattedMessage);
+  expect(console.log).toHaveBeenCalledWith(unformattedMessage);
 });
