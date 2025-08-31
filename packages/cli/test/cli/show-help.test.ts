@@ -1,9 +1,11 @@
 import childProcess from "node:child_process";
 
+import { setLogger } from "@release-change/logger";
 import { WORKSPACE_NAME } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { showHelp } from "../../src/cli/show-help.js";
+import { mockedLogger } from "../fixtures/mocked-logger.js";
 
 const expectedOutput = `Runs automated package release and publishing
 
@@ -18,17 +20,19 @@ Options
   -v, --version         Show version number           [boolean]
   -h, --help            Show help                     [boolean]`;
 const cliOptions = ["-h", "--help"];
-let originalConsoleLog: typeof console.log;
+
 beforeEach(() => {
-  originalConsoleLog = console.log;
-  console.log = vi.fn();
+  vi.mock("@release-change/logger", () => ({
+    setLogger: vi.fn()
+  }));
+  vi.mocked(setLogger).mockReturnValue(mockedLogger);
 });
 afterEach(() => {
-  console.log = originalConsoleLog;
-  vi.restoreAllMocks();
+  vi.clearAllMocks();
 });
+
 it.each(cliOptions)("should display the help content when using the `%s` command", option => {
   vi.spyOn(childProcess, "execSync").mockReturnValue(`npx release-change ${option}`);
   showHelp();
-  expect(console.log).toHaveBeenCalledWith(expectedOutput);
+  expect(mockedLogger.logWithoutFormatting).toHaveBeenCalledWith(expectedOutput);
 });

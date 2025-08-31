@@ -1,22 +1,23 @@
 import childProcess from "node:child_process";
 
+import { setLogger } from "@release-change/logger";
 import { WORKSPACE_VERSION } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { showVersion } from "../../src/cli/show-version.js";
+import { mockedLogger } from "../fixtures/mocked-logger.js";
 
 const expectedVersion = WORKSPACE_VERSION;
 const cliOptions = ["-v", "--version"];
-let originalConsoleLog: typeof console.log;
 
 beforeEach(() => {
-  originalConsoleLog = console.log;
-  console.log = vi.fn();
+  vi.mock("@release-change/logger", () => ({
+    setLogger: vi.fn()
+  }));
+  vi.mocked(setLogger).mockReturnValue(mockedLogger);
 });
-
 afterEach(() => {
-  console.log = originalConsoleLog;
-  vi.restoreAllMocks();
+  vi.clearAllMocks();
 });
 
 it.each(cliOptions)(
@@ -24,6 +25,6 @@ it.each(cliOptions)(
   cliOption => {
     vi.spyOn(childProcess, "execSync").mockReturnValue(`npx release-change ${cliOption}`);
     showVersion();
-    expect(console.log).toHaveBeenCalledWith(`v${expectedVersion}`);
+    expect(mockedLogger.logWithoutFormatting).toHaveBeenCalledWith(`v${expectedVersion}`);
   }
 );
