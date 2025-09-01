@@ -71,9 +71,6 @@ importers:
 
   packages/config:
     dependencies:
-      '@release-change/git':
-        specifier: workspace:*
-        version: link:../git
       '@release-change/logger':
         specifier: workspace:*
         version: link:../logger
@@ -101,6 +98,18 @@ importers:
       '@release-change/semver':
         specifier: workspace:*
         version: link:../semver
+      '@release-change/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/github:
+    dependencies:
+      '@release-change/commit-analyser':
+        specifier: workspace:*
+        version: link:../commit-analyser
+      '@release-change/logger':
+        specifier: workspace:*
+        version: link:../logger
       '@release-change/shared':
         specifier: workspace:*
         version: link:../shared

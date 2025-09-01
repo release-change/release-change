@@ -31,7 +31,6 @@
     "dev": "tsc --watch --preserveWatchOutput & vitest"
   },
   "dependencies": {
-    "@release-change/git": "workspace:*",
     "@release-change/logger": "workspace:*",
     "@release-change/shared": "workspace:*"
   }
