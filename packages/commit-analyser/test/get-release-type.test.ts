@@ -3,23 +3,41 @@ import { assert, it } from "vitest";
 import { getReleaseType } from "../src/index.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 
-const commitIndent = " ".repeat(4);
-const commitId = "commit 0123456789abcdef";
-const commitAuthor = "Author: Contributor <0+userId@users.noreply.github.com>";
-const commitDate = "Date:   Wed Jan 1 13:37:42 2025 +0000";
-const commitBreakingChangeFooter = `${commitIndent}BREAKING CHANGE: some explanation.`;
-const mockedCommitHead = `${commitId}\n${commitAuthor}\n${commitDate}`;
-const mockedModifiedFiles = "packages/a/src/some-file.ts\npackages/b/src/some-file.ts";
-const mockedMajorCommit = `${mockedCommitHead}\n\n${commitIndent}feat!: add new breaking change feature`;
-const mockedMajorCommitWithModifiedFiles = `${mockedCommitHead}\n\n${commitIndent}feat!: add new breaking change feature\n\n${mockedModifiedFiles}`;
-const mockedMajorCommitWithBreakingChangeFooter = `${mockedCommitHead}\n\n${commitIndent}feat: add new feature\n${commitIndent}\n${commitBreakingChangeFooter}`;
-const mockedMajorCommitWithBreakingChangeFooterWithModifiedFiles = `${mockedCommitHead}\n\n${commitIndent}feat: add new feature\n${commitIndent}\n${commitBreakingChangeFooter}\n\n${mockedModifiedFiles}`;
-const mockedMinorCommit = `${mockedCommitHead}\n\n${commitIndent}feat: add new feature`;
-const mockedMinorCommitWithModifiedFiles = `${mockedCommitHead}\n\n${commitIndent}feat: add new feature\n\n${mockedModifiedFiles}`;
-const mockedPatchCommit = `${mockedCommitHead}\n\n${commitIndent}fix: fix bug`;
-const mockedPatchCommitWithModifiedFiles = `${mockedCommitHead}\n\n${commitIndent}fix: fix bug\n\n${mockedModifiedFiles}`;
-const mockedNoReleaseCommit = `${mockedCommitHead}\n\n${commitIndent}chore: some description`;
-const mockedNoReleaseCommitWithModifiedFiles = `${mockedCommitHead}\n\n${commitIndent}chore: some description\n\n${mockedModifiedFiles}`;
+const commitBreakingChangeFooter = ["BREAKING CHANGE: some explanation."];
+const mockedModifiedFiles = ["packages/a/src/some-file.ts", "packages/b/src/some-file.ts"];
+const mockedMajorCommit = { description: "feat!: add new breaking change feature", footer: [] };
+const mockedMajorCommitWithModifiedFiles = {
+  description: "feat!: add new breaking change feature",
+  footer: [],
+  modifiedFiles: mockedModifiedFiles
+};
+const mockedMajorCommitWithBreakingChangeFooter = {
+  description: "feat: add new feature",
+  footer: commitBreakingChangeFooter
+};
+const mockedMajorCommitWithBreakingChangeFooterWithModifiedFiles = {
+  description: "feat: add new feature",
+  footer: commitBreakingChangeFooter,
+  modifiedFiles: mockedModifiedFiles
+};
+const mockedMinorCommit = { description: "feat: add new feature", footer: [] };
+const mockedMinorCommitWithModifiedFiles = {
+  description: "feat: add new feature",
+  footer: [],
+  modifiedFiles: mockedModifiedFiles
+};
+const mockedPatchCommit = { description: "fix: fix bug", footer: [] };
+const mockedPatchCommitWithModifiedFiles = {
+  description: "fix: fix bug",
+  footer: [],
+  modifiedFiles: mockedModifiedFiles
+};
+const mockedNoReleaseCommit = { description: "chore: some description", footer: [] };
+const mockedNoReleaseCommitWithModifiedFiles = {
+  description: "chore: some description",
+  footer: [],
+  modifiedFiles: mockedModifiedFiles
+};
 
 it("should return `major`", () => {
   const mockedCommits = [

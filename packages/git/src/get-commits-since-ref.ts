@@ -1,5 +1,8 @@
+import type { Commit } from "@release-change/commit-analyser";
+
 import { inspect } from "node:util";
 
+import { parseCommit } from "@release-change/commit-analyser";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { agreeInNumber, type Context, runCommandSync } from "@release-change/shared";
 
@@ -8,9 +11,9 @@ import { COMMIT_SEPARATOR } from "./constants.js";
 /**
  * Gets the commits since the reference (Git tag or the whole history).
  * @param context - The context where the CLI is running.
- * @return An array containing the commits found.
+ * @return An array containing the commits found and parsed.
  */
-export const getCommitsSinceRef = (context: Context): string[] => {
+export const getCommitsSinceRef = (context: Context): Commit[] => {
   const { config, lastRelease } = context;
   const { debug, isMonorepo } = config;
   const logger = setLogger(debug);
@@ -27,13 +30,17 @@ export const getCommitsSinceRef = (context: Context): string[] => {
     const commits = stdout ? stdout.split(COMMIT_SEPARATOR) : [];
     const totalCommits = commits.length;
     const commitWord = agreeInNumber(totalCommits, ["commit", "commits"]);
+    const parsedCommits = commits.map(commit => parseCommit(commit, context));
     if (debug) {
       logger.setDebugScope("git:get-commits-since-ref");
       logger.logDebug(`Command run: git ${args.join(" ")}`);
-      logger.logDebug(inspect(commits, { depth: Number.POSITIVE_INFINITY }));
+      logger.logDebug("Commits as returned by Git");
+      logger.logDebug(inspect(commits));
+      logger.logDebug("Parsed commits");
+      logger.logDebug(inspect(parsedCommits, { depth: Number.POSITIVE_INFINITY }));
     }
     logger.logInfo(`Found ${totalCommits} ${commitWord}.`);
-    return commits;
+    return parsedCommits;
   } catch (error) {
     logger.logError("Failed to find commits.");
     logger.logError(checkErrorType(error));

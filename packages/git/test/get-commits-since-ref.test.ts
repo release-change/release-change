@@ -7,11 +7,11 @@ import { mockedCommits } from "./fixtures/mocked-commits.js";
 import { mockedCommitsInMonorepo } from "./fixtures/mocked-commits-monorepo.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
+import { mockedParsedCommits } from "./fixtures/mocked-parsed-commits.js";
+import { mockedParsedCommitsInMonorepo } from "./fixtures/mocked-parsed-commits-in-monorepo.js";
 
-import { COMMIT_SEPARATOR } from "../src/constants.js";
-
-const mockedCommitsInArray = mockedCommits.split(COMMIT_SEPARATOR);
-const mockedCommitsInMonorepoInArray = mockedCommitsInMonorepo.split(COMMIT_SEPARATOR);
+const mockedCommitsInArray = mockedParsedCommits;
+const mockedCommitsInMonorepoInArray = mockedParsedCommitsInMonorepo;
 
 const commitsSets = [
   {
