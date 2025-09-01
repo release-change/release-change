@@ -171,10 +171,18 @@ The branches on which releases should happen.
 ##### repositoryUrl
 
 Type: `string`  
-Default: `repository` property in `package.json` file or [Git remote URL](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)  
+Default: `repository` property in `package.json` file  
 CLI arguments: `-r`, `--repository-url`
 
 The Git repository URL.
+
+##### remoteName
+
+Type: `string`  
+Default: `"origin"`  
+CLI arguments: `--remote-name`
+
+The remote repository name.
 
 ##### debug
 

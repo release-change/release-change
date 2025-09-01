@@ -14,6 +14,12 @@ export const AVAILABLE_CLI_OPTIONS = {
     description: "Git repository URL",
     type: "string"
   },
+  remoteName: {
+    cliOptionName: "remoteName",
+    flag: "--remote-name",
+    description: "Remote Git repository name",
+    type: "string"
+  },
   debug: {
     cliOptionName: "debug",
     flag: "--debug",

@@ -1,9 +1,6 @@
 import type { CliOptions, Config } from "@release-change/shared";
 
-import { getRemoteName } from "@release-change/git";
-
 import { getConfigFile } from "./get-config-file.js";
-import { getRemoteRepositoryUrl } from "./get-remote-repository-url.js";
 import { getRepositoryUrl } from "./get-repository-url.js";
 
 import { DEFAULT_CONFIG } from "./constants.js";
@@ -22,8 +19,7 @@ export const getConfig = async (
   const dependencyUpdateMethod = isMonorepo ? (configFile?.dependencyUpdateMethod ?? "pin") : null;
   const defaultConfig = {
     ...DEFAULT_CONFIG,
-    repositoryUrl: getRepositoryUrl() ?? (await getRemoteRepositoryUrl()),
-    remoteName: await getRemoteName()
+    repositoryUrl: String(getRepositoryUrl())
   };
   return configFile
     ? Object.assign(

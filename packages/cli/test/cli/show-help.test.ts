@@ -15,6 +15,7 @@ Usage:
 Options
   -b, --branches        Git branches to release from    [array]
   -r, --repository-url  Git repository URL             [string]
+      --remote-name     Remote Git repository name     [string]
       --debug           Output debugging information  [boolean]
   -d, --dry-run         Skip release and publishing   [boolean]
   -v, --version         Show version number           [boolean]
