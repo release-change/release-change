@@ -65,7 +65,6 @@ it("should log an error message when an error is caught", () => {
     throw new Error("Error");
   });
   getCommitsSinceRef(mockedContext);
-
   expect(mockedLogger.logError).toHaveBeenCalled();
   expect(mockedProcessExit).toHaveBeenCalled();
   mockedProcessExit.mockRestore();
