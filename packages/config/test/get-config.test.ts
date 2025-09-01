@@ -8,10 +8,10 @@ import { DEFAULT_CONFIG, getConfig } from "../src/index.js";
 
 const expectedDefaultConfig = {
   ...DEFAULT_CONFIG,
-  repositoryUrl: "https://github.com/release-change/release-change.git",
-  remoteName: "origin"
+  repositoryUrl: "https://github.com/release-change/release-change.git"
 } as unknown as Config;
 const mockedRepositoryUrl = "https://github.com/user-id/repo-name.git";
+const mockedRemoteName = "non-origin";
 const mockedBranch = "main";
 const dependencyUpdateMethods: DependencyUpdateMethod[] = [
   null,
@@ -73,6 +73,14 @@ it("should get config with default options, except for `-r` CLI option", async (
   };
   assert.deepEqual(await getConfig(cliOptions), expectedConfig);
 });
+it("should get config with default options, except for `--remote-name` CLI option", async () => {
+  const { help, version, ...cliOptions } = parseCliOptions(["--remote-name", mockedRemoteName]);
+  const expectedConfig = {
+    ...expectedDefaultConfig,
+    ...{ remoteName: mockedRemoteName }
+  };
+  assert.deepEqual(await getConfig(cliOptions), expectedConfig);
+});
 it("should get config with default options, except for `--debug` CLI option", async () => {
   const { help, version, ...mockedCliOptions } = parseCliOptions(["--debug"]);
   const expectedConfig = {
@@ -103,13 +111,15 @@ it("should get config according to all CLI options when all of them are set", as
     mockedBranch,
     "--repository-url",
     mockedRepositoryUrl,
+    "--remote-name",
+    mockedRemoteName,
     "--debug",
     "--dry-run"
   ]);
   const expectedConfig = {
     branches: [mockedBranch],
     repositoryUrl: mockedRepositoryUrl,
-    remoteName: "origin",
+    remoteName: mockedRemoteName,
     releaseType: expectedDefaultConfig.releaseType,
     isMonorepo: expectedDefaultConfig.isMonorepo,
     dependencyUpdateMethod: expectedDefaultConfig.dependencyUpdateMethod,
@@ -148,6 +158,7 @@ describe.each(dependencyUpdateMethods)(
         ...expectedDefaultConfig,
         branches: ["main", "next"],
         repositoryUrl: mockedRepositoryUrl,
+        remoteName: mockedRemoteName,
         isMonorepo: mockedIsMonorepo,
         dependencyUpdateMethod
       };
@@ -155,7 +166,7 @@ describe.each(dependencyUpdateMethods)(
       const expectedConfig = {
         branches: ["main", "next"],
         repositoryUrl: mockedRepositoryUrl,
-        remoteName: "origin",
+        remoteName: mockedRemoteName,
         releaseType: expectedDefaultConfig.releaseType,
         isMonorepo: mockedIsMonorepo,
         dependencyUpdateMethod,
@@ -170,7 +181,7 @@ describe.each(dependencyUpdateMethods)(
         ...expectedDefaultConfig,
         branches: ["main", "next"],
         repositoryUrl: mockedRepositoryUrl,
-        remoteName: "origin",
+        remoteName: mockedRemoteName,
         releaseType: {
           next: {
             channel: "rc"
@@ -183,7 +194,7 @@ describe.each(dependencyUpdateMethods)(
       const expectedConfig = {
         branches: ["main", "next"],
         repositoryUrl: mockedRepositoryUrl,
-        remoteName: "origin",
+        remoteName: mockedRemoteName,
         releaseType: {
           next: {
             channel: "rc"
