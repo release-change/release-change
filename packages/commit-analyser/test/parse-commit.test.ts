@@ -201,6 +201,9 @@ it.each(mockedCommitsInMonorepo)(
     assert.deepEqual(parseCommit(commit, mockedContextInMonorepo), expected);
   }
 );
+it("should throw an error if the commit has no header", () => {
+  assert.throws(() => parseCommit("", mockedContext), "Failed to parse commit: no header found.");
+});
 it("should throw an error if the commit has no description", () => {
   assert.throws(
     () => parseCommit(`${commitId}\n${commitAuthor}\n${commitDate}`, mockedContext),
