@@ -4,8 +4,8 @@ import { DEFAULT_CONFIG } from "@release-change/config";
 import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
-import { isUsableCiEnvironment } from "../../src/ci/is-usable-ci-environment.js";
-import { mockedLogger } from "../fixtures/mocked-logger.js";
+import { isUsableCiEnvironment } from "../src/index.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const expectedDefaultConfig = DEFAULT_CONFIG as unknown as Config;
 const mockedContext = {

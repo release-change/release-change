@@ -41,6 +41,12 @@
       "path": "./packages/git"
     },
     {
+      "path": "./packages/ci"
+    },
+    {
+      "path": "./packages/github"
+    },
+    {
       "path": "./packages/cli"
     }
   ]

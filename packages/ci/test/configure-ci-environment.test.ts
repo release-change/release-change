@@ -1,7 +1,7 @@
 import { assert, it, vi } from "vitest";
 
-import { configureCiEnvironment } from "../../src/ci/configure-ci-environment.js";
-import * as isCiToolDetectedModule from "../../src/ci/is-ci-tool-detected.js";
+import { configureCiEnvironment } from "../src/index.js";
+import * as isCiToolDetectedModule from "../src/is-ci-tool-detected.js";
 
 const mockedEnvWithUnknownCiEnvironment = {};
 const mockedEnvWithGitHubActionsOnPushEvent = {

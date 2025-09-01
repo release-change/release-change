@@ -1,5 +1,6 @@
 import type { CliOptions, Context, ContextBase } from "@release-change/shared";
 
+import { configureCiEnvironment, isUsableCiEnvironment } from "@release-change/ci";
 import { getReleaseType } from "@release-change/commit-analyser";
 import { debugConfig, getConfig } from "@release-change/config";
 import { getPackages, isMonorepo } from "@release-change/get-packages";
@@ -13,8 +14,6 @@ import {
 import { setLogger } from "@release-change/logger";
 import { WORKSPACE_NAME, WORKSPACE_VERSION } from "@release-change/shared";
 
-import { configureCiEnvironment } from "../ci/configure-ci-environment.js";
-import { isUsableCiEnvironment } from "../ci/is-usable-ci-environment.js";
 import { setLastRelease } from "../release/set-last-release.js";
 import { setNextRelease } from "../release/set-next-release.js";
 

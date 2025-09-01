@@ -54,10 +54,12 @@
     "release-change": "./bin/index.js"
   },
   "dependencies": {
+    "@release-change/ci": "workspace:*",
     "@release-change/commit-analyser": "workspace:*",
     "@release-change/config": "workspace:*",
     "@release-change/get-packages": "workspace:*",
     "@release-change/git": "workspace:*",
+    "@release-change/github": "workspace:*",
     "@release-change/logger": "workspace:*",
     "@release-change/semver": "workspace:*",
     "@release-change/shared": "workspace:*"
