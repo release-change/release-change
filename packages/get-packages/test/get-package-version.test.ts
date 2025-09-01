@@ -2,7 +2,7 @@ import fs from "node:fs";
 
 import { expect, it, vi } from "vitest";
 
-import { getPackageVersion } from "../src/get-package-version.js";
+import { getPackageVersion } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 const mockedPath = `${mockedCwd}/packages/a/package.json`;
