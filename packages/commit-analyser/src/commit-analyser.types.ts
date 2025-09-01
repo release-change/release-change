@@ -1,5 +1,7 @@
 export type Commit = {
+  sha: string | null;
   description: string;
+  body: string[];
   footer: string[];
   modifiedFiles?: string[];
 };
