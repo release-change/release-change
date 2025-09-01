@@ -29,6 +29,9 @@
       "path": "./packages/semver"
     },
     {
+      "path": "./packages/commit-analyser"
+    },
+    {
       "path": "./packages/git"
     },
     {
@@ -36,9 +39,6 @@
     },
     {
       "path": "./packages/get-packages"
-    },
-    {
-      "path": "./packages/commit-analyser"
     },
     {
       "path": "./packages/cli"
