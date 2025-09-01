@@ -92,6 +92,9 @@ importers:
 
   packages/git:
     dependencies:
+      '@release-change/commit-analyser':
+        specifier: workspace:*
+        version: link:../commit-analyser
       '@release-change/logger':
         specifier: workspace:*
         version: link:../logger

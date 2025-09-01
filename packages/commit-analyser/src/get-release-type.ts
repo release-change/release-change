@@ -1,4 +1,4 @@
-import type { PackageReleaseType, ReleaseType } from "./commit-analyser.types.js";
+import type { Commit, PackageReleaseType, ReleaseType } from "./commit-analyser.types.js";
 
 import { inspect } from "node:util";
 
@@ -6,7 +6,6 @@ import { checkErrorType, setLogger } from "@release-change/logger";
 import { agreeInNumber, type Context } from "@release-change/shared";
 
 import { adjustReleaseType } from "./adjust-release-type.js";
-import { parseCommit } from "./parse-commit.js";
 import { setReleaseType } from "./set-release-type.js";
 
 /**
@@ -23,7 +22,7 @@ import { setReleaseType } from "./set-release-type.js";
  * @param context - The context where the CLI is running.
  * @return  An array of objects containing the most important release type found for each package if commits are parsed successfully, `null` if there are no commits or an error is thrown.
  */
-export const getReleaseType = (commits: string[], context: Context): PackageReleaseType[] => {
+export const getReleaseType = (commits: Commit[], context: Context): PackageReleaseType[] => {
   const { config, packages } = context;
   const { debug } = config;
   const logger = setLogger(debug);
@@ -38,9 +37,8 @@ export const getReleaseType = (commits: string[], context: Context): PackageRele
       const packagesPaths = packages.map(packageItem => packageItem.path);
       const releaseTypesPerPackage = new Map<string, Set<ReleaseType>>();
       for (const commit of commits) {
-        const parsedCommit = parseCommit(commit, context);
-        const { modifiedFiles } = parsedCommit;
-        const commitReleaseType = setReleaseType(parsedCommit, context);
+        const { modifiedFiles } = commit;
+        const commitReleaseType = setReleaseType(commit, context);
         if (modifiedFiles?.length) {
           for (const modifiedFile of modifiedFiles) {
             const relatedPackagePath = packagesPaths.find(packagePath =>
@@ -59,7 +57,7 @@ export const getReleaseType = (commits: string[], context: Context): PackageRele
           releaseTypesPerPackage.set("", releaseTypes);
         }
         if (debug) {
-          logger.logDebug(`Release types by package for commit “${parsedCommit.description}”:`);
+          logger.logDebug(`Release types by package for commit “${commit.description}”:`);
           logger.logDebug(inspect(releaseTypesPerPackage));
         }
       }
