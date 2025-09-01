@@ -6,6 +6,7 @@ export type CommandResult = {
 export type ParsedCliOptions = {
   branches?: string[];
   repositoryUrl?: string;
+  remoteName?: string;
   debug?: true;
   dryRun?: true;
   version?: true;

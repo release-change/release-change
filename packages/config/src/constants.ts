@@ -36,6 +36,7 @@ export const DEFAULT_CONFIG = {
   },
   isMonorepo: false,
   dependencyUpdateMethod: null,
+  remoteName: "origin",
   debug: false,
   dryRun: false
 } as const;

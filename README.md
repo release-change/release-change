@@ -176,6 +176,14 @@ CLI arguments: `-r`, `--repository-url`
 
 The Git repository URL.
 
+##### remoteName
+
+Type: `string`  
+Default: `"origin"`  
+CLI arguments: `--remote-name`
+
+The remote repository name.
+
 ##### debug
 
 Type: `boolean`  
