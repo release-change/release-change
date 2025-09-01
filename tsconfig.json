@@ -29,6 +29,9 @@
       "path": "./packages/semver"
     },
     {
+      "path": "./packages/config"
+    },
+    {
       "path": "./packages/get-packages"
     },
     {
@@ -36,9 +39,6 @@
     },
     {
       "path": "./packages/git"
-    },
-    {
-      "path": "./packages/config"
     },
     {
       "path": "./packages/cli"
