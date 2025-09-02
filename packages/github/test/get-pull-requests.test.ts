@@ -66,18 +66,15 @@ it("should throw an error when the command returns a status other than 0", async
   );
   expect(process.exitCode).toBe(1);
 });
-it("should throw an error when the command returns a non-empty stderr", async () => {
+it("should not throw an error when the command returns a non-empty stderr", async () => {
   vi.mocked(parsePathname).mockReturnValue(mockedPathnameGroups);
   vi.mocked(runCommand).mockResolvedValue({
     status: 0,
-    stdout: "",
+    stdout: JSON.stringify([]),
     stderr: "Error"
   });
-  await expect(getPullRequests("0123456", mockedContext)).rejects.toThrow("Error");
-  expect(mockedLogger.logError).toHaveBeenCalledWith(
-    "Failed to get related pull requests from commit SHA 0123456."
-  );
-  expect(process.exitCode).toBe(1);
+  await getPullRequests("0123456", mockedContext);
+  expect(mockedLogger.logError).not.toHaveBeenCalled();
 });
 it("should return the pull request numbers", async () => {
   const mockedPullRequests = [{ number: 42 }, { number: 43 }];
