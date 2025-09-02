@@ -52,6 +52,10 @@ export type LastRelease = {
   packages: PackageLastRelease[];
 };
 export type NextRelease = PackageNextRelease[];
+export type Reference = {
+  number: number;
+  isPullRequest: boolean;
+};
 export interface ContextBase {
   cwd: string;
   env: NodeJS.ProcessEnv;
@@ -66,4 +70,9 @@ export interface Context extends ContextBase {
   packages: Package[];
   lastRelease?: LastRelease;
   nextRelease?: NextRelease;
+  references?: Reference[];
 }
+export type PathnameGroups = {
+  owner: string;
+  repository: string;
+};

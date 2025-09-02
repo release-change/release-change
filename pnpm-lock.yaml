@@ -125,9 +125,15 @@ importers:
 
   packages/github:
     dependencies:
+      '@release-change/ci':
+        specifier: workspace:*
+        version: link:../ci
       '@release-change/commit-analyser':
         specifier: workspace:*
         version: link:../commit-analyser
+      '@release-change/config':
+        specifier: workspace:*
+        version: link:../config
       '@release-change/logger':
         specifier: workspace:*
         version: link:../logger

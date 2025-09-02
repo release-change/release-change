@@ -12,10 +12,13 @@ export type {
   Package,
   PackageLastRelease,
   PackageNextRelease,
-  ParsedCliOptions
+  ParsedCliOptions,
+  Reference
 } from "./shared.types.js";
 
 export { agreeInNumber } from "./agree-in-number.js";
+export { parsePathname } from "./parse-pathname.js";
+export { removeDuplicateObjects } from "./remove-duplicate-objects.js";
 export { runCommand } from "./run-command.js";
 export { runCommandSync } from "./run-command-sync.js";
 
