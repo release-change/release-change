@@ -1,4 +1,4 @@
-import type { Commit } from "../src/commit-analyser.types.js";
+import type { Commit } from "../src/index.js";
 
 import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
@@ -314,7 +314,9 @@ const otherTypeCommitsWithUpperCasePrefix: Commit[] = [];
 for (const commitType of commitTypes) {
   const { isMajorChange, hasSemanticChange, prefix, title } = commitType;
   const commitSample: Commit = {
+    sha: "0123456789abcdef0123456789abcdef01234567",
     description: `${prefix}: ${title}`,
+    body: [],
     footer: []
   };
   const commitSampleWithFooter: Commit = {

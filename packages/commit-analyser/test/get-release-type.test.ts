@@ -4,37 +4,65 @@ import { getReleaseType } from "../src/index.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 
 const commitBreakingChangeFooter = ["BREAKING CHANGE: some explanation."];
+const mockedSha = "0123456789abcdef0123456789abcdef01234567";
 const mockedModifiedFiles = ["packages/a/src/some-file.ts", "packages/b/src/some-file.ts"];
-const mockedMajorCommit = { description: "feat!: add new breaking change feature", footer: [] };
-const mockedMajorCommitWithModifiedFiles = {
+const mockedMajorCommit = {
+  sha: mockedSha,
   description: "feat!: add new breaking change feature",
+  body: [],
+  footer: []
+};
+const mockedMajorCommitWithModifiedFiles = {
+  sha: mockedSha,
+  description: "feat!: add new breaking change feature",
+  body: [],
   footer: [],
   modifiedFiles: mockedModifiedFiles
 };
 const mockedMajorCommitWithBreakingChangeFooter = {
+  sha: mockedSha,
   description: "feat: add new feature",
+  body: [],
   footer: commitBreakingChangeFooter
 };
 const mockedMajorCommitWithBreakingChangeFooterWithModifiedFiles = {
+  sha: mockedSha,
   description: "feat: add new feature",
+  body: [],
   footer: commitBreakingChangeFooter,
   modifiedFiles: mockedModifiedFiles
 };
-const mockedMinorCommit = { description: "feat: add new feature", footer: [] };
-const mockedMinorCommitWithModifiedFiles = {
+const mockedMinorCommit = {
+  sha: mockedSha,
   description: "feat: add new feature",
+  body: [],
+  footer: []
+};
+const mockedMinorCommitWithModifiedFiles = {
+  sha: mockedSha,
+  description: "feat: add new feature",
+  body: [],
   footer: [],
   modifiedFiles: mockedModifiedFiles
 };
-const mockedPatchCommit = { description: "fix: fix bug", footer: [] };
+const mockedPatchCommit = { sha: mockedSha, description: "fix: fix bug", body: [], footer: [] };
 const mockedPatchCommitWithModifiedFiles = {
+  sha: mockedSha,
   description: "fix: fix bug",
+  body: [],
   footer: [],
   modifiedFiles: mockedModifiedFiles
 };
-const mockedNoReleaseCommit = { description: "chore: some description", footer: [] };
-const mockedNoReleaseCommitWithModifiedFiles = {
+const mockedNoReleaseCommit = {
+  sha: mockedSha,
   description: "chore: some description",
+  body: [],
+  footer: []
+};
+const mockedNoReleaseCommitWithModifiedFiles = {
+  sha: mockedSha,
+  description: "chore: some description",
+  body: [],
   footer: [],
   modifiedFiles: mockedModifiedFiles
 };

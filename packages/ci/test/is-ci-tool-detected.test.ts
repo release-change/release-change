@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { isCiToolDetected } from "../../src/ci/is-ci-tool-detected.js";
+import { isCiToolDetected } from "../src/is-ci-tool-detected.js";
 
 const mockedEnvWithUnknownCiEnvironment = {};
 const mockedEnvWithGitHubActions = {

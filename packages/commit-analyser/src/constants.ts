@@ -5,3 +5,4 @@ export const BREAKING_CHANGE = /^BREAKING(\s|-)CHANGE:\s\w+/;
 export const COMMIT_PREFIX_MAJOR = /^[a-z]+(\([^)]+\))?!:\s\w+/i;
 export const COMMIT_PREFIX_MINOR = /^feat(\([^)]+\))?:\s\w+/i;
 export const COMMIT_PREFIX_PATCH = /^fix(\([^)]+\))?:\s\w+/i;
+export const ISSUE_ID = /(?<=#)\d+/g;

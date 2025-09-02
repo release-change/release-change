@@ -23,44 +23,58 @@ export const parseCommit = (commit: string, context: Context): Commit => {
   const { debug, isMonorepo } = config;
   const logger = setLogger(debug);
   const parsedCommit: Commit = {
+    sha: null,
     description: "",
+    body: [],
     footer: []
   };
   const commitSections = commit
     .replaceAll(INDENTED_BLANK_LINE_SEPARATOR, BLANK_LINE_SEPARATOR)
     .split(BLANK_LINE_SEPARATOR);
   const [commitHeader, ...commitRest] = commitSections;
-  const [commitDescription, ...commitOptionalSections] = commitRest
-    .map(line => line.trim())
-    .filter(Boolean);
-  if (commitDescription) {
-    parsedCommit.description = commitDescription;
-    const commitFooter = commitOptionalSections.filter(line =>
-      Boolean(line.match(COMMIT_FOOTER_KEY) || line.match(BREAKING_CHANGE))
-    );
-    parsedCommit.footer = commitFooter.flatMap(line => line.split("\n").map(line => line.trim()));
-    if (isMonorepo) {
-      const commitModifiedFiles = commitOptionalSections
-        .slice(-1)
-        .filter(line => !line.match(COMMIT_FOOTER_KEY) && !line.match(BREAKING_CHANGE))
-        .flatMap(line =>
-          line
-            .split("\n")
-            .map(line => line.trim())
-            .filter(file => file.match(/^[0-9a-zA-Z-_./]+$/))
-        );
-      if (commitModifiedFiles.length) parsedCommit.modifiedFiles = commitModifiedFiles;
-      else if (!commitHeader?.match(/^merge:/im)) {
-        throw new Error(
-          "Failed to parse commit: no modified files found while this repository is a monorepo."
-        );
+  if (commitHeader) {
+    const [commitSha] = commitHeader.split("\n");
+    if (commitSha) parsedCommit.sha = commitSha.replace(/^commit\s([0-9a-f]+).*$/, "$1");
+    const [commitDescription, ...commitOptionalSections] = commitRest
+      .map(line => line.trim())
+      .filter(Boolean);
+    if (commitDescription) {
+      parsedCommit.description = commitDescription;
+      const commitOptionalSectionsWithoutFileNames = isMonorepo
+        ? commitOptionalSections.slice(0, -1)
+        : commitOptionalSections;
+      const commitBody = commitOptionalSectionsWithoutFileNames.filter(
+        line => !line.match(COMMIT_FOOTER_KEY) && !line.match(BREAKING_CHANGE)
+      );
+      const commitFooter = commitOptionalSectionsWithoutFileNames.filter(line =>
+        Boolean(line.match(COMMIT_FOOTER_KEY) || line.match(BREAKING_CHANGE))
+      );
+      parsedCommit.body = commitBody.map(line => line.trim());
+      parsedCommit.footer = commitFooter.flatMap(line => line.split("\n").map(line => line.trim()));
+      if (isMonorepo) {
+        const commitModifiedFiles = commitOptionalSections
+          .slice(-1)
+          .filter(line => !line.match(COMMIT_FOOTER_KEY) && !line.match(BREAKING_CHANGE))
+          .flatMap(line =>
+            line
+              .split("\n")
+              .map(line => line.trim())
+              .filter(file => file.match(/^[0-9a-zA-Z-_./]+$/))
+          );
+        if (commitModifiedFiles.length) parsedCommit.modifiedFiles = commitModifiedFiles;
+        else if (!commitHeader?.match(/^merge:/im)) {
+          throw new Error(
+            "Failed to parse commit: no modified files found while this repository is a monorepo."
+          );
+        }
       }
+      if (debug) {
+        logger.setDebugScope("commit-analyser:parse-commit");
+        logger.logDebug(inspect(parsedCommit, { depth: Number.POSITIVE_INFINITY }));
+      }
+      return parsedCommit;
     }
-    if (debug) {
-      logger.setDebugScope("commit-analyser:parse-commit");
-      logger.logDebug(inspect(parsedCommit, { depth: Number.POSITIVE_INFINITY }));
-    }
-    return parsedCommit;
+    throw new Error("Failed to parse commit: no description found.");
   }
-  throw new Error("Failed to parse commit: no description found.");
+  throw new Error("Failed to parse commit: no header found.");
 };

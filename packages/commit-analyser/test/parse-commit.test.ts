@@ -1,6 +1,6 @@
 import { assert, it } from "vitest";
 
-import { parseCommit } from "../src/parse-commit.js";
+import { parseCommit } from "../src/index.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 
 const commitIndent = " ".repeat(4);
@@ -8,9 +8,11 @@ const commitId = "commit 0123456789abcdef";
 const commitAuthor = "Author: Contributor <0+userId@users.noreply.github.com>";
 const commitDate = "Date:   Wed Jan 1 13:37:42 2025 +0000";
 const commitDescription = `${commitIndent}docs: some description`;
-const commitBody = `${commitIndent}Some text for the commit body.`;
+const commitBody = `${commitIndent}Some text.\n\n${commitIndent}Another text.`;
+const commitSplitBody = ["Some text.", "Another text."];
 const commitKeyValueFooter = `${commitIndent}Footer-key: value`;
 const commitBreakingChangeFooter = `${commitIndent}BREAKING CHANGE: some explanation.`;
+const sha = commitId.replace("commit ", "");
 const description = commitDescription.trim();
 const keyValueFooter = commitKeyValueFooter.trim();
 const breakingChangeFooter = commitBreakingChangeFooter.trim();
@@ -22,7 +24,9 @@ const mockedCommits = [
     type: "commit with just a description",
     commit: mockedCommitSample,
     expected: {
+      sha,
       description,
+      body: [],
       footer: []
     }
   },
@@ -30,7 +34,9 @@ const mockedCommits = [
     type: "commit with a description and a key/value footer",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}`,
     expected: {
+      sha,
       description,
+      body: [],
       footer: [keyValueFooter]
     }
   },
@@ -38,7 +44,9 @@ const mockedCommits = [
     type: "commit with a description and a breaking change footer",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitBreakingChangeFooter}`,
     expected: {
+      sha,
       description,
+      body: [],
       footer: [breakingChangeFooter]
     }
   },
@@ -46,39 +54,49 @@ const mockedCommits = [
     type: "commit with a description and both footers",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}`,
     expected: {
+      sha,
       description,
+      body: [],
       footer: [keyValueFooter, breakingChangeFooter]
     }
   },
   {
     type: "commit with just a description and a body",
-    commit: `${mockedCommitSampleWithBody}\n\n${modifiedFile}`,
+    commit: mockedCommitSampleWithBody,
     expected: {
+      sha,
       description,
+      body: commitSplitBody,
       footer: []
     }
   },
   {
     type: "commit with a description, a body and a key/value footer",
-    commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n\n${modifiedFile}`,
+    commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}`,
     expected: {
+      sha,
       description,
+      body: commitSplitBody,
       footer: [keyValueFooter]
     }
   },
   {
     type: "commit with a description, a body and a breaking change footer",
-    commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
+    commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitBreakingChangeFooter}`,
     expected: {
+      sha,
       description,
+      body: commitSplitBody,
       footer: [breakingChangeFooter]
     }
   },
   {
     type: "commit with a description, a body and both footers",
-    commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
+    commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}`,
     expected: {
+      sha,
       description,
+      body: commitSplitBody,
       footer: [keyValueFooter, breakingChangeFooter]
     }
   }
@@ -88,7 +106,9 @@ const mockedCommitsInMonorepo = [
     type: "commit with just a description",
     commit: `${mockedCommitSample}\n\n${modifiedFile}`,
     expected: {
+      sha,
       description,
+      body: [],
       footer: [],
       modifiedFiles: [modifiedFile]
     }
@@ -97,7 +117,9 @@ const mockedCommitsInMonorepo = [
     type: "commit with a description and a key/value footer",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}\n\n${modifiedFile}`,
     expected: {
+      sha,
       description,
+      body: [],
       footer: [keyValueFooter],
       modifiedFiles: [modifiedFile]
     }
@@ -106,7 +128,9 @@ const mockedCommitsInMonorepo = [
     type: "commit with a description and a breaking change footer",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
     expected: {
+      sha,
       description,
+      body: [],
       footer: [breakingChangeFooter],
       modifiedFiles: [modifiedFile]
     }
@@ -115,7 +139,9 @@ const mockedCommitsInMonorepo = [
     type: "commit with a description and both footers",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
     expected: {
+      sha,
       description,
+      body: [],
       footer: [keyValueFooter, breakingChangeFooter],
       modifiedFiles: [modifiedFile]
     }
@@ -124,7 +150,9 @@ const mockedCommitsInMonorepo = [
     type: "commit with just a description and a body",
     commit: `${mockedCommitSampleWithBody}\n\n${modifiedFile}`,
     expected: {
+      sha,
       description,
+      body: commitSplitBody,
       footer: [],
       modifiedFiles: [modifiedFile]
     }
@@ -133,7 +161,9 @@ const mockedCommitsInMonorepo = [
     type: "commit with a description, a body and a key/value footer",
     commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n\n${modifiedFile}`,
     expected: {
+      sha,
       description,
+      body: commitSplitBody,
       footer: [keyValueFooter],
       modifiedFiles: [modifiedFile]
     }
@@ -142,7 +172,9 @@ const mockedCommitsInMonorepo = [
     type: "commit with a description, a body and a breaking change footer",
     commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
     expected: {
+      sha,
       description,
+      body: commitSplitBody,
       footer: [breakingChangeFooter],
       modifiedFiles: [modifiedFile]
     }
@@ -151,7 +183,9 @@ const mockedCommitsInMonorepo = [
     type: "commit with a description, a body and both footers",
     commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
     expected: {
+      sha,
       description,
+      body: commitSplitBody,
       footer: [keyValueFooter, breakingChangeFooter],
       modifiedFiles: [modifiedFile]
     }
@@ -167,6 +201,9 @@ it.each(mockedCommitsInMonorepo)(
     assert.deepEqual(parseCommit(commit, mockedContextInMonorepo), expected);
   }
 );
+it("should throw an error if the commit has no header", () => {
+  assert.throws(() => parseCommit("", mockedContext), "Failed to parse commit: no header found.");
+});
 it("should throw an error if the commit has no description", () => {
   assert.throws(
     () => parseCommit(`${commitId}\n${commitAuthor}\n${commitDate}`, mockedContext),
