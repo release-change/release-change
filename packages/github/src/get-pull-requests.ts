@@ -15,10 +15,12 @@ import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-p
  */
 export const getPullRequests = async (sha: string, context: Context): Promise<Reference[]> => {
   const { env, config } = context;
-  const logger = setLogger(config.debug);
+  const { debug } = config;
+  const logger = setLogger(debug);
   const releaseToken = getReleaseToken(env);
   const { repositoryUrl } = config;
   const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
+  const uri = `${repositoryEntryPoint}/commits/${sha}/pulls`;
   const { status, stdout, stderr } = await runCommand("curl", [
     "-L",
     "-H",
@@ -27,8 +29,12 @@ export const getPullRequests = async (sha: string, context: Context): Promise<Re
     `Authorization: Bearer ${releaseToken}`,
     "-H",
     "X-GitHub-Api-Version: 2022-11-28",
-    `${repositoryEntryPoint}/commits/${sha}/pulls`
+    uri
   ]);
+  if (debug) {
+    logger.setDebugScope("github:get-pull-requests");
+    logger.logDebug(`Requested URI: ${uri}`);
+  }
   if (status) {
     process.exitCode = status;
     logger.logError(`Failed to get related pull requests from commit SHA ${sha}.`);

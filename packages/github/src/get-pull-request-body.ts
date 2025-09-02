@@ -18,10 +18,12 @@ export const getPullRequestBody = async (
   context: Context
 ): Promise<string[] | null> => {
   const { env, config } = context;
-  const logger = setLogger(config.debug);
+  const { debug } = config;
+  const logger = setLogger(debug);
   const releaseToken = getReleaseToken(env);
   const { repositoryUrl } = config;
   const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
+  const uri = `${repositoryEntryPoint}/pulls/${pullRequestNumber}`;
   const { status, stdout, stderr } = await runCommand("curl", [
     "-L",
     "-H",
@@ -30,8 +32,12 @@ export const getPullRequestBody = async (
     `Authorization: Bearer ${releaseToken}`,
     "-H",
     "X-GitHub-Api-Version: 2022-11-28",
-    `${repositoryEntryPoint}/pulls/${pullRequestNumber}`
+    uri
   ]);
+  if (debug) {
+    logger.setDebugScope("github:get-pull-request-body");
+    logger.logDebug(`Requested URI: ${uri}`);
+  }
   if (status) {
     process.exitCode = status;
     logger.logError(`Failed to get pull request #${pullRequestNumber}.`);
