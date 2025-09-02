@@ -1,40 +1,11 @@
-import type { Context } from "@release-change/shared";
-
 import { setLogger } from "@release-change/logger";
 import { parsePathname, runCommand } from "@release-change/shared";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getPullRequestBody } from "../src/get-pull-request-body.js";
+import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
-import { mockedToken } from "./fixtures/mocked-token.js";
 
-const mockedRepositoryUrl = "https://github.com/user-id/repo-name.git";
-const mockedConfig = {
-  branches: ["main"],
-  releaseType: {
-    main: {
-      channel: "latest"
-    }
-  },
-  isMonorepo: false,
-  debug: false,
-  dryRun: false,
-  repositoryUrl: mockedRepositoryUrl,
-  remoteName: "origin"
-};
-const mockedContext: Context = {
-  cwd: "/fake/path",
-  env: {
-    RELEASE_TOKEN: mockedToken
-  },
-  branch: "main",
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  packages: [{ name: "", path: "." }],
-  config: mockedConfig
-};
 const mockedPullRequestData = {
   url: "https://api.github.com/repos/user-id/repo-name/pulls/1337",
   id: 1,
