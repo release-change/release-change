@@ -29,8 +29,8 @@ export const getPullRequests = async (sha: string, context: Context): Promise<Re
     "X-GitHub-Api-Version: 2022-11-28",
     `${repositoryEntryPoint}/commits/${sha}/pulls`
   ]);
-  if (status || stderr) {
-    process.exitCode = status || 1;
+  if (status) {
+    process.exitCode = status;
     logger.logError(`Failed to get related pull requests from commit SHA ${sha}.`);
     throw new Error(stderr);
   }

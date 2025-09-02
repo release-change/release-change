@@ -2,6 +2,7 @@ import type { Context } from "@release-change/shared";
 import type { PullRequestBody } from "./github.types.js";
 
 import { getReleaseToken } from "@release-change/ci";
+import { setLogger } from "@release-change/logger";
 import { runCommand } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
@@ -17,6 +18,7 @@ export const getPullRequestBody = async (
   context: Context
 ): Promise<string[] | null> => {
   const { env, config } = context;
+  const logger = setLogger(config.debug);
   const releaseToken = getReleaseToken(env);
   const { repositoryUrl } = config;
   const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
@@ -30,7 +32,11 @@ export const getPullRequestBody = async (
     "X-GitHub-Api-Version: 2022-11-28",
     `${repositoryEntryPoint}/pulls/${pullRequestNumber}`
   ]);
-  if (status || stderr) return null;
+  if (status) {
+    process.exitCode = status;
+    logger.logError(`Failed to get pull request #${pullRequestNumber}.`);
+    throw new Error(stderr);
+  }
   const { body }: PullRequestBody = JSON.parse(stdout);
   return typeof body === "string" ? body.split("\n".repeat(2)) : null;
 };
