@@ -1,10 +1,11 @@
 import type { Context } from "@release-change/shared";
 import type { PullRequestBody } from "./github.types.js";
 
-import { getReleaseToken } from "@release-change/ci";
+import { setLogger } from "@release-change/logger";
 import { runCommand } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import { setCurlHeaders } from "./set-curl-headers.js";
 
 /**
  * Gets the pull request body.
@@ -17,20 +18,21 @@ export const getPullRequestBody = async (
   context: Context
 ): Promise<string[] | null> => {
   const { env, config } = context;
-  const releaseToken = getReleaseToken(env);
+  const { debug } = config;
+  const logger = setLogger(debug);
   const { repositoryUrl } = config;
   const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
-  const { status, stdout, stderr } = await runCommand("curl", [
-    "-L",
-    "-H",
-    "Accept: application/vnd.github+json",
-    "-H",
-    `Authorization: Bearer ${releaseToken}`,
-    "-H",
-    "X-GitHub-Api-Version: 2022-11-28",
-    `${repositoryEntryPoint}/pulls/${pullRequestNumber}`
-  ]);
-  if (status || stderr) return null;
+  const uri = `${repositoryEntryPoint}/pulls/${pullRequestNumber}`;
+  const { status, stdout, stderr } = await runCommand("curl", setCurlHeaders(env, uri));
+  if (debug) {
+    logger.setDebugScope("github:get-pull-request-body");
+    logger.logDebug(`Requested URI: ${uri}`);
+  }
+  if (status) {
+    process.exitCode = status;
+    logger.logError(`Failed to get pull request #${pullRequestNumber}.`);
+    throw new Error(stderr);
+  }
   const { body }: PullRequestBody = JSON.parse(stdout);
   return typeof body === "string" ? body.split("\n".repeat(2)) : null;
 };

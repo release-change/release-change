@@ -1,38 +1,11 @@
-import type { Context } from "@release-change/shared";
-
+import { setLogger } from "@release-change/logger";
 import { parsePathname, runCommand } from "@release-change/shared";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getPullRequestBody } from "../src/get-pull-request-body.js";
+import { mockedContext } from "./fixtures/mocked-context.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
-const mockedToken = "release-token";
-const mockedRepositoryUrl = "https://github.com/user-id/repo-name.git";
-const mockedConfig = {
-  branches: ["main"],
-  releaseType: {
-    main: {
-      channel: "latest"
-    }
-  },
-  isMonorepo: false,
-  debug: false,
-  dryRun: false,
-  repositoryUrl: mockedRepositoryUrl,
-  remoteName: "origin"
-};
-const mockedContext: Context = {
-  cwd: "/fake/path",
-  env: {
-    RELEASE_TOKEN: mockedToken
-  },
-  branch: "main",
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  packages: [{ name: "", path: "." }],
-  config: mockedConfig
-};
 const mockedPullRequestData = {
   url: "https://api.github.com/repos/user-id/repo-name/pulls/1337",
   id: 1,
@@ -61,7 +34,13 @@ const mockedPullRequestDataWithEmptyBody = {
 };
 
 beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ runCommand: vi.fn(), parsePathname: vi.fn() }));
+  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn(), checkErrorType: vi.fn() }));
+  vi.mock("@release-change/shared", () => ({
+    runCommand: vi.fn(),
+    parsePathname: vi.fn(),
+    WORKSPACE_NAME: "release-change"
+  }));
+  vi.mocked(setLogger).mockReturnValue(mockedLogger);
   vi.mocked(parsePathname).mockReturnValue({
     owner: "user-id",
     repository: "repo-name"
@@ -71,13 +50,14 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-it("should return `null` if an error occurs when requesting the URL", async () => {
+it("should throw an error if an error occurs when requesting the URL", async () => {
   vi.mocked(runCommand).mockResolvedValue({
     status: 404,
     stdout: "",
     stderr: "Error"
   });
-  expect(await getPullRequestBody(1337, mockedContext)).toBe(null);
+  await expect(getPullRequestBody(1337, mockedContext)).rejects.toThrow("Error");
+  expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to get pull request #1337.");
 });
 it("should return `null` if the pull request body is not found", async () => {
   vi.mocked(runCommand).mockResolvedValue({
