@@ -1,11 +1,11 @@
 import type { Context } from "@release-change/shared";
 import type { PullRequestBody } from "./github.types.js";
 
-import { getReleaseToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
 import { runCommand } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import { setCurlHeaders } from "./set-curl-headers.js";
 
 /**
  * Gets the pull request body.
@@ -20,20 +20,10 @@ export const getPullRequestBody = async (
   const { env, config } = context;
   const { debug } = config;
   const logger = setLogger(debug);
-  const releaseToken = getReleaseToken(env);
   const { repositoryUrl } = config;
   const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
   const uri = `${repositoryEntryPoint}/pulls/${pullRequestNumber}`;
-  const { status, stdout, stderr } = await runCommand("curl", [
-    "-L",
-    "-H",
-    "Accept: application/vnd.github+json",
-    "-H",
-    `Authorization: Bearer ${releaseToken}`,
-    "-H",
-    "X-GitHub-Api-Version: 2022-11-28",
-    uri
-  ]);
+  const { status, stdout, stderr } = await runCommand("curl", setCurlHeaders(env, uri));
   if (debug) {
     logger.setDebugScope("github:get-pull-request-body");
     logger.logDebug(`Requested URI: ${uri}`);

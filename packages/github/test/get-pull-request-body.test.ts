@@ -6,8 +6,8 @@ import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getPullRequestBody } from "../src/get-pull-request-body.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
+import { mockedToken } from "./fixtures/mocked-token.js";
 
-const mockedToken = "release-token";
 const mockedRepositoryUrl = "https://github.com/user-id/repo-name.git";
 const mockedConfig = {
   branches: ["main"],

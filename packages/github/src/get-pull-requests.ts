@@ -1,11 +1,11 @@
 import type { Context, Reference } from "@release-change/shared";
 import type { PullRequestAssociatedWithCommit } from "./github.types.js";
 
-import { getReleaseToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
 import { runCommand } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import { setCurlHeaders } from "./set-curl-headers.js";
 
 /**
  * Gets the pull requests related to a commit.
@@ -17,20 +17,10 @@ export const getPullRequests = async (sha: string, context: Context): Promise<Re
   const { env, config } = context;
   const { debug } = config;
   const logger = setLogger(debug);
-  const releaseToken = getReleaseToken(env);
   const { repositoryUrl } = config;
   const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
   const uri = `${repositoryEntryPoint}/commits/${sha}/pulls`;
-  const { status, stdout, stderr } = await runCommand("curl", [
-    "-L",
-    "-H",
-    "Accept: application/vnd.github+json",
-    "-H",
-    `Authorization: Bearer ${releaseToken}`,
-    "-H",
-    "X-GitHub-Api-Version: 2022-11-28",
-    uri
-  ]);
+  const { status, stdout, stderr } = await runCommand("curl", setCurlHeaders(env, uri));
   if (debug) {
     logger.setDebugScope("github:get-pull-requests");
     logger.logDebug(`Requested URI: ${uri}`);

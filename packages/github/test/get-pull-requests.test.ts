@@ -5,9 +5,10 @@ import { parsePathname, runCommand } from "@release-change/shared";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getPullRequests } from "../src/get-pull-requests.js";
+import { mockedCurlHeaders } from "./fixtures/mocked-curl-headers.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
+import { mockedToken } from "./fixtures/mocked-token.js";
 
-const mockedToken = "release-token";
 const mockedRepositoryUrl = "https://github.com/user-id/repo-name.git";
 const mockedConfig = {
   branches: ["main"],
@@ -91,16 +92,7 @@ it("should return the pull request numbers", async () => {
     { number: 42, isPullRequest: true },
     { number: 43, isPullRequest: true }
   ]);
-  expect(runCommand).toHaveBeenCalledWith("curl", [
-    "-L",
-    "-H",
-    "Accept: application/vnd.github+json",
-    "-H",
-    `Authorization: Bearer ${mockedToken}`,
-    "-H",
-    "X-GitHub-Api-Version: 2022-11-28",
-    "https://api.github.com/repos/user-id/repo-name/commits/0123456/pulls"
-  ]);
+  expect(runCommand).toHaveBeenCalledWith("curl", mockedCurlHeaders);
 });
 it("should return an empty array when the SHA does not have any associated pull requests", async () => {
   vi.mocked(parsePathname).mockReturnValue({
