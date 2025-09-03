@@ -32,4 +32,4 @@ jobs:
       - name: Release
         env:
           RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        run: node ./packages/cli/bin/index.js --debug
+        run: node ./packages/cli/bin/index.js
