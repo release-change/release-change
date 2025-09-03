@@ -159,17 +159,17 @@ it("should throw an error in case of failure", async () => {
     "Failed to get related pull requests and issues."
   );
 });
-it("should add context with references to no pull requests and issues if no commits are provided", async () => {
+it("should complete context with references to no pull requests and issues if no commits are provided", async () => {
   await getRelatedPullRequestsAndIssues([], mockedDefaultContext);
   assert.deepEqual(mockedDefaultContext.references, []);
 });
-it("should add context with references to no pull requests and issues if none of them are found", async () => {
+it("should complete context with references to no pull requests and issues if none of them are found", async () => {
   vi.mocked(getIssues).mockReturnValue([]);
   vi.mocked(getPullRequests).mockResolvedValue([]);
   await getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext);
   assert.deepEqual(mockedDefaultContext.references, []);
 });
-it("should add context with references to no pull requests if none of them are found", async () => {
+it("should complete context with references to no pull requests if none of them are found", async () => {
   vi.mocked(getIssues).mockReturnValue([
     { number: 456, isPullRequest: false },
     { number: 789, isPullRequest: false }
@@ -181,7 +181,7 @@ it("should add context with references to no pull requests if none of them are f
     { number: 789, isPullRequest: false }
   ]);
 });
-it("should add context with references to no issues if none of them are found", async () => {
+it("should complete context with references to no issues if none of them are found", async () => {
   vi.mocked(getPullRequestBody).mockResolvedValue([""]);
   vi.mocked(getIssues).mockReturnValue([]);
   vi.mocked(getPullRequests).mockResolvedValue([
@@ -196,11 +196,12 @@ it("should add context with references to no issues if none of them are found", 
     { number: 789, isPullRequest: true }
   ]);
 });
-it("should add context with references to both pull requests and issues if both of them are found", async () => {
+it("should complete context with references to both pull requests and issues if both of them are found", async () => {
   vi.mocked(getPullRequestBody).mockResolvedValue([""]);
   vi.mocked(getIssues).mockReturnValue([
     { number: 456, isPullRequest: false },
-    { number: 789, isPullRequest: false }
+    { number: 789, isPullRequest: false },
+    { number: 1011, isPullRequest: false }
   ]);
   vi.mocked(getPullRequests).mockResolvedValue([
     { number: 123, isPullRequest: true },
@@ -212,7 +213,6 @@ it("should add context with references to both pull requests and issues if both 
     { number: 123, isPullRequest: true },
     { number: 456, isPullRequest: true },
     { number: 789, isPullRequest: true },
-    { number: 456, isPullRequest: false },
-    { number: 789, isPullRequest: false }
+    { number: 1011, isPullRequest: false }
   ]);
 });
