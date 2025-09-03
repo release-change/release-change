@@ -23,17 +23,37 @@ export const getRelatedPullRequestsAndIssues = async (
   const logger = setLogger(debug);
   try {
     const references: Reference[] = [];
+    const pullRequestReferences = (
+      await Promise.all(
+        commits
+          .map(commit => commit.sha)
+          .filter(sha => typeof sha === "string")
+          .map(sha => getPullRequests(sha, context))
+      )
+    ).flat();
+    references.push(...pullRequestReferences);
+    const existingPullRequestNumbers = new Set(
+      pullRequestReferences.map(reference => reference.number)
+    );
     for (const commit of commits) {
-      const { sha } = commit;
-      if (sha) references.push(...(await getPullRequests(sha, context)));
-      references.push(...getIssues(commit));
+      const issues = getIssues(commit).filter(
+        issue => !existingPullRequestNumbers.has(issue.number)
+      );
+      references.push(...issues);
     }
-    const pullRequests: number[] = references
-      .filter(reference => reference.isPullRequest)
-      .map(reference => reference.number);
-    for (const pullRequest of pullRequests) {
-      const pullRequestBody = await getPullRequestBody(pullRequest, context);
-      if (pullRequestBody) references.push(...getIssues({ body: pullRequestBody }));
+    const pullRequestBodies = await Promise.all(
+      pullRequestReferences.map(async reference => {
+        const { number } = reference;
+        return { number, body: await getPullRequestBody(number, context) };
+      })
+    );
+    for (const { body } of pullRequestBodies) {
+      if (body) {
+        const issues = getIssues({ body }).filter(
+          issue => !existingPullRequestNumbers.has(issue.number)
+        );
+        references.push(...issues);
+      }
     }
     context.references = removeDuplicateObjects(references);
     if (debug) {
