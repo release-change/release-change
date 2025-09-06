@@ -13,10 +13,8 @@ import {
 } from "@release-change/git";
 import { getRelatedPullRequestsAndIssues } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
+import { setLastRelease, setNextRelease } from "@release-change/release";
 import { WORKSPACE_NAME, WORKSPACE_VERSION } from "@release-change/shared";
-
-import { setLastRelease } from "../release/set-last-release.js";
-import { setNextRelease } from "../release/set-next-release.js";
 
 /**
  * Runs the CLI.
@@ -59,7 +57,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
       } else {
         await getRelatedPullRequestsAndIssues(commits, context);
         const { references } = context;
-        console.log("context.references", references);
+        console.log("context.references", references?.length, references);
       }
     }
   }

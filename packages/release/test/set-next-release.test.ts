@@ -3,20 +3,20 @@ import type { NextRelease } from "@release-change/shared";
 import { setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { incrementVersion } from "../../src/release/increment-version.js";
-import { setNextRelease } from "../../src/release/set-next-release.js";
-import { mockedConfig } from "../fixtures/mocked-config.js";
-import { mockedContext, mockedContextWithIneligibleBranch } from "../fixtures/mocked-context.js";
-import { mockedLogger } from "../fixtures/mocked-logger.js";
-import { mockedNextReleases } from "../fixtures/mocked-next-releases.js";
-import { mockedNextReleasesInMonorepo } from "../fixtures/mocked-next-releases-in-monorepo.js";
+import { incrementVersion } from "../src/increment-version.js";
+import { setNextRelease } from "../src/index.js";
+import { mockedConfig } from "./fixtures/mocked-config.js";
+import { mockedContext, mockedContextWithIneligibleBranch } from "./fixtures/mocked-context.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
+import { mockedNextReleases } from "./fixtures/mocked-next-releases.js";
+import { mockedNextReleasesInMonorepo } from "./fixtures/mocked-next-releases-in-monorepo.js";
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({
     checkErrorType: vi.fn(),
     setLogger: vi.fn()
   }));
-  vi.mock("../../src/release/increment-version.js", () => ({
+  vi.mock("../src/increment-version.js", () => ({
     incrementVersion: vi.fn()
   }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
