@@ -4,16 +4,21 @@ import { DEFAULT_CONFIG } from "@release-change/config";
 import { setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
+import { getAssociatedPullRequests } from "../src/get-associated-pull-requests.js";
 import { getIssues } from "../src/get-issues.js";
-import { getPullRequestBody } from "../src/get-pull-request-body.js";
-import { getPullRequests } from "../src/get-pull-requests.js";
+import { getRepositoryRelatedEntryPoint } from "../src/get-repository-related-entry-point.js";
 import { getRelatedPullRequestsAndIssues } from "../src/index.js";
+import { mockedFailureFetches } from "./fixtures/mocked-failure-fetches.js";
+import { mockedFetch } from "./fixtures/mocked-fetch.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
+import { mockedToken } from "./fixtures/mocked-token.js";
 
 const expectedDefaultConfig = DEFAULT_CONFIG as unknown as Config;
 const mockedDefaultContext: Context = {
   cwd: "/fake/path",
-  env: {},
+  env: {
+    RELEASE_TOKEN: mockedToken
+  },
   branch: "main",
   ci: {
     isCi: true,
@@ -138,20 +143,51 @@ const mockedCommits = [
   mockedMergeCommitSampleWithBodyWithBothFooters
 ];
 
+const mockedEntryPoint = "https://api.github.com/repos/user-id/repo-name";
+const mockedAssociatedPullRequests = [
+  {
+    title: "Some pull request",
+    body: "Some pull request comment.",
+    reference: { number: 123, isPullRequest: true }
+  },
+  {
+    title: "Another pull request",
+    body: "Another pull request comment.",
+    reference: {
+      number: 456,
+      isPullRequest: true
+    }
+  },
+  {
+    title: "Yet another pull request",
+    body: null,
+    reference: {
+      number: 789,
+      isPullRequest: true
+    }
+  }
+];
+
 beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+  global.fetch = mockedFetch;
+  vi.mock("@release-change/logger", () => ({ checkErrorType: vi.fn(), setLogger: vi.fn() }));
+  vi.mock("@release-change/ci", () => ({ getReleaseToken: vi.fn() }));
+  vi.mock("../src/get-repository-related-entry-point.js", () => ({
+    getRepositoryRelatedEntryPoint: vi.fn()
+  }));
+  vi.mock("../src/get-associated-pull-requests.js", () => ({
+    getAssociatedPullRequests: vi.fn()
+  }));
   vi.mock("../src/get-issues.js", () => ({ getIssues: vi.fn() }));
-  vi.mock("../src/get-pull-request-body.js", () => ({ getPullRequestBody: vi.fn() }));
-  vi.mock("../src/get-pull-requests.js", () => ({ getPullRequests: vi.fn() }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
+  vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(mockedEntryPoint);
 });
 afterEach(() => {
   vi.clearAllMocks();
 });
 
-it("should throw an error in case of failure", async () => {
-  vi.mocked(getIssues).mockReturnValue([]);
-  vi.mocked(getPullRequests).mockRejectedValue(new Error("Error"));
+it.each(mockedFailureFetches)("$title", async ({ response }) => {
+  vi.mocked(mockedFetch).mockResolvedValue(response);
   await expect(
     getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext)
   ).rejects.toThrow();
@@ -164,17 +200,17 @@ it("should complete context with references to no pull requests and issues if no
   assert.deepEqual(mockedDefaultContext.references, []);
 });
 it("should complete context with references to no pull requests and issues if none of them are found", async () => {
+  vi.mocked(getAssociatedPullRequests).mockResolvedValue([]);
   vi.mocked(getIssues).mockReturnValue([]);
-  vi.mocked(getPullRequests).mockResolvedValue([]);
   await getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext);
   assert.deepEqual(mockedDefaultContext.references, []);
 });
 it("should complete context with references to no pull requests if none of them are found", async () => {
+  vi.mocked(getAssociatedPullRequests).mockResolvedValue([]);
   vi.mocked(getIssues).mockReturnValue([
     { number: 456, isPullRequest: false },
     { number: 789, isPullRequest: false }
   ]);
-  vi.mocked(getPullRequests).mockResolvedValue([]);
   await getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext);
   assert.deepEqual(mockedDefaultContext.references, [
     { number: 456, isPullRequest: false },
@@ -182,13 +218,8 @@ it("should complete context with references to no pull requests if none of them 
   ]);
 });
 it("should complete context with references to no issues if none of them are found", async () => {
-  vi.mocked(getPullRequestBody).mockResolvedValue([""]);
+  vi.mocked(getAssociatedPullRequests).mockResolvedValue(mockedAssociatedPullRequests);
   vi.mocked(getIssues).mockReturnValue([]);
-  vi.mocked(getPullRequests).mockResolvedValue([
-    { number: 123, isPullRequest: true },
-    { number: 456, isPullRequest: true },
-    { number: 789, isPullRequest: true }
-  ]);
   await getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext);
   assert.deepEqual(mockedDefaultContext.references, [
     { number: 123, isPullRequest: true },
@@ -197,22 +228,19 @@ it("should complete context with references to no issues if none of them are fou
   ]);
 });
 it("should complete context with references to both pull requests and issues if both of them are found", async () => {
-  vi.mocked(getPullRequestBody).mockResolvedValue([""]);
+  vi.mocked(getAssociatedPullRequests).mockResolvedValue(mockedAssociatedPullRequests);
   vi.mocked(getIssues).mockReturnValue([
-    { number: 456, isPullRequest: false },
-    { number: 789, isPullRequest: false },
-    { number: 1011, isPullRequest: false }
-  ]);
-  vi.mocked(getPullRequests).mockResolvedValue([
-    { number: 123, isPullRequest: true },
-    { number: 456, isPullRequest: true },
-    { number: 789, isPullRequest: true }
+    { number: 1011, isPullRequest: false },
+    { number: 1213, isPullRequest: false },
+    { number: 1415, isPullRequest: false }
   ]);
   await getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext);
   assert.deepEqual(mockedDefaultContext.references, [
     { number: 123, isPullRequest: true },
     { number: 456, isPullRequest: true },
     { number: 789, isPullRequest: true },
-    { number: 1011, isPullRequest: false }
+    { number: 1011, isPullRequest: false },
+    { number: 1213, isPullRequest: false },
+    { number: 1415, isPullRequest: false }
   ]);
 });
