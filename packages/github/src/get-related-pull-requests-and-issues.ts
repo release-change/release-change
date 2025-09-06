@@ -5,12 +5,14 @@ import { inspect } from "node:util";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { type Context, type Reference, removeDuplicateObjects } from "@release-change/shared";
 
+import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";
-import { getPullRequestBody } from "./get-pull-request-body.js";
-import { getPullRequests } from "./get-pull-requests.js";
+import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 
 /**
  * Gets pull requests and issues related to the commits which are part of the release.
+ *
+ * First, the pull requests associated with each commit are retrieved. Then, the issues mentioned in the commit description, body and footer are retrieved. Finally, those mentioned in the pull request titles and bodies are retrieved.
  * @param commits - The commits to parse.
  * @param context - The context where the CLI is running.
  */
@@ -18,44 +20,42 @@ export const getRelatedPullRequestsAndIssues = async (
   commits: Commit[],
   context: Context
 ): Promise<void> => {
-  const { config } = context;
-  const { debug } = config;
+  const { env, config } = context;
+  const { debug, repositoryUrl } = config;
   const logger = setLogger(debug);
   try {
-    const references: Reference[] = [];
-    const pullRequestReferences = (
-      await Promise.all(
-        commits
-          .map(commit => commit.sha)
-          .filter(sha => typeof sha === "string")
-          .map(sha => getPullRequests(sha, context))
-      )
-    ).flat();
-    references.push(...pullRequestReferences);
-    const existingPullRequestNumbers = new Set(
-      pullRequestReferences.map(reference => reference.number)
-    );
-    for (const commit of commits) {
-      const issues = getIssues(commit).filter(
-        issue => !existingPullRequestNumbers.has(issue.number)
+    const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
+    if (commits.length) {
+      const references: Reference[] = [];
+      const pullRequestReferences = (
+        await Promise.all(
+          commits
+            .map(commit => commit.sha)
+            .filter(sha => typeof sha === "string")
+            .map(sha =>
+              getAssociatedPullRequests(`${repositoryEntryPoint}/commits/${sha}/pulls`, env)
+            )
+        )
+      ).flat();
+      references.push(
+        ...pullRequestReferences.map(pullRequestReference => pullRequestReference.reference)
       );
-      references.push(...issues);
-    }
-    const pullRequestBodies = await Promise.all(
-      pullRequestReferences.map(async reference => {
-        const { number } = reference;
-        return { number, body: await getPullRequestBody(number, context) };
-      })
-    );
-    for (const { body } of pullRequestBodies) {
-      if (body) {
-        const issues = getIssues({ body }).filter(
-          issue => !existingPullRequestNumbers.has(issue.number)
-        );
+      const pullRequestNumberSet = new Set(
+        pullRequestReferences.map(pullRequestReference => pullRequestReference.reference.number)
+      );
+      for (const commit of commits) {
+        const issues = getIssues(commit).filter(issue => !pullRequestNumberSet.has(issue.number));
         references.push(...issues);
       }
-    }
-    context.references = removeDuplicateObjects(references);
+      const pullRequestTitlesAndBodies = pullRequestReferences.flatMap(pullRequestReference =>
+        getIssues({
+          description: pullRequestReference.title,
+          body: pullRequestReference.body?.split(/\n{2,}/) ?? [""]
+        }).filter(issue => !pullRequestNumberSet.has(issue.number))
+      );
+      references.push(...pullRequestTitlesAndBodies);
+      context.references = removeDuplicateObjects(references);
+    } else context.references = [];
     if (debug) {
       logger.setDebugScope("github:get-related-pull-requests-and-issues");
       logger.logDebug("context.references:");

@@ -1,0 +1,59 @@
+import { mockedUri } from "./mocked-uri.js";
+
+export const mockedFailureFetches = [
+  {
+    title: "should throw an error if the URI is not found",
+    response: { status: 404 },
+    expectedError: `Failed to fetch URI ${mockedUri}.`
+  },
+  {
+    title: "should throw an error in case of conflict",
+    response: {
+      status: 409,
+      json: () =>
+        Promise.resolve({
+          message: "Conflict detected",
+          documentation_url:
+            "https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit"
+        }),
+      expectedError: `There is a conflict with the requested URI ${mockedUri}. See https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit.`
+    }
+  },
+  {
+    title: "should throw an error in case of rate limit excess",
+    response: {
+      status: 403,
+      json: () =>
+        Promise.resolve({
+          message:
+            "API rate limit exceeded for 0.0.0.0. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)",
+          documentation_url:
+            "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"
+        })
+    },
+    expectedError:
+      "The GitHub API rate limit has been exceeded. Please wait a few minutes and try again. See https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting."
+  },
+  {
+    title: "should throw an error in case of request excess",
+    response: {
+      status: 429,
+      json: () =>
+        Promise.resolve({
+          message:
+            "You have triggered an abuse detection mechanism. Please wait a few minutes before you try again.",
+          documentation_url: "https://developer.github.com/v3/#abuse-rate-limits"
+        })
+    },
+    expectedError:
+      "An abuse detection mechanism has been detected. Please wait a few minutes and try again. See https://developer.github.com/v3/#abuse-rate-limits."
+  },
+  {
+    title: "should throw an error in case of other HTTP status code",
+    response: {
+      status: 500,
+      json: () => Promise.resolve({ message: "Internal server error" })
+    },
+    expectedError: "Internal server error"
+  }
+];
