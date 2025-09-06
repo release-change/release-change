@@ -8,6 +8,7 @@ import { type Context, type Reference, removeDuplicateObjects } from "@release-c
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import type { AssociatedPullRequest } from "./github.types.js";
 
 /**
  * Gets pull requests and issues related to the commits which are part of the release.
@@ -27,19 +28,20 @@ export const getRelatedPullRequestsAndIssues = async (
     const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
     if (commits.length) {
       const references: Reference[] = [];
-      const pullRequestReferences = (
-        await Promise.all(
-          commits
-            .map(commit => commit.sha)
-            .filter(sha => typeof sha === "string")
-            .map(sha =>
-              getAssociatedPullRequests(`${repositoryEntryPoint}/commits/${sha}/pulls`, env)
-            )
-        )
-      ).flat();
-      references.push(
-        ...pullRequestReferences.map(pullRequestReference => pullRequestReference.reference)
-      );
+      const pullRequestReferences: AssociatedPullRequest[] = [];
+      const commitShas = commits.map(commit => commit.sha).filter(sha => typeof sha === "string");
+      if (commitShas.length) {
+        for (const commitSha of commitShas) {
+          const pullRequests = await getAssociatedPullRequests(
+            `${repositoryEntryPoint}/commits/${commitSha}/pulls`,
+            env
+          );
+          pullRequestReferences.push(...pullRequests);
+          references.push(
+            ...pullRequests.map(pullRequest => pullRequest.reference)
+          );
+        }
+      }
       const pullRequestNumberSet = new Set(
         pullRequestReferences.map(pullRequestReference => pullRequestReference.reference.number)
       );
