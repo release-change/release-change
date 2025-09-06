@@ -187,13 +187,18 @@ afterEach(() => {
 });
 
 it.each(mockedFailureFetches)("$title", async ({ response }) => {
+  vi.spyOn(process, "exit").mockImplementation(code => {
+    throw new Error(`process.exit(${code})`);
+  });
   vi.mocked(mockedFetch).mockResolvedValue(response);
+  process.exitCode = response.status;
   await expect(
     getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext)
   ).rejects.toThrow();
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     "Failed to get related pull requests and issues."
   );
+  expect(process.exit).toHaveBeenCalledWith(response.status);
 });
 it("should complete context with references to no pull requests and issues if no commits are provided", async () => {
   await getRelatedPullRequestsAndIssues([], mockedDefaultContext);

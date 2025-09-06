@@ -34,21 +34,17 @@ export const getAssociatedPullRequests = async (
     }
     return associatedPullRequest;
   }
-  if (status === 404) throw new Error(`Failed to fetch URI ${uri}.`);
+  if (status === 404) {
+    process.exitCode = 404;
+    throw new Error(`Failed to fetch URI ${uri}.`);
+  }
   const responseError: GitHubResponseError = await pullRequestResponse.json();
   const { message, documentation_url: documentationUrl } = responseError;
   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
-  if (status === 409) {
-    throw new Error(`There is a conflict with the requested URI ${uri}.${documentationReference}`);
+  if (status === 403 || status === 409 || status === 429) {
+    process.exitCode = status;
+    throw new Error(`${message}${documentationReference}`);
   }
-  if ((status === 403 && message.startsWith("API rate limit exceeded")) || status === 429) {
-    const errorMessage =
-      status === 403
-        ? "The GitHub API rate limit has been exceeded."
-        : "An abuse detection mechanism has been detected.";
-    throw new Error(
-      `${errorMessage} Please wait a few minutes and try again.${documentationReference}`
-    );
-  }
+  process.exitCode = status;
   throw new Error(message);
 };
