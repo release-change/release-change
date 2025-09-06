@@ -1,4 +1,5 @@
 import type { Commit } from "@release-change/commit-analyser";
+import type { AssociatedPullRequest } from "./github.types.js";
 
 import { inspect } from "node:util";
 
@@ -8,7 +9,6 @@ import { type Context, type Reference, removeDuplicateObjects } from "@release-c
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
-import type { AssociatedPullRequest } from "./github.types.js";
 
 /**
  * Gets pull requests and issues related to the commits which are part of the release.
@@ -37,9 +37,7 @@ export const getRelatedPullRequestsAndIssues = async (
             env
           );
           pullRequestReferences.push(...pullRequests);
-          references.push(
-            ...pullRequests.map(pullRequest => pullRequest.reference)
-          );
+          references.push(...pullRequests.map(pullRequest => pullRequest.reference));
         }
       }
       const pullRequestNumberSet = new Set(
