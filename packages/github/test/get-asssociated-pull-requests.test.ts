@@ -22,6 +22,7 @@ it("should throw an error when the request fails", async () => {
 it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
   vi.mocked(mockedFetch).mockResolvedValue(response);
   await expect(getAssociatedPullRequests(mockedUri, mockedEnv)).rejects.toThrow(expectedError);
+  expect(process.exitCode).toBe(response.status);
 });
 it("should return the associated pull requests", async () => {
   const mockedPullRequests = [
