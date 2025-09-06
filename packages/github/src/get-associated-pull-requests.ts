@@ -41,19 +41,9 @@ export const getAssociatedPullRequests = async (
   const responseError: GitHubResponseError = await pullRequestResponse.json();
   const { message, documentation_url: documentationUrl } = responseError;
   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
-  if (status === 409) {
-    process.exitCode = 409;
-    throw new Error(`There is a conflict with the requested URI ${uri}.${documentationReference}`);
-  }
-  if ((status === 403 && message.startsWith("API rate limit exceeded")) || status === 429) {
-    const errorMessage =
-      status === 403
-        ? "The GitHub API rate limit has been exceeded."
-        : "An abuse detection mechanism has been detected.";
+  if (status === 403 || status === 409 || status === 429) {
     process.exitCode = status;
-    throw new Error(
-      `${errorMessage} Please wait a few minutes and try again.${documentationReference}`
-    );
+    throw new Error(`${message}${documentationReference}`);
   }
   process.exitCode = status;
   throw new Error(message);

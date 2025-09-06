@@ -32,7 +32,7 @@ export const mockedFailureFetches = [
         })
     },
     expectedError:
-      "The GitHub API rate limit has been exceeded. Please wait a few minutes and try again. See https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting."
+      "API rate limit exceeded for 0.0.0.0. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.) See https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting."
   },
   {
     title: "should throw an error in case of request excess",
@@ -46,7 +46,7 @@ export const mockedFailureFetches = [
         })
     },
     expectedError:
-      "An abuse detection mechanism has been detected. Please wait a few minutes and try again. See https://developer.github.com/v3/#abuse-rate-limits."
+      "You have triggered an abuse detection mechanism. Please wait a few minutes before you try again. See https://developer.github.com/v3/#abuse-rate-limits."
   },
   {
     title: "should throw an error in case of other HTTP status code",
