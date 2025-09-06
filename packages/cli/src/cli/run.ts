@@ -12,11 +12,9 @@ import {
   getCommitsSinceRef
 } from "@release-change/git";
 import { getRelatedPullRequestsAndIssues } from "@release-change/github";
-import { setLogger } from "@release-change/logger";
+import { checkErrorType, setLogger } from "@release-change/logger";
+import { publish, setLastRelease, setNextRelease } from "@release-change/release";
 import { WORKSPACE_NAME, WORKSPACE_VERSION } from "@release-change/shared";
-
-import { setLastRelease } from "../release/set-last-release.js";
-import { setNextRelease } from "../release/set-next-release.js";
 
 /**
  * Runs the CLI.
@@ -59,7 +57,20 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
       } else {
         await getRelatedPullRequestsAndIssues(commits, context);
         const { references } = context;
-        console.log("context.references", references);
+        console.log("context.references", references?.length, references);
+        try {
+          // TODO: publish
+          await publish(context);
+        } catch (error) {
+          logger.logError(checkErrorType(error));
+          if (references) {
+            for (const reference of references) {
+              const { number } = reference;
+              console.log("reference.number", number);
+              // TODO: post fail comment on related PRs and issues
+            }
+          }
+        }
       }
     }
   }

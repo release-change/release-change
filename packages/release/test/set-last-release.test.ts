@@ -4,12 +4,12 @@ import { setLogger } from "@release-change/logger";
 import { validate } from "@release-change/semver";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
-import { getVersionFromTag } from "../../src/release/get-version-from-tag.js";
-import { setLastRelease } from "../../src/release/set-last-release.js";
-import { mockedContextWithIneligibleBranch } from "../fixtures/mocked-context.js";
-import { mockedGitTags } from "../fixtures/mocked-git-tags.js";
-import { mockedLogger } from "../fixtures/mocked-logger.js";
-import { mockedPackages } from "../fixtures/mocked-packages.js";
+import { getVersionFromTag } from "../src/get-version-from-tag.js";
+import { setLastRelease } from "../src/index.js";
+import { mockedContextWithIneligibleBranch } from "./fixtures/mocked-context.js";
+import { mockedGitTags } from "./fixtures/mocked-git-tags.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
+import { mockedPackages } from "./fixtures/mocked-packages.js";
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({
@@ -26,7 +26,7 @@ beforeEach(() => {
   vi.mock("@release-change/get-packages", () => ({
     getPackageVersion: vi.fn()
   }));
-  vi.mock("../../src/release/get-version-from-tag.js", () => ({
+  vi.mock("../src/get-version-from-tag.js", () => ({
     getVersionFromTag: vi.fn()
   }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);

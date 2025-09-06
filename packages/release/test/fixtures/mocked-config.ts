@@ -1,6 +1,6 @@
 import type { Config } from "@release-change/shared";
 
-import { mockedRepositoryUrl } from "./mocked-repository-url.js";
+import { mockedRepositoryUrl } from "../../../cli/test/fixtures/mocked-repository-url.js";
 
 export const mockedConfig: Config = {
   branches: ["alpha", "beta", "main", "master", "next"],

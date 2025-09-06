@@ -3,8 +3,8 @@ import type { BranchConfig } from "@release-change/shared";
 
 import { describe, expect, it } from "vitest";
 
-import { incrementVersion } from "../../src/release/increment-version.js";
-import { mockedReleases } from "../fixtures/mocked-releases.js";
+import { mockedReleases } from "../../cli/test/fixtures/mocked-releases.js";
+import { incrementVersion } from "../src/increment-version.js";
 
 const mockedReleaseTypes = ["major", "minor", "patch"];
 const mockedBranchConfigs: Record<string, BranchConfig> = {
