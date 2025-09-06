@@ -1,27 +1,8 @@
 {
-  "name": "@release-change/cli",
+  "name": "@release-change/release",
   "version": "0.0.0",
-  "description": "Fully automated version management, changelog management and package publishing with a focus on monorepos, pre-releases and major version zero",
-  "keywords": [
-    "automation",
-    "changelog",
-    "cli",
-    "major-version-zero",
-    "monorepo",
-    "package",
-    "pre-release",
-    "publish",
-    "release",
-    "release-automation",
-    "release-workflow",
-    "semantic",
-    "semantic-version",
-    "semver",
-    "semver-release",
-    "tags",
-    "version",
-    "versioning"
-  ],
+  "description": "Functions used internally in release-change to release packages",
+  "keywords": [],
   "homepage": "https://github.com/release-change/release-change",
   "bugs": {
     "url": "https://github.com/release-change/release-change/issues"
@@ -40,9 +21,6 @@
     "import": "./dist/index.js",
     "types": "./dist/index.d.ts"
   },
-  "bin": {
-    "release-change": "./bin/index.js"
-  },
   "engines": {
     "node": "^20.18.3 || ^22.12.0",
     "npm": ">=10.8.2",
@@ -50,18 +28,13 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch --preserveWatchOutput & vitest",
-    "release-change": "./bin/index.js"
+    "dev": "tsc --watch --preserveWatchOutput & vitest"
   },
   "dependencies": {
-    "@release-change/ci": "workspace:*",
     "@release-change/commit-analyser": "workspace:*",
-    "@release-change/config": "workspace:*",
     "@release-change/get-packages": "workspace:*",
     "@release-change/git": "workspace:*",
-    "@release-change/github": "workspace:*",
     "@release-change/logger": "workspace:*",
-    "@release-change/release": "workspace:*",
     "@release-change/semver": "workspace:*",
     "@release-change/shared": "workspace:*"
   }

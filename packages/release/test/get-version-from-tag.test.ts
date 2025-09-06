@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { getVersionFromTag } from "../../src/release/get-version-from-tag.js";
+import { getVersionFromTag } from "../src/get-version-from-tag.js";
 
 it("should throw an error if the version is invalid", () => {
   expect(() => getVersionFromTag("v1")).toThrowError();

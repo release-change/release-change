@@ -65,6 +65,9 @@ importers:
       '@release-change/logger':
         specifier: workspace:*
         version: link:../logger
+      '@release-change/release':
+        specifier: workspace:*
+        version: link:../release
       '@release-change/semver':
         specifier: workspace:*
         version: link:../semver
@@ -143,6 +146,27 @@ importers:
 
   packages/logger:
     dependencies:
+      '@release-change/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/release:
+    dependencies:
+      '@release-change/commit-analyser':
+        specifier: workspace:*
+        version: link:../commit-analyser
+      '@release-change/get-packages':
+        specifier: workspace:*
+        version: link:../get-packages
+      '@release-change/git':
+        specifier: workspace:*
+        version: link:../git
+      '@release-change/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@release-change/semver':
+        specifier: workspace:*
+        version: link:../semver
       '@release-change/shared':
         specifier: workspace:*
         version: link:../shared
