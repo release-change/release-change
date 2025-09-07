@@ -27,7 +27,7 @@ export const updatePackageVersion = (
   if (packagePathname) {
     const { path: pathname } = packagePathname;
     const packagePath = path.join(cwd, pathname, "package.json");
-    const packageName = `${name ?? "root"} package`;
+    const packageName = `${name || "root"} package`;
     if (fs.existsSync(packagePath)) {
       const packageManifest: PackageManifest = JSON.parse(fs.readFileSync(packagePath, "utf-8"));
       if (nextRelease) {
