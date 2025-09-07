@@ -24,10 +24,10 @@ export const updatePackageVersion = (
   } = context;
   const logger = setLogger(debug);
   const [packagePathname] = packages.filter(packageItem => packageItem.name === name);
+  const packageName = `${name || "root"} package`;
   if (packagePathname) {
     const { path: pathname } = packagePathname;
     const packagePath = path.join(cwd, pathname, "package.json");
-    const packageName = `${name || "root"} package`;
     if (fs.existsSync(packagePath)) {
       const packageManifest: PackageManifest = JSON.parse(fs.readFileSync(packagePath, "utf-8"));
       if (nextRelease) {
@@ -44,5 +44,5 @@ export const updatePackageVersion = (
         } else throw new Error(`No next release found for ${packageName}.`);
       } else throw new Error("No next release found.");
     } else throw new Error(`Package ${packagePath} not found for ${packageName}.`);
-  } else throw new Error(`Package ${name} not found.`);
+  } else throw new Error(`The ${packageName} is not found.`);
 };
