@@ -86,7 +86,7 @@ describe.each(mockedNextReleases)(
       vi.spyOn(fs, "existsSync").mockReturnValue(false);
       assert.throws(
         () => updatePackageVersion(nextRelease, { ...mockedContext, packages: [] }),
-        `${packageName} not found.`
+        `The ${packageName} is not found.`
       );
     });
     it("should throw an error if the package manifest is not found", () => {

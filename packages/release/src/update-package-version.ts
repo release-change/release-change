@@ -44,5 +44,5 @@ export const updatePackageVersion = (
         } else throw new Error(`No next release found for ${packageName}.`);
       } else throw new Error("No next release found.");
     } else throw new Error(`Package ${packagePath} not found for ${packageName}.`);
-  } else throw new Error(`${packageName} not found.`);
+  } else throw new Error(`The ${packageName} is not found.`);
 };
