@@ -36,30 +36,24 @@ afterEach(() => {
 
 describe.each(mockedNextReleases)(
   "for $packageName",
-  ({ packageName, packagePath, nextRelease }) => {
-    it("should throw an error if the package is not found", () => {
-      vi.spyOn(fs, "existsSync").mockReturnValue(false);
-      assert.throws(
-        () => updatePackageVersion(nextRelease, { ...mockedContext, packages: [] }),
-        `The ${packageName} is not found.`
-      );
-    });
+  ({ packageName, packagePath, packageManifestPath, nextRelease }) => {
     it("should throw an error if the package manifest is not found", () => {
       vi.spyOn(fs, "existsSync").mockReturnValue(false);
       assert.throws(
-        () => updatePackageVersion(nextRelease, mockedContextWithNextRelease),
-        `Package ${packagePath} not found for ${packageName}.`
+        () => updatePackageVersion(nextRelease, packagePath, mockedContextWithNextRelease),
+        `Package ${packageManifestPath} not found for ${packageName}.`
       );
     });
     it("should throw an error if `nextRelease` is undefined", () => {
       assert.throws(
-        () => updatePackageVersion(nextRelease, mockedContext),
+        () => updatePackageVersion(nextRelease, packagePath, mockedContext),
         "No next release found."
       );
     });
     it("should throw an error if no next release is found for the package", () => {
       assert.throws(
-        () => updatePackageVersion(nextRelease, mockedContextWithoutNextReleaseForPackage),
+        () =>
+          updatePackageVersion(nextRelease, packagePath, mockedContextWithoutNextReleaseForPackage),
         `No next release found for ${packageName}.`
       );
     });
@@ -71,11 +65,11 @@ describe.each(mockedNextReleases)(
         2
       );
       const readFileSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(expectedContent);
-      updatePackageVersion(nextRelease, mockedContextWithNextRelease);
-      expect(readFileSpy).toHaveBeenCalledWith(packagePath, "utf-8");
+      updatePackageVersion(nextRelease, packagePath, mockedContextWithNextRelease);
+      expect(readFileSpy).toHaveBeenCalledWith(packageManifestPath, "utf-8");
       expect(JSON.parse(expectedContent).version).toBe(expectedVersion);
       // TODO: uncomment when updated package manifest content is written to file
-      //expect(fs.writeFileSync).toHaveBeenCalledWith(packagePath, expectedContent);
+      //expect(fs.writeFileSync).toHaveBeenCalledWith(packageManifestPath, expectedContent);
       expect(mockedLogger.logInfo).toHaveBeenCalledWith(
         `Package version updated to ${expectedVersion} for ${packageName}.`
       );

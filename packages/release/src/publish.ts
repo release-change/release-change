@@ -25,6 +25,7 @@ export const publish = async (context: Context): Promise<void> => {
     cwd,
     env,
     config: { debug },
+    packages,
     nextRelease
   } = context;
   const logger = setLogger(debug);
@@ -32,9 +33,13 @@ export const publish = async (context: Context): Promise<void> => {
     if (nextRelease) {
       const packageManager = getPackageManager(cwd, env);
       for (const nextReleasePackage of nextRelease) {
-        updatePackageVersion(nextReleasePackage, context);
-        await updateLockFile(context, packageManager);
-        // TODO: add files in Git
+        const { name } = nextReleasePackage;
+        const [packagePathname] = packages.filter(packageItem => packageItem.name === name);
+        if (packagePathname) {
+          updatePackageVersion(nextReleasePackage, packagePathname.path, context);
+          await updateLockFile(context, packageManager);
+          // TODO: add files in Git
+        } else new Error(`Pathname not found for ${name || "root"} package.`);
       }
       // TODO: commit updated files
       // TODO: get current commit ID

@@ -1,7 +1,8 @@
 export const mockedNextReleases = [
   {
     packageName: "root package",
-    packagePath: "/fake/path/package.json",
+    packagePath: ".",
+    packageManifestPath: "/fake/path/package.json",
     nextRelease: {
       name: "",
       gitTag: "v1.3.0",
@@ -10,7 +11,8 @@ export const mockedNextReleases = [
   },
   {
     packageName: "@monorepo/a package",
-    packagePath: "/fake/path/packages/a/package.json",
+    packagePath: "packages/a",
+    packageManifestPath: "/fake/path/packages/a/package.json",
     nextRelease: {
       name: "@monorepo/a",
       gitTag: "v1.2.3",
@@ -19,7 +21,8 @@ export const mockedNextReleases = [
   },
   {
     packageName: "@monorepo/b package",
-    packagePath: "/fake/path/packages/b/package.json",
+    packagePath: "packages/b",
+    packageManifestPath: "/fake/path/packages/b/package.json",
     nextRelease: {
       name: "@monorepo/b",
       gitTag: "v1.0.0",

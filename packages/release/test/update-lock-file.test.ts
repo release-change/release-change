@@ -22,7 +22,7 @@ beforeEach(() => {
 
 describe.each(mockedNextReleases)(
   "for $packageName",
-  ({ packageName, packagePath, nextRelease }) => {
+  ({ packageName, packageManifestPath, nextRelease }) => {
     it("should throw an error and restore the `package.json` file if the package manager is not found or supported", async () => {
       // TODO: uncomment when command is run
       // const mockedCommand = vi
@@ -32,7 +32,7 @@ describe.each(mockedNextReleases)(
         "The package manager is not found or is not one of those supported (npm or pnpm)."
       );
       // TODO: uncomment when command is run
-      // expect(mockedCommand).toHaveBeenCalledWith("git", ["restore", packagePath]);
+      // expect(mockedCommand).toHaveBeenCalledWith("git", ["restore", packageManifestPath]);
     });
     it.each(mockedPackageManagerCommands)(
       "should run the $command command if the package manager used is $command",
