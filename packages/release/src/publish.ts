@@ -3,6 +3,7 @@ import type { Context } from "@release-change/shared";
 import { getPackageManager } from "@release-change/get-packages";
 import { checkErrorType, setLogger } from "@release-change/logger";
 
+import { commitUpdatedFiles } from "./commit-updated-files.js";
 //import { cancelLastCommit } from "../git/cancel-last-commit.js";
 //import { createTag } from "../git/create-tag.js";
 //import { getCurrentCommitId } from "../git/get-current-commit-id.js";
@@ -36,14 +37,14 @@ export const publish = async (context: Context): Promise<void> => {
         const { name } = nextReleasePackage;
         const [packagePathname] = packages.filter(packageItem => packageItem.name === name);
         if (packagePathname) {
-          updatePackageVersion(nextReleasePackage, packagePathname.path, context);
+          const { path } = packagePathname;
+          updatePackageVersion(nextReleasePackage, path, context);
           await updateLockFile(context, packageManager);
-          // TODO: add files in Git
+          await commitUpdatedFiles(nextReleasePackage, path, packageManager, context);
+          // TODO: get current commit ID
+          // TODO: create Git tag
         } else new Error(`Pathname not found for ${name || "root"} package.`);
       }
-      // TODO: commit updated files
-      // TODO: get current commit ID
-      // TODO: create Git tag for each updated package
       // TODO: push in Git
       // TODO: create release notes
       // TODO: publish to registry
