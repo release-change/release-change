@@ -1,58 +1,13 @@
-import type { Config, Context } from "@release-change/shared";
-
 import fs from "node:fs";
 
-import { DEFAULT_CONFIG } from "@release-change/config";
 import { setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { updatePackageVersion } from "../src/update-package-version.js";
+import { mockedContext } from "./fixtures/mocked-context-update.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
+import { mockedNextReleases } from "./fixtures/mocked-next-releases-update.js";
 
-const mockedNextReleases = [
-  {
-    packageName: "root package",
-    packagePath: "/fake/path/package.json",
-    nextRelease: {
-      name: "",
-      gitTag: "v1.3.0",
-      version: "1.3.0"
-    }
-  },
-  {
-    packageName: "@monorepo/a package",
-    packagePath: "/fake/path/packages/a/package.json",
-    nextRelease: {
-      name: "@monorepo/a",
-      gitTag: "v1.2.3",
-      version: "1.2.3"
-    }
-  },
-  {
-    packageName: "@monorepo/b package",
-    packagePath: "/fake/path/packages/b/package.json",
-    nextRelease: {
-      name: "@monorepo/b",
-      gitTag: "v1.0.0",
-      version: "1.0.0"
-    }
-  }
-];
-const mockedContext: Context = {
-  cwd: "/fake/path",
-  env: {},
-  branch: "main",
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  packages: [
-    { name: "", path: "." },
-    { name: "@monorepo/a", path: "packages/a" },
-    { name: "@monorepo/b", path: "packages/b" }
-  ],
-  config: DEFAULT_CONFIG as unknown as Config
-};
 const mockedContextWithoutNextReleaseForPackage = { ...mockedContext, nextRelease: [] };
 const mockedContextWithNextRelease = {
   ...mockedContext,

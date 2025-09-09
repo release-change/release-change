@@ -7,6 +7,7 @@ import type { Context } from "@release-change/shared";
 //import { removeTag } from "../git/remove-tag.js";
 import { checkErrorType, setLogger } from "@release-change/logger";
 
+import { updateLockFile } from "./update-lock-file.js";
 import { updatePackageVersion } from "./update-package-version.js";
 //import { publishToRegistry } from "../npm/publish-to-registry.js";
 //import { createReleaseNotes } from "../release-notes-generator/create-release-notes.js";
@@ -28,7 +29,7 @@ export const publish = async (context: Context): Promise<void> => {
     if (nextRelease) {
       for (const nextReleasePackage of nextRelease) {
         updatePackageVersion(nextReleasePackage, context);
-        // TODO: update lock file
+        await updateLockFile(context);
         // TODO: add files in Git
       }
       // TODO: commit updated files
