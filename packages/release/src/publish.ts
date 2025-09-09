@@ -1,12 +1,13 @@
 import type { Context } from "@release-change/shared";
 
+import { getPackageManager } from "@release-change/get-packages";
+import { checkErrorType, setLogger } from "@release-change/logger";
+
 //import { cancelLastCommit } from "../git/cancel-last-commit.js";
 //import { createTag } from "../git/create-tag.js";
 //import { getCurrentCommitId } from "../git/get-current-commit-id.js";
 //import { push } from "../git/push.js";
 //import { removeTag } from "../git/remove-tag.js";
-import { checkErrorType, setLogger } from "@release-change/logger";
-
 import { updateLockFile } from "./update-lock-file.js";
 import { updatePackageVersion } from "./update-package-version.js";
 //import { publishToRegistry } from "../npm/publish-to-registry.js";
@@ -21,15 +22,18 @@ import { updatePackageVersion } from "./update-package-version.js";
  */
 export const publish = async (context: Context): Promise<void> => {
   const {
+    cwd,
+    env,
     config: { debug },
     nextRelease
   } = context;
   const logger = setLogger(debug);
   try {
     if (nextRelease) {
+      const packageManager = getPackageManager(cwd, env);
       for (const nextReleasePackage of nextRelease) {
         updatePackageVersion(nextReleasePackage, context);
-        await updateLockFile(context);
+        await updateLockFile(context, packageManager);
         // TODO: add files in Git
       }
       // TODO: commit updated files
