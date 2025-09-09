@@ -5,6 +5,8 @@ import { getReleaseType } from "@release-change/commit-analyser";
 import { debugConfig, getConfig } from "@release-change/config";
 import { getPackages, isMonorepo } from "@release-change/get-packages";
 import {
+  COMMITTER_EMAIL,
+  COMMITTER_NAME,
   checkBranch,
   checkPushPermissions,
   checkRepository,
@@ -38,6 +40,12 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   debugConfig(context);
   await checkRepository(logger);
   if (isUsableCiEnvironment(context)) {
+    Object.assign(context.env, {
+      GIT_AUTHOR_NAME: COMMITTER_NAME,
+      GIT_AUTHOR_EMAIL: COMMITTER_EMAIL,
+      GIT_COMMITTER_NAME: COMMITTER_NAME,
+      GIT_COMMITTER_EMAIL: COMMITTER_EMAIL
+    });
     checkBranch(context);
     await checkPushPermissions(context.config.repositoryUrl, context);
     setLastRelease(context);

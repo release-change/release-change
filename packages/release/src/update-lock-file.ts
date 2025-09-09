@@ -1,19 +1,25 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when commands are run> */
+
+import type { PackageManager } from "@release-change/get-packages";
+import type { Context } from "@release-change/shared";
+
 import path from "node:path";
 
-import { getPackageManager } from "@release-change/get-packages";
 import { setLogger } from "@release-change/logger";
-import { type Context, runCommand, runCommandSync } from "@release-change/shared";
+import { runCommand, runCommandSync } from "@release-change/shared";
 
 /**
  * Updates the lock file.
  * @param context - The context where the CLI is running.
+ * @param packageManager - The package manager used by the project.
  */
-export const updateLockFile = async (context: Context): Promise<void> => {
-  const { cwd, env, config } = context;
+export const updateLockFile = async (
+  context: Context,
+  packageManager: PackageManager
+): Promise<void> => {
+  const { cwd, config } = context;
   const { debug } = config;
   const logger = setLogger(debug);
-  const packageManager = getPackageManager(cwd, env);
   const args: string[] = [];
   if (debug) logger.setDebugScope("release:update-lock-file");
   if (packageManager === "pnpm") {
