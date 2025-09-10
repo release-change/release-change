@@ -37,7 +37,6 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
     ci,
     packages
   };
-  debugConfig(context);
   await checkRepository(logger);
   if (isUsableCiEnvironment(context)) {
     Object.assign(context.env, {
@@ -46,6 +45,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
       GIT_COMMITTER_NAME: COMMITTER_NAME,
       GIT_COMMITTER_EMAIL: COMMITTER_EMAIL
     });
+    debugConfig(context);
     checkBranch(context);
     await checkPushPermissions(context.config.repositoryUrl, context);
     setLastRelease(context);
