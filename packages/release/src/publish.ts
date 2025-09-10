@@ -34,7 +34,10 @@ export const publish = async (context: Context): Promise<void> => {
           await commitUpdatedFiles(nextReleasePackage, path, packageManager, context);
           const commitRef = getCurrentCommitId();
           createTag(nextReleasePackage, commitRef, debug);
-        } else new Error(`Pathname not found for ${name || "root"} package.`);
+        } else {
+          logger.logError(`Pathname not found for ${name || "root"} package.`);
+          process.exitCode = 1;
+        }
       }
       // TODO: push in Git
       // TODO: create release notes
