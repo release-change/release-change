@@ -8,7 +8,7 @@ import { setLogger } from "@release-change/logger";
 
 /**
  * Updates the package manifest file with the new version.
- * @param packageNextRelease - The package to update.
+ * @param packageNextRelease - The next release data to use.
  * @param pathname - The path to the package.
  * @param context - The context where the CLI is running.
  */

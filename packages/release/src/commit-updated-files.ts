@@ -9,7 +9,7 @@ import { setLogger } from "@release-change/logger";
 
 /**
  * Commits the updated files.
- * @param packageNextRelease - The package to update.
+ * @param packageNextRelease - The next release data to use.
  * @param pathname - The path to the package.
  * @param packageManager - The package manager used by the project.
  * @param context - The context where the CLI is running.
