@@ -1,21 +1,12 @@
 import type { Context } from "@release-change/shared";
 
 import { getPackageManager } from "@release-change/get-packages";
+import { createTag, getCurrentCommitId } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
 
 import { commitUpdatedFiles } from "./commit-updated-files.js";
-//import { cancelLastCommit } from "../git/cancel-last-commit.js";
-//import { createTag } from "../git/create-tag.js";
-//import { getCurrentCommitId } from "../git/get-current-commit-id.js";
-//import { push } from "../git/push.js";
-//import { removeTag } from "../git/remove-tag.js";
 import { updateLockFile } from "./update-lock-file.js";
 import { updatePackageVersion } from "./update-package-version.js";
-//import { publishToRegistry } from "../npm/publish-to-registry.js";
-//import { createReleaseNotes } from "../release-notes-generator/create-release-notes.js";
-//import { commitUpdatedFiles } from "./commit-updated-files.js";
-//import { updateRootLockFile } from "./update-root-lock-file.js";
-//import { updateRootPackageVersion } from "./update-root-package-version.js";
 
 /**
  * Publishes the package
@@ -41,8 +32,8 @@ export const publish = async (context: Context): Promise<void> => {
           updatePackageVersion(nextReleasePackage, path, context);
           await updateLockFile(context, packageManager);
           await commitUpdatedFiles(nextReleasePackage, path, packageManager, context);
-          // TODO: get current commit ID
-          // TODO: create Git tag
+          const commitRef = getCurrentCommitId();
+          createTag(nextReleasePackage, commitRef, debug);
         } else new Error(`Pathname not found for ${name || "root"} package.`);
       }
       // TODO: push in Git
