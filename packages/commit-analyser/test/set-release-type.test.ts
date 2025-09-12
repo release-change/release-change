@@ -1,4 +1,4 @@
-import type { Commit } from "../src/index.js";
+import type { Commit } from "@release-change/shared";
 
 import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";

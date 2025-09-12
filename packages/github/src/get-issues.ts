@@ -1,7 +1,5 @@
-import type { Commit } from "@release-change/commit-analyser";
-
 import { ISSUE_ID } from "@release-change/commit-analyser";
-import { type Reference, removeDuplicateObjects } from "@release-change/shared";
+import { type Commit, type Reference, removeDuplicateObjects } from "@release-change/shared";
 
 /**
  * Gets the issues mentioned by a commit or a pull request body.

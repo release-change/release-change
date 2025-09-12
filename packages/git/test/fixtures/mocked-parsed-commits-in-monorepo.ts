@@ -1,4 +1,4 @@
-import type { Commit } from "@release-change/commit-analyser";
+import type { Commit } from "@release-change/shared";
 
 export const mockedParsedCommitsInMonorepo: Commit[] = [
   {

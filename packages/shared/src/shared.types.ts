@@ -52,6 +52,13 @@ export type LastRelease = {
   packages: PackageLastRelease[];
 };
 export type NextRelease = PackageNextRelease[];
+export type Commit = {
+  sha: string | null;
+  description: string;
+  body: string[];
+  footer: string[];
+  modifiedFiles?: string[];
+};
 export type Reference = {
   number: number;
   isPullRequest: boolean;
@@ -70,6 +77,7 @@ export interface Context extends ContextBase {
   packages: Package[];
   lastRelease?: LastRelease;
   nextRelease?: NextRelease;
+  commits?: Commit[];
   references?: Reference[];
 }
 export type PathnameGroups = {

@@ -1,10 +1,14 @@
-import type { Commit } from "@release-change/commit-analyser";
 import type { AssociatedPullRequest } from "./github.types.js";
 
 import { inspect } from "node:util";
 
 import { checkErrorType, setLogger } from "@release-change/logger";
-import { type Context, type Reference, removeDuplicateObjects } from "@release-change/shared";
+import {
+  type Commit,
+  type Context,
+  type Reference,
+  removeDuplicateObjects
+} from "@release-change/shared";
 
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";

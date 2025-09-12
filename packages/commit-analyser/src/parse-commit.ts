@@ -1,5 +1,4 @@
-import type { Context } from "@release-change/shared";
-import type { Commit } from "./commit-analyser.types.js";
+import type { Commit, Context } from "@release-change/shared";
 
 import { inspect } from "node:util";
 

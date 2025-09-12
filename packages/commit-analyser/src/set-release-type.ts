@@ -1,5 +1,5 @@
-import type { Context } from "@release-change/shared";
-import type { Commit, ReleaseType } from "./commit-analyser.types.js";
+import type { Commit, Context } from "@release-change/shared";
+import type { ReleaseType } from "./commit-analyser.types.js";
 
 import { setLogger } from "@release-change/logger";
 
