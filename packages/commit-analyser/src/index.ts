@@ -1,6 +1,7 @@
-export type { Commit, PackageReleaseType, ReleaseType } from "./commit-analyser.types.js";
+export type { PackageReleaseType, ReleaseType } from "./commit-analyser.types.js";
 
 export { getReleaseType } from "./get-release-type.js";
 export { parseCommit } from "./parse-commit.js";
+export { setReleaseType } from "./set-release-type.js";
 
-export { ISSUE_ID } from "./constants.js";
+export { COMMIT_ABBREVIATED_SHA_LENGTH, COMMIT_MESSAGE, ISSUE_ID } from "./constants.js";

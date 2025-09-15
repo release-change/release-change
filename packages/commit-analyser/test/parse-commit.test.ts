@@ -5,97 +5,196 @@ import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-contex
 
 const commitIndent = " ".repeat(4);
 const commitId = "commit 0123456789abcdef";
+const commitMerge = "Merge: 0123456 0123456";
 const commitAuthor = "Author: Contributor <0+userId@users.noreply.github.com>";
 const commitDate = "Date:   Wed Jan 1 13:37:42 2025 +0000";
-const commitDescription = `${commitIndent}docs: some description`;
+const commitMessage = `${commitIndent}docs: some description`;
 const commitBody = `${commitIndent}Some text.\n\n${commitIndent}Another text.`;
 const commitSplitBody = ["Some text.", "Another text."];
 const commitKeyValueFooter = `${commitIndent}Footer-key: value`;
 const commitBreakingChangeFooter = `${commitIndent}BREAKING CHANGE: some explanation.`;
 const sha = commitId.replace("commit ", "");
-const description = commitDescription.trim();
+const message = commitMessage.trim();
 const keyValueFooter = commitKeyValueFooter.trim();
 const breakingChangeFooter = commitBreakingChangeFooter.trim();
 const modifiedFile = "packages/a/src/some-file.ts";
-const mockedCommitSample = `${commitId}\n${commitAuthor}\n${commitDate}\n\n${commitDescription}`;
-const mockedCommitSampleWithBody = `${commitId}\n${commitAuthor}\n${commitDate}\n\n${commitDescription}\n\n${commitBody}`;
+const mockedCommitSample = `${commitId}\n${commitAuthor}\n${commitDate}\n\n${commitMessage}`;
+const mockedCommitSampleWithBody = `${commitId}\n${commitAuthor}\n${commitDate}\n\n${commitMessage}\n\n${commitBody}`;
+const mockedMergeCommitSample = `${commitId}\n${commitMerge}\n${commitAuthor}\n${commitDate}\n\n${commitMessage}`;
+const mockedMergeCommitSampleWithBody = `${commitId}\n${commitMerge}\n${commitAuthor}\n${commitDate}\n\n${commitMessage}\n\n${commitBody}`;
 const mockedCommits = [
   {
-    type: "commit with just a description",
+    type: "commit with just a message",
     commit: mockedCommitSample,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: [],
       footer: []
     }
   },
   {
-    type: "commit with a description and a key/value footer",
+    type: "commit with a message and a key/value footer",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: [],
       footer: [keyValueFooter]
     }
   },
   {
-    type: "commit with a description and a breaking change footer",
+    type: "commit with a message and a breaking change footer",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitBreakingChangeFooter}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: [],
       footer: [breakingChangeFooter]
     }
   },
   {
-    type: "commit with a description and both footers",
+    type: "commit with a message and both footers",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: [],
       footer: [keyValueFooter, breakingChangeFooter]
     }
   },
   {
-    type: "commit with just a description and a body",
+    type: "commit with just a message and a body",
     commit: mockedCommitSampleWithBody,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: commitSplitBody,
       footer: []
     }
   },
   {
-    type: "commit with a description, a body and a key/value footer",
+    type: "commit with a message, a body and a key/value footer",
     commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: commitSplitBody,
       footer: [keyValueFooter]
     }
   },
   {
-    type: "commit with a description, a body and a breaking change footer",
+    type: "commit with a message, a body and a breaking change footer",
     commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitBreakingChangeFooter}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: commitSplitBody,
       footer: [breakingChangeFooter]
     }
   },
   {
-    type: "commit with a description, a body and both footers",
+    type: "commit with a message, a body and both footers",
     commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
+      body: commitSplitBody,
+      footer: [keyValueFooter, breakingChangeFooter]
+    }
+  },
+  {
+    type: "merge commit with just a message",
+    commit: mockedMergeCommitSample,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: [],
+      footer: []
+    }
+  },
+  {
+    type: "merge commit with a message and a key/value footer",
+    commit: `${mockedMergeCommitSample}\n${commitIndent}\n${commitKeyValueFooter}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: [],
+      footer: [keyValueFooter]
+    }
+  },
+  {
+    type: "merge commit with a message and a breaking change footer",
+    commit: `${mockedMergeCommitSample}\n${commitIndent}\n${commitBreakingChangeFooter}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: [],
+      footer: [breakingChangeFooter]
+    }
+  },
+  {
+    type: "merge commit with a message and both footers",
+    commit: `${mockedMergeCommitSample}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: [],
+      footer: [keyValueFooter, breakingChangeFooter]
+    }
+  },
+  {
+    type: "merge commit with just a message and a body",
+    commit: mockedMergeCommitSampleWithBody,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: commitSplitBody,
+      footer: []
+    }
+  },
+  {
+    type: "merge commit with a message, a body and a key/value footer",
+    commit: `${mockedMergeCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: commitSplitBody,
+      footer: [keyValueFooter]
+    }
+  },
+  {
+    type: "merge commit with a message, a body and a breaking change footer",
+    commit: `${mockedMergeCommitSampleWithBody}\n${commitIndent}\n${commitBreakingChangeFooter}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: commitSplitBody,
+      footer: [breakingChangeFooter]
+    }
+  },
+  {
+    type: "merge commit with a message, a body and both footers",
+    commit: `${mockedMergeCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
       body: commitSplitBody,
       footer: [keyValueFooter, breakingChangeFooter]
     }
@@ -103,88 +202,192 @@ const mockedCommits = [
 ];
 const mockedCommitsInMonorepo = [
   {
-    type: "commit with just a description",
+    type: "commit with just a message",
     commit: `${mockedCommitSample}\n\n${modifiedFile}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: [],
       footer: [],
       modifiedFiles: [modifiedFile]
     }
   },
   {
-    type: "commit with a description and a key/value footer",
+    type: "commit with a message and a key/value footer",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}\n\n${modifiedFile}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: [],
       footer: [keyValueFooter],
       modifiedFiles: [modifiedFile]
     }
   },
   {
-    type: "commit with a description and a breaking change footer",
+    type: "commit with a message and a breaking change footer",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: [],
       footer: [breakingChangeFooter],
       modifiedFiles: [modifiedFile]
     }
   },
   {
-    type: "commit with a description and both footers",
+    type: "commit with a message and both footers",
     commit: `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: [],
       footer: [keyValueFooter, breakingChangeFooter],
       modifiedFiles: [modifiedFile]
     }
   },
   {
-    type: "commit with just a description and a body",
+    type: "commit with just a message and a body",
     commit: `${mockedCommitSampleWithBody}\n\n${modifiedFile}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: commitSplitBody,
       footer: [],
       modifiedFiles: [modifiedFile]
     }
   },
   {
-    type: "commit with a description, a body and a key/value footer",
+    type: "commit with a message, a body and a key/value footer",
     commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n\n${modifiedFile}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: commitSplitBody,
       footer: [keyValueFooter],
       modifiedFiles: [modifiedFile]
     }
   },
   {
-    type: "commit with a description, a body and a breaking change footer",
+    type: "commit with a message, a body and a breaking change footer",
     commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
       body: commitSplitBody,
       footer: [breakingChangeFooter],
       modifiedFiles: [modifiedFile]
     }
   },
   {
-    type: "commit with a description, a body and both footers",
+    type: "commit with a message, a body and both footers",
     commit: `${mockedCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
     expected: {
+      isMergeCommit: false,
       sha,
-      description,
+      message,
+      body: commitSplitBody,
+      footer: [keyValueFooter, breakingChangeFooter],
+      modifiedFiles: [modifiedFile]
+    }
+  },
+  {
+    type: "merge commit with just a message",
+    commit: `${mockedMergeCommitSample}\n\n${modifiedFile}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: [],
+      footer: [],
+      modifiedFiles: [modifiedFile]
+    }
+  },
+  {
+    type: "merge commit with a message and a key/value footer",
+    commit: `${mockedMergeCommitSample}\n${commitIndent}\n${commitKeyValueFooter}\n\n${modifiedFile}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: [],
+      footer: [keyValueFooter],
+      modifiedFiles: [modifiedFile]
+    }
+  },
+  {
+    type: "merge commit with a message and a breaking change footer",
+    commit: `${mockedMergeCommitSample}\n${commitIndent}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: [],
+      footer: [breakingChangeFooter],
+      modifiedFiles: [modifiedFile]
+    }
+  },
+  {
+    type: "merge commit with a message and both footers",
+    commit: `${mockedMergeCommitSample}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: [],
+      footer: [keyValueFooter, breakingChangeFooter],
+      modifiedFiles: [modifiedFile]
+    }
+  },
+  {
+    type: "merge commit with just a message and a body",
+    commit: `${mockedMergeCommitSampleWithBody}\n\n${modifiedFile}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: commitSplitBody,
+      footer: [],
+      modifiedFiles: [modifiedFile]
+    }
+  },
+  {
+    type: "merge commit with a message, a body and a key/value footer",
+    commit: `${mockedMergeCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n\n${modifiedFile}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: commitSplitBody,
+      footer: [keyValueFooter],
+      modifiedFiles: [modifiedFile]
+    }
+  },
+  {
+    type: "merge commit with a message, a body and a breaking change footer",
+    commit: `${mockedMergeCommitSampleWithBody}\n${commitIndent}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
+      body: commitSplitBody,
+      footer: [breakingChangeFooter],
+      modifiedFiles: [modifiedFile]
+    }
+  },
+  {
+    type: "merge commit with a message, a body and both footers",
+    commit: `${mockedMergeCommitSampleWithBody}\n${commitIndent}\n${commitKeyValueFooter}\n${commitBreakingChangeFooter}\n\n${modifiedFile}`,
+    expected: {
+      isMergeCommit: true,
+      sha,
+      message,
       body: commitSplitBody,
       footer: [keyValueFooter, breakingChangeFooter],
       modifiedFiles: [modifiedFile]
@@ -204,10 +407,10 @@ it.each(mockedCommitsInMonorepo)(
 it("should throw an error if the commit has no header", () => {
   assert.throws(() => parseCommit("", mockedContext), "Failed to parse commit: no header found.");
 });
-it("should throw an error if the commit has no description", () => {
+it("should throw an error if the commit has no message", () => {
   assert.throws(
     () => parseCommit(`${commitId}\n${commitAuthor}\n${commitDate}`, mockedContext),
-    "Failed to parse commit: no description found."
+    "Failed to parse commit: no message found."
   );
 });
 it("should throw an error if the commit has no modified files in a monorepo context", () => {
@@ -224,7 +427,7 @@ it("should not throw an error if the commit has no modified files in a monorepo 
   assert.doesNotThrow(
     () =>
       parseCommit(
-        `${commitId}\nMerge: 0123456 0123456\n${commitAuthor}\n${commitDate}\n\n${commitDescription}\n${commitIndent}\n${commitKeyValueFooter}`,
+        `${commitId}\nMerge: 0123456 0123456\n${commitAuthor}\n${commitDate}\n\n${commitMessage}\n${commitIndent}\n${commitKeyValueFooter}`,
         mockedContextInMonorepo
       ),
     "Failed to parse commit: no modified files found while this repository is a monorepo."

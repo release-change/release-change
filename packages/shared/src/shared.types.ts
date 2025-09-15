@@ -39,11 +39,13 @@ export type Package = {
 };
 export type PackageLastRelease = {
   name: string;
+  path: string;
   gitTag: string | null;
   version: string;
 };
 export type PackageNextRelease = {
   name: string;
+  path: string;
   gitTag: string;
   version: string;
 };
@@ -52,6 +54,14 @@ export type LastRelease = {
   packages: PackageLastRelease[];
 };
 export type NextRelease = PackageNextRelease[];
+export type Commit = {
+  isMergeCommit: boolean;
+  sha: string | null;
+  message: string;
+  body: string[];
+  footer: string[];
+  modifiedFiles?: string[];
+};
 export type Reference = {
   number: number;
   isPullRequest: boolean;
@@ -70,6 +80,7 @@ export interface Context extends ContextBase {
   packages: Package[];
   lastRelease?: LastRelease;
   nextRelease?: NextRelease;
+  commits?: Commit[];
   references?: Reference[];
 }
 export type PathnameGroups = {

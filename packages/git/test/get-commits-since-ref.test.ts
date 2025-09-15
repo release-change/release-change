@@ -103,7 +103,10 @@ describe.each(commitsSets)(
       vi.mocked(runCommandSync).mockReturnValue(mockedCommandResultWithNoCommits);
       getCommitsSinceRef({
         ...context,
-        lastRelease: { ref: "v1.0.0", packages: [{ name: "", gitTag: "v1.0.0", version: "1.0.0" }] }
+        lastRelease: {
+          ref: "v1.0.0",
+          packages: [{ name: "", path: ".", gitTag: "v1.0.0", version: "1.0.0" }]
+        }
       });
       expect(runCommandSync).toHaveBeenCalledWith("git", argsWithTag);
       expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving commits since v1.0.0…");

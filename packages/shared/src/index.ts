@@ -3,6 +3,7 @@ export type {
   CiConfig,
   CliOptions,
   CommandResult,
+  Commit,
   Config,
   Context,
   ContextBase,

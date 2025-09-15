@@ -50,6 +50,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
     await checkPushPermissions(context.config.repositoryUrl, context);
     setLastRelease(context);
     const commits = getCommitsSinceRef(context);
+    context.commits = commits;
     const releaseType = getReleaseType(commits, context);
     setNextRelease(releaseType, context);
     if (context.nextRelease) {

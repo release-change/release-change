@@ -36,10 +36,11 @@ export const setNextRelease = (
           packageItem => packageItem.name === name
         );
         if (packageLastRelease) {
-          const { gitTag, version: currentVersion } = packageLastRelease;
+          const { path, gitTag, version: currentVersion } = packageLastRelease;
           const version = incrementVersion(currentVersion, releaseType, branchConfig);
           nextRelease.push({
             name,
+            path,
             gitTag: `${name ? `${name}@` : ""}v${version}`,
             version
           });

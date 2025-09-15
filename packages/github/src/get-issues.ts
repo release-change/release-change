@@ -1,7 +1,5 @@
-import type { Commit } from "@release-change/commit-analyser";
-
 import { ISSUE_ID } from "@release-change/commit-analyser";
-import { type Reference, removeDuplicateObjects } from "@release-change/shared";
+import { type Commit, type Reference, removeDuplicateObjects } from "@release-change/shared";
 
 /**
  * Gets the issues mentioned by a commit or a pull request body.
@@ -10,8 +8,8 @@ import { type Reference, removeDuplicateObjects } from "@release-change/shared";
  */
 export const getIssues = (contents: Partial<Commit>): Reference[] => {
   const issues: Reference[] = [];
-  const { description, body, footer } = contents;
-  const content = [description, ...(body ?? ""), ...(footer ?? "")].join(" ");
+  const { message, body, footer } = contents;
+  const content = [message, ...(body ?? ""), ...(footer ?? "")].join(" ");
   const matches = content.match(ISSUE_ID);
   if (matches) {
     for (const match of matches) {

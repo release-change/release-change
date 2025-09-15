@@ -1,5 +1,5 @@
-import type { Context } from "@release-change/shared";
-import type { Commit, ReleaseType } from "./commit-analyser.types.js";
+import type { Commit, Context } from "@release-change/shared";
+import type { ReleaseType } from "./commit-analyser.types.js";
 
 import { setLogger } from "@release-change/logger";
 
@@ -11,22 +11,22 @@ import {
 } from "./constants.js";
 
 /**
- * Sets the release type, based on commit description and footer.
+ * Sets the release type, based on commit message and footer.
  * @param commit - The parsed commit.
  * @param context - The context where the CLI is running.
  * @return One of `"major"`, `"minor"` and `"patch"` if the commit correlates with a version change, `null` otherwise.
  */
 export const setReleaseType = (commit: Commit, context: Context): ReleaseType => {
-  const { description, footer } = commit;
+  const { message, footer } = commit;
   const { config } = context;
   const logger = setLogger(config.debug);
-  logger.logInfo(`Analysing commit “${description}”…`);
+  logger.logInfo(`Analysing commit “${message}”…`);
   const releaseType: ReleaseType =
-    footer.some(line => line.match(BREAKING_CHANGE)) || description.match(COMMIT_PREFIX_MAJOR)
+    footer.some(line => line.match(BREAKING_CHANGE)) || message.match(COMMIT_PREFIX_MAJOR)
       ? "major"
-      : description.match(COMMIT_PREFIX_MINOR)
+      : message.match(COMMIT_PREFIX_MINOR)
         ? "minor"
-        : description.match(COMMIT_PREFIX_PATCH)
+        : message.match(COMMIT_PREFIX_PATCH)
           ? "patch"
           : null;
   const releaseTypeInfoMessage = releaseType
