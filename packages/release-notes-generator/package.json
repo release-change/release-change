@@ -1,7 +1,7 @@
 {
-  "name": "@release-change/release",
+  "name": "@release-change/release-notes-generator",
   "version": "0.0.0",
-  "description": "Functions used internally in release-change to release packages",
+  "description": "Functions used internally in release-change to prepare and generate release notes",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",
   "bugs": {
@@ -24,20 +24,15 @@
   "engines": {
     "node": "^20.18.3 || ^22.12.0",
     "npm": ">=10.8.2",
-    "pnpm": ">=10.15.1"
+    "pnpm": ">=10.16.1"
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch --preserveWatchOutput & vitest"
   },
   "dependencies": {
-    "@release-change/config": "workspace:*",
     "@release-change/commit-analyser": "workspace:*",
-    "@release-change/get-packages": "workspace:*",
-    "@release-change/git": "workspace:*",
     "@release-change/logger": "workspace:*",
-    "@release-change/release-notes-generator": "workspace:*",
-    "@release-change/semver": "workspace:*",
     "@release-change/shared": "workspace:*"
   }
 }

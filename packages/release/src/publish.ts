@@ -1,8 +1,10 @@
+import type { ReleaseNotes } from "@release-change/release-notes-generator";
 import type { Context } from "@release-change/shared";
 
 import { getPackageManager } from "@release-change/get-packages";
 import { createTag, getCurrentCommitId } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
+import { prepareReleaseNotes } from "@release-change/release-notes-generator";
 
 import { commitUpdatedFiles } from "./commit-updated-files.js";
 import { updateLockFile } from "./update-lock-file.js";
@@ -24,6 +26,7 @@ export const publish = async (context: Context): Promise<void> => {
   try {
     if (nextRelease) {
       const packageManager = getPackageManager(cwd, env);
+      const releaseNotes: ReleaseNotes[] = [];
       for (const nextReleasePackage of nextRelease) {
         const { name } = nextReleasePackage;
         const [packagePathname] = packages.filter(packageItem => packageItem.name === name);
@@ -34,13 +37,14 @@ export const publish = async (context: Context): Promise<void> => {
           await commitUpdatedFiles(nextReleasePackage, path, packageManager, context);
           const commitRef = getCurrentCommitId();
           createTag(nextReleasePackage, commitRef, debug);
+          releaseNotes.push(prepareReleaseNotes(nextReleasePackage, context));
         } else {
           logger.logError(`Pathname not found for ${name || "root"} package.`);
           process.exitCode = 1;
         }
       }
       // TODO: push in Git
-      // TODO: create release notes
+      // TODO: create release notes for each package
       // TODO: publish to registry
     }
   } catch (error) {
@@ -53,6 +57,7 @@ export const publish = async (context: Context): Promise<void> => {
       // TODO: cancel last commit
       // TODO: remove Git tag
     }
+    process.exitCode = process.exitCode || 1;
     throw error instanceof Error
       ? new Error(error.message, { cause: error.cause })
       : new Error(`${error}`);

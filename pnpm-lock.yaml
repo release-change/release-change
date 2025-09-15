@@ -167,9 +167,24 @@ importers:
       '@release-change/logger':
         specifier: workspace:*
         version: link:../logger
+      '@release-change/release-notes-generator':
+        specifier: workspace:*
+        version: link:../release-notes-generator
       '@release-change/semver':
         specifier: workspace:*
         version: link:../semver
+      '@release-change/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/release-notes-generator:
+    dependencies:
+      '@release-change/commit-analyser':
+        specifier: workspace:*
+        version: link:../commit-analyser
+      '@release-change/logger':
+        specifier: workspace:*
+        version: link:../logger
       '@release-change/shared':
         specifier: workspace:*
         version: link:../shared
