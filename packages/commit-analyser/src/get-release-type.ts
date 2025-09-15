@@ -57,7 +57,7 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
           releaseTypesPerPackage.set("", releaseTypes);
         }
         if (debug) {
-          logger.logDebug(`Release types by package for commit “${commit.description}”:`);
+          logger.logDebug(`Release types by package for commit “${commit.message}”:`);
           logger.logDebug(inspect(releaseTypesPerPackage));
         }
       }

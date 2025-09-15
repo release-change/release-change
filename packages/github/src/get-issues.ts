@@ -8,8 +8,8 @@ import { type Commit, type Reference, removeDuplicateObjects } from "@release-ch
  */
 export const getIssues = (contents: Partial<Commit>): Reference[] => {
   const issues: Reference[] = [];
-  const { description, body, footer } = contents;
-  const content = [description, ...(body ?? ""), ...(footer ?? "")].join(" ");
+  const { message, body, footer } = contents;
+  const content = [message, ...(body ?? ""), ...(footer ?? "")].join(" ");
   const matches = content.match(ISSUE_ID);
   if (matches) {
     for (const match of matches) {

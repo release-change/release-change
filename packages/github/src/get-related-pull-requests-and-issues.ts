@@ -17,7 +17,7 @@ import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-p
 /**
  * Gets pull requests and issues related to the commits which are part of the release.
  *
- * First, the pull requests associated with each commit are retrieved. Then, the issues mentioned in the commit description, body and footer are retrieved. Finally, those mentioned in the pull request titles and bodies are retrieved.
+ * First, the pull requests associated with each commit are retrieved. Then, the issues mentioned in the commit message, body and footer are retrieved. Finally, those mentioned in the pull request titles and bodies are retrieved.
  * @param commits - The commits to parse.
  * @param context - The context where the CLI is running.
  */
@@ -53,7 +53,7 @@ export const getRelatedPullRequestsAndIssues = async (
       }
       const pullRequestTitlesAndBodies = pullRequestReferences.flatMap(pullRequestReference =>
         getIssues({
-          description: pullRequestReference.title,
+          message: pullRequestReference.title,
           body: pullRequestReference.body?.split(/\n{2,}/) ?? [""]
         }).filter(issue => !pullRequestNumberSet.has(issue.number))
       );

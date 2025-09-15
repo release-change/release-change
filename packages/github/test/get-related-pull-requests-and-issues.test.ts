@@ -27,100 +27,100 @@ const mockedDefaultContext: Context = {
   packages: [{ name: "", path: "." }],
   config: expectedDefaultConfig
 };
-const commitDescription = "docs: some description";
-const commitDescriptionWithPullRequest = "feat: some description (#123)";
+const commitMessage = "docs: some description";
+const commitMessageWithPullRequest = "feat: some description (#123)";
 const commitBody = ["Some text.", "Another text."];
 const commitKeyValueFooter = "Footer-key: value";
 const commitReferencesFooter = "Refs: #456, #789";
 const commitSha = "0123456789abcdef";
-const mockedCommitSample = { sha: commitSha, description: commitDescription, body: [], footer: [] };
+const mockedCommitSample = { sha: commitSha, message: commitMessage, body: [], footer: [] };
 const mockedCommitSampleWithKeyValueFooter = {
   sha: commitSha,
-  description: commitDescription,
+  message: commitMessage,
   body: [],
   footer: [commitKeyValueFooter]
 };
 const mockedCommitSampleWithReferencesFooter = {
   sha: commitSha,
-  description: commitDescription,
+  message: commitMessage,
   body: [],
   footer: [commitReferencesFooter]
 };
 const mockedCommitSampleWithBothFooters = {
   sha: commitSha,
-  description: commitDescription,
+  message: commitMessage,
   body: [],
   footer: [commitKeyValueFooter, commitReferencesFooter]
 };
 const mockedCommitSampleWithBody = {
   sha: commitSha,
-  description: commitDescription,
+  message: commitMessage,
   body: commitBody,
   footer: []
 };
 const mockedCommitSampleWithBodyWithKeyValueFooter = {
   sha: commitSha,
-  description: commitDescription,
+  message: commitMessage,
   body: commitBody,
   footer: [commitKeyValueFooter]
 };
 const mockedCommitSampleWithBodyWithReferencesFooter = {
   sha: commitSha,
-  description: commitDescription,
+  message: commitMessage,
   body: commitBody,
   footer: [commitReferencesFooter]
 };
 const mockedCommitSampleWithBodyWithBothFooters = {
   sha: commitSha,
-  description: commitDescription,
+  message: commitMessage,
   body: commitBody,
   footer: [commitKeyValueFooter, commitReferencesFooter]
 };
 const mockedMergeCommitSample = {
   sha: commitSha,
-  description: commitDescriptionWithPullRequest,
+  message: commitMessageWithPullRequest,
   body: [],
   footer: []
 };
 const mockedMergeCommitSampleWithKeyValueFooter = {
   sha: commitSha,
-  description: commitDescriptionWithPullRequest,
+  message: commitMessageWithPullRequest,
   body: [],
   footer: [commitKeyValueFooter]
 };
 const mockedMergeCommitSampleWithReferencesFooter = {
   sha: commitSha,
-  description: commitDescriptionWithPullRequest,
+  message: commitMessageWithPullRequest,
   body: [],
   footer: [commitReferencesFooter]
 };
 const mockedMergeCommitSampleWithBothFooters = {
   sha: commitSha,
-  description: commitDescriptionWithPullRequest,
+  message: commitMessageWithPullRequest,
   body: [],
   footer: [commitKeyValueFooter, commitReferencesFooter]
 };
 const mockedMergeCommitSampleWithBody = {
   sha: commitSha,
-  description: commitDescriptionWithPullRequest,
+  message: commitMessageWithPullRequest,
   body: commitBody,
   footer: []
 };
 const mockedMergeCommitSampleWithBodyWithKeyValueFooter = {
   sha: commitSha,
-  description: commitDescriptionWithPullRequest,
+  message: commitMessageWithPullRequest,
   body: commitBody,
   footer: [commitKeyValueFooter]
 };
 const mockedMergeCommitSampleWithBodyWithReferencesFooter = {
   sha: commitSha,
-  description: commitDescriptionWithPullRequest,
+  message: commitMessageWithPullRequest,
   body: commitBody,
   footer: [commitReferencesFooter]
 };
 const mockedMergeCommitSampleWithBodyWithBothFooters = {
   sha: commitSha,
-  description: commitDescriptionWithPullRequest,
+  message: commitMessageWithPullRequest,
   body: commitBody,
   footer: [commitKeyValueFooter, commitReferencesFooter]
 };

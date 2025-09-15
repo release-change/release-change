@@ -54,7 +54,7 @@ export type LastRelease = {
 export type NextRelease = PackageNextRelease[];
 export type Commit = {
   sha: string | null;
-  description: string;
+  message: string;
   body: string[];
   footer: string[];
   modifiedFiles?: string[];

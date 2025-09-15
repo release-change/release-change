@@ -15,7 +15,7 @@ import {
  * Parses a commit.
  * @param commit - The commit to parse.
  * @param context - The context where the CLI is running.
- * @return The commit as an object, with the description, the footer and the modified files (if in a monorepo context).
+ * @return The commit as an object, with the message, the footer and the modified files (if in a monorepo context).
  */
 export const parseCommit = (commit: string, context: Context): Commit => {
   const { config } = context;
@@ -23,7 +23,7 @@ export const parseCommit = (commit: string, context: Context): Commit => {
   const logger = setLogger(debug);
   const parsedCommit: Commit = {
     sha: null,
-    description: "",
+    message: "",
     body: [],
     footer: []
   };
@@ -34,11 +34,11 @@ export const parseCommit = (commit: string, context: Context): Commit => {
   if (commitHeader) {
     const [commitSha] = commitHeader.split("\n");
     if (commitSha) parsedCommit.sha = commitSha.replace(/^commit\s([0-9a-f]+).*$/, "$1");
-    const [commitDescription, ...commitOptionalSections] = commitRest
+    const [commitMessage, ...commitOptionalSections] = commitRest
       .map(line => line.trim())
       .filter(Boolean);
-    if (commitDescription) {
-      parsedCommit.description = commitDescription;
+    if (commitMessage) {
+      parsedCommit.message = commitMessage;
       const commitOptionalSectionsWithoutFileNames = isMonorepo
         ? commitOptionalSections.slice(0, -1)
         : commitOptionalSections;
@@ -73,7 +73,7 @@ export const parseCommit = (commit: string, context: Context): Commit => {
       }
       return parsedCommit;
     }
-    throw new Error("Failed to parse commit: no description found.");
+    throw new Error("Failed to parse commit: no message found.");
   }
   throw new Error("Failed to parse commit: no header found.");
 };

@@ -315,7 +315,7 @@ for (const commitType of commitTypes) {
   const { isMajorChange, hasSemanticChange, prefix, title } = commitType;
   const commitSample: Commit = {
     sha: "0123456789abcdef0123456789abcdef01234567",
-    description: `${prefix}: ${title}`,
+    message: `${prefix}: ${title}`,
     body: [],
     footer: []
   };
@@ -342,7 +342,7 @@ for (const commitType of commitTypes) {
   );
   const commitSampleWithUpperCasePrefix: Commit = {
     ...commitSample,
-    description: `${prefix.toUpperCase()}: ${title}`
+    message: `${prefix.toUpperCase()}: ${title}`
   };
   if (isMajorChange) {
     majorTypeCommits.push(
@@ -433,10 +433,10 @@ it.each(otherTypeCommitsWithUpperCasePrefix)(
   }
 );
 it("should not trigger a release for commits not following Conventional Commits syntax", () => {
-  const unconventionalCommitDescription = "Commit not following Conventional Commits syntax";
+  const unconventionalCommitMessage = "Commit not following Conventional Commits syntax";
   const unconventionalCommit = {
     sha: "0123456789abcdef0123456789abcdef01234567",
-    description: unconventionalCommitDescription,
+    message: unconventionalCommitMessage,
     body: [],
     footer: []
   };
