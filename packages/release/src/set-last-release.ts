@@ -29,6 +29,7 @@ export const setLastRelease = (context: Context): void => {
       const packageName = name || "root";
       const packageLastRelease: PackageLastRelease = {
         name,
+        path: packagePath,
         gitTag: null,
         version: "0.0.0"
       };

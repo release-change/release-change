@@ -39,11 +39,13 @@ export type Package = {
 };
 export type PackageLastRelease = {
   name: string;
+  path: string;
   gitTag: string | null;
   version: string;
 };
 export type PackageNextRelease = {
   name: string;
+  path: string;
   gitTag: string;
   version: string;
 };

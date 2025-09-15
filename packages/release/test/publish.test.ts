@@ -17,14 +17,14 @@ import { mockedLogger } from "./fixtures/mocked-logger.js";
 const packageManagers: PackageManager[] = ["pnpm", "npm"];
 const mockedContextWithNextRelease = {
   ...mockedContext,
-  nextRelease: [{ name: "", gitTag: "v1.0.0", version: "1.0.0" }]
+  nextRelease: [{ name: "", path: ".", gitTag: "v1.0.0", version: "1.0.0" }]
 };
 const mockedContextInMonorepoWithNextRelease = {
   ...mockedContextInMonorepo,
   nextRelease: [
-    { name: "", gitTag: "v1.3.0", version: "1.3.0" },
-    { name: "@monorepo/a", gitTag: "@monorepo/a@v1.2.3", version: "1.2.3" },
-    { name: "@monorepo/b", gitTag: "@monorepo/b@v1.0.0", version: "1.0.0" }
+    { name: "", path: ".", gitTag: "v1.3.0", version: "1.3.0" },
+    { name: "@monorepo/a", path: "packages/a", gitTag: "@monorepo/a@v1.2.3", version: "1.2.3" },
+    { name: "@monorepo/b", path: "packages/b", gitTag: "@monorepo/b@v1.0.0", version: "1.0.0" }
   ]
 };
 
@@ -78,7 +78,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       it("should throw an error if the package to update is unknown", async () => {
         await publish({
           ...context,
-          nextRelease: [{ name: "unknown", gitTag: "v1.0.0", version: "1.0.0" }]
+          nextRelease: [{ name: "unknown", path: "unknown", gitTag: "v1.0.0", version: "1.0.0" }]
         });
         expect(mockedLogger.logError).toHaveBeenCalledWith(
           "Pathname not found for unknown package."
