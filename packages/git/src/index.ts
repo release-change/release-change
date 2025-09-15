@@ -11,5 +11,6 @@ export { getCurrentCommitId } from "./get-current-commit-id.js";
 export { getLatestValidTag } from "./get-latest-valid-tag.js";
 export { getRemoteName } from "./get-remote-name.js";
 export { getTrackedRepositories } from "./get-tracked-repositories.js";
+export { push } from "./push.js";
 
 export { COMMITTER_EMAIL, COMMITTER_NAME } from "./constants.js";
