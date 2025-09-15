@@ -3,7 +3,7 @@ import type { Commit } from "@release-change/shared";
 import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
-import { setReleaseType } from "../src/set-release-type.js";
+import { setReleaseType } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
@@ -312,8 +312,9 @@ const minorTypeCommitsWithUpperCasePrefix: Commit[] = [];
 const patchTypeCommitsWithUpperCasePrefix: Commit[] = [];
 const otherTypeCommitsWithUpperCasePrefix: Commit[] = [];
 for (const commitType of commitTypes) {
-  const { isMajorChange, hasSemanticChange, prefix, title } = commitType;
+  const { isMajorChange, hasSemanticChange, isMergeCommit, prefix, title } = commitType;
   const commitSample: Commit = {
+    isMergeCommit,
     sha: "0123456789abcdef0123456789abcdef01234567",
     message: `${prefix}: ${title}`,
     body: [],
@@ -435,6 +436,7 @@ it.each(otherTypeCommitsWithUpperCasePrefix)(
 it("should not trigger a release for commits not following Conventional Commits syntax", () => {
   const unconventionalCommitMessage = "Commit not following Conventional Commits syntax";
   const unconventionalCommit = {
+    isMergeCommit: false,
     sha: "0123456789abcdef0123456789abcdef01234567",
     message: unconventionalCommitMessage,
     body: [],

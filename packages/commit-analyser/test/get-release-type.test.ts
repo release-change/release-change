@@ -7,12 +7,14 @@ const commitBreakingChangeFooter = ["BREAKING CHANGE: some explanation."];
 const mockedSha = "0123456789abcdef0123456789abcdef01234567";
 const mockedModifiedFiles = ["packages/a/src/some-file.ts", "packages/b/src/some-file.ts"];
 const mockedMajorCommit = {
+  isMergeCommit: false,
   sha: mockedSha,
   message: "feat!: add new breaking change feature",
   body: [],
   footer: []
 };
 const mockedMajorCommitWithModifiedFiles = {
+  isMergeCommit: false,
   sha: mockedSha,
   message: "feat!: add new breaking change feature",
   body: [],
@@ -20,12 +22,14 @@ const mockedMajorCommitWithModifiedFiles = {
   modifiedFiles: mockedModifiedFiles
 };
 const mockedMajorCommitWithBreakingChangeFooter = {
+  isMergeCommit: false,
   sha: mockedSha,
   message: "feat: add new feature",
   body: [],
   footer: commitBreakingChangeFooter
 };
 const mockedMajorCommitWithBreakingChangeFooterWithModifiedFiles = {
+  isMergeCommit: false,
   sha: mockedSha,
   message: "feat: add new feature",
   body: [],
@@ -33,20 +37,29 @@ const mockedMajorCommitWithBreakingChangeFooterWithModifiedFiles = {
   modifiedFiles: mockedModifiedFiles
 };
 const mockedMinorCommit = {
+  isMergeCommit: false,
   sha: mockedSha,
   message: "feat: add new feature",
   body: [],
   footer: []
 };
 const mockedMinorCommitWithModifiedFiles = {
+  isMergeCommit: false,
   sha: mockedSha,
   message: "feat: add new feature",
   body: [],
   footer: [],
   modifiedFiles: mockedModifiedFiles
 };
-const mockedPatchCommit = { sha: mockedSha, message: "fix: fix bug", body: [], footer: [] };
+const mockedPatchCommit = {
+  isMergeCommit: false,
+  sha: mockedSha,
+  message: "fix: fix bug",
+  body: [],
+  footer: []
+};
 const mockedPatchCommitWithModifiedFiles = {
+  isMergeCommit: false,
   sha: mockedSha,
   message: "fix: fix bug",
   body: [],
@@ -54,12 +67,14 @@ const mockedPatchCommitWithModifiedFiles = {
   modifiedFiles: mockedModifiedFiles
 };
 const mockedNoReleaseCommit = {
+  isMergeCommit: false,
   sha: mockedSha,
   message: "chore: some message",
   body: [],
   footer: []
 };
 const mockedNoReleaseCommitWithModifiedFiles = {
+  isMergeCommit: false,
   sha: mockedSha,
   message: "chore: some message",
   body: [],

@@ -53,6 +53,7 @@ export type LastRelease = {
 };
 export type NextRelease = PackageNextRelease[];
 export type Commit = {
+  isMergeCommit: boolean;
   sha: string | null;
   message: string;
   body: string[];

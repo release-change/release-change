@@ -22,6 +22,7 @@ export const parseCommit = (commit: string, context: Context): Commit => {
   const { debug, isMonorepo } = config;
   const logger = setLogger(debug);
   const parsedCommit: Commit = {
+    isMergeCommit: false,
     sha: null,
     message: "",
     body: [],
@@ -32,6 +33,7 @@ export const parseCommit = (commit: string, context: Context): Commit => {
     .split(BLANK_LINE_SEPARATOR);
   const [commitHeader, ...commitRest] = commitSections;
   if (commitHeader) {
+    parsedCommit.isMergeCommit = commitHeader.split("\n").some(line => line.startsWith("Merge"));
     const [commitSha] = commitHeader.split("\n");
     if (commitSha) parsedCommit.sha = commitSha.replace(/^commit\s([0-9a-f]+).*$/, "$1");
     const [commitMessage, ...commitOptionalSections] = commitRest
