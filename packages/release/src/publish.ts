@@ -2,7 +2,7 @@ import type { ReleaseNotes } from "@release-change/release-notes-generator";
 import type { Context } from "@release-change/shared";
 
 import { getPackageManager } from "@release-change/get-packages";
-import { createTag, getCurrentCommitId } from "@release-change/git";
+import { createTag, getCurrentCommitId, push } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { prepareReleaseNotes } from "@release-change/release-notes-generator";
 
@@ -43,7 +43,7 @@ export const publish = async (context: Context): Promise<void> => {
           process.exitCode = 1;
         }
       }
-      // TODO: push in Git
+      await push(context, { includeTags: true });
       // TODO: create release notes for each package
       // TODO: publish to registry
     }

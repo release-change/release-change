@@ -15,3 +15,4 @@ export const mockedContext = {
 } as Context;
 export const mockedContextWithEligibleBranch = { ...mockedContext, branch: "main" };
 export const mockedContextInMonorepo = { ...mockedContext, config: mockedConfigInMonorepo };
+export const mockedContextWithUndefinedBranchName = { ...mockedContext, branch: undefined };
