@@ -32,7 +32,7 @@ export const runCommand = async (
     });
     childProcess.on("error", error => {
       process.exitCode = Number(childProcess.exitCode);
-      reject(new Error(error.message));
+      reject(new Error(error.message, { cause: `${command} ${args.join(" ")}` }));
     });
   });
 };
