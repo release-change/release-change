@@ -5,6 +5,7 @@ import fs from "node:fs";
 import { getPackageManager } from "@release-change/get-packages";
 import { createTag, getCurrentCommitId } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
+import { prepareReleaseNotes } from "@release-change/release-notes-generator";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { commitUpdatedFiles } from "../src/commit-updated-files.js";
@@ -32,6 +33,7 @@ beforeEach(() => {
   vi.mock("@release-change/logger", () => ({ setLogger: vi.fn(), checkErrorType: vi.fn() }));
   vi.mock("@release-change/get-packages", () => ({ getPackageManager: vi.fn() }));
   vi.mock("@release-change/git", () => ({ getCurrentCommitId: vi.fn(), createTag: vi.fn() }));
+  vi.mock("@release-change/release-notes-generator", () => ({ prepareReleaseNotes: vi.fn() }));
   vi.mock("../src/update-package-version.js", () => ({ updatePackageVersion: vi.fn() }));
   vi.mock("../src/update-lock-file.js", () => ({ updateLockFile: vi.fn() }));
   vi.mock("../src/commit-updated-files.js", () => ({ commitUpdatedFiles: vi.fn() }));
@@ -108,6 +110,42 @@ describe.each(packageManagers)("for %s", packageManager => {
           "The commit reference must not be empty."
         );
         expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
+      });
+      describe.each([
+        { case: "if the branch is not defined", errorMessage: "The branch is not defined." },
+        {
+          case: "if the branch is not defined in the configuration",
+          errorMessage: "The branch unknown is not defined in the configuration."
+        },
+        {
+          case: "if the last release is not defined",
+          errorMessage: "The last release is not defined."
+        },
+        {
+          case: "if the last release is not found for the package",
+          errorMessage: "No last release found for root package."
+        },
+        {
+          case: "if no commits have been retrieved",
+          errorMessage: "No commits have been retrieved."
+        }
+      ])("$case", ({ errorMessage }) => {
+        it("should throw an error", async () => {
+          vi.mocked(updatePackageVersion).mockImplementation(() => {
+            return undefined;
+          });
+          vi.mocked(updateLockFile).mockResolvedValue();
+          vi.mocked(commitUpdatedFiles).mockResolvedValue();
+          vi.mocked(getCurrentCommitId).mockReturnValue("0123456");
+          vi.mocked(createTag).mockImplementation(() => {
+            return undefined;
+          });
+          vi.mocked(prepareReleaseNotes).mockImplementation(() => {
+            throw new Error(errorMessage);
+          });
+          await expect(publish(context)).rejects.toThrowError(errorMessage);
+          expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
+        });
       });
     }
   );
