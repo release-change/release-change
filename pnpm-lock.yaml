@@ -150,6 +150,21 @@ importers:
         specifier: workspace:*
         version: link:../shared
 
+  packages/npm:
+    dependencies:
+      '@release-change/config':
+        specifier: workspace:*
+        version: link:../config
+      '@release-change/get-packages':
+        specifier: workspace:*
+        version: link:../get-packages
+      '@release-change/logger':
+        specifier: workspace:*
+        version: link:../logger
+      '@release-change/shared':
+        specifier: workspace:*
+        version: link:../shared
+
   packages/release:
     dependencies:
       '@release-change/commit-analyser':
@@ -167,6 +182,9 @@ importers:
       '@release-change/logger':
         specifier: workspace:*
         version: link:../logger
+      '@release-change/npm':
+        specifier: workspace:*
+        version: link:../npm
       '@release-change/release-notes-generator':
         specifier: workspace:*
         version: link:../release-notes-generator

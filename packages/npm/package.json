@@ -1,7 +1,7 @@
 {
-  "name": "@release-change/release",
+  "name": "@release-change/npm",
   "version": "0.0.0",
-  "description": "Functions used internally in release-change to release packages",
+  "description": "Functions used internally in release-change to publish packages to NPM",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",
   "bugs": {
@@ -32,13 +32,8 @@
   },
   "dependencies": {
     "@release-change/config": "workspace:*",
-    "@release-change/commit-analyser": "workspace:*",
     "@release-change/get-packages": "workspace:*",
-    "@release-change/git": "workspace:*",
     "@release-change/logger": "workspace:*",
-    "@release-change/npm": "workspace:*",
-    "@release-change/release-notes-generator": "workspace:*",
-    "@release-change/semver": "workspace:*",
     "@release-change/shared": "workspace:*"
   }
 }
