@@ -1,1 +1,2 @@
 export { getRelatedPullRequestsAndIssues } from "./get-related-pull-requests-and-issues.js";
+export { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";

@@ -179,9 +179,15 @@ importers:
 
   packages/release-notes-generator:
     dependencies:
+      '@release-change/ci':
+        specifier: workspace:*
+        version: link:../ci
       '@release-change/commit-analyser':
         specifier: workspace:*
         version: link:../commit-analyser
+      '@release-change/github':
+        specifier: workspace:*
+        version: link:../github
       '@release-change/logger':
         specifier: workspace:*
         version: link:../logger

@@ -1,10 +1,11 @@
+/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the API is used> */
 import type { ReleaseNotes } from "@release-change/release-notes-generator";
 import type { Context } from "@release-change/shared";
 
 import { getPackageManager } from "@release-change/get-packages";
 import { createTag, getCurrentCommitId, push } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import { prepareReleaseNotes } from "@release-change/release-notes-generator";
+import { createReleaseNotes, prepareReleaseNotes } from "@release-change/release-notes-generator";
 
 import { commitUpdatedFiles } from "./commit-updated-files.js";
 import { updateLockFile } from "./update-lock-file.js";
@@ -26,7 +27,7 @@ export const publish = async (context: Context): Promise<void> => {
   try {
     if (nextRelease) {
       const packageManager = getPackageManager(cwd, env);
-      const releaseNotes: ReleaseNotes[] = [];
+      const releaseNotesSet: ReleaseNotes[] = [];
       for (const nextReleasePackage of nextRelease) {
         const { name } = nextReleasePackage;
         const [packagePathname] = packages.filter(packageItem => packageItem.name === name);
@@ -37,14 +38,16 @@ export const publish = async (context: Context): Promise<void> => {
           await commitUpdatedFiles(nextReleasePackage, path, packageManager, context);
           const commitRef = getCurrentCommitId();
           createTag(nextReleasePackage, commitRef, debug);
-          releaseNotes.push(prepareReleaseNotes(nextReleasePackage, context));
+          releaseNotesSet.push(prepareReleaseNotes(nextReleasePackage, context));
         } else {
           logger.logError(`Pathname not found for ${name || "root"} package.`);
           process.exitCode = 1;
         }
       }
       await push(context, { includeTags: true });
-      // TODO: create release notes for each package
+      for (const releaseNotes of releaseNotesSet) {
+        await createReleaseNotes(releaseNotes, context);
+      }
       // TODO: publish to registry
     }
   } catch (error) {
