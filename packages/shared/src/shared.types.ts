@@ -66,6 +66,12 @@ export type Reference = {
   number: number;
   isPullRequest: boolean;
 };
+export type ReleaseInfoGithub = {
+  type: "github";
+  name: "GitHub release";
+  url: string;
+};
+type ReleaseInfo = ReleaseInfoGithub;
 export interface ContextBase {
   cwd: string;
   env: NodeJS.ProcessEnv;
@@ -82,6 +88,7 @@ export interface Context extends ContextBase {
   nextRelease?: NextRelease;
   commits?: Commit[];
   references?: Reference[];
+  releaseInfos?: ReleaseInfo[];
 }
 export type PathnameGroups = {
   owner: string;

@@ -31,7 +31,9 @@
     "dev": "tsc --watch --preserveWatchOutput & vitest"
   },
   "dependencies": {
+    "@release-change/ci": "workspace:*",
     "@release-change/commit-analyser": "workspace:*",
+    "@release-change/github": "workspace:*",
     "@release-change/logger": "workspace:*",
     "@release-change/shared": "workspace:*"
   }

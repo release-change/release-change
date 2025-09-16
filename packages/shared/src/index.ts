@@ -14,7 +14,8 @@ export type {
   PackageLastRelease,
   PackageNextRelease,
   ParsedCliOptions,
-  Reference
+  Reference,
+  ReleaseInfoGithub
 } from "./shared.types.js";
 
 export { agreeInNumber } from "./agree-in-number.js";

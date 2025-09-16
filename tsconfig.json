@@ -41,16 +41,16 @@
       "path": "./packages/git"
     },
     {
-      "path": "./packages/release-notes-generator"
-    },
-    {
-      "path": "./packages/release"
-    },
-    {
       "path": "./packages/ci"
     },
     {
       "path": "./packages/github"
+    },
+    {
+      "path": "./packages/release-notes-generator"
+    },
+    {
+      "path": "./packages/release"
     },
     {
       "path": "./packages/cli"
