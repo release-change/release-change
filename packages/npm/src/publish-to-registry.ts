@@ -50,7 +50,7 @@ export const publishToRegistry = async (
           // TODO: remove `--dry-run` flag to truly publish the release to the NPM registry
           const args = ["publish", "--dry-run", "--access", "public"];
           if (npmTag) args.push("--tag", npmTag);
-          const { status, stderr } = await runCommand(packageManager, args);
+          const { status, stdout, stderr } = await runCommand(packageManager, args);
           const packageName = name || "root";
           if (debug) {
             logger.logDebug(
@@ -60,6 +60,9 @@ export const publishToRegistry = async (
             logger.logDebug(`Package name: ${packageName}`);
             logger.logDebug(`npmTag: ${npmTag}`);
             logger.logDebug(`Command run: ${packageManager} ${args.join(" ")}`);
+            logger.logDebug(`Command exit code: ${status}`);
+            logger.logDebug(`Command stdout: ${stdout}`);
+            logger.logDebug(`Command stderr: ${stderr}`);
           }
           if (status) {
             logger.logError(
