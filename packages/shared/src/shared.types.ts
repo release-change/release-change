@@ -28,6 +28,7 @@ export type Config = {
   dryRun: boolean;
   repositoryUrl: string;
   remoteName: string;
+  npmPublish?: false;
 };
 export type CiConfig = {
   isCi: boolean;
@@ -48,6 +49,7 @@ export type PackageNextRelease = {
   path: string;
   gitTag: string;
   version: string;
+  npmTag?: string;
 };
 export type LastRelease = {
   ref: string | null;
@@ -71,7 +73,21 @@ export type ReleaseInfoGithub = {
   name: "GitHub release";
   url: string;
 };
-type ReleaseInfo = ReleaseInfoGithub;
+export type ReleaseInfoNpm = {
+  type: "npm";
+  name: `NPM ${string} distribution tag)`;
+  url: string;
+};
+type ReleaseInfo = ReleaseInfoGithub | ReleaseInfoNpm;
+type FileExists = {
+  fileExists: true;
+  authTokenExists: boolean;
+};
+type FileNotExists = {
+  fileExists: false;
+  authTokenExists: false;
+};
+export type AuthToken = FileExists | FileNotExists;
 export interface ContextBase {
   cwd: string;
   env: NodeJS.ProcessEnv;
@@ -89,6 +105,7 @@ export interface Context extends ContextBase {
   commits?: Commit[];
   references?: Reference[];
   releaseInfos?: ReleaseInfo[];
+  authToken?: AuthToken;
 }
 export type PathnameGroups = {
   owner: string;

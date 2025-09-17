@@ -38,12 +38,25 @@ export const setNextRelease = (
         if (packageLastRelease) {
           const { path, gitTag, version: currentVersion } = packageLastRelease;
           const version = incrementVersion(currentVersion, releaseType, branchConfig);
-          nextRelease.push({
-            name,
-            path,
-            gitTag: `${name ? `${name}@` : ""}v${version}`,
-            version
-          });
+          const { channel } = branchConfig;
+          const npmTag = channel && channel !== "default" ? channel : "latest";
+          const preparedGitTag = `${name ? `${name}@` : ""}v${version}`;
+          nextRelease.push(
+            npmTag === "latest"
+              ? {
+                  name,
+                  path,
+                  gitTag: preparedGitTag,
+                  version
+                }
+              : {
+                  name,
+                  path,
+                  gitTag: preparedGitTag,
+                  version,
+                  npmTag
+                }
+          );
           const previousReleaseInfoMessage = gitTag
             ? `the previous release is ${currentVersion}`
             : "there is no previous release";

@@ -1,4 +1,5 @@
 export type {
+  AuthToken,
   BranchConfig,
   CiConfig,
   CliOptions,
@@ -15,7 +16,8 @@ export type {
   PackageNextRelease,
   ParsedCliOptions,
   Reference,
-  ReleaseInfoGithub
+  ReleaseInfoGithub,
+  ReleaseInfoNpm
 } from "./shared.types.js";
 
 export { agreeInNumber } from "./agree-in-number.js";

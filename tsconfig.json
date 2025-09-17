@@ -47,6 +47,9 @@
       "path": "./packages/github"
     },
     {
+      "path": "./packages/npm"
+    },
+    {
       "path": "./packages/release-notes-generator"
     },
     {

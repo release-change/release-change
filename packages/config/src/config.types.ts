@@ -1,5 +1,7 @@
 export type PackageManifest = {
+  name?: string;
   version?: string;
+  private?: boolean;
   repository?:
     | string
     | {

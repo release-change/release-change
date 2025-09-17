@@ -68,12 +68,23 @@ describe.each([...mockedNextReleases, ...mockedNextReleasesInMonorepo])(
             branch,
             lastRelease
           };
-          const expectedNextRelease: NextRelease = nextReleases.map(nextRelease => ({
-            name: nextRelease.name,
-            path: nextRelease.path,
-            gitTag: `${nextRelease.name}${nextRelease.name ? "@" : ""}v${nextRelease.version}`,
-            version: nextRelease.version
-          }));
+          const expectedNextRelease: NextRelease = nextReleases.map(nextRelease => {
+            const gitTag = `${nextRelease.name}${nextRelease.name ? "@" : ""}v${nextRelease.version}`;
+            return nextRelease.npmTag
+              ? {
+                  name: nextRelease.name,
+                  path: nextRelease.path,
+                  gitTag,
+                  version: nextRelease.version,
+                  npmTag: nextRelease.npmTag
+                }
+              : {
+                  name: nextRelease.name,
+                  path: nextRelease.path,
+                  gitTag,
+                  version: nextRelease.version
+                };
+          });
           for (const nextRelease of nextReleases) {
             vi.mocked(incrementVersion).mockReturnValueOnce(nextRelease.version);
           }
