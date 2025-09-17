@@ -100,6 +100,8 @@ Here are examples of the workflow configuration (the file must be saved in the `
         - name: Release
           env:
             RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+            NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
           run: pnpx release-change
   ```
 - using `npm`:
@@ -135,6 +137,8 @@ Here are examples of the workflow configuration (the file must be saved in the `
         - name: Release
           env:
             RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+            NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
           run: npx release-change
   ```
 
@@ -247,6 +251,13 @@ This optional option sets a string telling how dependencies in each `package.jso
 - `"workspace"`: the dependencies will be updated using the `workspace` keyword (e.g.: `"@my-monorepo/my-package": "workspace:*"`).
 
 If the repository is not a monorepo, the option is ignored.
+
+##### npmPublish
+
+Type: `false`  
+Default: see below
+
+This optional option, when set, can only be `false`. When this option is set, no packages are published to the NPM registry at all; however, the next release is still released and the `package.json` files are still updated. When the option is not set, the publication of each package depends on whether the `private` property in the `package.json` files is set to `true` or not.
 
 ## Get help
 
