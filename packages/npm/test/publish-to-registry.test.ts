@@ -128,6 +128,7 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
     // TODO: remove `--dry-run` flag when releases are truly published to the NPM registry
     const args = ["publish", "--dry-run", "--access", "public"];
     if (nextRelease.npmTag) args.push("--tag", nextRelease.npmTag);
+    if (packageManager === "pnpm") args.push("--no-git-checks");
     it("should throw an error if the auth token is not defined", async () => {
       vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(packageManifestContent));
       vi.mocked(getPackageManager).mockReturnValue(packageManager);
