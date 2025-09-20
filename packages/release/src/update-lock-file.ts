@@ -4,6 +4,7 @@ import type { PackageManager } from "@release-change/get-packages";
 import type { Context } from "@release-change/shared";
 
 import path from "node:path";
+import { inspect } from "node:util";
 
 import { setLogger } from "@release-change/logger";
 import { runCommand, runCommandSync } from "@release-change/shared";
@@ -25,13 +26,21 @@ export const updateLockFile = async (
   if (packageManager === "pnpm") {
     args.push("install", "--lockfile-only");
     // TODO: uncomment to run command
-    // await runCommand("pnpm", args);
-    if (debug) logger.logDebug(`Command run: pnpm ${args.join(" ")}`);
+    // const pnpmCommandResult = await runCommand("pnpm", args);
+    if (debug) {
+      logger.logDebug(`Command run: pnpm ${args.join(" ")}`);
+      // TODO: uncomment when command is run
+      // logger.logDebug(inspect(pnpmCommandResult, { depth: Number.POSITIVE_INFINITY }));
+    }
   } else if (packageManager === "npm") {
     args.push("install", "--package-lock-only");
     // TODO: uncomment to run command
-    // await runCommand("npm", args);
-    if (debug) logger.logDebug(`Command run: npm ${args.join(" ")}`);
+    // const npmCommandResult = await runCommand("npm", args);
+    if (debug) {
+      logger.logDebug(`Command run: npm ${args.join(" ")}`);
+      // TODO: uncomment when command is run
+      // logger.logDebug(inspect(npmCommandResult, { depth: Number.POSITIVE_INFINITY }));
+    }
   } else {
     args.push("restore", path.join(cwd, "package.json"));
     // TODO: uncomment to run command

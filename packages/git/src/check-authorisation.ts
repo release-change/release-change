@@ -31,9 +31,9 @@ export const checkAuthorisation = async (
     logger.setDebugScope("git:check-authorisation");
     logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
   }
-  const { status, stderr } = gitCommandResult;
+  const { status, stdout, stderr } = gitCommandResult;
   if (status) {
     process.exitCode = status;
-    throw new Error(stderr);
+    throw new Error(stderr || stdout || `Command failed with status ${status}.`);
   }
 };
