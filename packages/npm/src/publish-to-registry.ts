@@ -50,6 +50,7 @@ export const publishToRegistry = async (
           // TODO: remove `--dry-run` flag to truly publish the release to the NPM registry
           const args = ["publish", "--dry-run", "--access", "public"];
           if (npmTag) args.push("--tag", npmTag);
+          if (packageManager === "pnpm") args.push("--no-git-checks");
           const packageManagerCommandResult = await runCommand(packageManager, args);
           const { status, stdout, stderr } = packageManagerCommandResult;
           const packageName = name || "root";
