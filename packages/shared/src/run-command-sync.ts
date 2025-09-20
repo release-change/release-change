@@ -17,13 +17,15 @@ export const runCommandSync = (
 ): CommandResult => {
   const childProcess = spawnSync(command, args, options);
   const { status, stdout, stderr } = childProcess;
+  const stdoutString = stdout.toString();
+  const stderrString = stderr.toString();
   if (status) {
     process.exitCode = status;
-    throw new Error(stderr.toString());
+    throw new Error(stderrString || stdoutString || `Command failed with status ${status}.`);
   }
   return {
     status,
-    stdout: stdout.toString(),
-    stderr: stderr.toString()
+    stdout: stdoutString,
+    stderr: stderrString
   };
 };
