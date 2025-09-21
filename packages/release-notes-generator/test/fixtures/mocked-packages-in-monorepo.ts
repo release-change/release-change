@@ -12,13 +12,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.0.0",
-      version: "@monorepo/a@1.0.0"
+      version: "1.0.0"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.0.0",
@@ -45,13 +45,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0",
-      version: "@monorepo/a@2.0.0"
+      version: "2.0.0"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v2.0.0",
@@ -82,13 +82,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0-alpha.1",
-      version: "@monorepo/a@1.2.0-alpha.1"
+      version: "1.2.0-alpha.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0",
-      version: "@monorepo/a@2.0.0"
+      version: "2.0.0"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v2.0.0",
@@ -119,13 +119,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0-beta.1",
-      version: "@monorepo/a@1.2.0-beta.1"
+      version: "1.2.0-beta.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0",
-      version: "@monorepo/a@2.0.0"
+      version: "2.0.0"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v2.0.0",
@@ -156,13 +156,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0-rc.1",
-      version: "@monorepo/a@1.2.0-rc.1"
+      version: "1.2.0-rc.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0",
-      version: "@monorepo/a@2.0.0"
+      version: "2.0.0"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v2.0.0",
@@ -193,13 +193,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v0.1.0",
-      version: "@monorepo/a@0.1.0"
+      version: "0.1.0"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v0.1.0",
@@ -222,13 +222,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.3.0",
-      version: "@monorepo/a@1.3.0"
+      version: "1.3.0"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.3.0",
@@ -255,13 +255,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0-alpha.1",
-      version: "@monorepo/a@1.2.0-alpha.1"
+      version: "1.2.0-alpha.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.2.0",
@@ -288,13 +288,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0-beta.1",
-      version: "@monorepo/a@1.2.0-beta.1"
+      version: "1.2.0-beta.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.2.0",
@@ -321,13 +321,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0-rc.1",
-      version: "@monorepo/a@1.2.0-rc.1"
+      version: "1.2.0-rc.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.2.0",
@@ -354,13 +354,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v0.0.1",
-      version: "@monorepo/a@0.0.1"
+      version: "0.0.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v0.0.1",
@@ -379,13 +379,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.1",
-      version: "@monorepo/a@1.2.1"
+      version: "1.2.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.2.1",
@@ -408,13 +408,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.0.0-alpha.1",
-      version: "@monorepo/a@1.0.0-alpha.1"
+      version: "1.0.0-alpha.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.0.0-alpha.1",
@@ -441,13 +441,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0-alpha.1",
-      version: "@monorepo/a@2.0.0-alpha.1"
+      version: "2.0.0-alpha.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v2.0.0-alpha.1",
@@ -478,13 +478,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v0.1.0-alpha.1",
-      version: "@monorepo/a@0.1.0-alpha.1"
+      version: "0.1.0-alpha.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v0.1.0-alpha.1",
@@ -507,13 +507,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.3.0-alpha.1",
-      version: "@monorepo/a@1.3.0-alpha.1"
+      version: "1.3.0-alpha.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.3.0-alpha.1",
@@ -540,13 +540,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v0.0.1-alpha.1",
-      version: "@monorepo/a@0.0.1-alpha.1"
+      version: "0.0.1-alpha.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v0.0.1-alpha.1",
@@ -565,13 +565,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.1-alpha.1",
-      version: "@monorepo/a@1.2.1-alpha.1"
+      version: "1.2.1-alpha.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.2.1-alpha.1",
@@ -594,13 +594,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.0.0-beta.1",
-      version: "@monorepo/a@1.0.0-beta.1"
+      version: "1.0.0-beta.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.0.0-beta.1",
@@ -627,13 +627,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0-beta.1",
-      version: "@monorepo/a@2.0.0-beta.1"
+      version: "2.0.0-beta.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v2.0.0-beta.1",
@@ -664,13 +664,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0-alpha.1",
-      version: "@monorepo/a@2.0.0-alpha.1"
+      version: "2.0.0-alpha.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0-beta.1",
-      version: "@monorepo/a@2.0.0-beta.1"
+      version: "2.0.0-beta.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v2.0.0-beta.1",
@@ -701,13 +701,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v0.1.0-beta.1",
-      version: "@monorepo/a@0.1.0-beta.1"
+      version: "0.1.0-beta.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v0.1.0-beta.1",
@@ -730,13 +730,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.3.0-beta.1",
-      version: "@monorepo/a@1.3.0-beta.1"
+      version: "1.3.0-beta.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.3.0-beta.1",
@@ -763,13 +763,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.3.0-alpha.1",
-      version: "@monorepo/a@1.3.0-alpha.1"
+      version: "1.3.0-alpha.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.3.0-beta.1",
-      version: "@monorepo/a@1.3.0-beta.1"
+      version: "1.3.0-beta.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.3.0-beta.1",
@@ -796,13 +796,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v0.0.1-beta.1",
-      version: "@monorepo/a@0.0.1-beta.1"
+      version: "0.0.1-beta.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v0.0.1-beta.1",
@@ -821,13 +821,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.1-beta.1",
-      version: "@monorepo/a@1.2.1-beta.1"
+      version: "1.2.1-beta.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.2.1-beta.1",
@@ -850,13 +850,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.1-alpha.1",
-      version: "@monorepo/a@1.2.1-alpha.1"
+      version: "1.2.1-alpha.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.1-beta.1",
-      version: "@monorepo/a@1.2.1-beta.1"
+      version: "1.2.1-beta.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.2.1-beta.1",
@@ -879,13 +879,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.0.0-rc.1",
-      version: "@monorepo/a@1.0.0-rc.1"
+      version: "1.0.0-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.0.0-rc.1",
@@ -912,13 +912,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0-rc.1",
-      version: "@monorepo/a@2.0.0-rc.1"
+      version: "2.0.0-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v2.0.0-rc.1",
@@ -949,13 +949,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0-alpha.1",
-      version: "@monorepo/a@2.0.0-alpha.1"
+      version: "2.0.0-alpha.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0-rc.1",
-      version: "@monorepo/a@2.0.0-rc.1"
+      version: "2.0.0-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v2.0.0-rc.1",
@@ -986,13 +986,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0-beta.1",
-      version: "@monorepo/a@2.0.0-beta.1"
+      version: "2.0.0-beta.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v2.0.0-rc.1",
-      version: "@monorepo/a@2.0.0-rc.1"
+      version: "2.0.0-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v2.0.0-rc.1",
@@ -1023,13 +1023,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v0.1.0-rc.1",
-      version: "@monorepo/a@0.1.0-rc.1"
+      version: "0.1.0-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v0.1.0-rc.1",
@@ -1052,13 +1052,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.3.0-rc.1",
-      version: "@monorepo/a@1.3.0-rc.1"
+      version: "1.3.0-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.3.0-rc.1",
@@ -1085,13 +1085,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.3.0-alpha.1",
-      version: "@monorepo/a@1.3.0-alpha.1"
+      version: "1.3.0-alpha.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.3.0-rc.1",
-      version: "@monorepo/a@1.3.0-rc.1"
+      version: "1.3.0-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.3.0-rc.1",
@@ -1118,13 +1118,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.3.0-beta.1",
-      version: "@monorepo/a@1.3.0-beta.1"
+      version: "1.3.0-beta.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.3.0-rc.1",
-      version: "@monorepo/a@1.3.0-rc.1"
+      version: "1.3.0-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.3.0-rc.1",
@@ -1151,13 +1151,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: null,
-      version: "@monorepo/a@0.0.0"
+      version: "0.0.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v0.0.1-rc.1",
-      version: "@monorepo/a@0.0.1-rc.1"
+      version: "0.0.1-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v0.0.1-rc.1",
@@ -1176,13 +1176,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.0",
-      version: "@monorepo/a@1.2.0"
+      version: "1.2.0"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.1-rc.1",
-      version: "@monorepo/a@1.2.1-rc.1"
+      version: "1.2.1-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.2.1-rc.1",
@@ -1205,13 +1205,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.1-alpha.1",
-      version: "@monorepo/a@1.2.1-alpha.1"
+      version: "1.2.1-alpha.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.1-rc.1",
-      version: "@monorepo/a@1.2.1-rc.1"
+      version: "1.2.1-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.2.1-rc.1",
@@ -1234,13 +1234,13 @@ export const mockedPackagesInMonorepo = [
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.1-beta.1",
-      version: "@monorepo/a@1.2.1-beta.1"
+      version: "1.2.1-beta.1"
     },
     nextReleasePackage: {
       name: "@monorepo/a",
       path: "packages/a",
       gitTag: "@monorepo/a@v1.2.1-rc.1",
-      version: "@monorepo/a@1.2.1-rc.1"
+      version: "1.2.1-rc.1"
     },
     expectedReleaseNotes: {
       tagName: "@monorepo/a@v1.2.1-rc.1",

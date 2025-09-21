@@ -7,7 +7,7 @@ import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 const mockedPath = `${mockedCwd}/packages/a/package.json`;
 const mockedPackageManifestFileWithoutVersion = {};
-const mockedPackageManifestFileWithVersion = { version: "@monorepo/a" };
+const mockedPackageManifestFileWithVersion = { version: "1.2.3" };
 
 it("should return `null` if the package manifest file is not found", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(false);
@@ -25,5 +25,5 @@ it("should return the `version` property value if the package manifest file has 
   vi.spyOn(fs, "readFileSync").mockReturnValue(
     JSON.stringify(mockedPackageManifestFileWithVersion)
   );
-  expect(getPackageVersion(mockedPath)).toBe("@monorepo/a");
+  expect(getPackageVersion(mockedPath)).toBe("1.2.3");
 });
