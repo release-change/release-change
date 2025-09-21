@@ -143,7 +143,7 @@ it.each(mockedPackagesInMonorepo)(
               name: "@monorepo/b",
               path: "packages/b",
               gitTag: "null",
-              version: "@monorepo/b@1.0.0"
+              version: "1.0.0"
             }
           ]
         },
