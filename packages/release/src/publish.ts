@@ -5,7 +5,7 @@ import type { Context } from "@release-change/shared";
 import { getPackageManager } from "@release-change/get-packages";
 import { createTag, getCurrentCommitId, push } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import { publishToRegistry } from "@release-change/npm";
+import { type PackagePublishing, preparePublishing, publishToRegistry } from "@release-change/npm";
 import { createReleaseNotes, prepareReleaseNotes } from "@release-change/release-notes-generator";
 
 import { commitUpdatedFiles } from "./commit-updated-files.js";
@@ -28,6 +28,7 @@ export const publish = async (context: Context): Promise<void> => {
   try {
     if (nextRelease) {
       const packageManager = getPackageManager(cwd, env);
+      const packagePublishingSet: PackagePublishing[] = [];
       const releaseNotesSet: ReleaseNotes[] = [];
       for (const nextReleasePackage of nextRelease) {
         const { name } = nextReleasePackage;
@@ -40,13 +41,17 @@ export const publish = async (context: Context): Promise<void> => {
           const commitRef = getCurrentCommitId();
           createTag(nextReleasePackage, commitRef, debug);
           releaseNotesSet.push(prepareReleaseNotes(nextReleasePackage, context));
-          await publishToRegistry(nextReleasePackage, context);
+          const packagePublishing = await preparePublishing(nextReleasePackage, context);
+          if (packagePublishing) packagePublishingSet.push(packagePublishing);
         } else {
           logger.logError(`Pathname not found for ${name || "root"} package.`);
           process.exitCode = 1;
         }
       }
       await push(context, { includeTags: true });
+      for (const packagePublishing of packagePublishingSet) {
+        await publishToRegistry(packagePublishing, context);
+      }
       for (const releaseNotes of releaseNotesSet) {
         await createReleaseNotes(releaseNotes, context);
       }
