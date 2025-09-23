@@ -75,7 +75,7 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
   describe.each(packageManagers)(
     "for package manager $packageManager",
     ({ packageManager, args, noGitChecks }) => {
-      const { name, version, npmTag } = nextRelease;
+      const { name, path, version, npmTag } = nextRelease;
       const expectedArgs = noGitChecks
         ? npmTag
           ? [...args, "--tag", npmTag, noGitChecks]
@@ -95,6 +95,7 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
         const expectedPackagePublishing: PackagePublishing = {
           name: name,
           packageManifestName: packageManifestContent.name,
+          pathname: path,
           version,
           packageManager,
           args: expectedArgs

@@ -4,7 +4,9 @@ import { mockedConfig, mockedConfigWithNoNpmPublish } from "./mocked-config.js";
 
 export const mockedContext: Context = {
   cwd: "/fake/path",
-  env: {},
+  env: {
+    NPM_TOKEN: "token"
+  },
   branch: "main",
   ci: {
     isCi: true,
