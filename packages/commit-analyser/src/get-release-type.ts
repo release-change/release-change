@@ -34,7 +34,7 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
     if (debug) logger.setDebugScope("commit-analyser:get-release-type");
     const totalCommits = commits.length;
     if (totalCommits) {
-      const packagesPaths = packages.map(packageItem => packageItem.path);
+      const packagesPaths = packages.map(packageItem => packageItem.pathname);
       const releaseTypesPerPackage = new Map<string, Set<ReleaseType>>();
       for (const commit of commits) {
         const { modifiedFiles } = commit;
@@ -45,7 +45,7 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
               modifiedFile.startsWith(packagePath)
             );
             const relatedPackageName =
-              packages.find(packageItem => packageItem.path === relatedPackagePath)?.name ?? "";
+              packages.find(packageItem => packageItem.pathname === relatedPackagePath)?.name ?? "";
             const releaseTypes =
               releaseTypesPerPackage.get(relatedPackageName) ?? new Set<ReleaseType>();
             releaseTypes.add(commitReleaseType);

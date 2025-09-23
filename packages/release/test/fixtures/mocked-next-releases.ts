@@ -6,10 +6,10 @@ export const mockedNextReleases: {
   branches: {
     branch: string;
     releaseTypes: {
-      releaseType: { name: string; path: string; releaseType: NonNullable<ReleaseType> }[];
+      releaseType: { name: string; pathname: string; releaseType: NonNullable<ReleaseType> }[];
       nextReleases: {
         name: string;
-        path: string;
+        pathname: string;
         version: string;
         npmTag?: string;
       }[];
@@ -22,7 +22,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: null,
           version: "0.0.0"
         }
@@ -33,16 +33,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "0.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "0.1.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "0.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "0.0.1" }]
           }
         ]
       },
@@ -50,16 +50,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "0.1.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "0.1.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "0.0.1-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "0.0.1-alpha.1", npmTag: "alpha" }]
           }
         ]
       },
@@ -67,16 +67,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "0.1.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "0.1.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "0.0.1-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "0.0.1-beta.1", npmTag: "beta" }]
           }
         ]
       },
@@ -84,16 +84,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "0.1.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "0.1.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "0.0.1-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "0.0.1-rc.1", npmTag: "next" }]
           }
         ]
       }
@@ -105,7 +105,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.0.0-alpha.1",
           version: "1.0.0-alpha.1"
         }
@@ -116,16 +116,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0" }]
           }
         ]
       },
@@ -133,16 +133,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-alpha.2", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-alpha.2", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-alpha.2", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-alpha.2", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-alpha.2", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-alpha.2", npmTag: "alpha" }]
           }
         ]
       },
@@ -150,16 +150,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
           }
         ]
       },
@@ -167,16 +167,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-rc.1", npmTag: "next" }]
           }
         ]
       }
@@ -188,7 +188,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.0.0-beta.1",
           version: "1.0.0-beta.1"
         }
@@ -199,16 +199,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0" }]
           }
         ]
       },
@@ -216,16 +216,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
           }
         ]
       },
@@ -233,16 +233,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-beta.2", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-beta.2", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-beta.2", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-beta.2", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-beta.2", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-beta.2", npmTag: "beta" }]
           }
         ]
       },
@@ -250,16 +250,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-rc.1", npmTag: "next" }]
           }
         ]
       }
@@ -271,7 +271,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.0.0-rc.1",
           version: "1.0.0-rc.1"
         }
@@ -282,16 +282,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0" }]
           }
         ]
       },
@@ -299,16 +299,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }]
           }
         ]
       },
@@ -316,16 +316,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-beta.1", npmTag: "beta" }]
           }
         ]
       },
@@ -333,16 +333,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-rc.2", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-rc.2", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-rc.2", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-rc.2", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.0-rc.2", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.0-rc.2", npmTag: "next" }]
           }
         ]
       }
@@ -354,7 +354,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.0.0",
           version: "1.0.0"
         }
@@ -365,16 +365,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1" }]
           }
         ]
       },
@@ -382,16 +382,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
           }
         ]
       },
@@ -399,16 +399,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
           }
         ]
       },
@@ -416,16 +416,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-rc.1", npmTag: "next" }]
           }
         ]
       }
@@ -437,7 +437,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.0.1-alpha.1",
           version: "1.0.1-alpha.1"
         }
@@ -448,16 +448,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1" }]
           }
         ]
       },
@@ -465,16 +465,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-alpha.2", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-alpha.2", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-alpha.2", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-alpha.2", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-alpha.2", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-alpha.2", npmTag: "alpha" }]
           }
         ]
       },
@@ -482,16 +482,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
           }
         ]
       },
@@ -499,16 +499,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-rc.1", npmTag: "next" }]
           }
         ]
       }
@@ -520,7 +520,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.0.1-beta.1",
           version: "1.0.1-beta.1"
         }
@@ -531,16 +531,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1" }]
           }
         ]
       },
@@ -548,16 +548,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
           }
         ]
       },
@@ -565,16 +565,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-beta.2", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-beta.2", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-beta.2", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-beta.2", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-beta.2", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-beta.2", npmTag: "beta" }]
           }
         ]
       },
@@ -582,16 +582,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-rc.1", npmTag: "next" }]
           }
         ]
       }
@@ -603,7 +603,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.0.1-rc.1",
           version: "1.0.1-rc.1"
         }
@@ -614,16 +614,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1" }]
           }
         ]
       },
@@ -631,16 +631,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-alpha.1", npmTag: "alpha" }]
           }
         ]
       },
@@ -648,16 +648,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-beta.1", npmTag: "beta" }]
           }
         ]
       },
@@ -665,16 +665,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-rc.2", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-rc.2", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-rc.2", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-rc.2", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.1-rc.2", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.1-rc.2", npmTag: "next" }]
           }
         ]
       }
@@ -686,7 +686,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.0.1",
           version: "1.0.1"
         }
@@ -697,16 +697,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.2" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.2" }]
           }
         ]
       },
@@ -714,16 +714,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.2-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.2-alpha.1", npmTag: "alpha" }]
           }
         ]
       },
@@ -731,16 +731,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.2-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.2-beta.1", npmTag: "beta" }]
           }
         ]
       },
@@ -748,16 +748,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.0.2-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.0.2-rc.1", npmTag: "next" }]
           }
         ]
       }
@@ -769,7 +769,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.1.0-alpha.1",
           version: "1.1.0-alpha.1"
         }
@@ -780,16 +780,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           }
         ]
       },
@@ -797,16 +797,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.2", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.2", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.2", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.2", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.2", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.2", npmTag: "alpha" }]
           }
         ]
       },
@@ -814,16 +814,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
           }
         ]
       },
@@ -831,16 +831,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.1", npmTag: "next" }]
           }
         ]
       }
@@ -852,7 +852,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.1.0-beta.1",
           version: "1.1.0-beta.1"
         }
@@ -863,16 +863,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           }
         ]
       },
@@ -880,16 +880,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
           }
         ]
       },
@@ -897,16 +897,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.2", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.2", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.2", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.2", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.2", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.2", npmTag: "beta" }]
           }
         ]
       },
@@ -914,16 +914,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.1", npmTag: "next" }]
           }
         ]
       }
@@ -935,7 +935,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.1.0-rc.1",
           version: "1.1.0-rc.1"
         }
@@ -946,16 +946,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0" }]
           }
         ]
       },
@@ -963,16 +963,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-alpha.1", npmTag: "alpha" }]
           }
         ]
       },
@@ -980,16 +980,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-beta.1", npmTag: "beta" }]
           }
         ]
       },
@@ -997,16 +997,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.2", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.2", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.2", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.2", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.0-rc.2", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.0-rc.2", npmTag: "next" }]
           }
         ]
       }
@@ -1018,7 +1018,7 @@ export const mockedNextReleases: {
       packages: [
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.1.0",
           version: "1.1.0"
         }
@@ -1029,16 +1029,16 @@ export const mockedNextReleases: {
         branch: "main",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.2.0" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.2.0" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.1" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.1" }]
           }
         ]
       },
@@ -1046,16 +1046,16 @@ export const mockedNextReleases: {
         branch: "alpha",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.2.0-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.2.0-alpha.1", npmTag: "alpha" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.1-alpha.1", npmTag: "alpha" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.1-alpha.1", npmTag: "alpha" }]
           }
         ]
       },
@@ -1063,16 +1063,16 @@ export const mockedNextReleases: {
         branch: "beta",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.2.0-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.2.0-beta.1", npmTag: "beta" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.1-beta.1", npmTag: "beta" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.1-beta.1", npmTag: "beta" }]
           }
         ]
       },
@@ -1080,16 +1080,16 @@ export const mockedNextReleases: {
         branch: "next",
         releaseTypes: [
           {
-            releaseType: [{ name: "", path: ".", releaseType: "major" }],
-            nextReleases: [{ name: "", path: ".", version: "2.0.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "major" }],
+            nextReleases: [{ name: "", pathname: ".", version: "2.0.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "minor" }],
-            nextReleases: [{ name: "", path: ".", version: "1.2.0-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "minor" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.2.0-rc.1", npmTag: "next" }]
           },
           {
-            releaseType: [{ name: "", path: ".", releaseType: "patch" }],
-            nextReleases: [{ name: "", path: ".", version: "1.1.1-rc.1", npmTag: "next" }]
+            releaseType: [{ name: "", pathname: ".", releaseType: "patch" }],
+            nextReleases: [{ name: "", pathname: ".", version: "1.1.1-rc.1", npmTag: "next" }]
           }
         ]
       }

@@ -105,7 +105,7 @@ describe.each(commitsSets)(
         ...context,
         lastRelease: {
           ref: "v1.0.0",
-          packages: [{ name: "", path: ".", gitTag: "v1.0.0", version: "1.0.0" }]
+          packages: [{ name: "", pathname: ".", gitTag: "v1.0.0", version: "1.0.0" }]
         }
       });
       expect(runCommandSync).toHaveBeenCalledWith("git", argsWithTag);

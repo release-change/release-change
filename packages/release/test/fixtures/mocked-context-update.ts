@@ -11,9 +11,9 @@ export const mockedContext: Context = {
     isPullRequest: false
   },
   packages: [
-    { name: "", path: "." },
-    { name: "@monorepo/a", path: "packages/a" },
-    { name: "@monorepo/b", path: "packages/b" }
+    { name: "", pathname: "." },
+    { name: "@monorepo/a", pathname: "packages/a" },
+    { name: "@monorepo/b", pathname: "packages/b" }
   ],
   config: DEFAULT_CONFIG as unknown as Config
 };

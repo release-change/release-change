@@ -12,15 +12,15 @@ export const mockedContext: Context = {
     isPullRequest: false
   },
   config: expectedDefaultConfig,
-  packages: [{ name: "", path: "." }]
+  packages: [{ name: "", pathname: "." }]
 };
 export const mockedContextInMonorepo: Context = {
   ...mockedContext,
   config: { ...expectedDefaultConfig, isMonorepo: true },
   packages: [
-    { name: "", path: "." },
-    { name: "@monorepo/a", path: "packages/a" },
-    { name: "@monorepo/b", path: "packages/b" },
-    { name: "@monorepo/c", path: "packages/c" }
+    { name: "", pathname: "." },
+    { name: "@monorepo/a", pathname: "packages/a" },
+    { name: "@monorepo/b", pathname: "packages/b" },
+    { name: "@monorepo/c", pathname: "packages/c" }
   ]
 };

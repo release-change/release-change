@@ -16,7 +16,7 @@ const mockedContext = {
     isPullRequest: false
   },
   config: expectedDefaultConfig,
-  packages: [{ name: "", path: "." }]
+  packages: [{ name: "", pathname: "." }]
 };
 
 beforeEach(() => {

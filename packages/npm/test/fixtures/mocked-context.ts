@@ -13,7 +13,7 @@ export const mockedContext: Context = {
     isPullRequest: false
   },
   config: mockedConfig,
-  packages: [{ name: "", path: "." }],
+  packages: [{ name: "", pathname: "." }],
   releaseInfos: []
 };
 export const mockedContextWithNoNpmPublish: Context = {

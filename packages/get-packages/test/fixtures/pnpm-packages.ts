@@ -15,8 +15,8 @@ catalogs:
     react-dom: ^17.10.0`,
     patterns: { include: ["packages/*"], exclude: ["**/node_modules/**"] },
     packages: [
-      { name: "@monorepo/a", path: "packages/a" },
-      { name: "@monorepo/b", path: "packages/b" }
+      { name: "@monorepo/a", pathname: "packages/a" },
+      { name: "@monorepo/b", pathname: "packages/b" }
     ]
   },
   {
@@ -34,9 +34,9 @@ catalogs:
       exclude: ["**/node_modules/**", "**/test/**"]
     },
     packages: [
-      { name: "@monorepo/my-app", path: "my-app" },
-      { name: "@monorepo/a", path: "packages/a" },
-      { name: "@monorepo/b", path: "components/b" }
+      { name: "@monorepo/my-app", pathname: "my-app" },
+      { name: "@monorepo/a", pathname: "packages/a" },
+      { name: "@monorepo/b", pathname: "components/b" }
     ]
   }
 ];

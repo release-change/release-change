@@ -19,7 +19,7 @@ export const preparePublishing = async (
   packageNextRelease: PackageNextRelease,
   context: Context
 ): Promise<PackagePublishing | null> => {
-  const { name, path: pathname, version, npmTag } = packageNextRelease;
+  const { name, pathname, version, npmTag } = packageNextRelease;
   const {
     cwd,
     env,

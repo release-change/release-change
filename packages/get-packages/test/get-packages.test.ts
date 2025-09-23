@@ -18,7 +18,7 @@ const mockedContextBase = {
   env: {},
   config: { debug: false }
 };
-const expectedSinglePackage = [{ name: "", path: "." }];
+const expectedSinglePackage = [{ name: "", pathname: "." }];
 
 beforeEach(() => {
   vi.mock("../src/get-package-manager.js", () => ({ getPackageManager: vi.fn() }));
