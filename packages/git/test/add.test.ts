@@ -2,6 +2,7 @@ import { runCommand } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { add } from "../src/add.js";
+import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 const mockedFilesArgs = [
   [["package.json"]],
@@ -19,12 +20,12 @@ afterEach(() => {
 });
 
 it("should throw an error if no files are provided", async () => {
-  await expect(add([])).rejects.toThrowError("No files to add.");
+  await expect(add([], mockedCwd)).rejects.toThrowError("No files to add.");
 });
 it.each(mockedFilesArgs)("should run the command with %o", async mockedFilesArg => {
   const mockedCommand = vi
     .mocked(runCommand)
     .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-  await add(mockedFilesArg);
-  expect(mockedCommand).toHaveBeenCalledWith("git", ["add", ...mockedFilesArg]);
+  await add(mockedFilesArg, mockedCwd);
+  expect(mockedCommand).toHaveBeenCalledWith("git", ["add", ...mockedFilesArg], { cwd: mockedCwd });
 });

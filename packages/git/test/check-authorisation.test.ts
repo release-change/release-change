@@ -19,7 +19,6 @@ beforeEach(() => {
   }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
 });
-
 afterEach(() => {
   vi.clearAllMocks();
 });

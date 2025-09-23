@@ -4,6 +4,7 @@ import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getAllTags } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
+import { mockedCwd } from "./fixtures/mocked-cwd.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 beforeEach(() => {
@@ -17,7 +18,6 @@ beforeEach(() => {
   }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
 });
-
 afterEach(() => {
   vi.clearAllMocks();
 });
@@ -65,6 +65,17 @@ it("should return all tags if tags are found", () => {
     stderr: ""
   });
   assert.deepEqual(getAllTags(mockedContext), mockedTags);
+  expect(runCommandSync).toHaveBeenCalledWith(
+    "git",
+    [
+      "tag",
+      "-l",
+      "--sort=-creatordate",
+      "--merged",
+      `${mockedContext.config.remoteName}/${mockedContext.branch}`
+    ],
+    { cwd: mockedCwd }
+  );
 });
 it("should return an empty array if no tags are found", () => {
   vi.mocked(runCommandSync).mockReturnValue({
@@ -73,4 +84,15 @@ it("should return an empty array if no tags are found", () => {
     stderr: ""
   });
   assert.deepEqual(getAllTags(mockedContext), []);
+  expect(runCommandSync).toHaveBeenCalledWith(
+    "git",
+    [
+      "tag",
+      "-l",
+      "--sort=-creatordate",
+      "--merged",
+      `${mockedContext.config.remoteName}/${mockedContext.branch}`
+    ],
+    { cwd: mockedCwd }
+  );
 });
