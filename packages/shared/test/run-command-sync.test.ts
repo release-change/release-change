@@ -1,4 +1,4 @@
-import type { SpawnSyncOptionsWithStringEncoding } from "node:child_process";
+import type { SpawnSyncOptions } from "node:child_process";
 
 import { spawnSync } from "node:child_process";
 
@@ -7,16 +7,15 @@ import { afterEach, beforeEach, expect, expectTypeOf, it, vi } from "vitest";
 import { runCommandSync } from "../src/index.js";
 
 const mockedArgs = ["tag", "-l", "--sort=v:refname", "--merged", "origin/main"];
-const mockedOptions = {
+const mockedOptions: SpawnSyncOptions = {
   cwd: "/fake/path",
   encoding: "utf8"
-} as SpawnSyncOptionsWithStringEncoding;
+};
 const mockSpawnSync = spawnSync as ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
   vi.mock("node:child_process", () => ({ spawnSync: vi.fn() }));
 });
-
 afterEach(() => {
   vi.clearAllMocks();
 });
