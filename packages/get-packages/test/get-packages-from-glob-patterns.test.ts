@@ -24,7 +24,7 @@ it("should filter directories according to including glob patterns", async () =>
   ]);
   vi.mocked(getPackageName).mockReturnValue("@monorepo/subdirectory1");
   expect(await getPackagesFromGlobPatterns(mockedGlobPatterns, mockedCwd)).toStrictEqual([
-    { name: "@monorepo/subdirectory1", path: "directory1/subdirectory1" }
+    { name: "@monorepo/subdirectory1", pathname: "directory1/subdirectory1" }
   ]);
 });
 it("should exclude directories according to excluding glob patterns", async () => {
@@ -39,7 +39,7 @@ it("should exclude directories according to excluding glob patterns", async () =
   ]);
   vi.mocked(getPackageName).mockReturnValue("@monorepo/subdirectory2");
   expect(await getPackagesFromGlobPatterns(mockedGlobPatterns, mockedCwd)).toStrictEqual([
-    { name: "@monorepo/subdirectory2", path: "directory2/subdirectory2" }
+    { name: "@monorepo/subdirectory2", pathname: "directory2/subdirectory2" }
   ]);
 });
 it("should only return directories with package.json", async () => {
@@ -54,7 +54,7 @@ it("should only return directories with package.json", async () => {
     return Promise.reject(new Error("ENOENT: no such file"));
   });
   expect(await getPackagesFromGlobPatterns(mockedGlobPatterns, mockedCwd)).toStrictEqual([
-    { name: "@monorepo/with-package", path: "with-package" }
+    { name: "@monorepo/with-package", pathname: "with-package" }
   ]);
 });
 it("should return an empty array when no directories match", async () => {

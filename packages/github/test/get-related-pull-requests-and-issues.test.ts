@@ -24,7 +24,7 @@ const mockedDefaultContext: Context = {
     isCi: true,
     isPullRequest: false
   },
-  packages: [{ name: "", path: "." }],
+  packages: [{ name: "", pathname: "." }],
   config: expectedDefaultConfig
 };
 const commitMessage = "docs: some description";

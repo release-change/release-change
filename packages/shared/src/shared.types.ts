@@ -36,17 +36,17 @@ export type CiConfig = {
 };
 export type Package = {
   name: string;
-  path: string;
+  pathname: string;
 };
 export type PackageLastRelease = {
   name: string;
-  path: string;
+  pathname: string;
   gitTag: string | null;
   version: string;
 };
 export type PackageNextRelease = {
   name: string;
-  path: string;
+  pathname: string;
   gitTag: string;
   version: string;
   npmTag?: string;

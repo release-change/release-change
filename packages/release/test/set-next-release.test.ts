@@ -33,7 +33,10 @@ it("should not call `incrementVersion()` if the package cannot publish from the 
 it("should not call `incrementVersion()` if the `releaseType` argument is set to `null`", () => {
   setNextRelease([{ name: "", releaseType: null }], {
     ...mockedContext,
-    lastRelease: { ref: null, packages: [{ name: "", path: ".", gitTag: null, version: "0.0.0" }] }
+    lastRelease: {
+      ref: null,
+      packages: [{ name: "", pathname: ".", gitTag: null, version: "0.0.0" }]
+    }
   });
   expect(incrementVersion).not.toHaveBeenCalled();
   expect(mockedLogger.logInfo).toHaveBeenCalledWith(
@@ -51,7 +54,7 @@ it("should log a warning message if no last release is found concerning the pack
     ...mockedContext,
     lastRelease: {
       ref: null,
-      packages: [{ name: "@monorepo/a", path: "packages/a", gitTag: null, version: "0.0.0" }]
+      packages: [{ name: "@monorepo/a", pathname: "packages/a", gitTag: null, version: "0.0.0" }]
     }
   });
   expect(mockedLogger.logWarn).toHaveBeenCalledWith("No last release found for root package.");
@@ -73,14 +76,14 @@ describe.each([...mockedNextReleases, ...mockedNextReleasesInMonorepo])(
             return nextRelease.npmTag
               ? {
                   name: nextRelease.name,
-                  path: nextRelease.path,
+                  pathname: nextRelease.pathname,
                   gitTag,
                   version: nextRelease.version,
                   npmTag: nextRelease.npmTag
                 }
               : {
                   name: nextRelease.name,
-                  path: nextRelease.path,
+                  pathname: nextRelease.pathname,
                   gitTag,
                   version: nextRelease.version
                 };

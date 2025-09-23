@@ -29,14 +29,14 @@ export const getPackagesFromGlobPatterns = async (
       try {
         await fs.access(filePath);
         const packageName = getPackageName(filePath) ?? "";
-        return { name: packageName, path: path.relative(cwd, directory) };
+        return { name: packageName, pathname: path.relative(cwd, directory) };
       } catch {
-        return { name: "", path: "" };
+        return { name: "", pathname: "" };
       }
     }
-    return { name: "", path: "" };
+    return { name: "", pathname: "" };
   });
   return (await Promise.all(directories)).filter(
-    directory => Boolean(directory.name) && Boolean(directory.path)
+    directory => Boolean(directory.name) && Boolean(directory.pathname)
   );
 };

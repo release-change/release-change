@@ -3,8 +3,8 @@ export const npmPackages = [
     content: { workspaces: ["packages/*"] },
     patterns: { include: ["packages/*"], exclude: ["**/node_modules/**"] },
     packages: [
-      { name: "@monorepo/a", path: "packages/a" },
-      { name: "@monorepo/b", path: "packages/b" }
+      { name: "@monorepo/a", pathname: "packages/a" },
+      { name: "@monorepo/b", pathname: "packages/b" }
     ]
   },
   {
@@ -14,9 +14,9 @@ export const npmPackages = [
       exclude: ["**/node_modules/**"]
     },
     packages: [
-      { name: "@monorepo/my-app", path: "my-app" },
-      { name: "@monorepo/a", path: "packages/a" },
-      { name: "@monorepo/b", path: "components/b" }
+      { name: "@monorepo/my-app", pathname: "my-app" },
+      { name: "@monorepo/a", pathname: "packages/a" },
+      { name: "@monorepo/b", pathname: "components/b" }
     ]
   }
 ];

@@ -3,6 +3,7 @@ import { runCommand } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { checkRepository } from "../src/index.js";
+import { mockedCwd } from "./fixtures/mocked-cwd.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 beforeEach(() => {
@@ -26,7 +27,7 @@ it("should call `process.exit(128)` if this is not a Git repository", async () =
     })
   );
   process.exitCode = 128;
-  await expect(checkRepository(mockedLogger)).rejects.toThrow("process.exit(128)");
+  await expect(checkRepository(mockedCwd, mockedLogger)).rejects.toThrow("process.exit(128)");
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     "The current directory is not a Git repository."
   );
@@ -40,7 +41,7 @@ it("should not call `process.exit()` if this is a Git repository", async () => {
       stderr: ""
     })
   );
-  await checkRepository(mockedLogger);
+  await checkRepository(mockedCwd, mockedLogger);
   expect(process.exit).not.toHaveBeenCalled();
 });
 it("should return 0 if this is a Git repository", async () => {
@@ -52,5 +53,6 @@ it("should return 0 if this is a Git repository", async () => {
     })
   );
   process.exitCode = 0;
-  expect(await checkRepository(mockedLogger)).toBe(0);
+  expect(await checkRepository(mockedCwd, mockedLogger)).toBe(0);
+  expect(runCommand).toHaveBeenCalledWith("git", ["rev-parse", "--git-dir"], { cwd: mockedCwd });
 });

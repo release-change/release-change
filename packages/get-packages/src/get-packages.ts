@@ -23,7 +23,7 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
   const logger = setLogger(debug);
   const packageManager = getPackageManager(cwd, env);
   if (packageManager) {
-    const packages: Package[] = [{ name: "", path: "." }];
+    const packages: Package[] = [{ name: "", pathname: "." }];
     if (debug) {
       logger.setDebugScope("get-packages:get-packages");
       logger.logDebug(`Package manager: ${packageManager}`);

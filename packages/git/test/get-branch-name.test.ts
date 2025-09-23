@@ -2,6 +2,7 @@ import { runCommandSync } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { getBranchName } from "../src/index.js";
+import { mockedCwd } from "./fixtures/mocked-cwd.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const gitRevParseCommandArgs = ["rev-parse", "--abbrev-ref", "HEAD"];
@@ -22,10 +23,10 @@ it('should return the value of `HEAD` ref when this is not `"HEAD"`', () => {
       ? { status: 0, stdout: "main", stderr: "" }
       : { status: 1, stdout: "", stderr: "Error" }
   );
-  expect(getBranchName(mockedLogger)).toBe("main");
+  expect(getBranchName(mockedCwd, mockedLogger)).toBe("main");
   expect(runCommandSync).toHaveBeenCalledTimes(1);
-  expect(runCommandSync).toHaveBeenCalledWith("git", gitRevParseCommandArgs);
-  expect(runCommandSync).not.toHaveBeenCalledWith("git", gitShowCommandArgs);
+  expect(runCommandSync).toHaveBeenCalledWith("git", gitRevParseCommandArgs, { cwd: mockedCwd });
+  expect(runCommandSync).not.toHaveBeenCalledWith("git", gitShowCommandArgs, { cwd: mockedCwd });
 });
 it('should return the remote branch name if `HEAD` ref returns `"HEAD"', () => {
   vi.mocked(runCommandSync).mockImplementation((_gitCommand, gitCommandArgs) => {
@@ -35,8 +36,8 @@ it('should return the remote branch name if `HEAD` ref returns `"HEAD"', () => {
         ? { status: 0, stdout: "(HEAD -> main, origin/main)", stderr: "" }
         : { status: 1, stdout: "", stderr: "Error" };
   });
-  expect(getBranchName(mockedLogger)).toBe("main");
+  expect(getBranchName(mockedCwd, mockedLogger)).toBe("main");
   expect(runCommandSync).toHaveBeenCalledTimes(2);
-  expect(runCommandSync).toHaveBeenCalledWith("git", gitRevParseCommandArgs);
-  expect(runCommandSync).toHaveBeenCalledWith("git", gitShowCommandArgs);
+  expect(runCommandSync).toHaveBeenCalledWith("git", gitRevParseCommandArgs, { cwd: mockedCwd });
+  expect(runCommandSync).toHaveBeenCalledWith("git", gitShowCommandArgs, { cwd: mockedCwd });
 });

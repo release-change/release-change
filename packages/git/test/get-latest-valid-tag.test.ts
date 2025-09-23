@@ -50,7 +50,7 @@ const mockedContext = {
     isCi: true,
     isPullRequest: false
   },
-  packages: [{ name: "", path: "." }],
+  packages: [{ name: "", pathname: "." }],
   branch: "main"
 } as Context;
 const mockedContextInMonorepo = {
@@ -61,7 +61,7 @@ const mockedContextWithInvalidConfig = {
   cwd: mockedContext.cwd,
   env: {},
   config: mockedInvalidConfig,
-  packages: [{ name: "", path: "." }],
+  packages: [{ name: "", pathname: "." }],
   branch: "main"
 } as Context;
 const mockedValidGitTags = [

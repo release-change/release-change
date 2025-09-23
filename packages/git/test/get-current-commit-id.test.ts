@@ -2,6 +2,7 @@ import { runCommandSync } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { getCurrentCommitId } from "../src/index.js";
+import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 const mockedCommandResult = {
   status: 0,
@@ -21,7 +22,6 @@ afterEach(() => {
 
 it("should run the `git rev-parse HEAD` command and return the hash", () => {
   const mockedCommand = vi.mocked(runCommandSync).mockReturnValue(mockedCommandResult);
-  getCurrentCommitId();
-  expect(mockedCommand).toHaveBeenCalledWith("git", ["rev-parse", "HEAD"]);
-  expect(getCurrentCommitId()).toBe(expectedHash);
+  expect(getCurrentCommitId(mockedCwd)).toBe(expectedHash);
+  expect(mockedCommand).toHaveBeenCalledWith("git", ["rev-parse", "HEAD"], { cwd: mockedCwd });
 });

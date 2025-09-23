@@ -20,7 +20,7 @@ export const prepareReleaseNotes = (
   packageNextRelease: PackageNextRelease,
   context: Context
 ): ReleaseNotes => {
-  const { path, name, gitTag } = packageNextRelease;
+  const { pathname, name, gitTag } = packageNextRelease;
   const { config, branch, lastRelease, commits } = context;
   if (branch) {
     const { debug, repositoryUrl, releaseType, isMonorepo } = config;
@@ -43,7 +43,7 @@ export const prepareReleaseNotes = (
               const { isMergeCommit, sha, message, modifiedFiles } = commit;
               if (
                 isMergeCommit ||
-                (isMonorepo && !modifiedFiles?.filter(file => file.startsWith(path)).length)
+                (isMonorepo && !modifiedFiles?.filter(file => file.startsWith(pathname)).length)
               ) {
                 continue;
               }

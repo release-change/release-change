@@ -10,13 +10,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.0.0",
       version: "1.0.0"
     },
@@ -43,13 +43,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0",
       version: "2.0.0"
     },
@@ -80,13 +80,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0-alpha.1",
       version: "1.2.0-alpha.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0",
       version: "2.0.0"
     },
@@ -117,13 +117,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0-beta.1",
       version: "1.2.0-beta.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0",
       version: "2.0.0"
     },
@@ -154,13 +154,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0-rc.1",
       version: "1.2.0-rc.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0",
       version: "2.0.0"
     },
@@ -191,13 +191,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v0.1.0",
       version: "0.1.0"
     },
@@ -220,13 +220,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.3.0",
       version: "1.3.0"
     },
@@ -253,13 +253,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0-alpha.1",
       version: "1.2.0-alpha.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
@@ -286,13 +286,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0-beta.1",
       version: "1.2.0-beta.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
@@ -319,13 +319,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0-rc.1",
       version: "1.2.0-rc.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
@@ -352,13 +352,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v0.0.1",
       version: "0.0.1"
     },
@@ -377,13 +377,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.1",
       version: "1.2.1"
     },
@@ -406,13 +406,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.0.0-alpha.1",
       version: "1.0.0-alpha.1"
     },
@@ -439,13 +439,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0-alpha.1",
       version: "2.0.0-alpha.1"
     },
@@ -476,13 +476,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v0.1.0-alpha.1",
       version: "0.1.0-alpha.1"
     },
@@ -505,13 +505,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.3.0-alpha.1",
       version: "1.3.0-alpha.1"
     },
@@ -538,13 +538,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v0.0.1-alpha.1",
       version: "0.0.1-alpha.1"
     },
@@ -563,13 +563,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.1-alpha.1",
       version: "1.2.1-alpha.1"
     },
@@ -592,13 +592,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.0.0-beta.1",
       version: "1.0.0-beta.1"
     },
@@ -625,13 +625,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0-beta.1",
       version: "2.0.0-beta.1"
     },
@@ -662,13 +662,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0-alpha.1",
       version: "2.0.0-alpha.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0-beta.1",
       version: "2.0.0-beta.1"
     },
@@ -699,13 +699,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v0.1.0-beta.1",
       version: "0.1.0-beta.1"
     },
@@ -728,13 +728,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.3.0-beta.1",
       version: "1.3.0-beta.1"
     },
@@ -761,13 +761,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.3.0-alpha.1",
       version: "1.3.0-alpha.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.3.0-beta.1",
       version: "1.3.0-beta.1"
     },
@@ -794,13 +794,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v0.0.1-beta.1",
       version: "0.0.1-beta.1"
     },
@@ -819,13 +819,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.1-beta.1",
       version: "1.2.1-beta.1"
     },
@@ -848,13 +848,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.1-alpha.1",
       version: "1.2.1-alpha.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.1-beta.1",
       version: "1.2.1-beta.1"
     },
@@ -877,13 +877,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.0.0-rc.1",
       version: "1.0.0-rc.1"
     },
@@ -910,13 +910,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0-rc.1",
       version: "2.0.0-rc.1"
     },
@@ -947,13 +947,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0-alpha.1",
       version: "2.0.0-alpha.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0-rc.1",
       version: "2.0.0-rc.1"
     },
@@ -984,13 +984,13 @@ export const mockedPackages = [
     commits: mockedMajorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0-beta.1",
       version: "2.0.0-beta.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v2.0.0-rc.1",
       version: "2.0.0-rc.1"
     },
@@ -1021,13 +1021,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v0.1.0-rc.1",
       version: "0.1.0-rc.1"
     },
@@ -1050,13 +1050,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.3.0-rc.1",
       version: "1.3.0-rc.1"
     },
@@ -1083,13 +1083,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.3.0-alpha.1",
       version: "1.3.0-alpha.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.3.0-rc.1",
       version: "1.3.0-rc.1"
     },
@@ -1116,13 +1116,13 @@ export const mockedPackages = [
     commits: mockedMinorLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.3.0-beta.1",
       version: "1.3.0-beta.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.3.0-rc.1",
       version: "1.3.0-rc.1"
     },
@@ -1149,13 +1149,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: null,
       version: "0.0.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v0.0.1-rc.1",
       version: "0.0.1-rc.1"
     },
@@ -1174,13 +1174,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.0",
       version: "1.2.0"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.1-rc.1",
       version: "1.2.1-rc.1"
     },
@@ -1203,13 +1203,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.1-alpha.1",
       version: "1.2.1-alpha.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.1-rc.1",
       version: "1.2.1-rc.1"
     },
@@ -1232,13 +1232,13 @@ export const mockedPackages = [
     commits: mockedPatchLevelParsedCommits,
     lastReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.1-beta.1",
       version: "1.2.1-beta.1"
     },
     nextReleasePackage: {
       name: "",
-      path: ".",
+      pathname: ".",
       gitTag: "v1.2.1-rc.1",
       version: "1.2.1-rc.1"
     },

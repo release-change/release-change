@@ -36,7 +36,7 @@ export const setNextRelease = (
           packageItem => packageItem.name === name
         );
         if (packageLastRelease) {
-          const { path, gitTag, version: currentVersion } = packageLastRelease;
+          const { pathname, gitTag, version: currentVersion } = packageLastRelease;
           const version = incrementVersion(currentVersion, releaseType, branchConfig);
           const { channel } = branchConfig;
           const npmTag = channel && channel !== "default" ? channel : "latest";
@@ -45,13 +45,13 @@ export const setNextRelease = (
             npmTag === "latest"
               ? {
                   name,
-                  path,
+                  pathname,
                   gitTag: preparedGitTag,
                   version
                 }
               : {
                   name,
-                  path,
+                  pathname,
                   gitTag: preparedGitTag,
                   version,
                   npmTag

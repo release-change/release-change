@@ -16,6 +16,7 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
   {
     name: "",
     packageManifestName: "foo",
+    pathname: ".",
     version: "1.0.0",
     packageManager: "npm",
     args: npmArgs
@@ -23,6 +24,7 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
   {
     name: "",
     packageManifestName: "foo",
+    pathname: ".",
     version: "1.0.0",
     packageManager: "pnpm",
     args: pnpmArgs
@@ -30,6 +32,7 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
   {
     name: "@monorepo/a",
     packageManifestName: "@monorepo/a",
+    pathname: "packages/a",
     version: "1.0.0",
     packageManager: "npm",
     args: npmArgsWithTag
@@ -37,6 +40,7 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
   {
     name: "@monorepo/a",
     packageManifestName: "@monorepo/a",
+    pathname: "packages/a",
     version: "1.0.0",
     packageManager: "pnpm",
     args: pnpmArgs
@@ -44,6 +48,8 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
   {
     name: "",
     packageManifestName: "foo",
+
+    pathname: ".",
     version: "1.0.0-alpha.1",
     packageManager: "npm",
     args: npmArgsWithTag
@@ -51,6 +57,8 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
   {
     name: "",
     packageManifestName: "foo",
+
+    pathname: ".",
     version: "1.0.0-alpha.1",
     packageManager: "pnpm",
     args: pnpmArgsWithTag
@@ -58,6 +66,7 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
   {
     name: "@monorepo/a",
     packageManifestName: "@monorepo/a",
+    pathname: "packages/a",
     version: "1.0.0-alpha.1",
     packageManager: "npm",
     args: npmArgsWithTag
@@ -65,6 +74,7 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
   {
     name: "@monorepo/a",
     packageManifestName: "@monorepo/a",
+    pathname: "packages/a",
     version: "1.0.0-alpha.1",
     packageManager: "pnpm",
     args: pnpmArgsWithTag

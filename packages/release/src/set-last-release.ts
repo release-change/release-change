@@ -25,11 +25,11 @@ export const setLastRelease = (context: Context): void => {
     };
     const latestValidGitTag = getLatestValidTag(context);
     if (latestValidGitTag) lastRelease.ref = latestValidGitTag;
-    for (const { name, path: packagePath } of packages) {
+    for (const { name, pathname } of packages) {
       const packageName = name || "root";
       const packageLastRelease: PackageLastRelease = {
         name,
-        path: packagePath,
+        pathname,
         gitTag: null,
         version: "0.0.0"
       };
@@ -44,7 +44,7 @@ export const setLastRelease = (context: Context): void => {
       } else {
         logger.logInfo(`No Git tag version found for ${packageName} package on branch ${branch}.`);
         const packageVersion = validate(
-          getPackageVersion(path.join(cwd, packagePath, "package.json"))
+          getPackageVersion(path.join(cwd, pathname, "package.json"))
         );
         if (packageVersion) {
           logger.logInfo(

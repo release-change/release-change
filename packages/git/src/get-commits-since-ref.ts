@@ -12,7 +12,7 @@ import { COMMIT_SEPARATOR } from "./constants.js";
  * @return An array containing the commits found and parsed.
  */
 export const getCommitsSinceRef = (context: Context): Commit[] => {
-  const { config, lastRelease } = context;
+  const { cwd, config, lastRelease } = context;
   const { debug, isMonorepo } = config;
   const logger = setLogger(debug);
   try {
@@ -23,7 +23,7 @@ export const getCommitsSinceRef = (context: Context): Commit[] => {
     if (gitTag) args.push(revisionRange);
     const infoMessage = `Retrieving ${args.includes(revisionRange) ? `commits since ${gitTag}` : "all commits"}…`;
     logger.logInfo(infoMessage);
-    const gitCommandResult = runCommandSync("git", args);
+    const gitCommandResult = runCommandSync("git", args, { cwd });
     const { stdout } = gitCommandResult;
     const commits = stdout ? stdout.split(COMMIT_SEPARATOR) : [];
     const totalCommits = commits.length;

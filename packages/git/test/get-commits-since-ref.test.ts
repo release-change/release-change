@@ -6,6 +6,7 @@ import { getCommitsSinceRef } from "../src/index.js";
 import { mockedCommits } from "./fixtures/mocked-commits.js";
 import { mockedCommitsInMonorepo } from "./fixtures/mocked-commits-monorepo.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
+import { mockedCwd } from "./fixtures/mocked-cwd.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedParsedCommits } from "./fixtures/mocked-parsed-commits.js";
 import { mockedParsedCommitsInMonorepo } from "./fixtures/mocked-parsed-commits-in-monorepo.js";
@@ -96,7 +97,7 @@ describe.each(commitsSets)(
     it(`should run \`${commandWithoutTag}\` when there are no Git tags`, () => {
       vi.mocked(runCommandSync).mockReturnValue(mockedCommandResultWithNoCommits);
       getCommitsSinceRef(context);
-      expect(runCommandSync).toHaveBeenCalledWith("git", argsWithoutTag);
+      expect(runCommandSync).toHaveBeenCalledWith("git", argsWithoutTag, { cwd: mockedCwd });
       expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving all commits…");
     });
     it(`should run \`${commandWithTag}\` when the ref is Git tag "v1.0.0"`, () => {
@@ -105,10 +106,10 @@ describe.each(commitsSets)(
         ...context,
         lastRelease: {
           ref: "v1.0.0",
-          packages: [{ name: "", path: ".", gitTag: "v1.0.0", version: "1.0.0" }]
+          packages: [{ name: "", pathname: ".", gitTag: "v1.0.0", version: "1.0.0" }]
         }
       });
-      expect(runCommandSync).toHaveBeenCalledWith("git", argsWithTag);
+      expect(runCommandSync).toHaveBeenCalledWith("git", argsWithTag, { cwd: mockedCwd });
       expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving commits since v1.0.0…");
     });
   }

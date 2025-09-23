@@ -20,9 +20,9 @@ export const adjustReleaseType = (
   const { cwd, packages } = context;
   const completedReleaseTypesMap = new Map(releaseTypesMap);
   for (const packageItem of packages) {
-    const { name, path: packagePath } = packageItem;
+    const { name, pathname } = packageItem;
     const dependencies = name
-      ? getPackageDependencies(path.join(cwd, packagePath, "package.json"))
+      ? getPackageDependencies(path.join(cwd, pathname, "package.json"))
       : packages.map(packageItem => packageItem.name);
     if (dependencies?.length) {
       const releaseTypes = new Set<ReleaseType>();

@@ -6,14 +6,14 @@ it("should throw an error if there are no packages", () => {
   assert.throws(() => isMonorepo([]), "There must be at least one package.");
 });
 it("should return `false` if there is one package only", () => {
-  expect(isMonorepo([{ name: "", path: "." }])).toBe(false);
+  expect(isMonorepo([{ name: "", pathname: "." }])).toBe(false);
 });
 it("should return `true` if there are more than one package", () => {
   expect(
     isMonorepo([
-      { name: "", path: "." },
-      { name: "@monorepo/a", path: "packages/a" },
-      { name: "@monorepo/b", path: "packages/b" }
+      { name: "", pathname: "." },
+      { name: "@monorepo/a", pathname: "packages/a" },
+      { name: "@monorepo/b", pathname: "packages/b" }
     ])
   ).toBe(true);
 });

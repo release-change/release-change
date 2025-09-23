@@ -59,7 +59,7 @@ it.each(mockedPackages)(
     vi.mocked(getAllTags).mockReturnValue([]);
     vi.mocked(getLatestValidTag).mockReturnValue(null);
     vi.mocked(getPackageVersion).mockImplementation(path => {
-      const expectedPackage = packageVersions.find(packageItem => packageItem.path === path);
+      const expectedPackage = packageVersions.find(packageItem => packageItem.pathname === path);
       return expectedPackage ? expectedPackage.version : null;
     });
     setLastRelease(mockedContext);

@@ -28,7 +28,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   logger.logInfo(`Running ${WORKSPACE_NAME} version ${WORKSPACE_VERSION}…`);
   const packages = await getPackages(contextBase);
   const config = await getConfig(cliOptions, isMonorepo(packages));
-  const branch = getBranchName(logger);
+  const branch = getBranchName(contextBase.cwd, logger);
   const ci = configureCiEnvironment(contextBase.env);
   const context: Context = {
     ...contextBase,
@@ -37,7 +37,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
     ci,
     packages
   };
-  await checkRepository(logger);
+  await checkRepository(context.cwd, logger);
   if (isUsableCiEnvironment(context)) {
     Object.assign(context.env, {
       GIT_AUTHOR_NAME: COMMITTER_NAME,

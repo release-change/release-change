@@ -41,8 +41,14 @@ afterEach(() => {
 describe.each(mockedPackagePublishingSet)(
   "for package $name and version $version",
   packagePublishing => {
-    const { name, packageManifestName, version, packageManager, args, npmTag } = packagePublishing;
+    const { name, packageManifestName, pathname, version, packageManager, args, npmTag } =
+      packagePublishing;
     const packageName = name || "root";
+    const mockedCwd = pathname === "." ? mockedContext.cwd : `${mockedContext.cwd}/${pathname}`;
+    const mockedOptions = {
+      cwd: mockedCwd,
+      env: mockedContext.env
+    };
     it("should throw an error if the auth token is not defined", async () => {
       await expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrowError(
         "Failed to load the auth token context."
@@ -95,7 +101,7 @@ describe.each(mockedPackagePublishingSet)(
       await expect(
         publishToRegistry(packagePublishing, mockedContextWithAuthToken)
       ).rejects.toThrowError("Some error message.");
-      expect(mockedCommand).toHaveBeenCalledWith(packageManager, args);
+      expect(mockedCommand).toHaveBeenCalledWith(packageManager, args, mockedOptions);
       expect(mockedLogger.logError).toHaveBeenCalledWith(
         `Failed to publish release ${version} of ${packageName} package to the NPM registry.`
       );
@@ -107,7 +113,7 @@ describe.each(mockedPackagePublishingSet)(
         .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
       await publishToRegistry(packagePublishing, context);
-      expect(mockedCommand).toHaveBeenCalledWith(packageManager, args);
+      expect(mockedCommand).toHaveBeenCalledWith(packageManager, args, mockedOptions);
       expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
         `Published release ${version} of ${packageName} package to the NPM registry on ${
           npmTag || "default"

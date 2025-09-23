@@ -13,6 +13,6 @@ export const mockedContext: Context = {
     isCi: true,
     isPullRequest: false
   },
-  packages: [{ name: "", path: "." }],
+  packages: [{ name: "", pathname: "." }],
   config: mockedConfig
 };

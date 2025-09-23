@@ -18,7 +18,7 @@ it("should throw an error if the target branch is not defined", () => {
       prepareReleaseNotes(
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.2.0",
           version: "1.2.0"
         },
@@ -36,7 +36,7 @@ it("should throw an error if the target branch is not supported by the configura
       prepareReleaseNotes(
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.2.0",
           version: "1.2.0"
         },
@@ -54,7 +54,7 @@ it("should throw an error if no last release is defined", () => {
       prepareReleaseNotes(
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.2.0",
           version: "1.2.0"
         },
@@ -69,7 +69,7 @@ it("should throw an error if the target package has no last release", () => {
       prepareReleaseNotes(
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.2.0",
           version: "1.2.0"
         },
@@ -91,7 +91,7 @@ it("should throw an error if no commits have been retrieved", () => {
       prepareReleaseNotes(
         {
           name: "",
-          path: ".",
+          pathname: ".",
           gitTag: "v1.2.0",
           version: "1.2.0"
         },
@@ -103,7 +103,7 @@ it("should throw an error if no commits have been retrieved", () => {
             packages: [
               {
                 name: "",
-                path: ".",
+                pathname: ".",
                 gitTag: "v1.1.0",
                 version: "1.1.0"
               }
@@ -141,7 +141,7 @@ it.each(mockedPackagesInMonorepo)(
             lastReleasePackage,
             {
               name: "@monorepo/b",
-              path: "packages/b",
+              pathname: "packages/b",
               gitTag: "null",
               version: "1.0.0"
             }
