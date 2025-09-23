@@ -44,6 +44,7 @@ export const preparePublishing = async (
         const packagePublishing: PackagePublishing = {
           name,
           packageManifestName: packageManifest.name ?? "",
+          pathname,
           version,
           packageManager,
           args

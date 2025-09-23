@@ -1,6 +1,7 @@
 import type { Context, ReleaseInfoNpm } from "@release-change/shared";
 import type { PackagePublishing } from "./npm.types.js";
 
+import path from "node:path";
 import { inspect } from "node:util";
 
 import { setLogger } from "@release-change/logger";
@@ -19,9 +20,11 @@ export const publishToRegistry = async (
   packagePublishing: PackagePublishing,
   context: Context
 ): Promise<void> => {
-  const { name, packageManifestName, version, packageManager, args, npmTag } = packagePublishing;
+  const { name, packageManifestName, pathname, version, packageManager, args, npmTag } =
+    packagePublishing;
   const {
     cwd,
+    env,
     config: { debug }
   } = context;
   const logger = setLogger(debug);
@@ -30,7 +33,10 @@ export const publishToRegistry = async (
   if (authToken) {
     const isAuthTokenNotDefined = !authToken.fileExists || !authToken.authTokenExists;
     if (isAuthTokenNotDefined) setAuthToken(cwd);
-    const packageManagerCommandResult = await runCommand(packageManager, args);
+    const packageManagerCommandResult = await runCommand(packageManager, args, {
+      cwd: path.resolve(cwd, pathname),
+      env
+    });
     const { status, stdout, stderr } = packageManagerCommandResult;
     const packageName = name || "root";
     if (debug) {
