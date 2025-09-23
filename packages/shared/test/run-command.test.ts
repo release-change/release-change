@@ -3,16 +3,14 @@ import { spawn } from "node:child_process";
 import { afterEach, beforeEach, expect, expectTypeOf, it, vi } from "vitest";
 
 import { runCommand } from "../src/index.js";
+import { mockedArgs } from "./fixtures/mocked-args.js";
+import { mockedOptions } from "./fixtures/mocked-options.js";
 
 const mockedChildProcess = {
   stdout: { on: vi.fn() },
   stderr: { on: vi.fn() },
   on: vi.fn(),
   exitCode: 0
-};
-const mockedArgs = ["tag", "-l", "--sort=v:refname", "--merged", "origin/main"];
-const mockedOptions = {
-  cwd: "/fake/path"
 };
 const nonExistentCommand = "non-existant-command-12345";
 const args = ["some", "args"];
