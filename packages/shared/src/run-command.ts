@@ -1,3 +1,4 @@
+import type { SpawnOptionsWithoutStdio } from "node:child_process";
 import type { CommandResult } from "./shared.types.js";
 
 import { spawn } from "node:child_process";
@@ -6,11 +7,13 @@ import { spawn } from "node:child_process";
  * Runs a command asynchronously.
  * @param command - The command to run.
  * @param args - The command arguments.
+ * @param [options] - The options for the asynchronous command.
  * @return The command result with the exit code, the standard output and the standard error.
  */
 export const runCommand = async (
   command: string,
-  args: readonly string[]
+  args: readonly string[],
+  options?: SpawnOptionsWithoutStdio
 ): Promise<CommandResult> => {
   return new Promise((resolve, reject) => {
     const commandResult: CommandResult = {
@@ -18,7 +21,7 @@ export const runCommand = async (
       stdout: "",
       stderr: ""
     };
-    const childProcess = spawn(command, args);
+    const childProcess = spawn(command, args, options);
     childProcess.stdout.on("data", data => {
       commandResult.stdout += data.toString();
     });

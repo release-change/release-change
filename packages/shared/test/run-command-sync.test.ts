@@ -1,22 +1,16 @@
-import type { SpawnSyncOptionsWithStringEncoding } from "node:child_process";
-
 import { spawnSync } from "node:child_process";
 
 import { afterEach, beforeEach, expect, expectTypeOf, it, vi } from "vitest";
 
 import { runCommandSync } from "../src/index.js";
+import { mockedArgs } from "./fixtures/mocked-args.js";
+import { mockedOptionsSync } from "./fixtures/mocked-options.js";
 
-const mockedArgs = ["tag", "-l", "--sort=v:refname", "--merged", "origin/main"];
-const mockedOptions = {
-  cwd: "/fake/path",
-  encoding: "utf8"
-} as SpawnSyncOptionsWithStringEncoding;
 const mockSpawnSync = spawnSync as ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
   vi.mock("node:child_process", () => ({ spawnSync: vi.fn() }));
 });
-
 afterEach(() => {
   vi.clearAllMocks();
 });
@@ -39,7 +33,7 @@ it("should return an object with status, stdout and stderr properties and correc
       stderr: "Stderr"
     };
   });
-  expectTypeOf(runCommandSync("git", mockedArgs, mockedOptions)).toMatchObjectType<{
+  expectTypeOf(runCommandSync("git", mockedArgs, mockedOptionsSync)).toMatchObjectType<{
     status: number | null;
     stdout: string;
     stderr: string;
