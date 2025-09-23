@@ -38,7 +38,7 @@ export const publish = async (context: Context): Promise<void> => {
           updatePackageVersion(nextReleasePackage, pathname, context);
           await updateLockFile(context, packageManager);
           await commitUpdatedFiles(nextReleasePackage, pathname, packageManager, context);
-          const commitRef = getCurrentCommitId();
+          const commitRef = getCurrentCommitId(cwd);
           createTag(nextReleasePackage, commitRef, debug);
           releaseNotesSet.push(prepareReleaseNotes(nextReleasePackage, context));
           const packagePublishing = await preparePublishing(nextReleasePackage, context);

@@ -14,19 +14,17 @@ export const checkAuthorisation = async (
   repositoryUrl: string,
   context: Context
 ): Promise<void> => {
-  const { branch, config } = context;
+  const { cwd, branch, config } = context;
   const logger = setLogger(config.debug);
   if (!branch || !config.branches.includes(branch)) {
     logger.logInfo("Skipping authorisation checking.");
     return;
   }
-  const gitCommandResult = await runCommand("git", [
-    "push",
-    "--dry-run",
-    "--no-verify",
-    repositoryUrl,
-    branch
-  ]);
+  const gitCommandResult = await runCommand(
+    "git",
+    ["push", "--dry-run", "--no-verify", repositoryUrl, branch],
+    { cwd }
+  );
   if (config.debug) {
     logger.setDebugScope("git:check-authorisation");
     logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));

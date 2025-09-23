@@ -32,10 +32,10 @@ export const commitUpdatedFiles = async (
       packageManager === "pnpm" ? "pnpm-lock.yaml" : "package-lock.json"
     );
     // TODO: uncomment to run `git add` command
-    // const gitAddCommandResult = await add([packageManifestFile, lockFile]);
+    // const gitAddCommandResult = await add([packageManifestFile, lockFile], cwd);
     const commitMessage = `chore(release): ${packageNextRelease.gitTag}\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
     // TODO: uncomment to run `git commit` command
-    // const gitCommitCommandResult = await commit(commitMessage);
+    // const gitCommitCommandResult = await commit(commitMessage, cwd);
     if (debug) {
       logger.setDebugScope("release:commit-updated-files");
       logger.logDebug(`Command run: git add ${packageManifestFile} ${lockFile}`);
