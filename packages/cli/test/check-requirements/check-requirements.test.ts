@@ -21,7 +21,6 @@ const formerLtsReleases = [
   "14.21.3",
   "16.20.2"
 ];
-let originalProcessExit: typeof process.exit;
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({
@@ -48,16 +47,12 @@ beforeEach(() => {
     cli: vi.fn(() => Promise.resolve(0))
   }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
-  originalProcessExit = process.exit;
-  process.exit = vi.fn((code?: number | string) => {
-    throw new Error(`process.exit called with ${code}`);
-  });
+  vi.spyOn(process, "version", "get").mockReturnValue("v20.18.3");
 });
 
 afterEach(() => {
-  process.exit = originalProcessExit;
+  vi.restoreAllMocks();
   vi.clearAllMocks();
-  vi.resetAllMocks();
 });
 
 it.each(formerLtsReleases)(
@@ -67,9 +62,9 @@ it.each(formerLtsReleases)(
       style: "long",
       type: "disjunction"
     }).format(REQUIRED_NODE_VERSIONS.replaceAll(/\^([.0-9]+)/gi, "$1+").split(" || "));
-    Object.defineProperty(process, "version", {
-      value: mockedNodeVersion,
-      configurable: true
+    vi.spyOn(process, "version", "get").mockReturnValue(mockedNodeVersion);
+    vi.spyOn(process, "exit").mockImplementation(() => {
+      throw new Error("process.exit called with 1");
     });
     await expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
     expect(mockedLogger.logError).toHaveBeenCalledWith(
@@ -78,16 +73,15 @@ it.each(formerLtsReleases)(
   }
 );
 it(`should call \`process.exit(1)\` and display an error message if Git version is less than ${GIT_MIN_VERSION}`, async () => {
-  Object.defineProperty(process, "version", {
-    value: "v20.18.3",
-    configurable: true
-  });
   const mockedGitVersion: CommandResult = {
     status: 0,
     stdout: "git version 2.30.0",
     stderr: ""
   };
   const coercedVersion = coerce(mockedGitVersion.stdout);
+  vi.spyOn(process, "exit").mockImplementation(() => {
+    throw new Error("process.exit called with 1");
+  });
   vi.mocked(runCommandSync).mockReturnValue(mockedGitVersion);
   await expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith(
@@ -95,9 +89,5 @@ it(`should call \`process.exit(1)\` and display an error message if Git version 
   );
 });
 it("should complete successfully when requirements are met", async () => {
-  Object.defineProperty(process, "version", {
-    value: "v20.18.3",
-    configurable: true
-  });
   await expect(checkRequirements()).resolves.not.toThrow();
 });
