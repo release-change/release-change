@@ -1,26 +1,26 @@
 import process from "node:process";
 
 import { WORKSPACE_NAME } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { cli } from "../../src/cli/cli.js";
 import { run } from "../../src/cli/run.js";
 
 const cliOptions = ["-h", "--help", "-v", "--version"];
-let originalProcessArgv: string[];
 
 beforeEach(() => {
-  originalProcessArgv = process.argv;
   vi.mock("../../src/cli/run.js", () => ({
     run: vi.fn()
   }));
 });
 afterEach(() => {
-  process.argv = originalProcessArgv;
-  vi.restoreAllMocks();
+  vi.clearAllMocks();
 });
-it.each(cliOptions)("should not call `run()` when `%s` is used", async cliOption => {
-  process.argv = ["pnpm", WORKSPACE_NAME, cliOption];
-  await cli();
-  expect(run).not.toHaveBeenCalled();
+
+describe.each(["npm", "pnpm"])("for %s", packageManager => {
+  it.each(cliOptions)("should not call `run()` when `%s` is used", async cliOption => {
+    vi.spyOn(process, "argv", "get").mockReturnValue([packageManager, WORKSPACE_NAME, cliOption]);
+    await cli();
+    expect(run).not.toHaveBeenCalled();
+  });
 });
