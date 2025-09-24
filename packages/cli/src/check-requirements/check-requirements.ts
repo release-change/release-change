@@ -29,7 +29,9 @@ export const checkRequirements = async (): Promise<void> => {
   }
   const gitVersion = coerce(runCommandSync("git", ["--version"]).stdout);
   if (!gitVersion || !isGitVersionCompatible(gitVersion.version)) {
-    logger.logError(`Git version ${GIT_MIN_VERSION} required. Found ${gitVersion}.`);
+    logger.logError(
+      `Git version ${GIT_MIN_VERSION} required. Found ${gitVersion?.version ?? null}.`
+    );
     process.exit(1);
   }
   process.exitCode = await cli();
