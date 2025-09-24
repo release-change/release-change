@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
-import * as getTrackedRepositoriesModule from "../src/get-tracked-repositories.js";
-import { getRemoteName } from "../src/index.js";
+import { getRemoteName, getTrackedRepositories } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 const mockedSshRemoteUrl = "git@github.com:user-id/repo-name.git";
@@ -24,32 +23,24 @@ afterEach(() => {
 });
 
 it("should return `null` if the project is not a Git repository", async () => {
-  vi.mocked(getTrackedRepositoriesModule.getTrackedRepositories).mockReturnValue(
-    Promise.resolve(null)
-  );
+  vi.mocked(getTrackedRepositories).mockReturnValue(Promise.resolve(null));
   expect(await getRemoteName(mockedCwd)).toBe(null);
 });
 it("should return `null` when there are no tracked repositories", async () => {
-  vi.mocked(getTrackedRepositoriesModule.getTrackedRepositories).mockReturnValue(
-    Promise.resolve("")
-  );
+  vi.mocked(getTrackedRepositories).mockReturnValue(Promise.resolve(""));
   expect(await getRemoteName(mockedCwd)).toBe(null);
 });
 it.each(mockedRemotesWithNoPush)(
   'should return `null` when no remote name for push is defined (only "%s")',
   async mockedRemoteFetch => {
-    vi.mocked(getTrackedRepositoriesModule.getTrackedRepositories).mockReturnValue(
-      Promise.resolve(mockedRemoteFetch)
-    );
+    vi.mocked(getTrackedRepositories).mockReturnValue(Promise.resolve(mockedRemoteFetch));
     expect(await getRemoteName(mockedCwd)).toBe(null);
   }
 );
 it.each(mockedRemotes)(
   'should return the first remote name for push found ("%s"), that is "%s"',
   async (mockedRemote, expectedMockedRemoteName) => {
-    vi.mocked(getTrackedRepositoriesModule.getTrackedRepositories).mockReturnValue(
-      Promise.resolve(mockedRemote)
-    );
+    vi.mocked(getTrackedRepositories).mockReturnValue(Promise.resolve(mockedRemote));
     expect(await getRemoteName(mockedCwd)).toBe(expectedMockedRemoteName);
   }
 );
