@@ -139,7 +139,9 @@ export const mockedMinorLevelParsedCommitsInMonorepo: Commit[] = [
   refactorCommit1,
   testCommit2,
   featCommit,
+  featCommitForAnotherPackage,
   fixCommit,
+  fixCommitForAnotherPackage,
   testCommit3,
   refactorCommit2,
   refactorCommit3
@@ -150,6 +152,7 @@ export const mockedPatchLevelParsedCommitsInMonorepo: Commit[] = [
   refactorCommit1,
   testCommit2,
   fixCommit,
+  fixCommitForAnotherPackage,
   testCommit3,
   refactorCommit2,
   refactorCommit3

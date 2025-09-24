@@ -5,13 +5,6 @@ import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-contex
 import { mockedPackages } from "./fixtures/mocked-packages.js";
 import { mockedPackagesInMonorepo } from "./fixtures/mocked-packages-in-monorepo.js";
 
-// TODO: for each mocked package, test:
-/*
-- for each target branch (main, alpha, beta, next):
-  - for each last release (release, alpha, beta, rc):
-    - for each release type (major, minor, patch):
-      - next release, expected release notes
- */
 it("should throw an error if the target branch is not defined", () => {
   assert.throws(
     () =>
