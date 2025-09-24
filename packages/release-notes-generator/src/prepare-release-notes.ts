@@ -12,6 +12,8 @@ import { setLogger } from "@release-change/logger";
 
 /**
  * Prepares the release notes for a package.
+ *
+ * In a monorepo context, the release notes for the root package are prepared considering all other internal packages.
  * @param packageNextRelease - The next release data to use.
  * @param context - The context where the CLI is running.
  * @return The release notes for the package.
@@ -43,7 +45,9 @@ export const prepareReleaseNotes = (
               const { isMergeCommit, sha, message, modifiedFiles } = commit;
               if (
                 isMergeCommit ||
-                (isMonorepo && !modifiedFiles?.filter(file => file.startsWith(pathname)).length)
+                (isMonorepo &&
+                  name &&
+                  !modifiedFiles?.filter(file => file.startsWith(pathname)).length)
               ) {
                 continue;
               }
