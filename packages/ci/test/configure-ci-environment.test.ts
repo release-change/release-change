@@ -1,7 +1,7 @@
-import { assert, it, vi } from "vitest";
+import { afterEach, assert, beforeEach, it, vi } from "vitest";
 
 import { configureCiEnvironment } from "../src/index.js";
-import * as isCiToolDetectedModule from "../src/is-ci-tool-detected.js";
+import { isCiToolDetected } from "../src/is-ci-tool-detected.js";
 
 const mockedEnvWithUnknownCiEnvironment = {};
 const mockedEnvWithGitHubActionsOnPushEvent = {
@@ -20,12 +20,21 @@ const mockedEnvWithGitHubActionsOnPullRequestTargetEvent = {
   GITHUB_EVENT_NAME: "pull_request_target"
 };
 
+beforeEach(() => {
+  vi.mock("../src/is-ci-tool-detected.js", () => ({
+    isCiToolDetected: vi.fn()
+  }));
+});
+afterEach(() => {
+  vi.clearAllMocks();
+});
+
 it("should return an object with `isCi` set to `false` and `isPullRequest` set to `false` when CI environment is unknown", () => {
   const expectedConfig = {
     isCi: false,
     isPullRequest: false
   };
-  vi.spyOn(isCiToolDetectedModule, "isCiToolDetected").mockReturnValue(false);
+  vi.mocked(isCiToolDetected).mockReturnValue(false);
   assert.deepEqual(configureCiEnvironment(mockedEnvWithUnknownCiEnvironment), expectedConfig);
 });
 it("should return an object with `isCi` set to `true` and `isPullRequest` set to `false` when CI environment is GitHub Actions on push event", () => {
@@ -33,7 +42,7 @@ it("should return an object with `isCi` set to `true` and `isPullRequest` set to
     isCi: true,
     isPullRequest: false
   };
-  vi.spyOn(isCiToolDetectedModule, "isCiToolDetected").mockReturnValue(true);
+  vi.mocked(isCiToolDetected).mockReturnValue(true);
   assert.deepEqual(configureCiEnvironment(mockedEnvWithGitHubActionsOnPushEvent), expectedConfig);
 });
 it("should return an object with `isCi` set to `true` and `isPullRequest` set to `true` when CI environment is GitHub Actions on pull_request event", () => {
@@ -41,7 +50,7 @@ it("should return an object with `isCi` set to `true` and `isPullRequest` set to
     isCi: true,
     isPullRequest: true
   };
-  vi.spyOn(isCiToolDetectedModule, "isCiToolDetected").mockReturnValue(true);
+  vi.mocked(isCiToolDetected).mockReturnValue(true);
   assert.deepEqual(
     configureCiEnvironment(mockedEnvWithGitHubActionsOnPullRequestEvent),
     expectedConfig
@@ -52,7 +61,7 @@ it("should return an object with `isCi` set to `true` and `isPullRequest` set to
     isCi: true,
     isPullRequest: true
   };
-  vi.spyOn(isCiToolDetectedModule, "isCiToolDetected").mockReturnValue(true);
+  vi.mocked(isCiToolDetected).mockReturnValue(true);
   assert.deepEqual(
     configureCiEnvironment(mockedEnvWithGitHubActionsOnPullRequestTargetEvent),
     expectedConfig
