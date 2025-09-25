@@ -11,13 +11,11 @@ import { setLogger } from "@release-change/logger";
 /**
  * Commits the updated files.
  * @param packageNextRelease - The next release data to use.
- * @param pathname - The path to the package.
  * @param packageManager - The package manager used by the project.
  * @param context - The context where the CLI is running.
  */
 export const commitUpdatedFiles = async (
   packageNextRelease: PackageNextRelease,
-  pathname: string,
   packageManager: PackageManager,
   context: Context
 ): Promise<void> => {
@@ -25,6 +23,7 @@ export const commitUpdatedFiles = async (
   const { debug } = config;
   const logger = setLogger(debug);
   if (packageManager) {
+    const { pathname } = packageNextRelease;
     const packageManifestFile = path.join(cwd, pathname, "package.json");
     const lockFile = path.join(
       cwd,

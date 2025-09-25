@@ -81,17 +81,6 @@ describe.each(packageManagers)("for %s", packageManager => {
   describe.each([mockedContextWithNextRelease, mockedContextInMonorepoWithNextRelease])(
     "for isMonorepo: $config.isMonorepo",
     context => {
-      it("should throw an error if the package to update is unknown", async () => {
-        await publish({
-          ...context,
-          nextRelease: [
-            { name: "unknown", pathname: "unknown", gitTag: "v1.0.0", version: "1.0.0" }
-          ]
-        });
-        expect(mockedLogger.logError).toHaveBeenCalledWith(
-          "Pathname not found for unknown package."
-        );
-      });
       it("should throw an error if the package manifest file is not found", async () => {
         vi.spyOn(fs, "existsSync").mockReturnValue(false);
         vi.mocked(updatePackageVersion).mockImplementation(() => {

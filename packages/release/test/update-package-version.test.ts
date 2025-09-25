@@ -8,7 +8,6 @@ import { mockedContext } from "./fixtures/mocked-context-update.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedNextReleases } from "./fixtures/mocked-next-releases-update.js";
 
-const mockedContextWithoutNextReleaseForPackage = { ...mockedContext, nextRelease: [] };
 const mockedContextWithNextRelease = {
   ...mockedContext,
   nextRelease: mockedNextReleases.map(mockedNextRelease => mockedNextRelease.nextRelease)
@@ -36,25 +35,12 @@ afterEach(() => {
 
 describe.each(mockedNextReleases)(
   "for $packageName",
-  ({ packageName, packagePath, packageManifestPath, nextRelease }) => {
+  ({ packageName, packageManifestPath, nextRelease }) => {
     it("should throw an error if the package manifest is not found", () => {
       vi.spyOn(fs, "existsSync").mockReturnValue(false);
       assert.throws(
-        () => updatePackageVersion(nextRelease, packagePath, mockedContextWithNextRelease),
+        () => updatePackageVersion(nextRelease, mockedContextWithNextRelease),
         `Package ${packageManifestPath} not found for ${packageName}.`
-      );
-    });
-    it("should throw an error if `nextRelease` is undefined", () => {
-      assert.throws(
-        () => updatePackageVersion(nextRelease, packagePath, mockedContext),
-        "No next release found."
-      );
-    });
-    it("should throw an error if no next release is found for the package", () => {
-      assert.throws(
-        () =>
-          updatePackageVersion(nextRelease, packagePath, mockedContextWithoutNextReleaseForPackage),
-        `No next release found for ${packageName}.`
       );
     });
     it("should update the package version", () => {
@@ -65,7 +51,7 @@ describe.each(mockedNextReleases)(
         2
       );
       const readFileSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(expectedContent);
-      updatePackageVersion(nextRelease, packagePath, mockedContextWithNextRelease);
+      updatePackageVersion(nextRelease, mockedContextWithNextRelease);
       expect(readFileSpy).toHaveBeenCalledWith(packageManifestPath, "utf-8");
       expect(JSON.parse(expectedContent).version).toBe(expectedVersion);
       // TODO: uncomment when updated package manifest content is written to file

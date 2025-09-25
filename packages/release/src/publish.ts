@@ -1,11 +1,11 @@
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the API is used> */
+import type { PackagePublishing } from "@release-change/npm";
 import type { ReleaseNotes } from "@release-change/release-notes-generator";
 import type { Context } from "@release-change/shared";
 
 import { getPackageManager } from "@release-change/get-packages";
 import { createTag, getCurrentCommitId, push } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import { type PackagePublishing, preparePublishing, publishToRegistry } from "@release-change/npm";
+import { preparePublishing, publishToRegistry } from "@release-change/npm";
 import { createReleaseNotes, prepareReleaseNotes } from "@release-change/release-notes-generator";
 
 import { commitUpdatedFiles } from "./commit-updated-files.js";
@@ -21,7 +21,6 @@ export const publish = async (context: Context): Promise<void> => {
     cwd,
     env,
     config: { debug },
-    packages,
     nextRelease
   } = context;
   const logger = setLogger(debug);
@@ -31,22 +30,14 @@ export const publish = async (context: Context): Promise<void> => {
       const packagePublishingSet: PackagePublishing[] = [];
       const releaseNotesSet: ReleaseNotes[] = [];
       for (const nextReleasePackage of nextRelease) {
-        const { name } = nextReleasePackage;
-        const [packagePathname] = packages.filter(packageItem => packageItem.name === name);
-        if (packagePathname) {
-          const { pathname } = packagePathname;
-          updatePackageVersion(nextReleasePackage, pathname, context);
-          await updateLockFile(context, packageManager);
-          await commitUpdatedFiles(nextReleasePackage, pathname, packageManager, context);
-          const commitRef = getCurrentCommitId(cwd);
-          createTag(nextReleasePackage, commitRef, debug);
-          releaseNotesSet.push(prepareReleaseNotes(nextReleasePackage, context));
-          const packagePublishing = await preparePublishing(nextReleasePackage, context);
-          if (packagePublishing) packagePublishingSet.push(packagePublishing);
-        } else {
-          logger.logError(`Pathname not found for ${name || "root"} package.`);
-          process.exitCode = 1;
-        }
+        updatePackageVersion(nextReleasePackage, context);
+        await updateLockFile(context, packageManager);
+        await commitUpdatedFiles(nextReleasePackage, packageManager, context);
+        const commitRef = getCurrentCommitId(cwd);
+        createTag(nextReleasePackage, commitRef, debug);
+        releaseNotesSet.push(prepareReleaseNotes(nextReleasePackage, context));
+        const packagePublishing = await preparePublishing(nextReleasePackage, context);
+        if (packagePublishing) packagePublishingSet.push(packagePublishing);
       }
       await push(context, { includeTags: true });
       for (const packagePublishing of packagePublishingSet) {

@@ -30,9 +30,7 @@ afterEach(() => {
 
 describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, nextRelease }) => {
   it("should throw an error if the package manager is not found or supported", async () => {
-    await expect(
-      commitUpdatedFiles(nextRelease, packagePath, null, mockedContext)
-    ).rejects.toThrowError(
+    await expect(commitUpdatedFiles(nextRelease, null, mockedContext)).rejects.toThrowError(
       "The package manager is not found or is not one of those supported (npm or pnpm)."
     );
   });
@@ -44,7 +42,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
           : `${mockedContext.cwd}/${packagePath}/${file}`
       );
       const mockedCommand = vi.mocked(add).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      await commitUpdatedFiles(nextRelease, packagePath, packageManager, mockedContext);
+      await commitUpdatedFiles(nextRelease, packageManager, mockedContext);
       // TODO: uncomment when command is run
       // expect(mockedCommand).toHaveBeenCalledWith(mockedFiles);
     });
@@ -52,7 +50,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
       const mockedCommand = vi
         .mocked(commit)
         .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      await commitUpdatedFiles(nextRelease, packagePath, packageManager, mockedContext);
+      await commitUpdatedFiles(nextRelease, packageManager, mockedContext);
       // TODO: uncomment when command is run
       // expect(mockedCommand).toHaveBeenCalledWith(
       //   `chore(release): ${nextRelease.gitTag}\n\n${expectedFooter}`
