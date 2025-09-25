@@ -30,10 +30,9 @@ export const publish = async (context: Context): Promise<void> => {
       const packagePublishingSet: PackagePublishing[] = [];
       const releaseNotesSet: ReleaseNotes[] = [];
       for (const nextReleasePackage of nextRelease) {
-        const { pathname } = nextReleasePackage;
         updatePackageVersion(nextReleasePackage, context);
         await updateLockFile(context, packageManager);
-        await commitUpdatedFiles(nextReleasePackage, pathname, packageManager, context);
+        await commitUpdatedFiles(nextReleasePackage, packageManager, context);
         const commitRef = getCurrentCommitId(cwd);
         createTag(nextReleasePackage, commitRef, debug);
         releaseNotesSet.push(prepareReleaseNotes(nextReleasePackage, context));
