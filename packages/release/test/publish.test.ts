@@ -31,7 +31,10 @@ const mockedContextInMonorepoWithNextRelease = {
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({ setLogger: vi.fn(), checkErrorType: vi.fn() }));
-  vi.mock("@release-change/get-packages", () => ({ getPackageManager: vi.fn() }));
+  vi.mock("@release-change/get-packages", () => ({
+    getPackageDependencies: vi.fn(),
+    getPackageManager: vi.fn()
+  }));
   vi.mock("@release-change/git", () => ({
     getCurrentCommitId: vi.fn(),
     createTag: vi.fn(),
