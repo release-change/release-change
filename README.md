@@ -83,7 +83,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
         contents: write # to be able to publish a GitHub release
       steps:
         - name: Checkout
-          uses: actions/checkout@v4
+          uses: actions/checkout@v5
           with:
             fetch-depth: 0 # to clone the whole Git history
         - name: Install pnpm
@@ -91,7 +91,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
           with:
             version: 10
         - name: Setup Node.js
-          uses: actions/setup-node@v4
+          uses: actions/setup-node@v5
           with:
             node-version: "lts/*"
             cache: "pnpm"
@@ -124,11 +124,11 @@ Here are examples of the workflow configuration (the file must be saved in the `
         contents: write # to be able to publish a GitHub release
       steps:
         - name: Checkout
-          uses: actions/checkout@v4
+          uses: actions/checkout@v5
           with:
             fetch-depth: 0 # to clone the whole Git history
         - name: Setup Node.js
-          uses: actions/setup-node@v4
+          uses: actions/setup-node@v5
           with:
             node-version: "lts/*"
             cache: "npm"
