@@ -2,7 +2,9 @@ import type { PackagePublishing } from "@release-change/npm";
 import type { ReleaseNotes } from "@release-change/release-notes-generator";
 import type { Context } from "@release-change/shared";
 
-import { getPackageManager } from "@release-change/get-packages";
+import path from "node:path";
+
+import { getPackageDependencies, getPackageManager } from "@release-change/get-packages";
 import { createTag, getCurrentCommitId, push } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
@@ -10,6 +12,7 @@ import { createReleaseNotes, prepareReleaseNotes } from "@release-change/release
 
 import { commitUpdatedFiles } from "./commit-updated-files.js";
 import { updateLockFile } from "./update-lock-file.js";
+import { updatePackageDependenciesVersions } from "./update-package-dependencies-versions.js";
 import { updatePackageVersion } from "./update-package-version.js";
 
 /**
@@ -20,7 +23,7 @@ export const publish = async (context: Context): Promise<void> => {
   const {
     cwd,
     env,
-    config: { debug },
+    config: { debug, isMonorepo },
     nextRelease
   } = context;
   const logger = setLogger(debug);
@@ -30,7 +33,23 @@ export const publish = async (context: Context): Promise<void> => {
       const packagePublishingSet: PackagePublishing[] = [];
       const releaseNotesSet: ReleaseNotes[] = [];
       for (const nextReleasePackage of nextRelease) {
+        const { pathname } = nextReleasePackage;
+        const packageDependencies = getPackageDependencies(
+          path.join(cwd, pathname, "package.json")
+        );
+        const packageDependenciesToUpdate =
+          isMonorepo && packageDependencies
+            ? nextRelease.filter(packageNextRelease =>
+                packageDependencies.includes(packageNextRelease.name)
+              )
+            : null;
         updatePackageVersion(nextReleasePackage, context);
+        if (packageDependenciesToUpdate)
+          updatePackageDependenciesVersions(
+            nextReleasePackage,
+            packageDependenciesToUpdate,
+            context
+          );
         await updateLockFile(context, packageManager);
         await commitUpdatedFiles(nextReleasePackage, packageManager, context);
         const commitRef = getCurrentCommitId(cwd);
