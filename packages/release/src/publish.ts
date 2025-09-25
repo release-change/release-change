@@ -31,7 +31,7 @@ export const publish = async (context: Context): Promise<void> => {
       const releaseNotesSet: ReleaseNotes[] = [];
       for (const nextReleasePackage of nextRelease) {
         const { pathname } = nextReleasePackage;
-        updatePackageVersion(nextReleasePackage, pathname, context);
+        updatePackageVersion(nextReleasePackage, context);
         await updateLockFile(context, packageManager);
         await commitUpdatedFiles(nextReleasePackage, pathname, packageManager, context);
         const commitRef = getCurrentCommitId(cwd);
