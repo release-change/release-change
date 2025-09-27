@@ -15,6 +15,7 @@ it("should throw an error if the target branch is not defined", () => {
           gitTag: "v1.2.0",
           version: "1.2.0"
         },
+        [],
         {
           ...mockedContext,
           branch: undefined
@@ -33,6 +34,7 @@ it("should throw an error if the target branch is not supported by the configura
           gitTag: "v1.2.0",
           version: "1.2.0"
         },
+        [],
         {
           ...mockedContext,
           branch: "unknown"
@@ -51,6 +53,7 @@ it("should throw an error if no last release is defined", () => {
           gitTag: "v1.2.0",
           version: "1.2.0"
         },
+        [],
         { ...mockedContext, branch: "main" }
       ),
     "The last release is not defined."
@@ -66,6 +69,7 @@ it("should throw an error if the target package has no last release", () => {
           gitTag: "v1.2.0",
           version: "1.2.0"
         },
+        [],
         {
           ...mockedContext,
           branch: "main",
@@ -88,6 +92,7 @@ it("should throw an error if no commits have been retrieved", () => {
           gitTag: "v1.2.0",
           version: "1.2.0"
         },
+        [],
         {
           ...mockedContext,
           branch: "main",
@@ -111,7 +116,7 @@ it.each(mockedPackages)(
   "should prepare release notes for branch $branch, from $lastReleasePackage.gitTag to $nextReleasePackage.gitTag",
   ({ branch, commits, lastReleasePackage, nextReleasePackage, expectedReleaseNotes }) => {
     assert.deepEqual(
-      prepareReleaseNotes(nextReleasePackage, {
+      prepareReleaseNotes(nextReleasePackage, [], {
         ...mockedContext,
         branch,
         lastRelease: { ref: null, packages: [lastReleasePackage] },
@@ -123,9 +128,17 @@ it.each(mockedPackages)(
 );
 it.each(mockedPackagesInMonorepo)(
   "should prepare release notes in a monorepo context for branch $branch, from $lastReleasePackage.gitTag to $nextReleasePackage.gitTag",
-  ({ branch, commits, lastReleasePackage, nextReleasePackage, expectedReleaseNotes }) => {
+  ({
+    branch,
+    commits,
+    packageDependencies,
+    nextReleasePackageDependencies,
+    lastReleasePackage,
+    nextReleasePackage,
+    expectedReleaseNotes
+  }) => {
     assert.deepEqual(
-      prepareReleaseNotes(nextReleasePackage, {
+      prepareReleaseNotes(nextReleasePackage, packageDependencies, {
         ...mockedContextInMonorepo,
         branch,
         lastRelease: {
@@ -140,6 +153,7 @@ it.each(mockedPackagesInMonorepo)(
             }
           ]
         },
+        nextRelease: [nextReleasePackage, ...nextReleasePackageDependencies],
         commits
       }),
       expectedReleaseNotes
