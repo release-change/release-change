@@ -19,6 +19,10 @@ const mockedPackageManifest = {
     url: "git+https://github.com/release-change/release-change.git"
   }
 };
+const mockedPrivatePackageManifest = {
+  ...mockedPackageManifest,
+  private: true
+};
 
 beforeEach(() => {
   vi.mock("node:fs");
@@ -43,22 +47,25 @@ describe.each(mockedNextReleases)(
         `Package ${packageManifestPath} not found for ${packageName}.`
       );
     });
-    it("should update the package version", () => {
-      const expectedVersion = nextRelease.version;
-      const expectedContent = JSON.stringify(
-        { ...mockedPackageManifest, version: expectedVersion },
-        null,
-        2
-      );
-      const readFileSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(expectedContent);
-      updatePackageVersion(nextRelease, mockedContextWithNextRelease);
-      expect(readFileSpy).toHaveBeenCalledWith(packageManifestPath, "utf-8");
-      expect(JSON.parse(expectedContent).version).toBe(expectedVersion);
-      // TODO: uncomment when updated package manifest content is written to file
-      //expect(fs.writeFileSync).toHaveBeenCalledWith(packageManifestPath, expectedContent);
-      expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-        `Package version updated to ${expectedVersion} for ${packageName}.`
-      );
-    });
+    it.each([mockedPackageManifest, mockedPrivatePackageManifest])(
+      "should update the package version",
+      packageManifest => {
+        const expectedVersion = nextRelease.version;
+        const expectedContent = JSON.stringify(
+          { ...packageManifest, version: expectedVersion },
+          null,
+          2
+        );
+        const readFileSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(expectedContent);
+        updatePackageVersion(nextRelease, mockedContextWithNextRelease);
+        expect(readFileSpy).toHaveBeenCalledWith(packageManifestPath, "utf-8");
+        expect(JSON.parse(expectedContent).version).toBe(expectedVersion);
+        // TODO: uncomment when updated package manifest content is written to file
+        // expect(fs.writeFileSync).toHaveBeenCalledWith(packageManifestPath, expectedContent);
+        expect(mockedLogger.logInfo).toHaveBeenCalledWith(
+          `Package version updated to ${expectedVersion} for ${packageName}.`
+        );
+      }
+    );
   }
 );
