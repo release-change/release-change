@@ -15,15 +15,17 @@ import { setLogger } from "@release-change/logger";
  *
  * In a monorepo context, the release notes for the root package are prepared considering all other internal packages.
  * @param packageNextRelease - The next release data to use.
+ * @param packageDependencies - The package internal dependencies.
  * @param context - The context where the CLI is running.
  * @return The release notes for the package.
  */
 export const prepareReleaseNotes = (
   packageNextRelease: PackageNextRelease,
+  packageDependencies: string[] | null,
   context: Context
 ): ReleaseNotes => {
   const { pathname, name, gitTag } = packageNextRelease;
-  const { config, branch, lastRelease, commits } = context;
+  const { config, branch, lastRelease, nextRelease, commits } = context;
   if (branch) {
     const { debug, repositoryUrl, releaseType, isMonorepo } = config;
     const logger = setLogger(debug);
@@ -39,6 +41,7 @@ export const prepareReleaseNotes = (
             const majorChanges: string[] = [];
             const minorChanges: string[] = [];
             const patchChanges: string[] = [];
+            const dependenciesUpdates: string[] = [];
             const { gitTag: lastGitTag } = packageLastRelease;
             for (const commit of commits) {
               const releaseType = setReleaseType(commit, context);
@@ -74,6 +77,17 @@ export const prepareReleaseNotes = (
                 }
               }
             }
+            if (isMonorepo && name && packageDependencies && nextRelease) {
+              for (const packageDependency of packageDependencies) {
+                const packageNextRelease = nextRelease.find(
+                  packageItem => packageItem.name === packageDependency
+                );
+                if (packageNextRelease) {
+                  const updateItem = `- ${packageNextRelease.name}@${packageNextRelease.version}`;
+                  dependenciesUpdates.push(updateItem);
+                }
+              }
+            }
             const majorChangesSection = majorChanges.length
               ? `## Major changes\n\n${majorChanges.join("\n")}\n`
               : "";
@@ -83,6 +97,9 @@ export const prepareReleaseNotes = (
             const patchChangesSection = patchChanges.length
               ? `## Patch changes\n\n${patchChanges.join("\n")}\n`
               : "";
+            const dependenciesUpdatesSection = dependenciesUpdates.length
+              ? `## Dependencies updates\n\n${dependenciesUpdates.join("\n")}\n`
+              : "";
             const fullChangelogSection = lastGitTag
               ? `---\n\n**Full changelog:** [\`${lastGitTag}...${gitTag}\`](${repositoryUrl.replace(".git", "")}/compare/${encodeURIComponent(lastGitTag)}...${encodeURIComponent(gitTag)})\n`
               : "";
@@ -90,6 +107,7 @@ export const prepareReleaseNotes = (
               majorChangesSection,
               minorChangesSection,
               patchChangesSection,
+              dependenciesUpdatesSection,
               fullChangelogSection
             ]
               .filter(Boolean)
