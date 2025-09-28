@@ -31,6 +31,7 @@ export const preparePublishing = async (
     const packageManifest: PackageManifest = JSON.parse(
       fs.readFileSync(packageManifestPath, "utf-8")
     );
+    const packageName = name || "root";
     const isPackagePrivate = Boolean(packageManifest.private);
     if (debug) {
       logger.setDebugScope("npm:prepare-publishing");
@@ -55,7 +56,7 @@ export const preparePublishing = async (
         }
         if (packageManager === "pnpm") args.push("--no-git-checks");
         if (debug) {
-          logger.logDebug(`Publishing info prepared for ${name || "root"} package:`);
+          logger.logDebug(`Publishing info prepared for ${packageName} package:`);
           logger.logDebug(inspect(packagePublishing, { depth: Number.POSITIVE_INFINITY }));
         }
         return packagePublishing;
@@ -65,7 +66,9 @@ export const preparePublishing = async (
         "The package manager is not found or is not one of those supported (npm or pnpm)."
       );
     }
-    logger.logWarn("The package is private; therefore, the release will not be published.");
+    logger.logWarn(
+      `The ${packageName} package is private; therefore, the release will not be published.`
+    );
     return null;
   }
   process.exitCode = 1;
