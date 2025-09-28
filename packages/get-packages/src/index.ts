@@ -3,6 +3,7 @@ export type { PackageManager } from "./get-packages.types.js";
 export { getNpmGlobPatterns } from "./get-npm-glob-patterns.js";
 export { getPackageDependencies } from "./get-package-dependencies.js";
 export { getPackageManager } from "./get-package-manager.js";
+export { getPackageName } from "./get-package-name.js";
 export { getPackageVersion } from "./get-package-version.js";
 export { getPackages } from "./get-packages.js";
 export { getPnpmGlobPatterns } from "./get-pnpm-glob-patterns.js";

@@ -203,6 +203,9 @@ importers:
       '@release-change/commit-analyser':
         specifier: workspace:*
         version: link:../commit-analyser
+      '@release-change/get-packages':
+        specifier: workspace:*
+        version: link:../get-packages
       '@release-change/github':
         specifier: workspace:*
         version: link:../github
