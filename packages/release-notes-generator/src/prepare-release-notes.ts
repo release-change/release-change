@@ -58,7 +58,7 @@ export const prepareReleaseNotes = (
                 const abbreviatedSha = sha?.slice(0, COMMIT_ABBREVIATED_SHA_LENGTH);
                 const [_, scope, description] = message.match(COMMIT_MESSAGE) ?? [];
                 const sanitisedDescription = description ?? "";
-                const changeItem = `- ${
+                const changeItem = `${
                   scope ? `**${scope}:** ${sanitisedDescription}` : sanitisedDescription
                 } ([\`${abbreviatedSha}\`](${repositoryUrl.replace(".git", "")}/commit/${sha}))`;
                 switch (releaseType) {
@@ -83,35 +83,20 @@ export const prepareReleaseNotes = (
                   packageItem => packageItem.name === packageDependency
                 );
                 if (packageNextRelease) {
-                  const updateItem = `- ${packageNextRelease.name}@${packageNextRelease.version}`;
+                  const updateItem = `${packageNextRelease.name}@${packageNextRelease.version}`;
                   dependenciesUpdates.push(updateItem);
                 }
               }
             }
-            const majorChangesSection = majorChanges.length
-              ? `## Major changes\n\n${majorChanges.join("\n")}\n`
+            const fullChangelog = lastGitTag
+              ? `**Full changelog:** [\`${lastGitTag}...${gitTag}\`](${repositoryUrl.replace(".git", "")}/compare/${encodeURIComponent(lastGitTag)}...${encodeURIComponent(gitTag)})`
               : "";
-            const minorChangesSection = minorChanges.length
-              ? `## Minor changes\n\n${minorChanges.join("\n")}\n`
-              : "";
-            const patchChangesSection = patchChanges.length
-              ? `## Patch changes\n\n${patchChanges.join("\n")}\n`
-              : "";
-            const dependenciesUpdatesSection = dependenciesUpdates.length
-              ? `## Dependencies updates\n\n${dependenciesUpdates.join("\n")}\n`
-              : "";
-            const fullChangelogSection = lastGitTag
-              ? `---\n\n**Full changelog:** [\`${lastGitTag}...${gitTag}\`](${repositoryUrl.replace(".git", "")}/compare/${encodeURIComponent(lastGitTag)}...${encodeURIComponent(gitTag)})\n`
-              : "";
-            const releaseNotesBody = [
-              majorChangesSection,
-              minorChangesSection,
-              patchChangesSection,
-              dependenciesUpdatesSection,
-              fullChangelogSection
-            ]
-              .filter(Boolean)
-              .join("\n");
+            const releaseNotesBody: ReleaseNotes["body"] = {};
+            if (majorChanges.length) releaseNotesBody.major = majorChanges;
+            if (minorChanges.length) releaseNotesBody.minor = minorChanges;
+            if (patchChanges.length) releaseNotesBody.patch = patchChanges;
+            if (dependenciesUpdates.length) releaseNotesBody.dependencies = dependenciesUpdates;
+            if (fullChangelog) releaseNotesBody.changelog = fullChangelog;
             if (debug) {
               logger.setDebugScope("release-notes-generator:prepare-release-notes");
               logger.logDebug(`Release notes for ${name || "root"} package:`);
