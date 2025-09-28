@@ -1,6 +1,6 @@
 export type PackageManifest = {
-  name?: string;
-  version?: string;
+  name: string;
+  version: string;
   private?: boolean;
   repository?:
     | string

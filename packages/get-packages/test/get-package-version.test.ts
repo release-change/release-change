@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-import { expect, it, vi } from "vitest";
+import { assert, expect, it, vi } from "vitest";
 
 import { getPackageVersion } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
@@ -13,12 +13,15 @@ it("should return `null` if the package manifest file is not found", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(false);
   expect(getPackageVersion(mockedPath)).toBe(null);
 });
-it("should return `null` if the package manifest file does not have the `version` property", () => {
+it("should throw an error if the package manifest file does not have the `version` property", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(true);
   vi.spyOn(fs, "readFileSync").mockReturnValue(
     JSON.stringify(mockedPackageManifestFileWithoutVersion)
   );
-  expect(getPackageVersion(mockedPath)).toBe(null);
+  assert.throws(
+    () => getPackageVersion(mockedPath),
+    `Failed to get the package version for ${mockedPath}: \`version\` property not found.`
+  );
 });
 it("should return the `version` property value if the package manifest file has the `version` property", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(true);

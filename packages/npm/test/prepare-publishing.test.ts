@@ -27,6 +27,7 @@ afterEach(() => {
 describe.each(mockedNextReleases)("for package $name and version $version", nextRelease => {
   const packageManifestContent = {
     name: nextRelease.name || "foo",
+    version: "0.0.0",
     repository: {
       type: "git",
       url: "git+https://github.com/owner/repo.git"

@@ -1,8 +1,8 @@
 import fs from "node:fs";
 
-import { expect, it, vi } from "vitest";
+import { assert, expect, it, vi } from "vitest";
 
-import { getPackageName } from "../src/get-package-name.js";
+import { getPackageName } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 const mockedPath = `${mockedCwd}/packages/a/package.json`;
@@ -13,12 +13,15 @@ it("should return `null` if the package manifest file is not found", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(false);
   expect(getPackageName(mockedPath)).toBe(null);
 });
-it("should return `null` if the package manifest file does not have the `name` property", () => {
+it("should throw an error if the package manifest file does not have the `name` property", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(true);
   vi.spyOn(fs, "readFileSync").mockReturnValue(
     JSON.stringify(mockedPackageManifestFileWithoutName)
   );
-  expect(getPackageName(mockedPath)).toBe(null);
+  assert.throws(
+    () => getPackageName(mockedPath),
+    `Failed to get the package name for ${mockedPath}: \`name\` property not found.`
+  );
 });
 it("should return the `name` property value if the package manifest file has the `name` property", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(true);

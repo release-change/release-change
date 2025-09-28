@@ -1,9 +1,9 @@
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getPackageManager } from "../src/get-package-manager.js";
 import { getPackagesFromGlobPatterns } from "../src/get-packages-from-glob-patterns.js";
 import {
   getNpmGlobPatterns,
+  getPackageManager,
   getPackages,
   getPnpmGlobPatterns,
   getRootPackageManifest,
@@ -62,7 +62,7 @@ it("should throw an error if the package manager is pnpm and the glob patterns d
 });
 it("should return one single package when the package manager is npm and the glob patterns do not return anything", async () => {
   vi.mocked(getPackageManager).mockReturnValue("npm");
-  vi.mocked(getRootPackageManifest).mockReturnValue({});
+  vi.mocked(getRootPackageManifest).mockReturnValue({ name: "my-package", version: "1.0.0" });
   vi.mocked(getNpmGlobPatterns).mockReturnValue(null);
   assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
 });
