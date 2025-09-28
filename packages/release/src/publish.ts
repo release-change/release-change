@@ -1,5 +1,4 @@
 import type { PackagePublishing } from "@release-change/npm";
-import type { ReleaseNotes } from "@release-change/release-notes-generator";
 import type { Context } from "@release-change/shared";
 
 import path from "node:path";
@@ -8,7 +7,12 @@ import { getPackageDependencies, getPackageManager } from "@release-change/get-p
 import { createTag, getCurrentCommitId, push } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
-import { createReleaseNotes, prepareReleaseNotes } from "@release-change/release-notes-generator";
+import {
+  createReleaseNotes,
+  prepareReleaseNotes,
+  type ReleaseNotes,
+  updateChangelogFile
+} from "@release-change/release-notes-generator";
 
 import { commitUpdatedFiles } from "./commit-updated-files.js";
 import { updateLockFile } from "./update-lock-file.js";
@@ -43,6 +47,12 @@ export const publish = async (context: Context): Promise<void> => {
                 packageDependencies.includes(packageNextRelease.name)
               )
             : null;
+        const preparedReleaseNotes = prepareReleaseNotes(
+          nextReleasePackage,
+          packageDependencies,
+          context
+        );
+        releaseNotesSet.push(preparedReleaseNotes);
         updatePackageVersion(nextReleasePackage, context);
         if (packageDependenciesToUpdate)
           updatePackageDependenciesVersions(
@@ -51,10 +61,10 @@ export const publish = async (context: Context): Promise<void> => {
             context
           );
         await updateLockFile(context, packageManager);
+        updateChangelogFile(nextReleasePackage, preparedReleaseNotes.body, cwd);
         await commitUpdatedFiles(nextReleasePackage, packageManager, context);
         const commitRef = getCurrentCommitId(cwd);
         createTag(nextReleasePackage, commitRef, debug);
-        releaseNotesSet.push(prepareReleaseNotes(nextReleasePackage, packageDependencies, context));
         const packagePublishing = await preparePublishing(nextReleasePackage, context);
         if (packagePublishing) packagePublishingSet.push(packagePublishing);
       }
