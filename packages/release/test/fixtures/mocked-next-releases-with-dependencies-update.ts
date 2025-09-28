@@ -26,6 +26,7 @@ export const mockedNextReleasesWithDependencies: {
     dependencies: [],
     expectedDependenciesUpdates: [],
     packageManifest: {
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -33,6 +34,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -55,6 +57,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [],
     packageManifest: {
       private: true,
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -63,6 +66,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -84,6 +88,7 @@ export const mockedNextReleasesWithDependencies: {
     dependencies: [],
     expectedDependenciesUpdates: [],
     packageManifest: {
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -91,6 +96,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -113,6 +119,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [],
     packageManifest: {
       private: true,
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -121,6 +128,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -142,6 +150,7 @@ export const mockedNextReleasesWithDependencies: {
     dependencies: [],
     expectedDependenciesUpdates: [],
     packageManifest: {
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -149,6 +158,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -171,6 +181,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [],
     packageManifest: {
       private: true,
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -179,6 +190,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -200,6 +212,7 @@ export const mockedNextReleasesWithDependencies: {
     dependencies: [],
     expectedDependenciesUpdates: [],
     packageManifest: {
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -207,6 +220,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -229,6 +243,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [],
     packageManifest: {
       private: true,
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -237,6 +252,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "my-package",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -270,53 +286,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     ],
     packageManifest: {
-      version: "0.0.0",
-      repository: {
-        type: "git",
-        url: "git+https://github.com/release-change/release-change.git"
-      },
-      dependencies: {
-        "@monorepo/b": "workspace:*"
-      }
-    },
-    expectedPackageManifest: {
-      version: "0.0.0",
-      repository: {
-        type: "git",
-        url: "git+https://github.com/release-change/release-change.git"
-      },
-      dependencies: {
-        "@monorepo/b": "workspace:*"
-      }
-    }
-  },
-  {
-    packageName: "@monorepo/a package",
-    packagePath: "packages/a",
-    packageManifestPath: "/fake/path/packages/a/package.json",
-    nextRelease: {
       name: "@monorepo/a",
-      pathname: "packages/a",
-      gitTag: "@monorepo/a@v1.2.3",
-      version: "1.2.3"
-    },
-    dependencyUpdateMethod: "workspace",
-    dependencies: [
-      {
-        name: "@monorepo/b",
-        pathname: "packages/b",
-        gitTag: "@monorepo/b@v1.0.0",
-        version: "1.0.0"
-      }
-    ],
-    expectedDependenciesUpdates: [
-      {
-        name: "@monorepo/b",
-        version: "workspace:*"
-      }
-    ],
-    packageManifest: {
-      private: true,
       version: "0.0.0",
       repository: {
         type: "git",
@@ -327,7 +297,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
-      private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -364,6 +334,57 @@ export const mockedNextReleasesWithDependencies: {
       }
     ],
     packageManifest: {
+      private: true,
+      name: "@monorepo/a",
+      version: "0.0.0",
+      repository: {
+        type: "git",
+        url: "git+https://github.com/release-change/release-change.git"
+      },
+      dependencies: {
+        "@monorepo/b": "workspace:*"
+      }
+    },
+    expectedPackageManifest: {
+      private: true,
+      name: "@monorepo/a",
+      version: "0.0.0",
+      repository: {
+        type: "git",
+        url: "git+https://github.com/release-change/release-change.git"
+      },
+      dependencies: {
+        "@monorepo/b": "workspace:*"
+      }
+    }
+  },
+  {
+    packageName: "@monorepo/a package",
+    packagePath: "packages/a",
+    packageManifestPath: "/fake/path/packages/a/package.json",
+    nextRelease: {
+      name: "@monorepo/a",
+      pathname: "packages/a",
+      gitTag: "@monorepo/a@v1.2.3",
+      version: "1.2.3"
+    },
+    dependencyUpdateMethod: "workspace",
+    dependencies: [
+      {
+        name: "@monorepo/b",
+        pathname: "packages/b",
+        gitTag: "@monorepo/b@v1.0.0",
+        version: "1.0.0"
+      }
+    ],
+    expectedDependenciesUpdates: [
+      {
+        name: "@monorepo/b",
+        version: "workspace:*"
+      }
+    ],
+    packageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -374,6 +395,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -411,6 +433,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     packageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -422,6 +445,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -458,6 +482,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     ],
     packageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -468,6 +493,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -505,6 +531,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     packageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -516,6 +543,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -552,6 +580,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     ],
     packageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -562,6 +591,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -599,6 +629,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     packageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -610,6 +641,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -646,6 +678,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     ],
     packageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -656,6 +689,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -693,6 +727,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     packageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -704,6 +739,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -740,6 +776,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     ],
     packageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -750,6 +787,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -787,6 +825,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     packageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -798,6 +837,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -834,6 +874,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     ],
     packageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -844,6 +885,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -881,6 +923,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     packageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -892,6 +935,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -928,6 +972,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     ],
     packageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -938,6 +983,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -975,6 +1021,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     packageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -986,6 +1033,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/a",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1017,6 +1065,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "workspace:*" }],
     packageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1027,6 +1076,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1059,6 +1109,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "workspace:*" }],
     packageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1070,6 +1121,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1101,6 +1153,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "workspace:*" }],
     packageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1111,6 +1164,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1143,6 +1197,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "workspace:*" }],
     packageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1154,6 +1209,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1185,6 +1241,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1195,6 +1252,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1227,6 +1285,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1238,6 +1297,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1269,6 +1329,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1279,6 +1340,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1311,6 +1373,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1322,6 +1385,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1353,6 +1417,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1363,6 +1428,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1395,6 +1461,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1406,6 +1473,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1437,6 +1505,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1447,6 +1516,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1479,6 +1549,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1490,6 +1561,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1521,6 +1593,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1531,6 +1604,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1563,6 +1637,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1574,6 +1649,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1605,6 +1681,7 @@ export const mockedNextReleasesWithDependencies: {
     ],
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1615,6 +1692,7 @@ export const mockedNextReleasesWithDependencies: {
       }
     },
     expectedPackageManifest: {
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1647,6 +1725,7 @@ export const mockedNextReleasesWithDependencies: {
     expectedDependenciesUpdates: [{ name: "@monorepo/a", version: "1.2.3" }],
     packageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",
@@ -1658,6 +1737,7 @@ export const mockedNextReleasesWithDependencies: {
     },
     expectedPackageManifest: {
       private: true,
+      name: "@monorepo/b",
       version: "0.0.0",
       repository: {
         type: "git",

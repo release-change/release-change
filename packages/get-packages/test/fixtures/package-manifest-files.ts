@@ -5,15 +5,19 @@ export const packageManifestFiles: {
   patterns: { include: string[]; exclude: string[] } | null;
 }[] = [
   {
-    content: {},
+    content: { name: "my-package", version: "1.0.0" },
     patterns: null
   },
   {
-    content: { workspaces: ["packages/*"] },
+    content: { name: "my-monorepo", version: "1.0.0", workspaces: ["packages/*"] },
     patterns: { include: ["packages/*"], exclude: ["**/node_modules/**"] }
   },
   {
-    content: { workspaces: ["my-app", "packages/*", "components/**"] },
+    content: {
+      name: "my-monorepo",
+      version: "1.0.0",
+      workspaces: ["my-app", "packages/*", "components/**"]
+    },
     patterns: {
       include: ["my-app", "packages/*", "components/**"],
       exclude: ["**/node_modules/**"]

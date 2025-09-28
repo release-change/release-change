@@ -4,12 +4,15 @@ import { getRepositoryUrl } from "../src/get-repository-url.js";
 import { getRootPackage } from "../src/index.js";
 
 const mockedPackageWithRepositoryAsObject = {
+  name: "my-package",
+  version: "1.0.0",
   repository: {
     type: "git",
     url: "git+https://github.com/user-id/repo-name.git"
   }
 };
 const mockedPackageWithRepositoryAsString = {
+  ...mockedPackageWithRepositoryAsObject,
   repository: "https://github.com/user-id/repo-name.git"
 };
 const expectedUrlFromRepositoryAsObject = "https://github.com/user-id/repo-name.git";

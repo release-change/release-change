@@ -43,7 +43,7 @@ export const preparePublishing = async (
         const args = ["publish", "--dry-run", "--access", "public"];
         const packagePublishing: PackagePublishing = {
           name,
-          packageManifestName: packageManifest.name ?? "",
+          packageManifestName: packageManifest.name,
           pathname,
           version,
           packageManager,

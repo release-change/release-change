@@ -13,6 +13,7 @@ const mockedContextWithNextRelease = {
   nextRelease: mockedNextReleases.map(mockedNextRelease => mockedNextRelease.nextRelease)
 };
 const mockedPackageManifest = {
+  name: "foo",
   version: "0.0.0",
   repository: {
     type: "git",
