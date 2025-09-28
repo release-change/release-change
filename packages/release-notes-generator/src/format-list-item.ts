@@ -3,4 +3,4 @@
  * @param item - The item to use.
  * @return The item formatted as a list item in Markdown format.
  */
-export const formatListItem = (item: string) => `- ${item}`;
+export const formatListItem = (item: string): string => `- ${item}`;
