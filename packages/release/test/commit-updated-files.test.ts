@@ -12,8 +12,8 @@ const expectedVersion = "v1.0.0";
 const expectedFooter =
   "Co-authored-by: mocked-committer-name [bot] <0+mocked-committer-name-bot@users.noreply.github.com>";
 const mockedPackageManagers: [PackageManager, string[]][] = [
-  ["pnpm", ["package.json", "pnpm-lock.yaml"]],
-  ["npm", ["package.json", "package-lock.json"]]
+  ["pnpm", ["package.json", "pnpm-lock.yaml", "CHANGELOG.md"]],
+  ["npm", ["package.json", "package-lock.json", "CHANGELOG.md"]]
 ];
 
 beforeEach(() => {
@@ -44,7 +44,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
       const mockedCommand = vi.mocked(add).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       await commitUpdatedFiles(nextRelease, packageManager, mockedContext);
       // TODO: uncomment when command is run
-      // expect(mockedCommand).toHaveBeenCalledWith(mockedFiles);
+      // expect(mockedCommand).toHaveBeenCalledWith(mockedFiles, mockedContext.cwd);
     });
     it(`should run the \`git commit\` command with ${expectedVersion}`, async () => {
       const mockedCommand = vi

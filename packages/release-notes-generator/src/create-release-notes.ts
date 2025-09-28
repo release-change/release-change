@@ -9,6 +9,8 @@ import { getReleaseToken } from "@release-change/ci";
 import { getRepositoryRelatedEntryPoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
 
+import { formatReleaseNotesBody } from "./format-release-notes-body.js";
+
 /**
  * Creates release notes on GitHub from the prepared notes.
  * @param releaseNotes - The prepared release notes to use.
@@ -28,9 +30,9 @@ export const createReleaseNotes = async (
     tag_name: tagName,
     target_commitish: target,
     name: tagName,
-    body,
     prerelease: isPrerelease,
-    make_latest: !isPrerelease
+    make_latest: !isPrerelease,
+    body: formatReleaseNotesBody(body)
   };
   // TODO: uncomment to use GitHub API
   // const releaseNotesResponse = await fetch(uri, {
