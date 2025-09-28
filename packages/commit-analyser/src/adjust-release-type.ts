@@ -1,5 +1,4 @@
-import type { Context } from "@release-change/shared";
-import type { ReleaseType } from "./commit-analyser.types.js";
+import type { Context, ReleaseType } from "@release-change/shared";
 
 import path from "node:path";
 

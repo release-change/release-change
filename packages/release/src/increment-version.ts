@@ -1,5 +1,4 @@
-import type { ReleaseType } from "@release-change/commit-analyser";
-import type { BranchConfig } from "@release-change/shared";
+import type { BranchConfig, ReleaseType } from "@release-change/shared";
 
 import { getPrerelease, increase } from "@release-change/semver";
 

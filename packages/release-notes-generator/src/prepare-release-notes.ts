@@ -3,11 +3,7 @@ import type { ReleaseNotes } from "./release-notes-generator.types.js";
 
 import { inspect } from "node:util";
 
-import {
-  COMMIT_ABBREVIATED_SHA_LENGTH,
-  COMMIT_MESSAGE,
-  setReleaseType
-} from "@release-change/commit-analyser";
+import { COMMIT_ABBREVIATED_SHA_LENGTH, COMMIT_MESSAGE } from "@release-change/commit-analyser";
 import { setLogger } from "@release-change/logger";
 
 /**
@@ -44,8 +40,7 @@ export const prepareReleaseNotes = (
             const dependenciesUpdates: string[] = [];
             const { gitTag: lastGitTag } = packageLastRelease;
             for (const commit of commits) {
-              const releaseType = setReleaseType(commit, context);
-              const { isMergeCommit, sha, message, modifiedFiles } = commit;
+              const { isMergeCommit, sha, message, releaseType, modifiedFiles } = commit;
               if (
                 isMergeCommit ||
                 (isMonorepo &&

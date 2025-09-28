@@ -1,4 +1,4 @@
-import type { ReleaseType } from "../src/index.js";
+import type { ReleaseType } from "@release-change/shared";
 
 import { getPackageDependencies } from "@release-change/get-packages";
 import { afterEach, assert, beforeEach, it, vi } from "vitest";

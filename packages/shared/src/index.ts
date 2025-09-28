@@ -17,7 +17,8 @@ export type {
   ParsedCliOptions,
   Reference,
   ReleaseInfoGithub,
-  ReleaseInfoNpm
+  ReleaseInfoNpm,
+  ReleaseType
 } from "./shared.types.js";
 
 export { agreeInNumber } from "./agree-in-number.js";
