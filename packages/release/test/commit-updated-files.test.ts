@@ -53,7 +53,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
       await commitUpdatedFiles(nextRelease, packageManager, mockedContext);
       // TODO: uncomment when command is run
       // expect(mockedCommand).toHaveBeenCalledWith(
-      //   `chore(release): ${nextRelease.gitTag}\n\n${expectedFooter}`
+      //   `chore: ${nextRelease.gitTag}\n\n${expectedFooter}`
       // );
     });
   });

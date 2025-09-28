@@ -1,5 +1,4 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when commands are run> */
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when commands are run> */
 import type { PackageManager } from "@release-change/get-packages";
 import type { Context, PackageNextRelease } from "@release-change/shared";
 
@@ -34,12 +33,12 @@ export const commitUpdatedFiles = async (
     const changelogFile = path.join(cwd, pathname, "CHANGELOG.md");
     // TODO: uncomment to run `git add` command
     // const gitAddCommandResult = await add([packageManifestFile, lockFile, changelogFile], cwd);
-    const commitMessage = `chore(release): ${packageNextRelease.gitTag}\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
+    const commitMessage = `chore: ${packageNextRelease.gitTag}\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
     // TODO: uncomment to run `git commit` command
     // const gitCommitCommandResult = await commit(commitMessage, cwd);
     if (debug) {
       logger.setDebugScope("release:commit-updated-files");
-      logger.logDebug(`Command run: git add ${packageManifestFile} ${lockFile}`);
+      logger.logDebug(`Command run: git add ${packageManifestFile} ${lockFile} ${changelogFile}`);
       // TODO: uncomment when command is run
       // logger.logDebug(inspect(gitAddCommandResult, { depth: Number.POSITIVE_INFINITY }));
       logger.logDebug(`Command run: git commit -m ${commitMessage}`);
