@@ -11,23 +11,28 @@ import { formatListItem } from "./format-list-item.js";
  * - `patch`,
  * - `dependencies`.
  * @param releaseNotesBody - The release notes body to format.
+ * @param [isReleaseNotesBodyForChangelog] - Whether the release notes body is for the `CHANGELOG.md` file or not.
  * @return The formatted release notes body as a string.
  */
-export const formatReleaseNotesBody = (releaseNotesBody: ReleaseNotes["body"]): string => {
+export const formatReleaseNotesBody = (
+  releaseNotesBody: ReleaseNotes["body"],
+  isReleaseNotesBodyForChangelog = false
+): string => {
   const { major, minor, patch, dependencies, changelog } = releaseNotesBody;
   const hasChanges = major || minor || patch || dependencies;
   if (hasChanges) {
+    const headingLevel = isReleaseNotesBodyForChangelog ? "###" : "##";
     const majorChangesSection = major?.length
-      ? `## Major changes\n\n${major.map(formatListItem).join("\n")}\n`
+      ? `${headingLevel} Major changes\n\n${major.map(formatListItem).join("\n")}\n`
       : "";
     const minorChangesSection = minor?.length
-      ? `## Minor changes\n\n${minor.map(formatListItem).join("\n")}\n`
+      ? `${headingLevel} Minor changes\n\n${minor.map(formatListItem).join("\n")}\n`
       : "";
     const patchChangesSection = patch?.length
-      ? `## Patch changes\n\n${patch.map(formatListItem).join("\n")}\n`
+      ? `${headingLevel} Patch changes\n\n${patch.map(formatListItem).join("\n")}\n`
       : "";
     const dependenciesUpdatesSection = dependencies?.length
-      ? `## Dependencies updates\n\n${dependencies.map(formatListItem).join("\n")}\n`
+      ? `${headingLevel} Dependencies updates\n\n${dependencies.map(formatListItem).join("\n")}\n`
       : "";
     const fullChangelogSection = changelog ? `---\n\n${changelog}\n` : "";
     return [
