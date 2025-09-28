@@ -2,15 +2,21 @@ import type { PackageManager } from "@release-change/get-packages";
 
 import fs from "node:fs";
 
-import { getPackageManager } from "@release-change/get-packages";
+import { getPackageDependencies, getPackageManager } from "@release-change/get-packages";
 import { createTag, getCurrentCommitId } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
-import { prepareReleaseNotes } from "@release-change/release-notes-generator";
+import { preparePublishing, publishToRegistry } from "@release-change/npm";
+import {
+  createReleaseNotes,
+  prepareReleaseNotes,
+  updateChangelogFile
+} from "@release-change/release-notes-generator";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { commitUpdatedFiles } from "../src/commit-updated-files.js";
 import { publish } from "../src/index.js";
 import { updateLockFile } from "../src/update-lock-file.js";
+import { updatePackageDependenciesVersions } from "../src/update-package-dependencies-versions.js";
 import { updatePackageVersion } from "../src/update-package-version.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
@@ -40,8 +46,19 @@ beforeEach(() => {
     createTag: vi.fn(),
     push: vi.fn()
   }));
-  vi.mock("@release-change/release-notes-generator", () => ({ prepareReleaseNotes: vi.fn() }));
+  vi.mock("@release-change/release-notes-generator", () => ({
+    prepareReleaseNotes: vi.fn(),
+    updateChangelogFile: vi.fn(),
+    createReleaseNotes: vi.fn()
+  }));
+  vi.mock("@release-change/npm", () => ({
+    preparePublishing: vi.fn(),
+    publishToRegistry: vi.fn()
+  }));
   vi.mock("../src/update-package-version.js", () => ({ updatePackageVersion: vi.fn() }));
+  vi.mock("../src/update-package-dependencies-versions.js", () => ({
+    updatePackageDependenciesVersions: vi.fn()
+  }));
   vi.mock("../src/update-lock-file.js", () => ({ updateLockFile: vi.fn() }));
   vi.mock("../src/commit-updated-files.js", () => ({ commitUpdatedFiles: vi.fn() }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
@@ -50,25 +67,28 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-it("should not call any functions allowing to publish any packages if `context.nextRelease` is undefined", async () => {
+it("should not call `getPackageManager()` if `context.nextRelease` is undefined", async () => {
   await publish(mockedContext);
   expect(getPackageManager).not.toHaveBeenCalled();
-  expect(updatePackageVersion).not.toHaveBeenCalled();
-  expect(updateLockFile).not.toHaveBeenCalled();
-  expect(commitUpdatedFiles).not.toHaveBeenCalled();
-  expect(getCurrentCommitId).not.toHaveBeenCalled();
-  expect(createTag).not.toHaveBeenCalled();
 });
-
-it("should not call any functions allowing to publish any packages if `context.nextRelease` is an empty array", async () => {
-  await publish({ ...mockedContext, nextRelease: [] });
-  expect(getPackageManager).toHaveBeenCalled();
-  expect(updatePackageVersion).not.toHaveBeenCalled();
-  expect(updateLockFile).not.toHaveBeenCalled();
-  expect(commitUpdatedFiles).not.toHaveBeenCalled();
-  expect(getCurrentCommitId).not.toHaveBeenCalled();
-  expect(createTag).not.toHaveBeenCalled();
-});
+it.each([mockedContext, { ...mockedContext, nextRelease: [] }])(
+  "should not call any functions allowing to publish any packages if `context.nextRelease` is undefined or an empty array",
+  async context => {
+    await publish(context);
+    expect(getPackageDependencies).not.toHaveBeenCalled();
+    expect(prepareReleaseNotes).not.toHaveBeenCalled();
+    expect(updatePackageVersion).not.toHaveBeenCalled();
+    expect(updatePackageDependenciesVersions).not.toHaveBeenCalled();
+    expect(updateLockFile).not.toHaveBeenCalled();
+    expect(updateChangelogFile).not.toHaveBeenCalled();
+    expect(commitUpdatedFiles).not.toHaveBeenCalled();
+    expect(getCurrentCommitId).not.toHaveBeenCalled();
+    expect(createTag).not.toHaveBeenCalled();
+    expect(preparePublishing).not.toHaveBeenCalled();
+    expect(publishToRegistry).not.toHaveBeenCalled();
+    expect(createReleaseNotes).not.toHaveBeenCalled();
+  }
+);
 it("should throw an error if the package manager is not found or unsupported", async () => {
   vi.mocked(getPackageManager).mockReturnValue(null);
   vi.mocked(updateLockFile).mockRejectedValue(
@@ -84,6 +104,27 @@ describe.each(packageManagers)("for %s", packageManager => {
   describe.each([mockedContextWithNextRelease, mockedContextInMonorepoWithNextRelease])(
     "for isMonorepo: $config.isMonorepo",
     context => {
+      const mockedReleaseNotes = {
+        tagName: "v1.0.0",
+        target: "main",
+        isPrerelease: false,
+        body: {}
+      };
+
+      beforeEach(() => {
+        vi.mocked(getPackageDependencies).mockReturnValue([]);
+        vi.mocked(prepareReleaseNotes).mockReturnValue(mockedReleaseNotes);
+        vi.mocked(updatePackageVersion).mockImplementation(() => undefined);
+        vi.mocked(updateLockFile).mockResolvedValue();
+        vi.mocked(updateChangelogFile).mockImplementation(() => undefined);
+        vi.mocked(commitUpdatedFiles).mockResolvedValue();
+        vi.mocked(getCurrentCommitId).mockReturnValue("0123456");
+        vi.mocked(createTag).mockImplementation(() => undefined);
+      });
+      afterEach(() => {
+        vi.clearAllMocks();
+      });
+
       it("should throw an error if the package manifest file is not found", async () => {
         vi.spyOn(fs, "existsSync").mockReturnValue(false);
         vi.mocked(updatePackageVersion).mockImplementation(() => {
@@ -95,11 +136,6 @@ describe.each(packageManagers)("for %s", packageManager => {
         expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
       });
       it("should throw an error if the commit reference ID is empty", async () => {
-        vi.mocked(updatePackageVersion).mockImplementation(() => {
-          return undefined;
-        });
-        vi.mocked(updateLockFile).mockResolvedValue();
-        vi.mocked(commitUpdatedFiles).mockResolvedValue();
         vi.mocked(getCurrentCommitId).mockReturnValue("");
         vi.mocked(createTag).mockImplementation(() => {
           throw new Error("The commit reference must not be empty.");
@@ -129,15 +165,6 @@ describe.each(packageManagers)("for %s", packageManager => {
         }
       ])("$case", ({ errorMessage }) => {
         it("should throw an error", async () => {
-          vi.mocked(updatePackageVersion).mockImplementation(() => {
-            return undefined;
-          });
-          vi.mocked(updateLockFile).mockResolvedValue();
-          vi.mocked(commitUpdatedFiles).mockResolvedValue();
-          vi.mocked(getCurrentCommitId).mockReturnValue("0123456");
-          vi.mocked(createTag).mockImplementation(() => {
-            return undefined;
-          });
           vi.mocked(prepareReleaseNotes).mockImplementation(() => {
             throw new Error(errorMessage);
           });
