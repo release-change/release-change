@@ -56,12 +56,14 @@ export type LastRelease = {
   packages: PackageLastRelease[];
 };
 export type NextRelease = PackageNextRelease[];
+export type ReleaseType = "major" | "minor" | "patch" | null;
 export type Commit = {
   isMergeCommit: boolean;
   sha: string | null;
   message: string;
   body: string[];
   footer: string[];
+  releaseType: ReleaseType;
   modifiedFiles?: string[];
 };
 export type Reference = {

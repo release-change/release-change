@@ -6,7 +6,8 @@ export const mockedParsedCommitsInMonorepo: Commit[] = [
     sha: "4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5",
     message: "feat(release): set last release (#75)",
     body: [],
-    footer: []
+    footer: [],
+    releaseType: "minor"
   },
   {
     isMergeCommit: false,
@@ -14,6 +15,7 @@ export const mockedParsedCommitsInMonorepo: Commit[] = [
     message: "test(release): refactor the code getting the latest valid Git tag",
     body: [],
     footer: [],
+    releaseType: null,
     modifiedFiles: ["packages/release/test/get-latest-valid-git-tag.test.ts"]
   },
   {
@@ -22,6 +24,7 @@ export const mockedParsedCommitsInMonorepo: Commit[] = [
     message: "refactor(release): refactor the code getting the latest valid Git tag",
     body: [],
     footer: [],
+    releaseType: null,
     modifiedFiles: ["packages/release/src/get-latest-valid-git-tag.ts"]
   },
   {
@@ -30,6 +33,7 @@ export const mockedParsedCommitsInMonorepo: Commit[] = [
     message: "test(release): set last release",
     body: [],
     footer: [],
+    releaseType: null,
     modifiedFiles: ["packages/release/test/set-last-release.test.ts"]
   },
   {
@@ -38,6 +42,7 @@ export const mockedParsedCommitsInMonorepo: Commit[] = [
     message: "feat(release): set last release",
     body: [],
     footer: [],
+    releaseType: "minor",
     modifiedFiles: ["packages/release/src/set-last-release.ts"]
   },
   {
@@ -47,6 +52,7 @@ export const mockedParsedCommitsInMonorepo: Commit[] = [
       "test(git): remove test checking the return `false` if the package cannot publish from the branch",
     body: ["Another function calling `getAllTags()` checks such a condition from now on."],
     footer: [],
+    releaseType: null,
     modifiedFiles: ["packages/git/test/file.test.ts"]
   },
   {
@@ -55,6 +61,7 @@ export const mockedParsedCommitsInMonorepo: Commit[] = [
     message: "refactor(git): stop checking if the package can publish from branch",
     body: ["Another function calling `getAllTags()` does such a checking from now on."],
     footer: [],
+    releaseType: null,
     modifiedFiles: ["packages/git/src/file.ts"]
   },
   {
@@ -63,6 +70,7 @@ export const mockedParsedCommitsInMonorepo: Commit[] = [
     message: "refactor(config): add `version` optional property to type `Package`",
     body: [],
     footer: [],
+    releaseType: null,
     modifiedFiles: ["packages/config/src/config.types.ts"]
   }
 ];

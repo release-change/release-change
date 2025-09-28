@@ -1,5 +1,4 @@
-import type { ReleaseType } from "@release-change/commit-analyser";
-import type { LastRelease } from "@release-change/shared";
+import type { LastRelease, ReleaseType } from "@release-change/shared";
 
 export const mockedNextReleasesInMonorepo: {
   lastRelease: LastRelease;

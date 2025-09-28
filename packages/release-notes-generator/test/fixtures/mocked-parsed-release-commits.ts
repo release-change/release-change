@@ -9,6 +9,7 @@ export const mockedMajorParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.0.0",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedMajorAlphaParsedReleaseCommit = {
@@ -17,6 +18,7 @@ export const mockedMajorAlphaParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.0.0-alpha.1",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedMajorBetaParsedReleaseCommit = {
@@ -25,6 +27,7 @@ export const mockedMajorBetaParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.0.0-beta.1",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedMajorNextParsedReleaseCommit = {
@@ -33,6 +36,7 @@ export const mockedMajorNextParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.0.0-rc.1",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedMinorParsedReleaseCommit = {
@@ -41,6 +45,7 @@ export const mockedMinorParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.1.0",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedMinorAlphaParsedReleaseCommit = {
@@ -49,6 +54,7 @@ export const mockedMinorAlphaParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.1.0-alpha.1",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedMinorBetaParsedReleaseCommit = {
@@ -57,6 +63,7 @@ export const mockedMinorBetaParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.1.0-beta.1",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedMinorNextParsedReleaseCommit = {
@@ -65,6 +72,7 @@ export const mockedMinorNextParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.1.0-rc.1",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedPatchParsedReleaseCommit = {
@@ -73,6 +81,7 @@ export const mockedPatchParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.0.1",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedPatchAlphaParsedReleaseCommit = {
@@ -81,6 +90,7 @@ export const mockedPatchAlphaParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.0.1-alpha.1",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedPatchBetaParsedReleaseCommit = {
@@ -89,6 +99,7 @@ export const mockedPatchBetaParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.0.1-beta.1",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };
 export const mockedPatchNextParsedReleaseCommit = {
@@ -97,5 +108,6 @@ export const mockedPatchNextParsedReleaseCommit = {
   message: "chore: @monorepo/c@v1.0.1-rc.1",
   body: [],
   footer: [mockedFooter],
+  releaseType: null,
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
 };

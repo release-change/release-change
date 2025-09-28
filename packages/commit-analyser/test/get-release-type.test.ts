@@ -1,86 +1,19 @@
 import { assert, it } from "vitest";
 
 import { getReleaseType } from "../src/index.js";
+import {
+  mockedMajorCommit,
+  mockedMajorCommitWithBreakingChangeFooter,
+  mockedMajorCommitWithBreakingChangeFooterWithModifiedFiles,
+  mockedMajorCommitWithModifiedFiles,
+  mockedMinorCommit,
+  mockedMinorCommitWithModifiedFiles,
+  mockedNoReleaseCommit,
+  mockedNoReleaseCommitWithModifiedFiles,
+  mockedPatchCommit,
+  mockedPatchCommitWithModifiedFiles
+} from "./fixtures/mocked-commits-by-release-type.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
-
-const commitBreakingChangeFooter = ["BREAKING CHANGE: some explanation."];
-const mockedSha = "0123456789abcdef0123456789abcdef01234567";
-const mockedModifiedFiles = ["packages/a/src/some-file.ts", "packages/b/src/some-file.ts"];
-const mockedMajorCommit = {
-  isMergeCommit: false,
-  sha: mockedSha,
-  message: "feat!: add new breaking change feature",
-  body: [],
-  footer: []
-};
-const mockedMajorCommitWithModifiedFiles = {
-  isMergeCommit: false,
-  sha: mockedSha,
-  message: "feat!: add new breaking change feature",
-  body: [],
-  footer: [],
-  modifiedFiles: mockedModifiedFiles
-};
-const mockedMajorCommitWithBreakingChangeFooter = {
-  isMergeCommit: false,
-  sha: mockedSha,
-  message: "feat: add new feature",
-  body: [],
-  footer: commitBreakingChangeFooter
-};
-const mockedMajorCommitWithBreakingChangeFooterWithModifiedFiles = {
-  isMergeCommit: false,
-  sha: mockedSha,
-  message: "feat: add new feature",
-  body: [],
-  footer: commitBreakingChangeFooter,
-  modifiedFiles: mockedModifiedFiles
-};
-const mockedMinorCommit = {
-  isMergeCommit: false,
-  sha: mockedSha,
-  message: "feat: add new feature",
-  body: [],
-  footer: []
-};
-const mockedMinorCommitWithModifiedFiles = {
-  isMergeCommit: false,
-  sha: mockedSha,
-  message: "feat: add new feature",
-  body: [],
-  footer: [],
-  modifiedFiles: mockedModifiedFiles
-};
-const mockedPatchCommit = {
-  isMergeCommit: false,
-  sha: mockedSha,
-  message: "fix: fix bug",
-  body: [],
-  footer: []
-};
-const mockedPatchCommitWithModifiedFiles = {
-  isMergeCommit: false,
-  sha: mockedSha,
-  message: "fix: fix bug",
-  body: [],
-  footer: [],
-  modifiedFiles: mockedModifiedFiles
-};
-const mockedNoReleaseCommit = {
-  isMergeCommit: false,
-  sha: mockedSha,
-  message: "chore: some message",
-  body: [],
-  footer: []
-};
-const mockedNoReleaseCommitWithModifiedFiles = {
-  isMergeCommit: false,
-  sha: mockedSha,
-  message: "chore: some message",
-  body: [],
-  footer: [],
-  modifiedFiles: mockedModifiedFiles
-};
 
 it("should return `major`", () => {
   const mockedCommits = [

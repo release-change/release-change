@@ -1,4 +1,5 @@
-import type { PackageReleaseType, ReleaseType } from "./commit-analyser.types.js";
+import type { ReleaseType } from "@release-change/shared";
+import type { PackageReleaseType } from "./commit-analyser.types.js";
 
 import { inspect } from "node:util";
 
@@ -6,7 +7,6 @@ import { checkErrorType, setLogger } from "@release-change/logger";
 import { agreeInNumber, type Commit, type Context } from "@release-change/shared";
 
 import { adjustReleaseType } from "./adjust-release-type.js";
-import { setReleaseType } from "./set-release-type.js";
 
 /**
  * Gets the release type from the commits which have been committed since the previous release or the beginning.
@@ -37,8 +37,7 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
       const packagesPaths = packages.map(packageItem => packageItem.pathname);
       const releaseTypesPerPackage = new Map<string, Set<ReleaseType>>();
       for (const commit of commits) {
-        const { modifiedFiles } = commit;
-        const commitReleaseType = setReleaseType(commit, context);
+        const { releaseType, modifiedFiles } = commit;
         if (modifiedFiles?.length) {
           for (const modifiedFile of modifiedFiles) {
             const relatedPackagePath = packagesPaths.find(packagePath =>
@@ -48,12 +47,12 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
               packages.find(packageItem => packageItem.pathname === relatedPackagePath)?.name ?? "";
             const releaseTypes =
               releaseTypesPerPackage.get(relatedPackageName) ?? new Set<ReleaseType>();
-            releaseTypes.add(commitReleaseType);
+            releaseTypes.add(releaseType);
             releaseTypesPerPackage.set(relatedPackageName, releaseTypes);
           }
         } else {
           const releaseTypes = releaseTypesPerPackage.get("") ?? new Set<ReleaseType>();
-          releaseTypes.add(commitReleaseType);
+          releaseTypes.add(releaseType);
           releaseTypesPerPackage.set("", releaseTypes);
         }
         if (debug) {

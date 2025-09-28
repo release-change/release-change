@@ -4,6 +4,8 @@ import { inspect } from "node:util";
 
 import { setLogger } from "@release-change/logger";
 
+import { setReleaseType } from "./set-release-type.js";
+
 import {
   BLANK_LINE_SEPARATOR,
   BREAKING_CHANGE,
@@ -26,7 +28,8 @@ export const parseCommit = (commit: string, context: Context): Commit => {
     sha: null,
     message: "",
     body: [],
-    footer: []
+    footer: [],
+    releaseType: null
   };
   const commitSections = commit
     .replaceAll(INDENTED_BLANK_LINE_SEPARATOR, BLANK_LINE_SEPARATOR)
@@ -52,6 +55,7 @@ export const parseCommit = (commit: string, context: Context): Commit => {
       );
       parsedCommit.body = commitBody.map(line => line.trim());
       parsedCommit.footer = commitFooter.flatMap(line => line.split("\n").map(line => line.trim()));
+      parsedCommit.releaseType = setReleaseType(parsedCommit.message, parsedCommit.footer, context);
       if (isMonorepo) {
         const commitModifiedFiles = commitOptionalSections
           .slice(-1)
