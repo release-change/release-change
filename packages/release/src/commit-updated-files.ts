@@ -33,7 +33,7 @@ export const commitUpdatedFiles = async (
     const changelogFile = path.join(cwd, pathname, "CHANGELOG.md");
     // TODO: uncomment to run `git add` command
     // const gitAddCommandResult = await add([packageManifestFile, lockFile, changelogFile], cwd);
-    const commitMessage = `chore(release): ${packageNextRelease.gitTag}\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
+    const commitMessage = `chore: ${packageNextRelease.gitTag}\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
     // TODO: uncomment to run `git commit` command
     // const gitCommitCommandResult = await commit(commitMessage, cwd);
     if (debug) {

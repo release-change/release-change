@@ -6,7 +6,7 @@ const mockedFooter = `${mockedFooterKey}: ${mockedFooterValue}`;
 export const mockedMajorParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.0.0",
+  message: "chore: @monorepo/c@v1.0.0",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -14,7 +14,7 @@ export const mockedMajorParsedReleaseCommit = {
 export const mockedMajorAlphaParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.0.0-alpha.1",
+  message: "chore: @monorepo/c@v1.0.0-alpha.1",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -22,7 +22,7 @@ export const mockedMajorAlphaParsedReleaseCommit = {
 export const mockedMajorBetaParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.0.0-beta.1",
+  message: "chore: @monorepo/c@v1.0.0-beta.1",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -30,7 +30,7 @@ export const mockedMajorBetaParsedReleaseCommit = {
 export const mockedMajorNextParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.0.0-rc.1",
+  message: "chore: @monorepo/c@v1.0.0-rc.1",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -38,7 +38,7 @@ export const mockedMajorNextParsedReleaseCommit = {
 export const mockedMinorParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.1.0",
+  message: "chore: @monorepo/c@v1.1.0",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -46,7 +46,7 @@ export const mockedMinorParsedReleaseCommit = {
 export const mockedMinorAlphaParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.1.0-alpha.1",
+  message: "chore: @monorepo/c@v1.1.0-alpha.1",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -54,7 +54,7 @@ export const mockedMinorAlphaParsedReleaseCommit = {
 export const mockedMinorBetaParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.1.0-beta.1",
+  message: "chore: @monorepo/c@v1.1.0-beta.1",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -62,7 +62,7 @@ export const mockedMinorBetaParsedReleaseCommit = {
 export const mockedMinorNextParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.1.0-rc.1",
+  message: "chore: @monorepo/c@v1.1.0-rc.1",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -70,7 +70,7 @@ export const mockedMinorNextParsedReleaseCommit = {
 export const mockedPatchParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.0.1",
+  message: "chore: @monorepo/c@v1.0.1",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -78,7 +78,7 @@ export const mockedPatchParsedReleaseCommit = {
 export const mockedPatchAlphaParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.0.1-alpha.1",
+  message: "chore: @monorepo/c@v1.0.1-alpha.1",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -86,7 +86,7 @@ export const mockedPatchAlphaParsedReleaseCommit = {
 export const mockedPatchBetaParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.0.1-beta.1",
+  message: "chore: @monorepo/c@v1.0.1-beta.1",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]
@@ -94,7 +94,7 @@ export const mockedPatchBetaParsedReleaseCommit = {
 export const mockedPatchNextParsedReleaseCommit = {
   isMergeCommit: false,
   sha: "4013e0f4013e0f4013e0f4013e0f4013e0f4013e",
-  message: "chore(release): @monorepo/c@v1.0.1-rc.1",
+  message: "chore: @monorepo/c@v1.0.1-rc.1",
   body: [],
   footer: [mockedFooter],
   modifiedFiles: ["packages/c/package.json", "packages/c/pnpm-lock.yaml"]

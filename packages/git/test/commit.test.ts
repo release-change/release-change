@@ -6,8 +6,8 @@ import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 const mockedCommitterName = "mocked-committer-name [bot]";
 const mockedCommitterEmail = "0+mocked-committer-name-bot@users.noreply.github.com";
-const mockedCommitDescription = "chore(release): v1.0.0";
-const mockedCommitDescriptionInMonorepo = "chore(release): @monorepo/a@v1.0.0";
+const mockedCommitDescription = "chore: v1.0.0";
+const mockedCommitDescriptionInMonorepo = "chore: @monorepo/a@v1.0.0";
 const mockedCommitFooter = `Co-authored-by: ${mockedCommitterName} <${mockedCommitterEmail}>`;
 const mockedCommitMessages = [
   mockedCommitDescription,
