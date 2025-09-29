@@ -58,7 +58,7 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
     vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(packageManifestContent));
     await expect(preparePublishing(nextRelease, mockedContextWithNoNpmPublish)).resolves.toBe(null);
     expect(mockedLogger.logWarn).toHaveBeenCalledWith(
-      "The package is private; therefore, the release will not be published."
+      `The configuration does not allow to publish any packages to NPM; therefore, the release for ${nextRelease.name || "root"} package will not be published.`
     );
   });
   it("should log a warning if the package cannot be published to NPM because it has the `private` property set to `true`", async () => {
@@ -70,7 +70,7 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
       nextRelease: [nextRelease]
     });
     expect(mockedLogger.logWarn).toHaveBeenCalledWith(
-      "The package is private; therefore, the release will not be published."
+      `The ${nextRelease.name || "root"} package is private; therefore, the release will not be published.`
     );
   });
   describe.each(packageManagers)(

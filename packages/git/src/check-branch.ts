@@ -22,7 +22,13 @@ export const checkBranch = (context: Context): undefined | false => {
     logger.logDebug(`Branch name: ${branch}`);
   }
   if (!branch || !branches.includes(branch)) {
-    const runTriggeredOnWrongBranchText = `This run is triggered on the branch ${branch}, while ${WORKSPACE_NAME} is configured to only publish from ${branches.join(", ")}; therefore, a new version will not be published.`;
+    const runTriggeredOnWrongBranchText = `This run is triggered on the branch ${branch}, while ${WORKSPACE_NAME} is configured to only publish from ${new Intl.ListFormat(
+      "en-GB",
+      {
+        style: "long",
+        type: "conjunction"
+      }
+    ).format(branches)}; therefore, a new version will not be published.`;
     logger.logWarn(runTriggeredOnWrongBranchText);
     context.config.dryRun = true;
     return false;
