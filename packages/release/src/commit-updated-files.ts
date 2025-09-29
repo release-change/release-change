@@ -41,7 +41,7 @@ export const commitUpdatedFiles = async (
       logger.logDebug(`Command run: git add ${packageManifestFile} ${lockFile} ${changelogFile}`);
       // TODO: uncomment when command is run
       // logger.logDebug(inspect(gitAddCommandResult, { depth: Number.POSITIVE_INFINITY }));
-      logger.logDebug(`Command run: git commit -m ${commitMessage}`);
+      logger.logDebug(`Command run: git commit -m '${commitMessage}'`);
       // TODO: uncomment when command is run
       // logger.logDebug(inspect(gitCommitCommandResult, { depth: Number.POSITIVE_INFINITY }));
     }

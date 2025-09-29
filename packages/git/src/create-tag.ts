@@ -25,7 +25,7 @@ export const createTag = (
     // const { status, stderr } = runCommandSync("git", args);
     if (debug) {
       logger.setDebugScope("git:create-tag");
-      logger.logDebug(`Command run: git ${args.join(" ")}`);
+      logger.logDebug(`Command run: git ${args.join(" ").replace(/-m ([-.a-z0-9@]+)/, "-m '$1'")}`);
     }
     // TODO: uncomment when the `git tag` command is run
     // if (status) logger.logError(`Failed to create Git tag ${gitTag} for ${packageName}: ${stderr}`);
