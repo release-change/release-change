@@ -13,5 +13,6 @@ export { getLatestValidTag } from "./get-latest-valid-tag.js";
 export { getRemoteName } from "./get-remote-name.js";
 export { getTrackedRepositories } from "./get-tracked-repositories.js";
 export { push } from "./push.js";
+export { removeTag } from "./remove-tag.js";
 
 export { COMMITTER_EMAIL, COMMITTER_NAME } from "./constants.js";
