@@ -5,7 +5,13 @@ import type { Context } from "@release-change/shared";
 import path from "node:path";
 
 import { getPackageDependencies, getPackageManager } from "@release-change/get-packages";
-import { cancelCommitsSinceRef, createTag, getCurrentCommitId, push } from "@release-change/git";
+import {
+  cancelCommitsSinceRef,
+  createTag,
+  getCurrentCommitId,
+  push,
+  removeTag
+} from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
 import {
@@ -33,6 +39,7 @@ export const publish = async (context: Context): Promise<void> => {
   const logger = setLogger(debug);
   logger.setScope("release");
   const commitRef = getCurrentCommitId(cwd);
+  const newGitTags: string[] = [];
   try {
     if (nextRelease) {
       const packageManager = getPackageManager(cwd, env);
@@ -66,6 +73,7 @@ export const publish = async (context: Context): Promise<void> => {
         updateChangelogFile(nextReleasePackage, preparedReleaseNotes.body, cwd);
         await commitUpdatedFiles(nextReleasePackage, packageManager, context);
         createTag(nextReleasePackage, getCurrentCommitId(cwd), debug);
+        newGitTags.push(nextReleasePackage.gitTag);
         const packagePublishing = await preparePublishing(nextReleasePackage, context);
         if (packagePublishing) packagePublishingSet.push(packagePublishing);
       }
@@ -85,7 +93,9 @@ export const publish = async (context: Context): Promise<void> => {
       error.cause === `git push --follow-tags ${context.config.remoteName} ${context.branch}`
     ) {
       cancelCommitsSinceRef(commitRef, cwd, debug);
-      // TODO: remove Git tag
+      for (const newGitTag of newGitTags) {
+        removeTag(newGitTag, cwd, debug);
+      }
     }
     process.exitCode = process.exitCode || 1;
     throw error instanceof Error

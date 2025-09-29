@@ -67,10 +67,20 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
       } else {
         await getRelatedPullRequestsAndIssues(commits, context);
         const { references } = context;
-        console.log("context.references", references?.length, references);
+        console.log(
+          "context.references with PRs",
+          references?.filter(reference => reference.isPullRequest).length
+        );
+        console.log(
+          "context.references with issues",
+          references?.filter(reference => !reference.isPullRequest).length,
+          references?.filter(reference => !reference.isPullRequest)
+        );
         try {
-          // TODO: publish
           await publish(context);
+          // TODO: post success comment on related PRs and issues
+          // TODO: close issues associated as completed
+          // TODO: tag issues and PRs associated with the label “released” and/or “released on @<channel>” (if alpha, beta, RC…)
         } catch (error) {
           logger.logError(checkErrorType(error));
           if (references) {
