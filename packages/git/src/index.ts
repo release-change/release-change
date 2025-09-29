@@ -1,4 +1,5 @@
 export { add } from "./add.js";
+export { cancelCommitsSinceRef } from "./cancel-commits-since-ref.js";
 export { checkBranch } from "./check-branch.js";
 export { checkPushPermissions } from "./check-push-permissions.js";
 export { checkRepository } from "./check-repository.js";
