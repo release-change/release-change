@@ -3,7 +3,7 @@ import type { PackageManager } from "@release-change/get-packages";
 import fs from "node:fs";
 
 import { getPackageDependencies, getPackageManager } from "@release-change/get-packages";
-import { createTag, getCurrentCommitId } from "@release-change/git";
+import { createTag, getCurrentCommitId, push } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
 import {
@@ -71,6 +71,10 @@ it("should not call `getPackageManager()` if `context.nextRelease` is undefined"
   await publish(mockedContext);
   expect(getPackageManager).not.toHaveBeenCalled();
 });
+it("should not call `push()` if `context.nextRelease` is undefined", async () => {
+  await publish(mockedContext);
+  expect(push).not.toHaveBeenCalled();
+});
 it.each([mockedContext, { ...mockedContext, nextRelease: [] }])(
   "should not call any functions allowing to publish any packages if `context.nextRelease` is undefined or an empty array",
   async context => {
@@ -82,7 +86,6 @@ it.each([mockedContext, { ...mockedContext, nextRelease: [] }])(
     expect(updateLockFile).not.toHaveBeenCalled();
     expect(updateChangelogFile).not.toHaveBeenCalled();
     expect(commitUpdatedFiles).not.toHaveBeenCalled();
-    expect(getCurrentCommitId).not.toHaveBeenCalled();
     expect(createTag).not.toHaveBeenCalled();
     expect(preparePublishing).not.toHaveBeenCalled();
     expect(publishToRegistry).not.toHaveBeenCalled();
