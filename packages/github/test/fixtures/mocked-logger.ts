@@ -3,6 +3,7 @@ import type { Logger } from "@release-change/logger";
 import { vi } from "vitest";
 
 export const mockedLogger: Logger = {
+  setScope: vi.fn(),
   setDebugScope: vi.fn(),
   logDebug: vi.fn(),
   logInfo: vi.fn(),

@@ -1,4 +1,4 @@
-type DebugScopeFunction = (scope: string) => string;
+type ScopeFunction = (scope: string) => string;
 type LoggerFunction = (message: string) => void;
 export type LoggerContext = {
   isDebug: boolean;
@@ -8,7 +8,8 @@ export type LoggerContext = {
 type MessageType = "info" | "error" | "warn" | "success";
 export type MessageTypeSymbols = Record<MessageType, string>;
 export type Logger = {
-  setDebugScope: DebugScopeFunction;
+  setScope: ScopeFunction;
+  setDebugScope: ScopeFunction;
   logDebug: LoggerFunction;
   logInfo: LoggerFunction;
   logError: LoggerFunction;
