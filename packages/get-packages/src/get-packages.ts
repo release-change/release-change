@@ -21,6 +21,7 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
   const { cwd, env, config } = context;
   const { debug } = config;
   const logger = setLogger(debug);
+  logger.setScope("get-packages");
   const packageManager = getPackageManager(cwd, env);
   if (packageManager) {
     const packages: Package[] = [{ name: "", pathname: "." }];

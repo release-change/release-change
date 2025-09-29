@@ -26,6 +26,7 @@ export const preparePublishing = async (
     config: { debug, npmPublish }
   } = context;
   const logger = setLogger(debug);
+  logger.setScope("npm");
   const packageManifestPath = path.join(cwd, pathname, "package.json");
   if (fs.existsSync(packageManifestPath)) {
     const packageManifest: PackageManifest = JSON.parse(

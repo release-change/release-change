@@ -28,6 +28,7 @@ export const getRelatedPullRequestsAndIssues = async (
   const { env, config } = context;
   const { debug, repositoryUrl } = config;
   const logger = setLogger(debug);
+  logger.setScope("github");
   try {
     const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
     if (commits.length) {

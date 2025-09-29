@@ -24,6 +24,7 @@ export const createReleaseNotes = async (
   const { env, config } = context;
   const { debug, repositoryUrl } = config;
   const logger = setLogger(debug);
+  logger.setScope("release-notes-generator");
   const releaseToken = getReleaseToken(env);
   const uri = `${getRepositoryRelatedEntryPoint(repositoryUrl)}/releases`;
   const requestBody = {

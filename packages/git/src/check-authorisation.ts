@@ -16,6 +16,7 @@ export const checkAuthorisation = async (
 ): Promise<void> => {
   const { cwd, branch, config } = context;
   const logger = setLogger(config.debug);
+  logger.setScope("git");
   if (!branch || !config.branches.includes(branch)) {
     logger.logInfo("Skipping authorisation checking.");
     return;

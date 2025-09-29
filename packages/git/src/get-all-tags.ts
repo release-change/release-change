@@ -13,6 +13,7 @@ import { runCommandSync } from "@release-change/shared";
 export const getAllTags = (context: Context): string[] => {
   const { cwd, branch, config } = context;
   const logger = setLogger(config.debug);
+  logger.setScope("git");
   try {
     const gitCommandResult = runCommandSync(
       "git",

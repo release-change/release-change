@@ -17,6 +17,7 @@ import { getVersionFromTag } from "./get-version-from-tag.js";
 export const setLastRelease = (context: Context): void => {
   const { cwd, branch, config, packages } = context;
   const logger = setLogger(config.debug);
+  logger.setScope("release");
   if (!branch || !config.branches.includes(branch)) return;
   try {
     const lastRelease: LastRelease = {

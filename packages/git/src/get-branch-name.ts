@@ -25,6 +25,7 @@ export const getBranchName = (cwd: string, logger: Logger): string | undefined =
     }
     return headRef;
   } catch (error) {
+    logger.setScope("git");
     logger.logError(checkErrorType(error));
     return undefined;
   }

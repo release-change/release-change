@@ -25,6 +25,7 @@ import { WORKSPACE_NAME, WORKSPACE_VERSION } from "@release-change/shared";
  */
 export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Promise<void> => {
   const logger = setLogger(contextBase.config.debug);
+  logger.setScope("cli");
   logger.logInfo(`Running ${WORKSPACE_NAME} version ${WORKSPACE_VERSION}…`);
   const packages = await getPackages(contextBase);
   const config = await getConfig(cliOptions, isMonorepo(packages));

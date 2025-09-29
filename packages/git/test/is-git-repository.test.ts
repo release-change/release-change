@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { isGitRepository } from "../src/is-git-repository.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 beforeEach(() => {
   vi.mock("@release-change/shared", () => ({ runCommand: vi.fn() }));
@@ -19,7 +20,7 @@ it("should return `false` if it is not a Git repository", async () => {
       stderr: "Error"
     })
   );
-  expect(await isGitRepository(mockedCwd)).toBe(false);
+  expect(await isGitRepository(mockedCwd, mockedLogger)).toBe(false);
   expect(runCommand).toHaveBeenCalledWith("git", ["rev-parse", "--git-dir"], { cwd: mockedCwd });
 });
 it("should return `true` if it is a Git repository", async () => {
@@ -30,6 +31,6 @@ it("should return `true` if it is a Git repository", async () => {
       stderr: ""
     })
   );
-  expect(await isGitRepository(mockedCwd)).toBe(true);
+  expect(await isGitRepository(mockedCwd, mockedLogger)).toBe(true);
   expect(runCommand).toHaveBeenCalledWith("git", ["rev-parse", "--git-dir"], { cwd: mockedCwd });
 });
