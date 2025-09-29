@@ -1,8 +1,10 @@
 import type { Context, ContextBase } from "@release-change/shared";
 
-import { expect, it, vi } from "vitest";
+import { setLogger } from "@release-change/logger";
+import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { checkBranch } from "../src/index.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const mockedBasicContext: ContextBase = {
   cwd: "/fake/path",
@@ -55,6 +57,14 @@ const mockedContext: Context = {
 const mockedContextWithNonEligibleBranch = { ...mockedContext, branch: "non-eligible-branch" };
 const mockedContextWithMainBranch = { ...mockedContext, branch: "main" };
 
+beforeEach(() => {
+  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+  vi.mocked(setLogger).mockReturnValue(mockedLogger);
+});
+afterEach(() => {
+  vi.clearAllMocks();
+});
+
 it("should return `false` in case of non-zero exit code", () => {
   vi.stubGlobal("process", { exitCode: 1 });
   expect(checkBranch(mockedContext)).toBe(false);
@@ -62,9 +72,15 @@ it("should return `false` in case of non-zero exit code", () => {
 });
 it("should return `false` if the branch name is undefined", async () => {
   expect(checkBranch(mockedContext)).toBe(false);
+  expect(mockedLogger.logWarn).toHaveBeenCalledWith(
+    "This run is triggered on the branch undefined, while release-change is configured to only publish from alpha, beta, main, master and next; therefore, a new version will not be published."
+  );
 });
 it('should return `false` if the branch name is `"non-eligible-branch"`', () => {
   expect(checkBranch(mockedContextWithNonEligibleBranch)).toBe(false);
+  expect(mockedLogger.logWarn).toHaveBeenCalledWith(
+    "This run is triggered on the branch non-eligible-branch, while release-change is configured to only publish from alpha, beta, main, master and next; therefore, a new version will not be published."
+  );
 });
 it('should return `undefined` if the branch name is `"main"`', () => {
   expect(checkBranch(mockedContextWithMainBranch)).toBe(undefined);
