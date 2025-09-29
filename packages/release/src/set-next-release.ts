@@ -18,6 +18,7 @@ export const setNextRelease = (
 ): void => {
   const { branch, config, lastRelease } = context;
   const logger = setLogger(config.debug);
+  logger.setScope("release");
   if (!branch || !config.branches.includes(branch)) return;
   if (!lastRelease) {
     logger.logWarn("No last release found; therefore, a new version will not be published.");

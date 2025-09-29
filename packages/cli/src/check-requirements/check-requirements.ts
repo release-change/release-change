@@ -15,6 +15,7 @@ import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "./constants.js";
  */
 export const checkRequirements = async (): Promise<void> => {
   const logger = setLogger();
+  logger.setScope("cli");
   const { version } = process;
   if (!isNodeVersionCompatible(version.replace("v", ""), REQUIRED_NODE_VERSIONS)) {
     const formattedRequiredNodeVersions = new Intl.ListFormat("en-GB", {

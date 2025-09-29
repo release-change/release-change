@@ -11,15 +11,22 @@ const times = [
 ];
 const mockedLoggerContextForDebugMode: LoggerContext = { isDebug: true, scope: "my-scope" };
 const mockedLoggerContextForDebugModeWithoutScope: LoggerContext = { isDebug: true, scope: "" };
-const mockedLoggerContextNotForDebugMode: LoggerContext = { isDebug: false, type: "info" };
-const expectedFeature = mockedLoggerContextForDebugMode.scope;
+const mockedLoggerContextNotForDebugMode: LoggerContext = {
+  isDebug: false,
+  scope: "my-scope",
+  type: "info"
+};
+const mockedLoggerContextNotForDebugModeWithoutScope: LoggerContext = {
+  isDebug: false,
+  type: "info"
+};
 
 describe.each(times)(
   "timestamp at $mockedTimestamp ($expectedTime UTC)",
   ({ mockedTimestamp, expectedTime }) => {
     it("should return the appropriate prefix when debug mode is activated", () => {
       expect(setPrefix(mockedTimestamp, mockedLoggerContextForDebugMode)).toBe(
-        `\x1b[1;34m[debug] ${WORKSPACE_NAME}:${expectedFeature}\x1b[0m`
+        `\x1b[1;34m[debug] ${WORKSPACE_NAME}:my-scope\x1b[0m`
       );
     });
     it("should return the appropriate prefix when debug mode is activated and there is no scope", () => {
@@ -29,6 +36,11 @@ describe.each(times)(
     });
     it("should return the appropriate prefix when debug mode is deactivated", () => {
       expect(setPrefix(mockedTimestamp, mockedLoggerContextNotForDebugMode)).toBe(
+        `[${expectedTime}] [${WORKSPACE_NAME}] [@${WORKSPACE_NAME}/my-scope] \u203a`
+      );
+    });
+    it("should return the appropriate prefix when debug mode is deactivated and there is no scope", () => {
+      expect(setPrefix(mockedTimestamp, mockedLoggerContextNotForDebugModeWithoutScope)).toBe(
         `[${expectedTime}] [${WORKSPACE_NAME}] \u203a`
       );
     });

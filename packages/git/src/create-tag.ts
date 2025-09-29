@@ -17,6 +17,7 @@ export const createTag = (
   debug = false
 ): void => {
   const logger = setLogger(debug);
+  logger.setScope("git");
   if (commitRef) {
     const { name, gitTag } = packageNextRelease;
     const packageName = `${name ? name : "root"} package`;

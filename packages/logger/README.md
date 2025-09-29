@@ -21,6 +21,7 @@ logger.logSuccess("Everything done successfully.");
 
 ## `setLogger` methods
 
+- `setScope`: to print the scope concerned by any non-debug messages,
 - `setDebugScope`: to print the scope concerned by any debug messages,
 - `logDebug`: to print debug messages (`setLogger()` must be called with the `isDebug` argument set to `true`),
 - `logInfo`: to print informational messages,

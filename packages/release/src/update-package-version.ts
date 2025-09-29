@@ -21,6 +21,7 @@ export const updatePackageVersion = (
     config: { debug }
   } = context;
   const logger = setLogger(debug);
+  logger.setScope("release");
   const packageName = `${name || "root"} package`;
   const packagePath = path.join(cwd, pathname, "package.json");
   if (fs.existsSync(packagePath)) {

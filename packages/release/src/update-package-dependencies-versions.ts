@@ -23,6 +23,7 @@ export const updatePackageDependenciesVersions = (
     config: { debug, dependencyUpdateMethod }
   } = context;
   const logger = setLogger(debug);
+  logger.setScope("release");
   const packageName = `${name || "root"} package`;
   const packagePath = path.join(cwd, pathname, "package.json");
   if (dependencyUpdateMethod) {

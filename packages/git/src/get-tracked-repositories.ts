@@ -1,3 +1,4 @@
+import { setLogger } from "@release-change/logger";
 import { runCommandSync } from "@release-change/shared";
 
 import { isGitRepository } from "./is-git-repository.js";
@@ -8,6 +9,7 @@ import { isGitRepository } from "./is-git-repository.js";
  * @return The value returned by `git remote -v` if this is a Git repository, `null` otherwise.
  */
 export const getTrackedRepositories = async (cwd: string): Promise<string | null> => {
-  if (await isGitRepository(cwd)) return runCommandSync("git", ["remote", "-v"], { cwd }).stdout;
-  return null;
+  return (await isGitRepository(cwd, setLogger()))
+    ? runCommandSync("git", ["remote", "-v"], { cwd }).stdout
+    : null;
 };

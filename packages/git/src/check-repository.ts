@@ -22,6 +22,7 @@ export const checkRepository = async (
     }
     return process.exitCode;
   } catch (error) {
+    logger.setScope("git");
     logger.logError(checkErrorType(error));
     process.exit(process.exitCode);
   }

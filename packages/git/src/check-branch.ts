@@ -14,6 +14,7 @@ export const checkBranch = (context: Context): undefined | false => {
   if (process.exitCode) return false;
   const { branch, config } = context;
   const logger = setLogger(config.debug);
+  logger.setScope("git");
   const { branches } = config;
   context.branch = branch;
   if (config.debug) {

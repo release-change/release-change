@@ -26,6 +26,7 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
   const { config, packages } = context;
   const { debug } = config;
   const logger = setLogger(debug);
+  logger.setScope("commit-analyser");
   const packageReleaseTypes: PackageReleaseType[] = packages.map(packageItem => ({
     name: packageItem.name,
     releaseType: null

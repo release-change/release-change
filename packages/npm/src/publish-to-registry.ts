@@ -28,6 +28,7 @@ export const publishToRegistry = async (
     config: { debug }
   } = context;
   const logger = setLogger(debug);
+  logger.setScope("npm");
   getAuthToken(context);
   const { authToken } = context;
   if (authToken) {

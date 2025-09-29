@@ -23,6 +23,7 @@ export const setReleaseType = (
 ): ReleaseType => {
   const { config } = context;
   const logger = setLogger(config.debug);
+  logger.setScope("commit-analyser");
   logger.logInfo(`Analysing commit “${commitMessage}”…`);
   const releaseType: ReleaseType =
     commitFooter.some(line => line.match(BREAKING_CHANGE)) ||

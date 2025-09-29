@@ -31,6 +31,7 @@ export const publish = async (context: Context): Promise<void> => {
     nextRelease
   } = context;
   const logger = setLogger(debug);
+  logger.setScope("release");
   try {
     if (nextRelease) {
       const packageManager = getPackageManager(cwd, env);

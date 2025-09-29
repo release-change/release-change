@@ -16,6 +16,7 @@ export const checkPushPermissions = async (
 ): Promise<void> => {
   const { cwd, branch, config } = context;
   const logger = setLogger(config.debug);
+  logger.setScope("git");
   try {
     await checkAuthorisation(repositoryUrl, context);
     if (branch && config.branches.includes(branch)) {

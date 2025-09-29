@@ -15,6 +15,7 @@ export const getCommitsSinceRef = (context: Context): Commit[] => {
   const { cwd, config, lastRelease } = context;
   const { debug, isMonorepo } = config;
   const logger = setLogger(debug);
+  logger.setScope("git");
   try {
     const gitTag = lastRelease ? lastRelease.ref : null;
     const revisionRange = `${gitTag}..HEAD`;
