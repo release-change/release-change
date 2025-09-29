@@ -1,16 +1,16 @@
 import type { PackagePublishing } from "@release-change/npm";
+import type { ReleaseNotes } from "@release-change/release-notes-generator";
 import type { Context } from "@release-change/shared";
 
 import path from "node:path";
 
 import { getPackageDependencies, getPackageManager } from "@release-change/get-packages";
-import { createTag, getCurrentCommitId, push } from "@release-change/git";
+import { cancelCommitsSinceRef, createTag, getCurrentCommitId, push } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
 import {
   createReleaseNotes,
   prepareReleaseNotes,
-  type ReleaseNotes,
   updateChangelogFile
 } from "@release-change/release-notes-generator";
 
@@ -32,6 +32,7 @@ export const publish = async (context: Context): Promise<void> => {
   } = context;
   const logger = setLogger(debug);
   logger.setScope("release");
+  const commitRef = getCurrentCommitId(cwd);
   try {
     if (nextRelease) {
       const packageManager = getPackageManager(cwd, env);
@@ -64,8 +65,7 @@ export const publish = async (context: Context): Promise<void> => {
         await updateLockFile(context, packageManager);
         updateChangelogFile(nextReleasePackage, preparedReleaseNotes.body, cwd);
         await commitUpdatedFiles(nextReleasePackage, packageManager, context);
-        const commitRef = getCurrentCommitId(cwd);
-        createTag(nextReleasePackage, commitRef, debug);
+        createTag(nextReleasePackage, getCurrentCommitId(cwd), debug);
         const packagePublishing = await preparePublishing(nextReleasePackage, context);
         if (packagePublishing) packagePublishingSet.push(packagePublishing);
       }
@@ -84,7 +84,7 @@ export const publish = async (context: Context): Promise<void> => {
       error instanceof Error &&
       error.cause === `git push --follow-tags ${context.config.remoteName} ${context.branch}`
     ) {
-      // TODO: cancel last commit
+      cancelCommitsSinceRef(commitRef, cwd, debug);
       // TODO: remove Git tag
     }
     process.exitCode = process.exitCode || 1;
