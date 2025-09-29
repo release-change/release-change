@@ -4,7 +4,7 @@ import { WORKSPACE_NAME } from "@release-change/shared";
 
 /**
  * Sets prefix for messages logged to the console according to the context provided by `loggerContext`:
- * - if the debug mode is activated, the prefix uses one of the following formats:
+ * - if the debug mode is activated and `debugScope` is defined as a string (even empty), the prefix uses one of the following formats:
  *   -`\x1b[1;34m[debug] <package name>\x1b[0m`,
  *   -`\x1b[1;34m[debug] <package name>:<scope name>\x1b[0m`;
  * - otherwise, the prefix uses one of the following formats:
@@ -15,9 +15,9 @@ import { WORKSPACE_NAME } from "@release-change/shared";
  * @return The prefix in the appropriate format.
  */
 export const setPrefix = (timestamp: number, loggerContext: LoggerContext): string => {
-  const { isDebug, scope } = loggerContext;
-  if (isDebug) {
-    if (scope) return `\x1b[1;34m[debug] ${WORKSPACE_NAME}:${scope}\x1b[0m`;
+  const { isDebug, scope, debugScope } = loggerContext;
+  if (isDebug && typeof debugScope === "string") {
+    if (debugScope) return `\x1b[1;34m[debug] ${WORKSPACE_NAME}:${debugScope}\x1b[0m`;
     return `\x1b[1;34m[debug] ${WORKSPACE_NAME}\x1b[0m`;
   }
   const time = Intl.DateTimeFormat(undefined, {

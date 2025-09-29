@@ -3,6 +3,7 @@ type LoggerFunction = (message: string) => void;
 export type LoggerContext = {
   isDebug: boolean;
   scope?: string;
+  debugScope?: string;
   type?: MessageType;
 };
 type MessageType = "info" | "error" | "warn" | "success";
