@@ -23,7 +23,7 @@ export const setLogger = (isDebug = false): Logger => {
       return scope;
     },
     logDebug: (message: string): void => {
-      console.debug(formatMessage(message, { ...loggerContext, scope: debugScope }));
+      console.debug(formatMessage(message, { ...loggerContext, debugScope: debugScope }));
     },
     logInfo: (message: string): void => {
       console.info(formatMessage(message, { ...loggerContext, scope: normalScope, type: "info" }));
