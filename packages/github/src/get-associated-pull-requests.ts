@@ -9,11 +9,13 @@ import { getReleaseToken } from "@release-change/ci";
 /**
  * Gets the pull requests associated with a given commit.
  * @param uri - The URI to request.
+ * @param gitTags - The git tags associated with the commit.
  * @param env - The environment variables.
  * @return An array of associated pull requests.
  */
 export const getAssociatedPullRequests = async (
   uri: string,
+  gitTags: string[],
   env: NodeJS.ProcessEnv
 ): Promise<AssociatedPullRequest[]> => {
   const releaseToken = getReleaseToken(env);
@@ -30,7 +32,11 @@ export const getAssociatedPullRequests = async (
     const pullRequests: PullRequestAssociatedWithCommit[] = await pullRequestResponse.json();
     for (const pullRequest of pullRequests) {
       const { number, title, body } = pullRequest;
-      associatedPullRequest.push({ title, body, reference: { number, isPullRequest: true } });
+      associatedPullRequest.push({
+        title,
+        body,
+        reference: { number, isPullRequest: true, gitTags }
+      });
     }
     return associatedPullRequest;
   }

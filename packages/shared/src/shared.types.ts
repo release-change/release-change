@@ -69,6 +69,7 @@ export type Commit = {
 export type Reference = {
   number: number;
   isPullRequest: boolean;
+  gitTags: string[];
 };
 export type ReleaseInfoGithub = {
   type: "github";
