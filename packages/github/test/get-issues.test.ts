@@ -26,7 +26,7 @@ const mockedContents = [
       body: [],
       footer: ["Refs: #123"]
     },
-    expected: [{ number: 123, isPullRequest: false }]
+    expected: [{ number: 123, isPullRequest: false, gitTags: ["v1.2.3"] }]
   },
   {
     type: "an array with one item if the issue is repeated (pull request body)",
@@ -36,7 +36,7 @@ const mockedContents = [
       body: [],
       footer: ["Refs: #123"]
     },
-    expected: [{ number: 123, isPullRequest: false }]
+    expected: [{ number: 123, isPullRequest: false, gitTags: ["v1.2.3"] }]
   },
   {
     type: "an array with one item per issue (commit)",
@@ -47,22 +47,22 @@ const mockedContents = [
       footer: ["Refs: #123, #456, #789"]
     },
     expected: [
-      { number: 123, isPullRequest: false },
-      { number: 456, isPullRequest: false },
-      { number: 789, isPullRequest: false }
+      { number: 123, isPullRequest: false, gitTags: ["v1.2.3"] },
+      { number: 456, isPullRequest: false, gitTags: ["v1.2.3"] },
+      { number: 789, isPullRequest: false, gitTags: ["v1.2.3"] }
     ]
   },
   {
     type: "an array with one item per issue (pull request body)",
     contents: { body: ["This PR fixes the issues #123, #456 and #789."] },
     expected: [
-      { number: 123, isPullRequest: false },
-      { number: 456, isPullRequest: false },
-      { number: 789, isPullRequest: false }
+      { number: 123, isPullRequest: false, gitTags: ["v1.2.3"] },
+      { number: 456, isPullRequest: false, gitTags: ["v1.2.3"] },
+      { number: 789, isPullRequest: false, gitTags: ["v1.2.3"] }
     ]
   }
 ];
 
 it.each(mockedContents)("should return $type", ({ contents, expected }) => {
-  assert.deepEqual(getIssues(contents), expected);
+  assert.deepEqual(getIssues(contents, ["v1.2.3"]), expected);
 });

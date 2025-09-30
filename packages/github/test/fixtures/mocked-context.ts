@@ -3,7 +3,7 @@ import type { Context } from "@release-change/shared";
 import { mockedConfig } from "./mocked-config.js";
 import { mockedToken } from "./mocked-token.js";
 
-export const mockedContext: Context = {
+const mockedContext: Context = {
   cwd: "/fake/path",
   env: {
     RELEASE_TOKEN: mockedToken
@@ -15,4 +15,8 @@ export const mockedContext: Context = {
   },
   packages: [{ name: "", pathname: "." }],
   config: mockedConfig
+};
+export const mockedContextWithNextRelease: Context = {
+  ...mockedContext,
+  nextRelease: [{ name: "", pathname: ".", gitTag: "v1.2.3", version: "1.2.3" }]
 };

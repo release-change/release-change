@@ -1,23 +1,5 @@
-import type { Commit, Config, Context } from "@release-change/shared";
+import type { Commit } from "@release-change/shared";
 
-import { DEFAULT_CONFIG } from "@release-change/config";
-
-import { mockedToken } from "./mocked-token.js";
-
-const expectedDefaultConfig = DEFAULT_CONFIG as unknown as Config;
-export const mockedDefaultContext: Context = {
-  cwd: "/fake/path",
-  env: {
-    RELEASE_TOKEN: mockedToken
-  },
-  branch: "main",
-  ci: {
-    isCi: true,
-    isPullRequest: false
-  },
-  packages: [{ name: "", pathname: "." }],
-  config: expectedDefaultConfig
-};
 const commitMessage = "docs: some description";
 const commitMessageWithPullRequest = "feat: some description (#123)";
 const commitBody = ["Some text.", "Another text."];

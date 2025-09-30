@@ -4,7 +4,8 @@ import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 import { getAssociatedPullRequests } from "../src/get-associated-pull-requests.js";
 import { getIssues } from "../src/get-issues.js";
 import { getRelatedPullRequestsAndIssues, getRepositoryRelatedEntryPoint } from "../src/index.js";
-import { mockedCommits, mockedDefaultContext } from "./fixtures/mocked-commits.js";
+import { mockedCommits } from "./fixtures/mocked-commits.js";
+import { mockedContextWithNextRelease } from "./fixtures/mocked-context.js";
 import { mockedFailureFetches } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
@@ -14,14 +15,15 @@ const mockedAssociatedPullRequests = [
   {
     title: "Some pull request",
     body: "Some pull request comment.",
-    reference: { number: 123, isPullRequest: true }
+    reference: { number: 123, isPullRequest: true, gitTags: ["v1.2.3"] }
   },
   {
     title: "Another pull request",
     body: "Another pull request comment.",
     reference: {
       number: 456,
-      isPullRequest: true
+      isPullRequest: true,
+      gitTags: ["v1.2.3"]
     }
   },
   {
@@ -29,7 +31,8 @@ const mockedAssociatedPullRequests = [
     body: null,
     reference: {
       number: 789,
-      isPullRequest: true
+      isPullRequest: true,
+      gitTags: ["v1.2.3"]
     }
   }
 ];
@@ -53,65 +56,65 @@ afterEach(() => {
 });
 
 it.each(mockedFailureFetches)("$title", async ({ response }) => {
-  vi.spyOn(process, "exit").mockImplementation(code => {
-    throw new Error(`process.exit(${code})`);
+  vi.spyOn(process, "exit").mockImplementation(() => {
+    throw new Error(response.expectedError);
   });
-  vi.mocked(mockedFetch).mockResolvedValue(response);
   process.exitCode = response.status;
+  vi.mocked(getAssociatedPullRequests).mockRejectedValue(new Error(response.expectedError));
   await expect(
-    getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext)
-  ).rejects.toThrow();
+    getRelatedPullRequestsAndIssues(mockedCommits, mockedContextWithNextRelease)
+  ).rejects.toThrow(response.expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     "Failed to get related pull requests and issues."
   );
-  expect(process.exit).toHaveBeenCalledWith(response.status);
+  expect(process.exitCode).toBe(response.status);
 });
 it("should complete context with references to no pull requests and issues if no commits are provided", async () => {
-  await getRelatedPullRequestsAndIssues([], mockedDefaultContext);
-  assert.deepEqual(mockedDefaultContext.references, []);
+  await getRelatedPullRequestsAndIssues([], mockedContextWithNextRelease);
+  assert.deepEqual(mockedContextWithNextRelease.references, []);
 });
 it("should complete context with references to no pull requests and issues if none of them are found", async () => {
   vi.mocked(getAssociatedPullRequests).mockResolvedValue([]);
   vi.mocked(getIssues).mockReturnValue([]);
-  await getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext);
-  assert.deepEqual(mockedDefaultContext.references, []);
+  await getRelatedPullRequestsAndIssues(mockedCommits, mockedContextWithNextRelease);
+  assert.deepEqual(mockedContextWithNextRelease.references, []);
 });
 it("should complete context with references to no pull requests if none of them are found", async () => {
   vi.mocked(getAssociatedPullRequests).mockResolvedValue([]);
   vi.mocked(getIssues).mockReturnValue([
-    { number: 456, isPullRequest: false },
-    { number: 789, isPullRequest: false }
+    { number: 456, isPullRequest: false, gitTags: ["v1.2.3"] },
+    { number: 789, isPullRequest: false, gitTags: ["v1.2.3"] }
   ]);
-  await getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext);
-  assert.deepEqual(mockedDefaultContext.references, [
-    { number: 456, isPullRequest: false },
-    { number: 789, isPullRequest: false }
+  await getRelatedPullRequestsAndIssues(mockedCommits, mockedContextWithNextRelease);
+  assert.deepEqual(mockedContextWithNextRelease.references, [
+    { number: 456, isPullRequest: false, gitTags: ["v1.2.3"] },
+    { number: 789, isPullRequest: false, gitTags: ["v1.2.3"] }
   ]);
 });
 it("should complete context with references to no issues if none of them are found", async () => {
   vi.mocked(getAssociatedPullRequests).mockResolvedValue(mockedAssociatedPullRequests);
   vi.mocked(getIssues).mockReturnValue([]);
-  await getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext);
-  assert.deepEqual(mockedDefaultContext.references, [
-    { number: 123, isPullRequest: true },
-    { number: 456, isPullRequest: true },
-    { number: 789, isPullRequest: true }
+  await getRelatedPullRequestsAndIssues(mockedCommits, mockedContextWithNextRelease);
+  assert.deepEqual(mockedContextWithNextRelease.references, [
+    { number: 123, isPullRequest: true, gitTags: ["v1.2.3"] },
+    { number: 456, isPullRequest: true, gitTags: ["v1.2.3"] },
+    { number: 789, isPullRequest: true, gitTags: ["v1.2.3"] }
   ]);
 });
 it("should complete context with references to both pull requests and issues if both of them are found", async () => {
   vi.mocked(getAssociatedPullRequests).mockResolvedValue(mockedAssociatedPullRequests);
   vi.mocked(getIssues).mockReturnValue([
-    { number: 1011, isPullRequest: false },
-    { number: 1213, isPullRequest: false },
-    { number: 1415, isPullRequest: false }
+    { number: 1011, isPullRequest: false, gitTags: ["v1.2.3"] },
+    { number: 1213, isPullRequest: false, gitTags: ["v1.2.3"] },
+    { number: 1415, isPullRequest: false, gitTags: ["v1.2.3"] }
   ]);
-  await getRelatedPullRequestsAndIssues(mockedCommits, mockedDefaultContext);
-  assert.deepEqual(mockedDefaultContext.references, [
-    { number: 123, isPullRequest: true },
-    { number: 456, isPullRequest: true },
-    { number: 789, isPullRequest: true },
-    { number: 1011, isPullRequest: false },
-    { number: 1213, isPullRequest: false },
-    { number: 1415, isPullRequest: false }
+  await getRelatedPullRequestsAndIssues(mockedCommits, mockedContextWithNextRelease);
+  assert.deepEqual(mockedContextWithNextRelease.references, [
+    { number: 123, isPullRequest: true, gitTags: ["v1.2.3"] },
+    { number: 456, isPullRequest: true, gitTags: ["v1.2.3"] },
+    { number: 789, isPullRequest: true, gitTags: ["v1.2.3"] },
+    { number: 1011, isPullRequest: false, gitTags: ["v1.2.3"] },
+    { number: 1213, isPullRequest: false, gitTags: ["v1.2.3"] },
+    { number: 1415, isPullRequest: false, gitTags: ["v1.2.3"] }
   ]);
 });
