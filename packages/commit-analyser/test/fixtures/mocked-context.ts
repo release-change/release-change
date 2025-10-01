@@ -12,7 +12,8 @@ export const mockedContext: Context = {
     isPullRequest: false
   },
   config: expectedDefaultConfig,
-  packages: [{ name: "", pathname: "." }]
+  packages: [{ name: "", pathname: "." }],
+  releaseInfos: []
 };
 export const mockedContextInMonorepo: Context = {
   ...mockedContext,

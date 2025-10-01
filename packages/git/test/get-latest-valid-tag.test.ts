@@ -1,11 +1,11 @@
-import type { Context } from "@release-change/shared";
+import type { Config, Context } from "@release-change/shared";
 
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { getAllTags, getLatestValidTag } from "../src/index.js";
 import { mockedRepositoryUrl } from "./fixtures/mocked-repository-url.js";
 
-const mockedConfig = {
+const mockedConfig: Config = {
   branches: ["alpha", "beta", "main", "master", "next"],
   releaseType: {
     alpha: {
@@ -42,7 +42,7 @@ const mockedInvalidConfig = {
   repositoryUrl: mockedConfig.repositoryUrl,
   remoteName: mockedConfig.remoteName
 };
-const mockedContext = {
+const mockedContext: Context = {
   cwd: "/fake/path",
   env: {},
   config: mockedConfig,
@@ -51,8 +51,9 @@ const mockedContext = {
     isPullRequest: false
   },
   packages: [{ name: "", pathname: "." }],
+  releaseInfos: [],
   branch: "main"
-} as Context;
+};
 const mockedContextInMonorepo = {
   ...mockedContext,
   config: { ...mockedConfig, isMonorepo: true }

@@ -62,7 +62,6 @@ export const publishToRegistry = async (
       name: `NPM (${npmTag ? npmTag : "latest"} distribution tag)`,
       url: `https://www.npmjs.com/package/${packageManifestName}/v/${version}`
     };
-    if (!context.releaseInfos) context.releaseInfos = [];
     context.releaseInfos.push(releaseInfo);
     if (debug) {
       logger.logDebug("context.releaseInfos:");

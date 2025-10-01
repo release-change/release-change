@@ -60,7 +60,6 @@ export const createReleaseNotes = async (
   //     name: "GitHub release",
   //     url: `${repositoryUrl.replace(".git", "")}/releases/tag/${tagName}`
   //   };
-  //   if (!context.releaseInfos) context.releaseInfos = [];
   //   context.releaseInfos.push(releaseInfo);
   //   if (debug) {
   //     logger.logDebug("context.releaseInfos:");

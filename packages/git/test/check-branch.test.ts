@@ -21,6 +21,7 @@ const mockedContext: Context = {
     isPullRequest: false
   },
   packages: [{ name: "", pathname: "." }],
+  releaseInfos: [],
   config: {
     branches: ["alpha", "beta", "main", "master", "next"],
     releaseType: {

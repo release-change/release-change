@@ -11,6 +11,7 @@ export const mockedContext: Context = {
     isPullRequest: false
   },
   packages: [{ name: "", pathname: "." }],
+  releaseInfos: [],
   branch: undefined
 };
 export const mockedContextInMonorepo = {
