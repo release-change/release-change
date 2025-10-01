@@ -7,4 +7,4 @@ export const COMMIT_MESSAGE = /^[a-z]+(?:\((?<scope>[^)]+)\))?!?:\s(?<descriptio
 export const COMMIT_PREFIX_MAJOR = /^[a-z]+(\([^)]+\))?!:\s\w+/i;
 export const COMMIT_PREFIX_MINOR = /^feat(\([^)]+\))?:\s\w+/i;
 export const COMMIT_PREFIX_PATCH = /^fix(\([^)]+\))?:\s\w+/i;
-export const ISSUE_ID = /(?<=#)\d+/g;
+export const ISSUE_ID = /(?<!\S)#(?<issueId>\d+)\b/g;
