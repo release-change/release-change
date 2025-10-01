@@ -1,0 +1,116 @@
+/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the API is used> */
+import type { Context, Reference } from "@release-change/shared";
+
+import { inspect } from "node:util";
+
+import { getIssueAndPullRequestToken } from "@release-change/ci";
+import { setLogger } from "@release-change/logger";
+
+import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import { linkifyReleaseInfo } from "./linkify-release-info.js";
+
+/**
+ * Posts a success comment on the issue or the pull request to notify the release success.
+ * @param reference - The reference of the issue or pull request.
+ * @param context - The context where the CLI is running.
+ */
+export const postSuccessComment = async (reference: Reference, context: Context): Promise<void> => {
+  const {
+    env,
+    config: { debug, isMonorepo, repositoryUrl },
+    nextRelease,
+    releaseInfos
+  } = context;
+  const logger = setLogger(debug);
+  logger.setScope("github");
+  if (nextRelease) {
+    const issuePullRequestToken = getIssueAndPullRequestToken(env);
+    const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
+    const { number, isPullRequest, gitTags } = reference;
+    const uri = `${repositoryEntryPoint}/issues/${number}/comments`;
+    const versions: string[] = [];
+    const releaseInfosAvailabilities: string[] = [];
+    for (const gitTag of gitTags) {
+      const packageName = nextRelease.find(release => release.gitTag === gitTag)?.name;
+      const version = nextRelease.find(release => release.gitTag === gitTag)?.version;
+      if (typeof packageName === "undefined" || typeof version === "undefined") continue;
+      const npmVersion = `/v/${version}`;
+      const versionReleaseInfos = releaseInfos.filter(
+        releaseInfo =>
+          releaseInfo.url.endsWith(`/tag/${encodeURIComponent(gitTag)}`) ||
+          releaseInfo.url.endsWith(
+            isMonorepo ? `/${encodeURIComponent(packageName)}${npmVersion}` : npmVersion
+          )
+      );
+      const totalReleaseInfos = versionReleaseInfos.length;
+      const [firstReleaseInfo] = versionReleaseInfos;
+      const releaseInfosAvailability = `\n\nThe release is available on${
+        totalReleaseInfos === 1
+          ? firstReleaseInfo
+            ? ` ${linkifyReleaseInfo(firstReleaseInfo)}`
+            : ""
+          : `:\n${new Intl.ListFormat("en-GB", { type: "unit" })
+              .format(
+                versionReleaseInfos.map(
+                  versionReleaseInfo => `- ${linkifyReleaseInfo(versionReleaseInfo)}`
+                )
+              )
+              .replaceAll(" - ", "\n- ")}`
+      }.`;
+      if (isMonorepo) {
+        versions.push(`${version} of ${packageName || "root"} package`);
+        if (totalReleaseInfos)
+          releaseInfosAvailabilities.push(
+            `\n\n##### ${packageName ? `${packageName}@` : ""}${version}${releaseInfosAvailability}`
+          );
+      } else {
+        versions.push(version);
+        if (totalReleaseInfos) releaseInfosAvailabilities.push(releaseInfosAvailability);
+      }
+    }
+    const totalVersions = versions.length;
+    const [firstVersion] = versions;
+    const versionEnumeration =
+      totalVersions > 1
+        ? `in versions ${new Intl.ListFormat("en-GB", { style: "long", type: "conjunction" }).format(versions)}`
+        : `in version ${firstVersion}`;
+    const commentSummary = totalVersions
+      ? `This ${isPullRequest ? "pull request is included" : "issue has been resolved"} ${versionEnumeration}.`
+      : "";
+    const commentBody = `#### The release succeeded\n\n${commentSummary}${releaseInfosAvailabilities.join("")}`;
+    const requestBody = {
+      body: commentBody
+    };
+    // TODO: uncomment to use GiHub API
+    // const successCommentResponse = await fetch(uri, {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/vnd.github+json",
+    //     Authorization: `Bearer ${issuePullRequestToken}`,
+    //     "X-GitHub-Api-Version": "2022-11-28"
+    //   },
+    //   body: JSON.stringify(requestBody)
+    // });
+    // const { status, statusText } = successCommentResponse;
+    const issueType = isPullRequest ? "pull request" : "issue";
+    if (debug) {
+      logger.setDebugScope("github:post-success-comment");
+      logger.logDebug(`API entry point: ${uri}`);
+      logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
+    }
+    // TODO: uncomment when the API is used
+    // if (status === 201) logger.logSuccess(`Added success comment on ${issueType} #${number}.`);
+    // else {
+    //   logger.logError(`Failed to post the success comment on ${issueType} #${number}.`);
+    //   if (status === 404) {
+    //     process.exitCode = 404;
+    //     throw new Error(`Failed to fetch URI ${uri}.`);
+    //   }
+    //   process.exitCode = status;
+    //   throw new Error(statusText);
+    // }
+  } else {
+    process.exitCode = 1;
+    throw new Error("The next release is not defined.");
+  }
+};

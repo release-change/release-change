@@ -13,6 +13,7 @@ const mockedContext = {
   env: {},
   branch: "main",
   packages: [{ name: "", pathname: "." }],
+  releaseInfos: [],
   config: expectedDefaultConfig
 };
 const mockedContextWithNoCi = {

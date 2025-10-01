@@ -1,14 +1,11 @@
+import type { Commit, Context, Reference } from "@release-change/shared";
 import type { AssociatedPullRequest } from "./github.types.js";
 
 import { inspect } from "node:util";
 
+import { getGitTags } from "@release-change/commit-analyser";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import {
-  type Commit,
-  type Context,
-  type Reference,
-  removeDuplicateObjects
-} from "@release-change/shared";
+import { removeDuplicateObjects } from "@release-change/shared";
 
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";
@@ -25,20 +22,21 @@ export const getRelatedPullRequestsAndIssues = async (
   commits: Commit[],
   context: Context
 ): Promise<void> => {
-  const { env, config } = context;
+  const { env, config, nextRelease } = context;
   const { debug, repositoryUrl } = config;
   const logger = setLogger(debug);
   logger.setScope("github");
   try {
     const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
-    if (commits.length) {
+    if (commits.length && nextRelease) {
       const references: Reference[] = [];
       const pullRequestReferences: AssociatedPullRequest[] = [];
-      const commitShas = commits.map(commit => commit.sha).filter(sha => typeof sha === "string");
-      if (commitShas.length) {
-        for (const commitSha of commitShas) {
+      const commitsWithSha = commits.filter(commit => typeof commit.sha === "string");
+      if (commitsWithSha.length) {
+        for (const commitWithSha of commitsWithSha) {
           const pullRequests = await getAssociatedPullRequests(
-            `${repositoryEntryPoint}/commits/${commitSha}/pulls`,
+            `${repositoryEntryPoint}/commits/${commitWithSha}/pulls`,
+            getGitTags(commitWithSha, context),
             env
           );
           pullRequestReferences.push(...pullRequests);
@@ -49,14 +47,19 @@ export const getRelatedPullRequestsAndIssues = async (
         pullRequestReferences.map(pullRequestReference => pullRequestReference.reference.number)
       );
       for (const commit of commits) {
-        const issues = getIssues(commit).filter(issue => !pullRequestNumberSet.has(issue.number));
+        const issues = getIssues(commit, getGitTags(commit, context)).filter(
+          issue => !pullRequestNumberSet.has(issue.number)
+        );
         references.push(...issues);
       }
       const pullRequestTitlesAndBodies = pullRequestReferences.flatMap(pullRequestReference =>
-        getIssues({
-          message: pullRequestReference.title,
-          body: pullRequestReference.body?.split(/\n{2,}/) ?? [""]
-        }).filter(issue => !pullRequestNumberSet.has(issue.number))
+        getIssues(
+          {
+            message: pullRequestReference.title,
+            body: pullRequestReference.body?.split(/\n{2,}/) ?? [""]
+          },
+          pullRequestReference.reference.gitTags
+        ).filter(issue => !pullRequestNumberSet.has(issue.number))
       );
       references.push(...pullRequestTitlesAndBodies);
       context.references = removeDuplicateObjects(references);

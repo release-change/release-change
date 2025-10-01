@@ -16,6 +16,7 @@ export type {
   PackageNextRelease,
   ParsedCliOptions,
   Reference,
+  ReleaseInfo,
   ReleaseInfoGithub,
   ReleaseInfoNpm,
   ReleaseType

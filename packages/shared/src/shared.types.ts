@@ -69,6 +69,7 @@ export type Commit = {
 export type Reference = {
   number: number;
   isPullRequest: boolean;
+  gitTags: string[];
 };
 export type ReleaseInfoGithub = {
   type: "github";
@@ -80,7 +81,7 @@ export type ReleaseInfoNpm = {
   name: `NPM ${string} distribution tag)`;
   url: string;
 };
-type ReleaseInfo = ReleaseInfoGithub | ReleaseInfoNpm;
+export type ReleaseInfo = ReleaseInfoGithub | ReleaseInfoNpm;
 type FileExists = {
   fileExists: true;
   authTokenExists: boolean;
@@ -102,11 +103,11 @@ export interface Context extends ContextBase {
   branch: string | undefined;
   ci: CiConfig;
   packages: Package[];
+  releaseInfos: ReleaseInfo[];
   lastRelease?: LastRelease;
   nextRelease?: NextRelease;
   commits?: Commit[];
   references?: Reference[];
-  releaseInfos?: ReleaseInfo[];
   authToken?: AuthToken;
 }
 export type PathnameGroups = {

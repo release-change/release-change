@@ -78,11 +78,11 @@ export const publish = async (context: Context): Promise<void> => {
         if (packagePublishing) packagePublishingSet.push(packagePublishing);
       }
       await push(context, { includeTags: true });
-      for (const packagePublishing of packagePublishingSet) {
-        await publishToRegistry(packagePublishing, context);
-      }
       for (const releaseNotes of releaseNotesSet) {
         await createReleaseNotes(releaseNotes, context);
+      }
+      for (const packagePublishing of packagePublishingSet) {
+        await publishToRegistry(packagePublishing, context);
       }
     }
   } catch (error) {

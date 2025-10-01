@@ -9,4 +9,8 @@ export type PullRequestAssociatedWithCommit = {
   title: string;
   body: string | null;
 };
-export type AssociatedPullRequest = { title: string; body: string | null; reference: Reference };
+export type AssociatedPullRequest = {
+  title: string;
+  body: string | null;
+  reference: Reference;
+};

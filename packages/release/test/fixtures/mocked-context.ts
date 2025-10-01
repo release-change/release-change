@@ -11,6 +11,7 @@ export const mockedContext: Context = {
     isPullRequest: false
   },
   packages: [{ name: "", pathname: "." }],
+  releaseInfos: [],
   branch: "main"
 };
 export const mockedContextWithIneligibleBranch = { ...mockedContext, branch: "unmatched-branch" };
