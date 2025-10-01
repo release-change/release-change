@@ -6,7 +6,7 @@ import { getIssues } from "../src/get-issues.js";
 import { getRelatedPullRequestsAndIssues, getRepositoryRelatedEntryPoint } from "../src/index.js";
 import { mockedCommits } from "./fixtures/mocked-commits.js";
 import { mockedContextWithNextRelease } from "./fixtures/mocked-context.js";
-import { mockedFailureFetches } from "./fixtures/mocked-failure-fetches.js";
+import { mockedFailureFetchesForCommits } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
@@ -55,7 +55,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-it.each(mockedFailureFetches)("$title", async ({ response }) => {
+it.each(mockedFailureFetchesForCommits)("$title", async ({ response }) => {
   vi.spyOn(process, "exit").mockImplementation(() => {
     throw new Error(response.expectedError);
   });

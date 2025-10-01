@@ -13,7 +13,7 @@ import {
   getBranchName,
   getCommitsSinceRef
 } from "@release-change/git";
-import { getRelatedPullRequestsAndIssues } from "@release-change/github";
+import { getRelatedPullRequestsAndIssues, postSuccessComment } from "@release-change/github";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
 import { WORKSPACE_NAME, WORKSPACE_VERSION } from "@release-change/shared";
@@ -36,7 +36,8 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
     branch,
     config,
     ci,
-    packages
+    packages,
+    releaseInfos: []
   };
   await checkRepository(context.cwd, logger);
   if (isUsableCiEnvironment(context)) {
@@ -78,9 +79,13 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
         );
         try {
           await publish(context);
-          // TODO: post success comment on related PRs and issues
-          // TODO: close issues associated as completed
-          // TODO: tag issues and PRs associated with the label “released” and/or “released on @<channel>” (if alpha, beta, RC…)
+          if (references) {
+            for (const reference of references) {
+              await postSuccessComment(reference, context);
+              // TODO: close issues associated as completed
+              // TODO: tag issues and PRs associated with the label “released” and/or “released on @<channel>” (if alpha, beta, RC…)
+            }
+          }
         } catch (error) {
           logger.logError(checkErrorType(error));
           if (references) {
