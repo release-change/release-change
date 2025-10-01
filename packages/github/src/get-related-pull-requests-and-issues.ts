@@ -35,7 +35,7 @@ export const getRelatedPullRequestsAndIssues = async (
       if (commitsWithSha.length) {
         for (const commitWithSha of commitsWithSha) {
           const pullRequests = await getAssociatedPullRequests(
-            `${repositoryEntryPoint}/commits/${commitWithSha}/pulls`,
+            `${repositoryEntryPoint}/commits/${commitWithSha.sha}/pulls`,
             getGitTags(commitWithSha, context),
             env
           );
