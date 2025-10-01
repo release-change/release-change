@@ -1,10 +1,10 @@
-import { mockedUri } from "./mocked-uri.js";
+import { mockedUriForCommits } from "./mocked-uri-commits.js";
 
 export const mockedFailureFetches = [
   {
     title: "should throw an error if the URI is not found",
     response: { status: 404 },
-    expectedError: `Failed to fetch URI ${mockedUri}.`
+    expectedError: `Failed to fetch URI ${mockedUriForCommits}.`
   },
   {
     title: "should throw an error in case of conflict",
@@ -16,7 +16,7 @@ export const mockedFailureFetches = [
           documentation_url:
             "https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit"
         }),
-      expectedError: `There is a conflict with the requested URI ${mockedUri}. See https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit.`
+      expectedError: `There is a conflict with the requested URI ${mockedUriForCommits}. See https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit.`
     }
   },
   {
