@@ -7,7 +7,7 @@ const mockedContents = [
     type: "an empty array if there are no issues (commit)",
     contents: {
       sha: "0123456789",
-      description: "fix: prevent racing of requests",
+      message: "fix: prevent racing of requests",
       body: [],
       footer: []
     },
@@ -19,10 +19,25 @@ const mockedContents = [
     expected: []
   },
   {
+    type: "an empty array if the contents have strings similar to issue numbers, but are not (commit)",
+    contents: {
+      sha: "0123456789",
+      message: "chore(deps)!: update @&#8203;commitlint/cli to 20.0.0",
+      body: ["conventional-changelog/commitlint (@&#8203;commitlint/cli)"],
+      footer: []
+    },
+    expected: []
+  },
+  {
+    type: "an empty array if the contents have strings similar to issue numbers, but are not (pull request body)",
+    contents: { body: ["Drop colour #123abc."] },
+    expected: []
+  },
+  {
     type: "an array with one item if the issue is repeated (commit)",
     contents: {
       sha: "0123456789",
-      description: "fix: fix issue #123",
+      message: "fix: fix issue #123",
       body: [],
       footer: ["Refs: #123"]
     },
@@ -32,7 +47,7 @@ const mockedContents = [
     type: "an array with one item if the issue is repeated (pull request body)",
     contents: {
       sha: "0123456789",
-      description: "This PR fixes the issue #123.",
+      message: "This PR fixes the issue #123.",
       body: [],
       footer: ["Refs: #123"]
     },
@@ -42,7 +57,7 @@ const mockedContents = [
     type: "an array with one item per issue (commit)",
     contents: {
       sha: "0123456789",
-      description: "fix: prevent racing of requests",
+      message: "fix: prevent racing of requests",
       body: [],
       footer: ["Refs: #123, #456, #789"]
     },
