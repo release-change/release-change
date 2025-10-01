@@ -81,6 +81,8 @@ Here are examples of the workflow configuration (the file must be saved in the `
       runs-on: ubuntu-latest
       permissions:
         contents: write # to be able to publish a GitHub release
+        issues: write # to be able to comment on issues
+        pull-requests: write # to be able to comment on pull requests
       steps:
         - name: Checkout
           uses: actions/checkout@v5
@@ -100,6 +102,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
         - name: Release
           env:
             RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+            ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
             NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
             NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
           run: pnpx release-change
@@ -122,6 +125,8 @@ Here are examples of the workflow configuration (the file must be saved in the `
       runs-on: ubuntu-latest
       permissions:
         contents: write # to be able to publish a GitHub release
+        issues: write # to be able to comment on issues
+        pull-requests: write # to be able to comment on pull requests
       steps:
         - name: Checkout
           uses: actions/checkout@v5
@@ -137,6 +142,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
         - name: Release
           env:
             RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+            ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
             NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
             NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
           run: npx release-change
