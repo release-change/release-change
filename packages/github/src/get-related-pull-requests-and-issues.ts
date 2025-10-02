@@ -10,6 +10,7 @@ import { removeDuplicateObjects } from "@release-change/shared";
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import { mergeReferencesByNumber } from "./merge-references-by-number.js";
 
 /**
  * Gets pull requests and issues related to the commits which are part of the release.
@@ -30,29 +31,34 @@ export const getRelatedPullRequestsAndIssues = async (
     const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
     if (commits.length && nextRelease) {
       const references: Reference[] = [];
-      const pullRequestReferences: AssociatedPullRequest[] = [];
+      const relatedPullRequests: AssociatedPullRequest[] = [];
       const commitsWithSha = commits.filter(commit => typeof commit.sha === "string");
       if (commitsWithSha.length) {
+        const pullRequestReferences: Reference[] = [];
         for (const commitWithSha of commitsWithSha) {
-          const pullRequests = await getAssociatedPullRequests(
+          const associatedPullRequests = await getAssociatedPullRequests(
             `${repositoryEntryPoint}/commits/${commitWithSha.sha}/pulls`,
             getGitTags(commitWithSha, context),
             env
           );
-          pullRequestReferences.push(...pullRequests);
-          references.push(...pullRequests.map(pullRequest => pullRequest.reference));
+          relatedPullRequests.push(...associatedPullRequests);
+          pullRequestReferences.push(
+            ...associatedPullRequests.map(associatedPullRequest => associatedPullRequest.reference)
+          );
         }
+        references.push(...mergeReferencesByNumber(pullRequestReferences));
       }
       const pullRequestNumberSet = new Set(
-        pullRequestReferences.map(pullRequestReference => pullRequestReference.reference.number)
+        relatedPullRequests.map(pullRequestReference => pullRequestReference.reference.number)
       );
+      const issueReferences: Reference[] = [];
       for (const commit of commits) {
         const issues = getIssues(commit, getGitTags(commit, context)).filter(
           issue => !pullRequestNumberSet.has(issue.number)
         );
-        references.push(...issues);
+        issueReferences.push(...issues);
       }
-      const pullRequestTitlesAndBodies = pullRequestReferences.flatMap(pullRequestReference =>
+      const pullRequestTitlesAndBodies = relatedPullRequests.flatMap(pullRequestReference =>
         getIssues(
           {
             message: pullRequestReference.title,
@@ -61,7 +67,8 @@ export const getRelatedPullRequestsAndIssues = async (
           pullRequestReference.reference.gitTags
         ).filter(issue => !pullRequestNumberSet.has(issue.number))
       );
-      references.push(...pullRequestTitlesAndBodies);
+      issueReferences.push(...pullRequestTitlesAndBodies);
+      references.push(...mergeReferencesByNumber(issueReferences));
       context.references = removeDuplicateObjects(references);
     } else context.references = [];
     if (debug) {
