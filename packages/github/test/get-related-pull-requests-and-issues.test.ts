@@ -72,12 +72,14 @@ it.each(mockedFailureFetchesForCommits)("$title", async ({ response }) => {
 it("should complete context with references to no pull requests and issues if no commits are provided", async () => {
   await getRelatedPullRequestsAndIssues([], mockedContextWithNextRelease);
   assert.deepEqual(mockedContextWithNextRelease.references, []);
+  expect(mockedLogger.logInfo).toHaveBeenCalledWith("No pull requests nor issues found.");
 });
 it("should complete context with references to no pull requests and issues if none of them are found", async () => {
   vi.mocked(getAssociatedPullRequests).mockResolvedValue([]);
   vi.mocked(getIssues).mockReturnValue([]);
   await getRelatedPullRequestsAndIssues(mockedCommits, mockedContextWithNextRelease);
   assert.deepEqual(mockedContextWithNextRelease.references, []);
+  expect(mockedLogger.logInfo).toHaveBeenCalledWith("No pull requests nor issues found.");
 });
 it("should complete context with references to no pull requests if none of them are found", async () => {
   vi.mocked(getAssociatedPullRequests).mockResolvedValue([]);
@@ -90,6 +92,7 @@ it("should complete context with references to no pull requests if none of them 
     { number: 456, isPullRequest: false, gitTags: ["v1.2.3"] },
     { number: 789, isPullRequest: false, gitTags: ["v1.2.3"] }
   ]);
+  expect(mockedLogger.logInfo).toHaveBeenCalledWith("No pull requests and 2 issues found.");
 });
 it("should complete context with references to no issues if none of them are found", async () => {
   vi.mocked(getAssociatedPullRequests).mockResolvedValue(mockedAssociatedPullRequests);
@@ -100,6 +103,7 @@ it("should complete context with references to no issues if none of them are fou
     { number: 456, isPullRequest: true, gitTags: ["v1.2.3"] },
     { number: 789, isPullRequest: true, gitTags: ["v1.2.3"] }
   ]);
+  expect(mockedLogger.logInfo).toHaveBeenCalledWith("3 pull requests and no issues found.");
 });
 it("should complete context with references to both pull requests and issues if both of them are found", async () => {
   vi.mocked(getAssociatedPullRequests).mockResolvedValue(mockedAssociatedPullRequests);
@@ -117,4 +121,5 @@ it("should complete context with references to both pull requests and issues if 
     { number: 1213, isPullRequest: false, gitTags: ["v1.2.3"] },
     { number: 1415, isPullRequest: false, gitTags: ["v1.2.3"] }
   ]);
+  expect(mockedLogger.logInfo).toHaveBeenCalledWith("3 pull requests and 3 issues found.");
 });
