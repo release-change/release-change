@@ -99,6 +99,7 @@ describe.each(mockedFailComments)(
     //       body: expectedBody
     //     })
     //   });
+    //   expect(mockedLogger.logInfo).toHaveBeenCalledWith(`Added fail comment on ${type} #123.`);
     // });
   }
 );

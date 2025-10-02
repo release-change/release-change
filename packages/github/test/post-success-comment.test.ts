@@ -96,6 +96,9 @@ describe.each(mockedSuccessComments)(
     //       body: expectedBody
     //     })
     //   });
+    //   expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
+    //     `Added success comment on ${type} #123.`
+    //   );
     // });
   }
 );
