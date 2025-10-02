@@ -10,7 +10,7 @@ import {
   mockedContextWithNextRelease,
   mockedContextWithNextReleaseInMonorepo
 } from "./fixtures/mocked-context.js";
-import { mockedFailureFetchesForComments } from "./fixtures/mocked-failure-fetches.js";
+import { mockedFailureFetches } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedSuccessComments } from "./fixtures/mocked-success-comments.js";
@@ -53,7 +53,7 @@ describe.each(mockedSuccessComments)(
     //     "Failed to request the URI."
     //   );
     // });
-    // it.each(mockedFailureFetchesForComments)("$title", async ({ response, expectedError }) => {
+    // it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
     //   vi.mocked(mockedFetch).mockResolvedValue(response);
     //   await expect(postSuccessComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
     //     expectedError

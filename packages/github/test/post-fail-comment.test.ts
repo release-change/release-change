@@ -11,7 +11,7 @@ import {
   mockedContextWithoutBranch
 } from "./fixtures/mocked-context.js";
 import { mockedFailComments } from "./fixtures/mocked-fail-comments.js";
-import { mockedFailureFetchesForComments } from "./fixtures/mocked-failure-fetches.js";
+import { mockedFailureFetches } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedIssuePRToken } from "./fixtures/mocked-token.js";
@@ -53,7 +53,7 @@ describe.each(mockedFailComments)(
     //     "Failed to request the URI."
     //   );
     // });
-    // it.each(mockedFailureFetchesForComments)("$title", async ({ response, expectedError }) => {
+    // it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
     //   vi.mocked(mockedFetch).mockResolvedValue(response);
     //   await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
     //     expectedError
@@ -85,9 +85,6 @@ describe.each(mockedFailComments)(
     //     statusText: "Created"
     //   });
     //   await postFailComment(reference, context);
-    //   expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-    //     `Added fail comment on ${type} #${reference.number}.`
-    //   );
     //   expect(mockedFetch).toHaveBeenCalledWith(mockedUriForComments, {
     //     method: "POST",
     //     headers: {
