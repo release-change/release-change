@@ -50,12 +50,12 @@ The release from the \`${branch}\` branch failed.`;
     }
     // TODO: uncomment when the API is used
     // if (status === 201) logger.logInfo(`Added fail comment on ${issueType} #${number}.`);
+    // else if (status === 404)
+    //   logger.logWarn(
+    //     `The resource requested for ${issueType} #${number} has not been found; therefore, the fail comment has not been added.`
+    //   );
     // else {
     //   logger.logError(`Failed to post the fail comment on ${issueType} #${number}.`);
-    //   if (status === 404) {
-    //     process.exitCode = 404;
-    //     throw new Error(`Failed to fetch URI ${uri}.`);
-    //   }
     //   process.exitCode = status;
     //   throw new Error(statusText);
     // }

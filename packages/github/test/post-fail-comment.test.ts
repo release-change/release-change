@@ -63,6 +63,19 @@ describe.each(mockedFailComments)(
     //   );
     //   expect(process.exitCode).toBe(response.status);
     // });
+    // it("should log a warning message if the URI is not found", async () => {
+    //   const context = isMonorepo
+    //     ? mockedContextWithNextReleaseInMonorepo
+    //     : mockedContextWithNextRelease;
+    //   vi.mocked(mockedFetch).mockResolvedValue({
+    //     status: 404,
+    //     statusText: "Not Found"
+    //   });
+    //   await postFailComment(reference, context);
+    //   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
+    //     `The resource requested for ${type} #123 has not been found; therefore, the fail comment has not been added.`
+    //   );
+    // });
     // it("should post a fail comment", async () => {
     //   const context = isMonorepo
     //     ? mockedContextWithNextReleaseInMonorepo
@@ -86,6 +99,7 @@ describe.each(mockedFailComments)(
     //       body: expectedBody
     //     })
     //   });
+    //   expect(mockedLogger.logInfo).toHaveBeenCalledWith(`Added fail comment on ${type} #123.`);
     // });
   }
 );

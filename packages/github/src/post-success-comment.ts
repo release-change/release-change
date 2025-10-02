@@ -100,12 +100,12 @@ export const postSuccessComment = async (reference: Reference, context: Context)
     }
     // TODO: uncomment when the API is used
     // if (status === 201) logger.logSuccess(`Added success comment on ${issueType} #${number}.`);
+    // else if (status === 404)
+    //   logger.logWarn(
+    //     `The resource requested for ${issueType} #${number} has not been found; therefore, the success comment has not been added.`
+    //   );
     // else {
     //   logger.logError(`Failed to post the success comment on ${issueType} #${number}.`);
-    //   if (status === 404) {
-    //     process.exitCode = 404;
-    //     throw new Error(`Failed to fetch URI ${uri}.`);
-    //   }
     //   process.exitCode = status;
     //   throw new Error(statusText);
     // }
