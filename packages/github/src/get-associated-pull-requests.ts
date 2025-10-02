@@ -1,23 +1,32 @@
+import type { Context } from "@release-change/shared";
 import type {
   AssociatedPullRequest,
   GitHubResponseError,
   PullRequestAssociatedWithCommit
 } from "./github.types.js";
 
+import { inspect } from "node:util";
+
 import { getReleaseToken } from "@release-change/ci";
+import { setLogger } from "@release-change/logger";
 
 /**
  * Gets the pull requests associated with a given commit.
  * @param uri - The URI to request.
  * @param gitTags - The git tags associated with the commit.
- * @param env - The environment variables.
+ * @param context - The context where the CLI is running.
  * @return An array of associated pull requests.
  */
 export const getAssociatedPullRequests = async (
   uri: string,
   gitTags: string[],
-  env: NodeJS.ProcessEnv
+  context: Context
 ): Promise<AssociatedPullRequest[]> => {
+  const {
+    env,
+    config: { debug }
+  } = context;
+  const logger = setLogger(debug);
   const releaseToken = getReleaseToken(env);
   const associatedPullRequest: AssociatedPullRequest[] = [];
   const pullRequestResponse = await fetch(uri, {
@@ -28,6 +37,11 @@ export const getAssociatedPullRequests = async (
     }
   });
   const { status } = pullRequestResponse;
+  if (debug) {
+    logger.setDebugScope("github:get-associated-pull-requests");
+    logger.logDebug(`API entry point: ${uri}`);
+    logger.logDebug(`Request status: ${status}`);
+  }
   if (status === 200) {
     const pullRequests: PullRequestAssociatedWithCommit[] = await pullRequestResponse.json();
     for (const pullRequest of pullRequests) {
@@ -37,6 +51,11 @@ export const getAssociatedPullRequests = async (
         body,
         reference: { number, isPullRequest: true, gitTags }
       });
+    }
+    if (debug) {
+      logger.logDebug(
+        `Associated pull requests: ${inspect(associatedPullRequest, { depth: Number.POSITIVE_INFINITY })}`
+      );
     }
     return associatedPullRequest;
   }

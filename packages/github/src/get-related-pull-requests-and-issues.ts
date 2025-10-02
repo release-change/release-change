@@ -1,16 +1,11 @@
+import type { Commit, Context, Reference } from "@release-change/shared";
 import type { AssociatedPullRequest } from "./github.types.js";
 
 import { inspect } from "node:util";
 
 import { getGitTags } from "@release-change/commit-analyser";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import {
-  agreeInNumber,
-  type Commit,
-  type Context,
-  type Reference,
-  removeDuplicateObjects
-} from "@release-change/shared";
+import { agreeInNumber } from "@release-change/shared";
 
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";
@@ -28,7 +23,7 @@ export const getRelatedPullRequestsAndIssues = async (
   commits: Commit[],
   context: Context
 ): Promise<void> => {
-  const { env, config, nextRelease } = context;
+  const { config, nextRelease } = context;
   const { debug, repositoryUrl } = config;
   const logger = setLogger(debug);
   logger.setScope("github");
@@ -45,7 +40,7 @@ export const getRelatedPullRequestsAndIssues = async (
           const associatedPullRequests = await getAssociatedPullRequests(
             `${repositoryEntryPoint}/commits/${commitWithSha.sha}/pulls`,
             getGitTags(commitWithSha, context),
-            env
+            context
           );
           relatedPullRequests.push(...associatedPullRequests);
           pullRequestReferences.push(
@@ -59,7 +54,7 @@ export const getRelatedPullRequestsAndIssues = async (
       );
       const issueReferences: Reference[] = [];
       for (const commit of commits) {
-        const issues = getIssues(commit, getGitTags(commit, context)).filter(
+        const issues = getIssues(commit, getGitTags(commit, context), debug).filter(
           issue => !pullRequestNumberSet.has(issue.number)
         );
         issueReferences.push(...issues);
@@ -70,12 +65,13 @@ export const getRelatedPullRequestsAndIssues = async (
             message: pullRequestReference.title,
             body: pullRequestReference.body?.split(/\n{2,}/) ?? [""]
           },
-          pullRequestReference.reference.gitTags
+          pullRequestReference.reference.gitTags,
+          debug
         ).filter(issue => !pullRequestNumberSet.has(issue.number))
       );
       issueReferences.push(...pullRequestTitlesAndBodies);
       references.push(...mergeReferencesByNumber(issueReferences));
-      context.references = removeDuplicateObjects(references);
+      context.references = references;
       const totalPullRequestReferences = context.references.filter(
         reference => reference.isPullRequest
       ).length;
@@ -85,10 +81,14 @@ export const getRelatedPullRequestsAndIssues = async (
       const totalPullRequestReferencesMessage = `${totalPullRequestReferences || "No"} pull ${agreeInNumber(totalPullRequestReferences, ["request", "requests"])}`;
       const totalIssueReferencesMessage = `${totalIssueReferences || "no"} ${agreeInNumber(totalIssueReferences, ["issue", "issues"])}`;
       logger.logInfo(
-        `${totalPullRequestReferencesMessage} and ${totalIssueReferencesMessage} found.`
+        !totalPullRequestReferences && !totalIssueReferences
+          ? "No pull requests nor issues found."
+          : `${totalPullRequestReferencesMessage} and ${totalIssueReferencesMessage} found.`
       );
-    } else context.references = [];
-    logger.logInfo("No pull requests nor issues found.");
+    } else {
+      context.references = [];
+      logger.logInfo("No pull requests nor issues found.");
+    }
     if (debug) {
       logger.setDebugScope("github:get-related-pull-requests-and-issues");
       logger.logDebug("context.references:");

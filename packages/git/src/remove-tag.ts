@@ -7,7 +7,7 @@ import { runCommandSync } from "@release-change/shared";
  * Removes a Git tag.
  * @param gitTag - The Git tag to remove.
  * @param cwd - The current working directory.
- * @param debug - Whether the CLI is running in debug mode or not.
+ * @param [debug] - Whether the CLI is running in debug mode or not.
  */
 export const removeTag = (gitTag: string, cwd: string, debug = false): void => {
   const logger = setLogger(debug);
