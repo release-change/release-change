@@ -14,6 +14,7 @@ import {
   getCommitsSinceRef
 } from "@release-change/git";
 import {
+  closeIssue,
   getRelatedPullRequestsAndIssues,
   postFailComment,
   postSuccessComment
@@ -72,21 +73,13 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
       } else {
         await getRelatedPullRequestsAndIssues(commits, context);
         const { references } = context;
-        console.log(
-          "context.references with PRs",
-          references?.filter(reference => reference.isPullRequest).length
-        );
-        console.log(
-          "context.references with issues",
-          references?.filter(reference => !reference.isPullRequest).length,
-          references?.filter(reference => !reference.isPullRequest)
-        );
         try {
           await publish(context);
           if (references) {
             for (const reference of references) {
+              const { number, isPullRequest } = reference;
               await postSuccessComment(reference, context);
-              // TODO: close issues associated as completed
+              if (!isPullRequest) await closeIssue(number, context);
               // TODO: tag issues and PRs associated with the label “released” and/or “released on @<channel>” (if alpha, beta, RC…)
             }
           }
