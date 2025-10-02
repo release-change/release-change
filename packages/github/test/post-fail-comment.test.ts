@@ -85,9 +85,6 @@ describe.each(mockedFailComments)(
     //     statusText: "Created"
     //   });
     //   await postFailComment(reference, context);
-    //   expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-    //     `Added fail comment on ${type} #${reference.number}.`
-    //   );
     //   expect(mockedFetch).toHaveBeenCalledWith(mockedUriForComments, {
     //     method: "POST",
     //     headers: {
