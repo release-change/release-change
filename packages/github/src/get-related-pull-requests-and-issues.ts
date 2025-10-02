@@ -1,11 +1,16 @@
-import type { Commit, Context, Reference } from "@release-change/shared";
 import type { AssociatedPullRequest } from "./github.types.js";
 
 import { inspect } from "node:util";
 
 import { getGitTags } from "@release-change/commit-analyser";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import { removeDuplicateObjects } from "@release-change/shared";
+import {
+  agreeInNumber,
+  type Commit,
+  type Context,
+  type Reference,
+  removeDuplicateObjects
+} from "@release-change/shared";
 
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";
@@ -30,6 +35,7 @@ export const getRelatedPullRequestsAndIssues = async (
   try {
     const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
     if (commits.length && nextRelease) {
+      logger.logInfo("Searching for related pull requests and issues…");
       const references: Reference[] = [];
       const relatedPullRequests: AssociatedPullRequest[] = [];
       const commitsWithSha = commits.filter(commit => typeof commit.sha === "string");
@@ -70,7 +76,19 @@ export const getRelatedPullRequestsAndIssues = async (
       issueReferences.push(...pullRequestTitlesAndBodies);
       references.push(...mergeReferencesByNumber(issueReferences));
       context.references = removeDuplicateObjects(references);
+      const totalPullRequestReferences = context.references.filter(
+        reference => reference.isPullRequest
+      ).length;
+      const totalIssueReferences = context.references.filter(
+        reference => !reference.isPullRequest
+      ).length;
+      const totalPullRequestReferencesMessage = `${totalPullRequestReferences || "No"} pull ${agreeInNumber(totalPullRequestReferences, ["request", "requests"])}`;
+      const totalIssueReferencesMessage = `${totalIssueReferences || "no"} ${agreeInNumber(totalIssueReferences, ["issue", "issues"])}`;
+      logger.logInfo(
+        `${totalPullRequestReferencesMessage} and ${totalIssueReferencesMessage} found.`
+      );
     } else context.references = [];
+    logger.logInfo("No pull requests nor issues found.");
     if (debug) {
       logger.setDebugScope("github:get-related-pull-requests-and-issues");
       logger.logDebug("context.references:");
