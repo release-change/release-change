@@ -4,7 +4,8 @@ import { inspect } from "node:util";
 
 import { ISSUE_ID } from "@release-change/commit-analyser";
 import { setLogger } from "@release-change/logger";
-import { removeDuplicateObjects } from "@release-change/shared";
+
+import { mergeReferencesByNumber } from "./merge-references-by-number.js";
 
 /**
  * Gets the issues mentioned by a commit or a pull request body.
@@ -36,5 +37,5 @@ export const getIssues = (
       logger.logDebug(`Associated issue: ${inspect(issue, { depth: Number.POSITIVE_INFINITY })}`);
     }
   }
-  return removeDuplicateObjects(issues);
+  return mergeReferencesByNumber(issues);
 };
