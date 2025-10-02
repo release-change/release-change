@@ -5,11 +5,10 @@ import { closeIssue, getRepositoryRelatedEntryPoint } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedFailureFetches } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
+import { mockedIssueNumber } from "./fixtures/mocked-issue-number.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedIssuePRToken } from "./fixtures/mocked-token.js";
 import { mockedUriForIssue } from "./fixtures/mocked-uri.js";
-
-const mockedIssueNumber = 123;
 
 global.fetch = mockedFetch;
 
