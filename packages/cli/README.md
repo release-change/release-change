@@ -85,6 +85,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
         contents: write # to be able to publish a GitHub release
         issues: write # to be able to comment on issues
         pull-requests: write # to be able to comment on pull requests
+        id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
       steps:
         - name: Checkout
           uses: actions/checkout@v5
@@ -129,6 +130,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
         contents: write # to be able to publish a GitHub release
         issues: write # to be able to comment on issues
         pull-requests: write # to be able to comment on pull requests
+        id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
       steps:
         - name: Checkout
           uses: actions/checkout@v5
