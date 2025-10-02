@@ -76,7 +76,7 @@ afterEach(() => {
 //     )
 //   ).rejects.toThrow("Failed to request the URI.");
 // });
-// it.each(mockedFailureFetchesForComments)("$title", async ({ response, expectedError }) => {
+// it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
 //   vi.mocked(mockedFetch).mockResolvedValue(response);
 //   await expect(
 //     createReleaseNotes(
