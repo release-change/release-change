@@ -3,6 +3,7 @@ import type { AssociatedPullRequest } from "../src/github.types.js";
 import { assert, expect, it, vi } from "vitest";
 
 import { getAssociatedPullRequests } from "../src/get-associated-pull-requests.js";
+import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedFailureFetchesForCommits } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
 import { mockedUriForCommits } from "./fixtures/mocked-uri.js";
@@ -17,13 +18,13 @@ global.fetch = mockedFetch;
 it("should throw an error when the request fails", async () => {
   vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
   await expect(
-    getAssociatedPullRequests(mockedUriForCommits, mockedGitTags, mockedEnv)
+    getAssociatedPullRequests(mockedUriForCommits, mockedGitTags, mockedContext)
   ).rejects.toThrow("Failed to request the URI.");
 });
 it.each(mockedFailureFetchesForCommits)("$title", async ({ response, expectedError }) => {
   vi.mocked(mockedFetch).mockResolvedValue(response);
   await expect(
-    getAssociatedPullRequests(mockedUriForCommits, mockedGitTags, mockedEnv)
+    getAssociatedPullRequests(mockedUriForCommits, mockedGitTags, mockedContext)
   ).rejects.toThrow(expectedError);
   expect(process.exitCode).toBe(response.status);
 });
@@ -48,7 +49,7 @@ it("should return the associated pull requests", async () => {
     status: 200,
     json: () => Promise.resolve(mockedPullRequests)
   });
-  const result = await getAssociatedPullRequests(mockedUriForCommits, mockedGitTags, mockedEnv);
+  const result = await getAssociatedPullRequests(mockedUriForCommits, mockedGitTags, mockedContext);
   expect(mockedFetch).toHaveBeenCalledWith(mockedUriForCommits, {
     headers: {
       Accept: "application/vnd.github+json",

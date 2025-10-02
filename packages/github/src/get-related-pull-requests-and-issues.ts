@@ -28,7 +28,7 @@ export const getRelatedPullRequestsAndIssues = async (
   commits: Commit[],
   context: Context
 ): Promise<void> => {
-  const { env, config, nextRelease } = context;
+  const { config, nextRelease } = context;
   const { debug, repositoryUrl } = config;
   const logger = setLogger(debug);
   logger.setScope("github");
@@ -45,7 +45,7 @@ export const getRelatedPullRequestsAndIssues = async (
           const associatedPullRequests = await getAssociatedPullRequests(
             `${repositoryEntryPoint}/commits/${commitWithSha.sha}/pulls`,
             getGitTags(commitWithSha, context),
-            env
+            context
           );
           relatedPullRequests.push(...associatedPullRequests);
           pullRequestReferences.push(
@@ -59,7 +59,7 @@ export const getRelatedPullRequestsAndIssues = async (
       );
       const issueReferences: Reference[] = [];
       for (const commit of commits) {
-        const issues = getIssues(commit, getGitTags(commit, context)).filter(
+        const issues = getIssues(commit, getGitTags(commit, context), debug).filter(
           issue => !pullRequestNumberSet.has(issue.number)
         );
         issueReferences.push(...issues);
@@ -70,7 +70,8 @@ export const getRelatedPullRequestsAndIssues = async (
             message: pullRequestReference.title,
             body: pullRequestReference.body?.split(/\n{2,}/) ?? [""]
           },
-          pullRequestReference.reference.gitTags
+          pullRequestReference.reference.gitTags,
+          debug
         ).filter(issue => !pullRequestNumberSet.has(issue.number))
       );
       issueReferences.push(...pullRequestTitlesAndBodies);
