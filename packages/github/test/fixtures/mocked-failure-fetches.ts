@@ -1,4 +1,4 @@
-import { mockedUriForComments, mockedUriForCommits } from "./mocked-uri.js";
+import { mockedUriForCommits } from "./mocked-uri.js";
 
 export const mockedFailureFetchesForCommits = [
   {
@@ -58,11 +58,6 @@ export const mockedFailureFetchesForCommits = [
   }
 ];
 export const mockedFailureFetchesForComments = [
-  {
-    title: "should throw an error if the URI is not found",
-    response: { status: 404 },
-    expectedError: `Failed to fetch URI ${mockedUriForComments}.`
-  },
   {
     title: "should throw an error in case of unauthorisation",
     response: {

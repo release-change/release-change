@@ -63,6 +63,19 @@ describe.each(mockedSuccessComments)(
     //   );
     //   expect(process.exitCode).toBe(response.status);
     // });
+    // it("should log a warning message if the URI is not found", async () => {
+    //   const context = isMonorepo
+    //     ? { ...mockedContextWithNextReleaseInMonorepo, releaseInfos }
+    //     : { ...mockedContextWithNextRelease, releaseInfos };
+    //   vi.mocked(mockedFetch).mockResolvedValue({
+    //     status: 404,
+    //     statusText: "Not Found"
+    //   });
+    //   await postSuccessComment(reference, context);
+    //   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
+    //     `The resource requested for ${type} #123 has not been found; therefore, the success comment has not been added.`
+    //   );
+    // });
     // it("should post a success comment", async () => {
     //   const context = isMonorepo
     //     ? { ...mockedContextWithNextReleaseInMonorepo, releaseInfos }
