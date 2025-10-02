@@ -1,3 +1,4 @@
 export { getRelatedPullRequestsAndIssues } from "./get-related-pull-requests-and-issues.js";
 export { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+export { postFailComment } from "./post-fail-comment.js";
 export { postSuccessComment } from "./post-success-comment.js";

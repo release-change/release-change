@@ -18,6 +18,10 @@ export const mockedContext: Context = {
   releaseInfos: [],
   config: mockedConfig
 };
+export const mockedContextWithoutBranch: Context = {
+  ...mockedContext,
+  branch: undefined
+};
 export const mockedContextWithNextRelease: Context = {
   ...mockedContext,
   nextRelease: [{ name: "", pathname: ".", gitTag: "v1.2.3", version: "1.2.3" }]
