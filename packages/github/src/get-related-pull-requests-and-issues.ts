@@ -85,10 +85,14 @@ export const getRelatedPullRequestsAndIssues = async (
       const totalPullRequestReferencesMessage = `${totalPullRequestReferences || "No"} pull ${agreeInNumber(totalPullRequestReferences, ["request", "requests"])}`;
       const totalIssueReferencesMessage = `${totalIssueReferences || "no"} ${agreeInNumber(totalIssueReferences, ["issue", "issues"])}`;
       logger.logInfo(
-        `${totalPullRequestReferencesMessage} and ${totalIssueReferencesMessage} found.`
+        !totalPullRequestReferences && !totalIssueReferences
+          ? "No pull requests nor issues found."
+          : `${totalPullRequestReferencesMessage} and ${totalIssueReferencesMessage} found.`
       );
-    } else context.references = [];
-    logger.logInfo("No pull requests nor issues found.");
+    } else {
+      context.references = [];
+      logger.logInfo("No pull requests nor issues found.");
+    }
     if (debug) {
       logger.setDebugScope("github:get-related-pull-requests-and-issues");
       logger.logDebug("context.references:");
