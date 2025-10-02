@@ -13,7 +13,11 @@ import {
   getBranchName,
   getCommitsSinceRef
 } from "@release-change/git";
-import { getRelatedPullRequestsAndIssues, postSuccessComment } from "@release-change/github";
+import {
+  getRelatedPullRequestsAndIssues,
+  postFailComment,
+  postSuccessComment
+} from "@release-change/github";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
 import { WORKSPACE_NAME, WORKSPACE_VERSION } from "@release-change/shared";
@@ -90,9 +94,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
           logger.logError(checkErrorType(error));
           if (references) {
             for (const reference of references) {
-              const { number } = reference;
-              console.log("reference.number", number);
-              // TODO: post fail comment on related PRs and issues
+              await postFailComment(reference, context);
             }
           }
         }
