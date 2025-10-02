@@ -1,16 +1,11 @@
+import type { Commit, Context, Reference } from "@release-change/shared";
 import type { AssociatedPullRequest } from "./github.types.js";
 
 import { inspect } from "node:util";
 
 import { getGitTags } from "@release-change/commit-analyser";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import {
-  agreeInNumber,
-  type Commit,
-  type Context,
-  type Reference,
-  removeDuplicateObjects
-} from "@release-change/shared";
+import { agreeInNumber } from "@release-change/shared";
 
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";
@@ -76,7 +71,7 @@ export const getRelatedPullRequestsAndIssues = async (
       );
       issueReferences.push(...pullRequestTitlesAndBodies);
       references.push(...mergeReferencesByNumber(issueReferences));
-      context.references = removeDuplicateObjects(references);
+      context.references = references;
       const totalPullRequestReferences = context.references.filter(
         reference => reference.isPullRequest
       ).length;
