@@ -18,6 +18,10 @@ export const mockedContext: Context = {
   releaseInfos: [],
   config: mockedConfig
 };
+export const mockedContextInMonorepo: Context = {
+  ...mockedContext,
+  config: { ...mockedConfig, isMonorepo: true }
+};
 export const mockedContextWithoutBranch: Context = {
   ...mockedContext,
   branch: undefined
