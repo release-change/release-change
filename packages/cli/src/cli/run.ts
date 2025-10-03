@@ -17,7 +17,8 @@ import {
   closeIssue,
   getRelatedPullRequestsAndIssues,
   postFailComment,
-  postSuccessComment
+  postSuccessComment,
+  tagPullRequestAndIssue
 } from "@release-change/github";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
@@ -80,7 +81,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
               const { number, isPullRequest } = reference;
               await postSuccessComment(reference, context);
               if (!isPullRequest) await closeIssue(number, context);
-              // TODO: tag issues and PRs associated with the label “released” and/or “released on @<channel>” (if alpha, beta, RC…)
+              await tagPullRequestAndIssue(reference, context);
             }
           }
         } catch (error) {
