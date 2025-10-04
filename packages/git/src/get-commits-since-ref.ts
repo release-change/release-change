@@ -1,8 +1,10 @@
+import type { Commit, Context } from "@release-change/shared";
+
 import { inspect } from "node:util";
 
 import { parseCommit } from "@release-change/commit-analyser";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import { agreeInNumber, type Commit, type Context, runCommandSync } from "@release-change/shared";
+import { agreeInNumber, runCommandSync } from "@release-change/shared";
 
 import { COMMIT_SEPARATOR } from "./constants.js";
 

@@ -1,10 +1,10 @@
-import type { ReleaseType } from "@release-change/shared";
+import type { Commit, Context, ReleaseType } from "@release-change/shared";
 import type { PackageReleaseType } from "./commit-analyser.types.js";
 
 import { inspect } from "node:util";
 
 import { checkErrorType, setLogger } from "@release-change/logger";
-import { agreeInNumber, type Commit, type Context } from "@release-change/shared";
+import { agreeInNumber } from "@release-change/shared";
 
 import { adjustReleaseType } from "./adjust-release-type.js";
 
