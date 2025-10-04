@@ -1,9 +1,13 @@
-import type { PackageManager } from "@release-change/get-packages";
-
 import fs from "node:fs";
 
 import { getPackageDependencies, getPackageManager } from "@release-change/get-packages";
-import { createTag, getCurrentCommitId, push } from "@release-change/git";
+import {
+  cancelCommitsSinceRef,
+  createTag,
+  getCurrentCommitId,
+  push,
+  removeTag
+} from "@release-change/git";
 import { setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
 import {
@@ -20,8 +24,9 @@ import { updatePackageDependenciesVersions } from "../src/update-package-depende
 import { updatePackageVersion } from "../src/update-package-version.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
+import { mockedReleaseNotes } from "./fixtures/mocked-release-notes.js";
 
-const packageManagers: PackageManager[] = ["pnpm", "npm"];
+const packageManagers = ["pnpm", "npm"] as const;
 const mockedContextWithNextRelease = {
   ...mockedContext,
   nextRelease: [{ name: "", pathname: ".", gitTag: "v1.0.0", version: "1.0.0" }]
@@ -44,7 +49,9 @@ beforeEach(() => {
   vi.mock("@release-change/git", () => ({
     getCurrentCommitId: vi.fn(),
     createTag: vi.fn(),
-    push: vi.fn()
+    push: vi.fn(),
+    cancelCommitsSinceRef: vi.fn(),
+    removeTag: vi.fn()
   }));
   vi.mock("@release-change/release-notes-generator", () => ({
     prepareReleaseNotes: vi.fn(),
@@ -103,17 +110,16 @@ it("should throw an error if the package manager is not found or unsupported", a
   expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
 });
 describe.each(packageManagers)("for %s", packageManager => {
-  vi.mocked(getPackageManager).mockReturnValue(packageManager);
+  beforeEach(() => {
+    vi.mocked(getPackageManager).mockReturnValue(packageManager);
+    vi.mocked(push).mockResolvedValue();
+  });
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
   describe.each([mockedContextWithNextRelease, mockedContextInMonorepoWithNextRelease])(
     "for isMonorepo: $config.isMonorepo",
     context => {
-      const mockedReleaseNotes = {
-        tagName: "v1.0.0",
-        target: "main",
-        isPrerelease: false,
-        body: {}
-      };
-
       beforeEach(() => {
         vi.mocked(getPackageDependencies).mockReturnValue([]);
         vi.mocked(prepareReleaseNotes).mockReturnValue(mockedReleaseNotes);
@@ -123,6 +129,8 @@ describe.each(packageManagers)("for %s", packageManager => {
         vi.mocked(commitUpdatedFiles).mockResolvedValue();
         vi.mocked(getCurrentCommitId).mockReturnValue("0123456");
         vi.mocked(createTag).mockImplementation(() => undefined);
+        vi.mocked(createReleaseNotes).mockResolvedValue();
+        vi.mocked(preparePublishing).mockResolvedValue(null);
       });
       afterEach(() => {
         vi.clearAllMocks();
@@ -175,6 +183,162 @@ describe.each(packageManagers)("for %s", packageManager => {
           expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
         });
       });
+      if (context.config.isMonorepo) {
+        it("should update package dependencies when in monorepo with dependencies", async () => {
+          vi.mocked(getPackageDependencies).mockReturnValue(["@monorepo/c"]);
+          await publish(context);
+          expect(updatePackageDependenciesVersions).toHaveBeenCalled();
+        });
+        it("should not update package dependencies when dependencies are `null`", async () => {
+          vi.mocked(getPackageDependencies).mockReturnValue(null);
+          await publish(context);
+          expect(updatePackageDependenciesVersions).not.toHaveBeenCalled();
+        });
+      } else {
+        it("should not update package dependencies when not in monorepo", async () => {
+          vi.mocked(getPackageDependencies).mockReturnValue(["some-package"]);
+          await publish(context);
+          expect(updatePackageDependenciesVersions).not.toHaveBeenCalled();
+        });
+      }
+      it("should execute the full publishing workflow successfully", async () => {
+        const args =
+          packageManager === "pnpm"
+            ? ["publish", "--access", "public", "--not-git-checks"]
+            : ["publish", "--access", "public"];
+        vi.mocked(getPackageDependencies).mockReturnValue([]);
+        vi.mocked(prepareReleaseNotes).mockReturnValue(mockedReleaseNotes);
+        vi.mocked(getCurrentCommitId).mockReturnValue("abc123");
+        vi.mocked(preparePublishing).mockResolvedValue({
+          name: "",
+          packageManifestName: "foo",
+          pathname: ".",
+          version: "1.0.0",
+          packageManager,
+          args
+        });
+        await publish(context);
+        expect(push).toHaveBeenCalledWith(context, { includeTags: true });
+        expect(createReleaseNotes).toHaveBeenCalled();
+        expect(publishToRegistry).toHaveBeenCalled();
+      });
+      it("should rollback commits and remove tags when push fails", async () => {
+        vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
+        vi.mocked(push).mockRejectedValue(
+          new Error("Push failed", {
+            cause: "git push --follow-tags origin main"
+          })
+        );
+        await expect(publish(context)).rejects.toThrow("Push failed");
+        expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
+          "original-commit",
+          expect.any(String),
+          expect.any(Boolean)
+        );
+        expect(removeTag).toHaveBeenCalled();
+      });
+      it("should not rollback when error is not from `git push`", async () => {
+        vi.mocked(updateLockFile).mockRejectedValue(new Error("Lock file update failed"));
+        await expect(publish(context)).rejects.toThrow();
+        expect(cancelCommitsSinceRef).not.toHaveBeenCalled();
+        expect(removeTag).not.toHaveBeenCalled();
+      });
+      it("should set `process.exitCode` to 1 on error", async () => {
+        vi.mocked(push).mockRejectedValue(new Error("Some error"));
+        await expect(publish(context)).rejects.toThrow();
+        expect(process.exitCode).toBe(1);
+      });
+      it("should create all tags before pushing", async () => {
+        const operations: string[] = [];
+        vi.mocked(createTag).mockImplementation(() => {
+          operations.push("tag");
+        });
+        vi.mocked(push).mockImplementation(async () => {
+          operations.push("push");
+        });
+        await publish(context);
+        expect(operations.lastIndexOf("tag")).toBeLessThan(operations.indexOf("push"));
+      });
+      it("should not add to `packagePublishingSet` when `preparePublishing` returns `null`", async () => {
+        await publish(context);
+        expect(publishToRegistry).not.toHaveBeenCalled();
+      });
+      it("should collect all Git tags during package processing", async () => {
+        await publish(context);
+        const gitTags = context.nextRelease.map(packageItem => packageItem.gitTag);
+        for (const gitTag of gitTags) {
+          expect(createTag).toHaveBeenCalledWith(
+            expect.objectContaining({ gitTag }),
+            expect.any(String),
+            expect.any(Boolean)
+          );
+        }
+      });
+      it("should remove all created tags on rollback", async () => {
+        vi.mocked(push).mockRejectedValue(
+          new Error("Push failed", { cause: "git push --follow-tags origin main" })
+        );
+        await expect(publish(context)).rejects.toThrow();
+        expect(removeTag).toHaveBeenCalledTimes(context.nextRelease.length);
+        for (const packageNextRelease of context.nextRelease) {
+          expect(removeTag).toHaveBeenCalledWith(
+            packageNextRelease.gitTag,
+            expect.any(String),
+            expect.any(Boolean)
+          );
+        }
+      });
+      it("should create release notes for all packages", async () => {
+        await publish(context);
+        expect(createReleaseNotes).toHaveBeenCalledTimes(context.nextRelease.length);
+      });
+      it("should create release notes after successful push", async () => {
+        const operations: string[] = [];
+        vi.mocked(push).mockImplementation(async () => {
+          operations.push("push");
+        });
+        vi.mocked(createReleaseNotes).mockImplementation(async () => {
+          operations.push("releaseNotes");
+        });
+        await publish(context);
+        expect(operations.lastIndexOf("push")).toBeLessThan(operations.indexOf("releaseNotes"));
+      });
+      it("should handle non-Error exceptions", async () => {
+        vi.mocked(push).mockRejectedValue("String error");
+        await expect(publish(context)).rejects.toThrowError("String error");
+      });
+      it("should preserve error cause when rethrowing", async () => {
+        vi.mocked(push).mockRejectedValue(new Error("Original", { cause: "custom-cause" }));
+        try {
+          await publish(context);
+        } catch (error) {
+          expect(error).toBeInstanceOf(Error);
+          expect.objectContaining({ cause: "custom-cause" });
+        }
+      });
     }
   );
+  it("should publish all packages that return valid publishing info", async () => {
+    vi.mocked(prepareReleaseNotes).mockReturnValue(mockedReleaseNotes);
+    vi.mocked(preparePublishing)
+      .mockResolvedValueOnce({
+        name: "@monorepo/a",
+        packageManifestName: "@monorepo/a",
+        pathname: "packages/a",
+        version: "1.0.0",
+        packageManager,
+        args: []
+      })
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce({
+        name: "@monorepo/c",
+        packageManifestName: "@monorepo/c",
+        pathname: "packages/c",
+        version: "1.0.0",
+        packageManager,
+        args: []
+      });
+    await publish(mockedContextInMonorepoWithNextRelease);
+    expect(publishToRegistry).toHaveBeenCalledTimes(2);
+  });
 });
