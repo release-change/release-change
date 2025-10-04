@@ -1,10 +1,13 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the API is used> */
 /** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the API is used> */
+
+import type { Context, Reference } from "@release-change/shared";
+
 import { inspect } from "node:util";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { agreeInNumber, type Context, type Reference } from "@release-change/shared";
+import { agreeInNumber } from "@release-change/shared";
 
 import { findNpmTagFromGitTag } from "./find-npm-tag-from-git-tag.js";
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
