@@ -2,6 +2,7 @@ import type { CliOptions, ContextBase } from "@release-change/shared";
 
 import { configureCiEnvironment, isUsableCiEnvironment } from "@release-change/ci";
 import { getReleaseType } from "@release-change/commit-analyser";
+import { getConfig } from "@release-change/config";
 import { getPackages, isMonorepo } from "@release-change/get-packages";
 import {
   checkBranch,
@@ -10,6 +11,7 @@ import {
   getBranchName,
   getCommitsSinceRef
 } from "@release-change/git";
+import { getRelatedPullRequestsAndIssues } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
@@ -21,7 +23,7 @@ const mockedCliOptions: CliOptions = { debug: true }; // Add more fields if need
 const mockedContextBase: ContextBase = {
   cwd: "/fake/path",
   env: {},
-  config: { debug: true }
+  config: { debug: false }
 };
 const mockedPackages = [
   {
@@ -39,10 +41,14 @@ const mockedPackages = [
 ];
 
 beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn(), checkErrorType: vi.fn() }));
   vi.mock("@release-change/ci", () => ({
     configureCiEnvironment: vi.fn(),
     isUsableCiEnvironment: vi.fn()
+  }));
+  vi.mock("@release-change/config", () => ({
+    getConfig: vi.fn(),
+    debugConfig: vi.fn()
   }));
   vi.mock("@release-change/git", () => ({
     checkRepository: vi.fn(),
@@ -63,7 +69,23 @@ beforeEach(() => {
     getPackages: vi.fn(),
     isMonorepo: vi.fn()
   }));
+  vi.mock("@release-change/github", () => ({
+    getRelatedPullRequestsAndIssues: vi.fn(),
+    closeIssue: vi.fn(),
+    postFailComment: vi.fn(),
+    postSuccessComment: vi.fn(),
+    tagPullRequestAndIssue: vi.fn()
+  }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
+  vi.mocked(getConfig).mockResolvedValue({
+    debug: mockedContextBase.config.debug,
+    dryRun: false,
+    branches: ["main"],
+    isMonorepo: false,
+    remoteName: "origin",
+    repositoryUrl: "https://github.com/user-id/repo-name",
+    releaseType: { main: { channel: "default" } }
+  });
   vi.mocked(getBranchName).mockReturnValue("main");
   vi.mocked(checkBranch).mockImplementation(() => undefined);
   vi.mocked(checkPushPermissions).mockResolvedValue();
@@ -84,6 +106,7 @@ beforeEach(() => {
     { name: "@monorepo/b", releaseType: null },
     { name: "", releaseType: null }
   ]);
+  vi.mocked(getRelatedPullRequestsAndIssues).mockResolvedValue();
 });
 afterEach(() => {
   vi.clearAllMocks();
@@ -127,6 +150,15 @@ it("should not publish if dry-run mode is enabled", async () => {
     config: { ...mockedContextBase.config, dryRun: true },
     nextRelease: {}
   };
+  vi.mocked(getConfig).mockResolvedValue({
+    debug: mockedContextBase.config.debug,
+    dryRun: true,
+    branches: ["main"],
+    isMonorepo: false,
+    remoteName: "origin",
+    repositoryUrl: "https://github.com/user-id/repo-name",
+    releaseType: { main: { channel: "default" } }
+  });
   vi.mocked(isUsableCiEnvironment).mockReturnValue(true);
   await run(mockedCliOptions, mockContextBaseWithDryRun);
   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
