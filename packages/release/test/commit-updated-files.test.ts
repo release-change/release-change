@@ -35,6 +35,28 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
     );
   });
   describe.each(mockedPackageManagers)("for %s with %o", async (packageManager, files) => {
+    // TODO: uncomment when command is run
+    // it("should throw an error if the `git add` command fails", async () => {
+    //   vi.mocked(add).mockResolvedValue({
+    //     status: 128,
+    //     stdout: "",
+    //     stderr: "fatal: path spec '/fake/path' did not match any files"
+    //   });
+    //   await expect(
+    //     commitUpdatedFiles(nextRelease, packageManager, mockedContext)
+    //   ).rejects.toThrowError("fatal: path spec '/fake/path' did not match any files");
+    // });
+    // it("should throw an error if the `git commit` command fails", async () => {
+    //   vi.mocked(add).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+    //   vi.mocked(commit).mockResolvedValue({
+    //     status: 1,
+    //     stdout: 'no changes added to commit (use "git add" and/or "git commit -a")',
+    //     stderr: ""
+    //   });
+    //   await expect(
+    //     commitUpdatedFiles(nextRelease, packageManager, mockedContext)
+    //   ).rejects.toThrowError('no changes added to commit (use "git add" and/or "git commit -a")');
+    // });
     it("should run the `git add` command", async () => {
       const mockedFiles = files.map(file =>
         packagePath === "."
@@ -42,6 +64,8 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
           : `${mockedContext.cwd}/${packagePath}/${file}`
       );
       const mockedCommand = vi.mocked(add).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+      // TODO: uncomment when command is run
+      // vi.mocked(commit).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       await commitUpdatedFiles(nextRelease, packageManager, mockedContext);
       // TODO: uncomment when command is run
       // expect(mockedCommand).toHaveBeenCalledWith(mockedFiles, mockedContext.cwd);
@@ -50,10 +74,13 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
       const mockedCommand = vi
         .mocked(commit)
         .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+      // TODO: uncomment when command is run
+      // vi.mocked(add).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       await commitUpdatedFiles(nextRelease, packageManager, mockedContext);
       // TODO: uncomment when command is run
       // expect(mockedCommand).toHaveBeenCalledWith(
-      //   `chore: ${nextRelease.gitTag}\n\n${expectedFooter}`
+      //   `chore: ${nextRelease.gitTag}\n\n${expectedFooter}`,
+      //   mockedContext.cwd
       // );
     });
   });
