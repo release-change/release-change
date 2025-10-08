@@ -2,6 +2,7 @@
 import type { PackageManager } from "@release-change/get-packages";
 import type { Context, PackageNextRelease } from "@release-change/shared";
 
+import fs from "node:fs";
 import path from "node:path";
 import { inspect } from "node:util";
 
@@ -32,7 +33,10 @@ export const commitUpdatedFiles = async (
     );
     const changelogFile = path.join(cwd, pathname, "CHANGELOG.md");
     // TODO: uncomment to run `git add` command
-    // const gitAddCommandResult = await add([packageManifestFile, lockFile, changelogFile], cwd);
+    // const filesToAdd = fs.existsSync(lockFile)
+    //   ? [packageManifestFile, lockFile, changelogFile]
+    //   : [packageManifestFile, changelogFile];
+    // const gitAddCommandResult = await add(filesToAdd, cwd);
     // const {
     //   status: gitAddStatus,
     //   stdout: gitAddStdout,
