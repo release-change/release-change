@@ -1,18 +1,18 @@
-import type { Config, DependencyUpdateMethod } from "@release-change/shared";
+import type { CliOptions, Config, DependencyUpdateMethod } from "@release-change/shared";
 
 import { afterEach, assert, beforeEach, describe, it, vi } from "vitest";
 
-import { parseCliOptions } from "../../cli/src/cli/parse-cli-options.js";
 import { getConfigFile } from "../src/get-config-file.js";
+import { getRepositoryUrl } from "../src/get-repository-url.js";
 import { DEFAULT_CONFIG, getConfig } from "../src/index.js";
 
-const expectedDefaultConfig = {
-  ...DEFAULT_CONFIG,
-  repositoryUrl: "https://github.com/release-change/release-change.git"
-} as unknown as Config;
 const mockedRepositoryUrl = "https://github.com/user-id/repo-name.git";
 const mockedRemoteName = "non-origin";
 const mockedBranch = "main";
+const expectedDefaultConfig = {
+  ...DEFAULT_CONFIG,
+  repositoryUrl: mockedRepositoryUrl
+} as unknown as Config;
 const dependencyUpdateMethods: DependencyUpdateMethod[] = [
   null,
   "pin",
@@ -25,8 +25,10 @@ beforeEach(() => {
   vi.mock("../src/get-config-file.js", () => ({
     getConfigFile: vi.fn()
   }));
+  vi.mock("../src/get-repository-url.js", () => ({ getRepositoryUrl: vi.fn() }));
+  vi.mocked(getRepositoryUrl).mockReturnValue(mockedRepositoryUrl);
+  vi.mocked(getConfigFile).mockReturnValue(null);
 });
-
 afterEach(() => {
   vi.clearAllMocks();
 });
@@ -35,87 +37,58 @@ it("should get config with default options when `config()` is called without arg
   assert.deepEqual(await getConfig(), expectedDefaultConfig);
 });
 it("should get config with default options when `config()` is called without CLI options", async () => {
-  const { help, version, ...mockedCliOptions } = parseCliOptions([]);
-  assert.deepEqual(await getConfig(mockedCliOptions), expectedDefaultConfig);
+  assert.deepEqual(await getConfig({}), expectedDefaultConfig);
 });
-it("should get config with default options, except for `--branches` CLI option", async () => {
-  const { help, version, ...mockedCliOptions } = parseCliOptions(["--branches", mockedBranch]);
+it("should get config with default options, except for `--branches` or `-b` CLI option", async () => {
+  const mockedCliOptions: CliOptions = { branches: [mockedBranch] };
   const expectedConfig = {
     ...expectedDefaultConfig,
-    ...{ branches: [mockedBranch] }
+    ...mockedCliOptions
   };
   assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
 });
-it("should get config with default options, except for `-b` CLI option", async () => {
-  const { help, version, ...cliOptions } = parseCliOptions(["-b", mockedBranch]);
-  const expectedConfig = {
-    ...expectedDefaultConfig,
-    ...{ branches: [mockedBranch] }
+it("should get config with default options, except for `--repository-url` or `-r` CLI option", async () => {
+  const mockedCliOptions: CliOptions = {
+    repositoryUrl: mockedRepositoryUrl
   };
-  assert.deepEqual(await getConfig(cliOptions), expectedConfig);
-});
-it("should get config with default options, except for `--repository-url` CLI option", async () => {
-  const { help, version, ...mockedCliOptions } = parseCliOptions([
-    "--repository-url",
-    mockedRepositoryUrl
-  ]);
   const expectedConfig = {
     ...expectedDefaultConfig,
-    ...{ repositoryUrl: mockedRepositoryUrl }
+    ...mockedCliOptions
   };
   assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
-});
-it("should get config with default options, except for `-r` CLI option", async () => {
-  const { help, version, ...cliOptions } = parseCliOptions(["-r", mockedRepositoryUrl]);
-  const expectedConfig = {
-    ...expectedDefaultConfig,
-    ...{ repositoryUrl: mockedRepositoryUrl }
-  };
-  assert.deepEqual(await getConfig(cliOptions), expectedConfig);
 });
 it("should get config with default options, except for `--remote-name` CLI option", async () => {
-  const { help, version, ...cliOptions } = parseCliOptions(["--remote-name", mockedRemoteName]);
+  const mockedCliOptions: CliOptions = { remoteName: mockedRemoteName };
   const expectedConfig = {
     ...expectedDefaultConfig,
-    ...{ remoteName: mockedRemoteName }
+    ...mockedCliOptions
   };
-  assert.deepEqual(await getConfig(cliOptions), expectedConfig);
+  assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
 });
 it("should get config with default options, except for `--debug` CLI option", async () => {
-  const { help, version, ...mockedCliOptions } = parseCliOptions(["--debug"]);
+  const mockedCliOptions: CliOptions = { debug: true };
   const expectedConfig = {
     ...expectedDefaultConfig,
-    ...{ debug: true }
+    ...mockedCliOptions
   };
   assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
 });
-it("should get config with default options, except for `--dry-run` CLI option", async () => {
-  const { help, version, ...mockedCliOptions } = parseCliOptions(["--dry-run"]);
+it("should get config with default options, except for `--dry-run` or `-d` CLI option", async () => {
+  const mockedCliOptions: CliOptions = { dryRun: true };
   const expectedConfig = {
     ...expectedDefaultConfig,
-    ...{ dryRun: true }
+    ...mockedCliOptions
   };
   assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
 });
-it("should get config with default options, except for `-d` CLI option", async () => {
-  const { help, version, ...mockedCliOptions } = parseCliOptions(["-d"]);
-  const expectedConfig = {
-    ...expectedDefaultConfig,
-    ...{ dryRun: true }
+it("should get config according to all CLI options when all of them are set, whether using aliases or not", async () => {
+  const mockedCliOptions: CliOptions = {
+    branches: [mockedBranch],
+    repositoryUrl: mockedRepositoryUrl,
+    remoteName: mockedRemoteName,
+    debug: true,
+    dryRun: true
   };
-  assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
-});
-it("should get config according to all CLI options when all of them are set", async () => {
-  const { help, version, ...mockedCliOptions } = parseCliOptions([
-    "--branches",
-    mockedBranch,
-    "--repository-url",
-    mockedRepositoryUrl,
-    "--remote-name",
-    mockedRemoteName,
-    "--debug",
-    "--dry-run"
-  ]);
   const expectedConfig = {
     branches: [mockedBranch],
     repositoryUrl: mockedRepositoryUrl,
@@ -128,31 +101,11 @@ it("should get config according to all CLI options when all of them are set", as
   };
   assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
 });
-it("should get config according to all CLI options when all of them are set using aliases", async () => {
-  const { help, version, ...mockedCliOptions } = parseCliOptions([
-    "-b",
-    mockedBranch,
-    "-r",
-    mockedRepositoryUrl,
-    "--debug",
-    "-d"
-  ]);
-  const expectedConfig = {
-    branches: [mockedBranch],
-    repositoryUrl: mockedRepositoryUrl,
-    remoteName: "origin",
-    releaseType: expectedDefaultConfig.releaseType,
-    isMonorepo: expectedDefaultConfig.isMonorepo,
-    dependencyUpdateMethod: expectedDefaultConfig.dependencyUpdateMethod,
-    debug: true,
-    dryRun: true
-  };
-  assert.deepEqual(await getConfig(mockedCliOptions), expectedConfig);
-});
 describe.each(dependencyUpdateMethods)(
   "with `dependencyUpdateMethod` set to %s",
   dependencyUpdateMethod => {
     const mockedIsMonorepo = !!dependencyUpdateMethod;
+    const mockedCliOptions: CliOptions = {};
     it("should get config according to config file", async () => {
       const mockedConfigFile = {
         ...expectedDefaultConfig,
@@ -162,7 +115,6 @@ describe.each(dependencyUpdateMethods)(
         isMonorepo: mockedIsMonorepo,
         dependencyUpdateMethod
       };
-      const { help, version, ...mockedCliOptions } = parseCliOptions([]);
       const expectedConfig = {
         branches: ["main", "next"],
         repositoryUrl: mockedRepositoryUrl,
@@ -190,7 +142,6 @@ describe.each(dependencyUpdateMethods)(
         isMonorepo: mockedIsMonorepo,
         dependencyUpdateMethod
       };
-      const { help, version, ...mockedCliOptions } = parseCliOptions([]);
       const expectedConfig = {
         branches: ["main", "next"],
         repositoryUrl: mockedRepositoryUrl,
@@ -217,7 +168,7 @@ it("should get config according to CLI options rather than config file", async (
     repositoryUrl: mockedRepositoryUrl,
     remoteName: "origin"
   };
-  const { help, version, ...mockedCliOptions } = parseCliOptions(["--branches", mockedBranch]);
+  const mockedCliOptions: CliOptions = { branches: [mockedBranch] };
   const expectedConfig = {
     branches: [mockedBranch],
     repositoryUrl: mockedRepositoryUrl,
