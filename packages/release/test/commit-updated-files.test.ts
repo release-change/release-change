@@ -1,5 +1,8 @@
+/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when commands are run> */
 /** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when commands are run> */
 import type { PackageManager } from "@release-change/get-packages";
+
+import fs from "node:fs";
 
 import { add, commit } from "@release-change/git";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -35,6 +38,11 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
     );
   });
   describe.each(mockedPackageManagers)("for %s with %o", async (packageManager, files) => {
+    const mockedFiles = files.map(file =>
+      packagePath === "."
+        ? `${mockedContext.cwd}/${file}`
+        : `${mockedContext.cwd}/${packagePath}/${file}`
+    );
     // TODO: uncomment when command is run
     // it("should throw an error if the `git add` command fails", async () => {
     //   vi.mocked(add).mockResolvedValue({
@@ -57,14 +65,20 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
     //     commitUpdatedFiles(nextRelease, packageManager, mockedContext)
     //   ).rejects.toThrowError('no changes added to commit (use "git add" and/or "git commit -a")');
     // });
-    it("should run the `git add` command", async () => {
-      const mockedFiles = files.map(file =>
-        packagePath === "."
-          ? `${mockedContext.cwd}/${file}`
-          : `${mockedContext.cwd}/${packagePath}/${file}`
-      );
+    it("should run the `git add` command with no lock files", async () => {
+      const mockedFilesWithoutLockFile = mockedFiles.filter(file => !file.includes("lock"));
       const mockedCommand = vi.mocked(add).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       // TODO: uncomment when command is run
+      // vi.spyOn(fs, "existsSync").mockReturnValue(false);
+      // vi.mocked(commit).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+      await commitUpdatedFiles(nextRelease, packageManager, mockedContext);
+      // TODO: uncomment when command is run
+      // expect(mockedCommand).toHaveBeenCalledWith(mockedFilesWithoutLockFile, mockedContext.cwd);
+    });
+    it("should run the `git add` command with lock file", async () => {
+      const mockedCommand = vi.mocked(add).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+      // TODO: uncomment when command is run
+      // vi.spyOn(fs, "existsSync").mockReturnValue(true);
       // vi.mocked(commit).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       await commitUpdatedFiles(nextRelease, packageManager, mockedContext);
       // TODO: uncomment when command is run
