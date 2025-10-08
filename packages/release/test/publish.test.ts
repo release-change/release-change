@@ -222,6 +222,37 @@ describe.each(packageManagers)("for %s", packageManager => {
         expect(createReleaseNotes).toHaveBeenCalled();
         expect(publishToRegistry).toHaveBeenCalled();
       });
+      it("should rollback commits and remove tags when `git add` fails", async () => {
+        vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
+        vi.mocked(push).mockRejectedValue(
+          new Error("`git add` failed", {
+            cause:
+              "git add /fake/path/package.json /fake/path/package-lock.json /fake/path/CHANGELOG.md"
+          })
+        );
+        await expect(publish(context)).rejects.toThrow("`git add` failed");
+        expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
+          "original-commit",
+          expect.any(String),
+          expect.any(Boolean)
+        );
+        expect(removeTag).toHaveBeenCalled();
+      });
+      it("should rollback commits and remove tags when `git commit` fails", async () => {
+        vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
+        vi.mocked(push).mockRejectedValue(
+          new Error("Commit failed", {
+            cause: "git commit -m 'chore: v1.0.0'"
+          })
+        );
+        await expect(publish(context)).rejects.toThrow("Commit failed");
+        expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
+          "original-commit",
+          expect.any(String),
+          expect.any(Boolean)
+        );
+        expect(removeTag).toHaveBeenCalled();
+      });
       it("should rollback commits and remove tags when push fails", async () => {
         vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
         vi.mocked(push).mockRejectedValue(
@@ -237,7 +268,7 @@ describe.each(packageManagers)("for %s", packageManager => {
         );
         expect(removeTag).toHaveBeenCalled();
       });
-      it("should not rollback when error is not from `git push`", async () => {
+      it("should not rollback when error is not from `git add`, `git commit` or `git push`", async () => {
         vi.mocked(updateLockFile).mockRejectedValue(new Error("Lock file update failed"));
         await expect(publish(context)).rejects.toThrow();
         expect(cancelCommitsSinceRef).not.toHaveBeenCalled();

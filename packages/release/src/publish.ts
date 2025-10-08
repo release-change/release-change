@@ -90,7 +90,9 @@ export const publish = async (context: Context): Promise<void> => {
     logger.logError(checkErrorType(error));
     if (
       error instanceof Error &&
-      error.cause === `git push --follow-tags ${context.config.remoteName} ${context.branch}`
+      (error.cause === `git push --follow-tags ${context.config.remoteName} ${context.branch}` ||
+        (typeof error.cause === "string" &&
+          (error.cause.startsWith("git add") || error.cause.startsWith("git commit"))))
     ) {
       cancelCommitsSinceRef(commitRef, cwd, debug);
       for (const newGitTag of newGitTags) {

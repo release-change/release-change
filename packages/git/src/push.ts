@@ -1,8 +1,10 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the command is run> */
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the command is run> */
 import type { Context } from "@release-change/shared";
 import type { PushOptions } from "./git.types.js";
 
+import { inspect } from "node:util";
+
+import { setLogger } from "@release-change/logger";
 import { runCommand } from "@release-change/shared";
 
 /**
@@ -12,7 +14,9 @@ import { runCommand } from "@release-change/shared";
  */
 export const push = async (context: Context, pushOptions: PushOptions = {}): Promise<void> => {
   const { branch, config } = context;
-  const { remoteName } = config;
+  const { debug, remoteName } = config;
+  const logger = setLogger(debug);
+  logger.setScope("git");
   if (!branch) {
     process.exitCode = 1;
     throw new Error("A branch name must be provided.");
@@ -22,5 +26,11 @@ export const push = async (context: Context, pushOptions: PushOptions = {}): Pro
     arg => typeof arg === "string"
   );
   // TODO: uncomment to run the command
-  // await runCommand("git", args);
+  // const gitCommandResult = await runCommand("git", args);
+  if (debug) {
+    logger.setDebugScope("git:push");
+    logger.logDebug(`Command run: git ${args.join(" ")}`);
+    // TODO: uncomment when command is run
+    // logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
+  }
 };
