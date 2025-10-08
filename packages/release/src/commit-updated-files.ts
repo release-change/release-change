@@ -33,9 +33,31 @@ export const commitUpdatedFiles = async (
     const changelogFile = path.join(cwd, pathname, "CHANGELOG.md");
     // TODO: uncomment to run `git add` command
     // const gitAddCommandResult = await add([packageManifestFile, lockFile, changelogFile], cwd);
+    // const {
+    //   status: gitAddStatus,
+    //   stdout: gitAddStdout,
+    //   stderr: gitAddStderr
+    // } = gitAddCommandResult;
+    // if (gitAddStatus) {
+    //   process.exitCode = gitAddStatus;
+    //   throw new Error(
+    //     gitAddStderr || gitAddStdout || `Command failed with status code ${gitAddStatus}.`
+    //   );
+    // }
     const commitMessage = `chore: ${packageNextRelease.gitTag}\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
     // TODO: uncomment to run `git commit` command
     // const gitCommitCommandResult = await commit(commitMessage, cwd);
+    // const {
+    //   status: gitCommitStatus,
+    //   stdout: gitCommitStdout,
+    //   stderr: gitCommitStderr
+    // } = gitCommitCommandResult;
+    // if (gitCommitStatus) {
+    //   process.exitCode = gitCommitStatus;
+    //   throw new Error(
+    //     gitCommitStderr || gitCommitStdout || `Command failed with status code ${gitCommitStatus}.`
+    //   );
+    // }
     if (debug) {
       logger.setDebugScope("release:commit-updated-files");
       logger.logDebug(`Command run: git add ${packageManifestFile} ${lockFile} ${changelogFile}`);
