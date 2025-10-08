@@ -15,7 +15,7 @@ it("should add the `-h` alias and return `true`", () => {
   expect(cliOptions.help).toBe(true);
 });
 it("should add the `--repository-url` flag and return the URL next to it", () => {
-  const url = "https://github.com/release-change/release-change.git";
+  const url = "https://github.com/user-id/repo-name.git";
   const args: Args = ["--repository-url", url, "-d"];
   const cliOptions = parseCliOptions(args);
   expect(cliOptions.repositoryUrl).toBe(url);
