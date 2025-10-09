@@ -69,7 +69,7 @@ export const publish = async (context: Context): Promise<void> => {
             packageDependenciesToUpdate,
             context
           );
-        await updateLockFile(context, packageManager);
+        await updateLockFile(nextReleasePackage, context, packageManager);
         updateChangelogFile(nextReleasePackage, preparedReleaseNotes.body, cwd);
         await commitUpdatedFiles(nextReleasePackage, packageManager, context);
         createTag(nextReleasePackage, getCurrentCommitId(cwd), debug);
