@@ -1,7 +1,6 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when commands are run> */
-
 import type { PackageManager } from "@release-change/get-packages";
-import type { Context } from "@release-change/shared";
+import type { Context, PackageNextRelease } from "@release-change/shared";
 
 import path from "node:path";
 import { inspect } from "node:util";
@@ -11,10 +10,12 @@ import { runCommand, runCommandSync } from "@release-change/shared";
 
 /**
  * Updates the lock file.
+ * @param packageNextRelease - The next release data to use.
  * @param context - The context where the CLI is running.
  * @param packageManager - The package manager used by the project.
  */
 export const updateLockFile = async (
+  packageNextRelease: PackageNextRelease,
   context: Context,
   packageManager: PackageManager
 ): Promise<void> => {
@@ -42,7 +43,8 @@ export const updateLockFile = async (
       // logger.logDebug(inspect(npmCommandResult, { depth: Number.POSITIVE_INFINITY }));
     }
   } else {
-    args.push("restore", path.join(cwd, "package.json"));
+    const { pathname } = packageNextRelease;
+    args.push("restore", path.join(cwd, pathname, "package.json"));
     // TODO: uncomment to run command
     // runCommandSync("git", args);
     if (debug) logger.logDebug(`Command run: git ${args.join(" ")}`);
