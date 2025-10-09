@@ -19,6 +19,17 @@ it("should throw an error if the branch name is not defined", async () => {
     "A branch name must be provided."
   );
 });
+// TODO: uncomment when the command is run
+// it("should throw an error if the `git push` command fails", async () => {
+//   const mockedCommand = vi.mocked(runCommand).mockResolvedValue({
+//     status: 1,
+//     stdout: "",
+//     stderr: "remote: error: GH013: Repository rule violations found for refs/heads/main."
+//   });
+//   await expect(push(mockedContext)).rejects.toThrowError(
+//     "remote: error: GH013: Repository rule violations found for refs/heads/main."
+//   );
+// });
 it("should run `git push` command when the branch name is defined", async () => {
   const mockedCommand = vi
     .mocked(runCommand)

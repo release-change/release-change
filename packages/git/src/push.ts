@@ -27,6 +27,11 @@ export const push = async (context: Context, pushOptions: PushOptions = {}): Pro
   );
   // TODO: uncomment to run the command
   // const gitCommandResult = await runCommand("git", args);
+  // const { status, stdout, stderr } = gitCommandResult;
+  // if (status) {
+  //   process.exitCode = status;
+  //   throw new Error(stderr || stdout || `Command failed with status ${status}.`);
+  // }
   if (debug) {
     logger.setDebugScope("git:push");
     logger.logDebug(`Command run: git ${args.join(" ")}`);
