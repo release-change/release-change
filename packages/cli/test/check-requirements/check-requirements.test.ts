@@ -37,7 +37,7 @@ beforeEach(() => {
       engines: {
         node: "^20.18.3 || ^22.12.0",
         npm: ">=10.8.2",
-        pnpm: ">=10.18.1"
+        pnpm: ">=10.18.2"
       }
     },
     WORKSPACE_NAME: "release-change",
