@@ -2,6 +2,7 @@
 import type { PackageManager } from "@release-change/get-packages";
 import type { Context, PackageNextRelease } from "@release-change/shared";
 
+import fs from "node:fs";
 import path from "node:path";
 import { inspect } from "node:util";
 
@@ -21,26 +22,31 @@ export const updateLockFile = async (
 ): Promise<void> => {
   const { cwd, config } = context;
   const { debug } = config;
+  const { pathname } = packageNextRelease;
   const logger = setLogger(debug);
   const args: string[] = [];
   if (debug) logger.setDebugScope("release:update-lock-file");
   if (packageManager === "pnpm") {
-    args.push("install", "--lockfile-only");
-    // TODO: uncomment to run command
-    // const pnpmCommandResult = await runCommand("pnpm", args);
-    if (debug) {
-      logger.logDebug(`Command run: pnpm ${args.join(" ")}`);
-      // TODO: uncomment when command is run
-      // logger.logDebug(inspect(pnpmCommandResult, { depth: Number.POSITIVE_INFINITY }));
+    if (fs.existsSync(path.join(cwd, pathname, "pnpm-lock.yaml"))) {
+      args.push("install", "--lockfile-only");
+      // TODO: uncomment to run command
+      // const pnpmCommandResult = await runCommand("pnpm", args);
+      if (debug) {
+        logger.logDebug(`Command run: pnpm ${args.join(" ")}`);
+        // TODO: uncomment when command is run
+        // logger.logDebug(inspect(pnpmCommandResult, { depth: Number.POSITIVE_INFINITY }));
+      }
     }
   } else if (packageManager === "npm") {
-    args.push("install", "--package-lock-only");
-    // TODO: uncomment to run command
-    // const npmCommandResult = await runCommand("npm", args);
-    if (debug) {
-      logger.logDebug(`Command run: npm ${args.join(" ")}`);
-      // TODO: uncomment when command is run
-      // logger.logDebug(inspect(npmCommandResult, { depth: Number.POSITIVE_INFINITY }));
+    if (fs.existsSync(path.join(cwd, pathname, "package-lock.json"))) {
+      args.push("install", "--package-lock-only");
+      // TODO: uncomment to run command
+      // const npmCommandResult = await runCommand("npm", args);
+      if (debug) {
+        logger.logDebug(`Command run: npm ${args.join(" ")}`);
+        // TODO: uncomment when command is run
+        // logger.logDebug(inspect(npmCommandResult, { depth: Number.POSITIVE_INFINITY }));
+      }
     }
   } else {
     const { pathname } = packageNextRelease;
