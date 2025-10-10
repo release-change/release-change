@@ -32,10 +32,10 @@ export const commitUpdatedFiles = async (
       packageManager === "pnpm" ? "pnpm-lock.yaml" : "package-lock.json"
     );
     const changelogFile = path.join(cwd, pathname, "CHANGELOG.md");
+    const filesToAdd = fs.existsSync(lockFile)
+      ? [packageManifestFile, lockFile, changelogFile]
+      : [packageManifestFile, changelogFile];
     // TODO: uncomment to run `git add` command
-    // const filesToAdd = fs.existsSync(lockFile)
-    //   ? [packageManifestFile, lockFile, changelogFile]
-    //   : [packageManifestFile, changelogFile];
     // const gitAddCommandResult = await add(filesToAdd, cwd);
     // const {
     //   status: gitAddStatus,
@@ -64,7 +64,7 @@ export const commitUpdatedFiles = async (
     // }
     if (debug) {
       logger.setDebugScope("release:commit-updated-files");
-      logger.logDebug(`Command run: git add ${packageManifestFile} ${lockFile} ${changelogFile}`);
+      logger.logDebug(`Command run: git add ${filesToAdd.join(" ")}`);
       // TODO: uncomment when command is run
       // logger.logDebug(inspect(gitAddCommandResult, { depth: Number.POSITIVE_INFINITY }));
       logger.logDebug(`Command run: git commit -m '${commitMessage.replace(/\n/g, "\\n")}'`);
