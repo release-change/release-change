@@ -21,7 +21,9 @@ export const runCommandSync = (
   const stderrString = stderr.toString();
   if (status) {
     process.exitCode = status;
-    throw new Error(stderrString || stdoutString || `Command failed with status ${status}.`);
+    throw new Error(stderrString || stdoutString || `Command failed with status ${status}.`, {
+      cause: `${command} ${args.join(" ")}`
+    });
   }
   return {
     status,
