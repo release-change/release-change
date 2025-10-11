@@ -30,7 +30,9 @@ export const push = async (context: Context, pushOptions: PushOptions = {}): Pro
   // const { status, stdout, stderr } = gitCommandResult;
   // if (status) {
   //   process.exitCode = status;
-  //   throw new Error(stderr || stdout || `Command failed with status ${status}.`);
+  //   throw new Error(stderr || stdout || `Command failed with status ${status}.`, {
+  //     cause: `git ${args.join(" ")}`
+  //   });
   // }
   if (debug) {
     logger.setDebugScope("git:push");
