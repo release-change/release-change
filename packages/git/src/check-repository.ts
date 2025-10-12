@@ -20,7 +20,7 @@ export const checkRepository = async (
       logger.logError("The current directory is not a Git repository.");
       process.exit(process.exitCode);
     }
-    return process.exitCode;
+    return process.exitCode ?? 0;
   } catch (error) {
     logger.setScope("git");
     logger.logError(checkErrorType(error));
