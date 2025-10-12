@@ -2,7 +2,7 @@
 import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { tagPullRequestAndIssue } from "../src/tag-pull-request-and-issue.js";
+import { tagPullRequestAndIssue } from "../src/index.js";
 import {
   mockedContext,
   mockedContextInMonorepo,
@@ -42,7 +42,10 @@ it("should throw an error if `nextRelease` is not defined", async () => {
 //       ? { ...mockedContextInMonorepo, nextRelease }
 //       : { ...mockedContext, nextRelease };
 //     it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
-//       vi.mocked(mockedFetch).mockResolvedValue(response);
+//       vi.mocked(mockedFetch).mockResolvedValue({
+//         ...response,
+//         json: () => Promise.resolve({ message: response.statusText })
+//       });
 //       await expect(tagPullRequestAndIssue(reference, mockedContextWithNextRelease)).rejects.toThrow(
 //         expectedError
 //       );
@@ -81,6 +84,7 @@ it("should throw an error if `nextRelease` is not defined", async () => {
 //         headers: {
 //           Accept: "application/vnd.github+json",
 //           Authorization: `Bearer ${mockedIssuePRToken}`,
+//           "Content-Type": "application/json",
 //           "X-GitHub-Api-Version": "2022-11-28"
 //         },
 //         body: JSON.stringify({

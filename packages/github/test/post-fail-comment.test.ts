@@ -54,7 +54,10 @@ describe.each(mockedFailComments)(
     //   );
     // });
     // it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
-    //   vi.mocked(mockedFetch).mockResolvedValue(response);
+    //   vi.mocked(mockedFetch).mockResolvedValue({
+    //     ...response,
+    //     json: () => Promise.resolve({ message: response.statusText })
+    //   });
     //   await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
     //     expectedError
     //   );
@@ -90,6 +93,7 @@ describe.each(mockedFailComments)(
     //     headers: {
     //       Accept: "application/vnd.github+json",
     //       Authorization: `Bearer ${mockedIssuePRToken}`,
+    //       "Content-Type": "application/json",
     //       "X-GitHub-Api-Version": "2022-11-28"
     //     },
     //     body: JSON.stringify({

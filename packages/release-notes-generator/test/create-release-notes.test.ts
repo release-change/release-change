@@ -77,7 +77,10 @@ afterEach(() => {
 //   ).rejects.toThrow("Failed to request the URI.");
 // });
 // it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
-//   vi.mocked(mockedFetch).mockResolvedValue(response);
+//   vi.mocked(mockedFetch).mockResolvedValue({
+//     ...response,
+//     json: () => Promise.resolve({ message: response.statusText })
+//   });
 //   await expect(
 //     createReleaseNotes(
 //       { tagName: "v1.0.0", target: "main", isPrerelease: true, body: {} },
@@ -111,11 +114,12 @@ describe.each(mockedReleaseNotes)(
           context
         );
         // TODO: uncomment when the API is used
-        // expect(mockedFetch).toHaveBeenCalledWith(mockedUriForComments, {
+        // expect(mockedFetch).toHaveBeenCalledWith(mockedUri, {
         //   method: "POST",
         //   headers: {
         //     Accept: "application/vnd.github+json",
         //     Authorization: `Bearer ${mockedEnv.RELEASE_TOKEN}`,
+        //     "Content-Type": "application/json",
         //     "X-GitHub-Api-Version": "2022-11-28"
         //   },
         //   body: JSON.stringify({
@@ -123,13 +127,11 @@ describe.each(mockedReleaseNotes)(
         //     body: formattedBody
         //   })
         // });
-        // assert.deepEqual(context.releaseInfos, [
-        //   {
-        //     type: "github",
-        //     name: "GitHub release",
-        //     url: `${mockedRepositoryUrl}/releases/tag/${releaseNotes.tagName}`
-        //   }
-        // ]);
+        // assert.deepNestedInclude(context.releaseInfos, {
+        //   type: "github",
+        //   name: "GitHub release",
+        //   url: `${mockedRepositoryUrl}/releases/tag/${releaseNotes.tagName}`
+        // });
       }
     );
   }

@@ -2,6 +2,7 @@
 /** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the API is used> */
 
 import type { Context, Reference } from "@release-change/shared";
+import type { GitHubResponseError } from "./github.types.js";
 
 import { inspect } from "node:util";
 
@@ -44,6 +45,7 @@ export const tagPullRequestAndIssue = async (
     //   headers: {
     //     Accept: "application/vnd.github+json",
     //     Authorization: `Bearer ${issuePullRequestToken}`,
+    //     "Content-Type": "application/json",
     //     "X-GitHub-Api-Version": "2022-11-28"
     //   },
     //   body: JSON.stringify(requestBody)
@@ -53,6 +55,11 @@ export const tagPullRequestAndIssue = async (
       logger.setDebugScope("github:tag-pull-request-and-issue");
       logger.logDebug(`API entry point: ${uri}`);
       logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
+      // logger.logDebug(`Response status: ${status}`);
+      // logger.logDebug(`Response status text: ${statusText}`);
+      // logger.logDebug(
+      //   `Response JSON: ${inspect(await issueClosingResponse.json(), { depth: Number.POSITIVE_INFINITY })}`
+      // );
     }
     const issueType = isPullRequest ? "pull request" : "issue";
     // TODO: uncomment when the API is used
@@ -72,9 +79,12 @@ export const tagPullRequestAndIssue = async (
     //     `The resource requested for ${issueType} #${number} has not been found; therefore, no labels have been added.`
     //   );
     // } else {
+    //   const responseError: GitHubResponseError = await issueClosingResponse.json();
+    //   const { message, documentation_url: documentationUrl } = responseError;
+    //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     //   logger.logError(`Failed to tag ${issueType} #${number}.`);
     //   process.exitCode = status;
-    //   throw new Error(statusText);
+    //   throw new Error(`${message}${documentationReference}`);
     // }
   } else {
     process.exitCode = 1;

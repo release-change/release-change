@@ -33,7 +33,10 @@ it("should throw an error when the request fails", async () => {
   );
 });
 it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
-  vi.mocked(mockedFetch).mockResolvedValue(response);
+  vi.mocked(mockedFetch).mockResolvedValue({
+    ...response,
+    json: () => Promise.resolve({ message: response.statusText })
+  });
   await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrow(expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Failed to close issue #${mockedIssueNumber}.`
@@ -61,6 +64,7 @@ it("should close the issue", async () => {
     headers: {
       Accept: "application/vnd.github+json",
       Authorization: `Bearer ${mockedIssuePRToken}`,
+      "Content-Type": "application/json",
       "X-GitHub-Api-Version": "2022-11-28"
     },
     body: JSON.stringify({
