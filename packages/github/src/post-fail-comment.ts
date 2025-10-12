@@ -39,6 +39,7 @@ The release from the \`${branch}\` branch failed.`;
     //   headers: {
     //     Accept: "application/vnd.github+json",
     //     Authorization: `Bearer ${issuePullRequestToken}`,
+    //     "Content-Type": "application/json",
     //     "X-GitHub-Api-Version": "2022-11-28"
     //   },
     //   body: JSON.stringify(requestBody)

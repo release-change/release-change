@@ -89,6 +89,7 @@ export const postSuccessComment = async (reference: Reference, context: Context)
     //   headers: {
     //     Accept: "application/vnd.github+json",
     //     Authorization: `Bearer ${issuePullRequestToken}`,
+    //     "Content-Type": "application/json",
     //     "X-GitHub-Api-Version": "2022-11-28"
     //   },
     //   body: JSON.stringify(requestBody)
