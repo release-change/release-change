@@ -33,7 +33,10 @@ it("should throw an error when the request fails", async () => {
   );
 });
 it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
-  vi.mocked(mockedFetch).mockResolvedValue(response);
+  vi.mocked(mockedFetch).mockResolvedValue({
+    ...response,
+    json: () => Promise.resolve({ message: response.statusText })
+  });
   await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrow(expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Failed to close issue #${mockedIssueNumber}.`

@@ -1,5 +1,7 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the API is used> */
 /** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the API is used> */
+
+import type { GitHubResponseError } from "@release-change/github";
 import type { Context, ReleaseInfoGithub } from "@release-change/shared";
 import type { ReleaseNotes } from "./release-notes-generator.types.js";
 
@@ -51,6 +53,11 @@ export const createReleaseNotes = async (
     logger.logDebug(`Release notes: ${inspect(releaseNotes, { depth: Number.POSITIVE_INFINITY })}`);
     logger.logDebug(`API entry point: ${uri}`);
     logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
+    // logger.logDebug(`Response status: ${status}`);
+    // logger.logDebug(`Response status text: ${statusText}`);
+    // logger.logDebug(
+    //   `Response JSON: ${inspect(await releaseNotesResponse.json(), { depth: Number.POSITIVE_INFINITY })}`
+    // );
   }
   // TODO: uncomment when the API is used
   // if (status === 201) {
@@ -66,12 +73,15 @@ export const createReleaseNotes = async (
   //     logger.logDebug(inspect(context.releaseInfos, { depth: Number.POSITIVE_INFINITY }));
   //   }
   // } else {
+  //   const responseError: GitHubResponseError = await releaseNotesResponse.json();
+  //   const { message, documentation_url: documentationUrl } = responseError;
+  //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
   //   logger.logError(`Failed to create release notes for Git tag ${tagName}.`);
   //   if (status === 404) {
   //     process.exitCode = 404;
   //     throw new Error(`Failed to fetch URI ${uri}.`);
   //   }
   //   process.exitCode = status;
-  //   throw new Error(statusText);
+  //   throw new Error(`${message}${documentationReference}`);
   // }
 };

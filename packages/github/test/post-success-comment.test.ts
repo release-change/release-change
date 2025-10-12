@@ -54,7 +54,10 @@ describe.each(mockedSuccessComments)(
     //   );
     // });
     // it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
-    //   vi.mocked(mockedFetch).mockResolvedValue(response);
+    //   vi.mocked(mockedFetch).mockResolvedValue({
+    //     ...response,
+    //     json: () => Promise.resolve({ message: response.statusText })
+    //   });
     //   await expect(postSuccessComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
     //     expectedError
     //   );

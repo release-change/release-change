@@ -1,5 +1,7 @@
+/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the API is used> */
 /** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the API is used> */
 import type { Context, Reference } from "@release-change/shared";
+import type { GitHubResponseError } from "./github.types.js";
 
 import { inspect } from "node:util";
 
@@ -32,7 +34,7 @@ The release from the \`${branch}\` branch failed.`;
       body: commentBody
     };
     // TODO: uncomment to use GiHub API
-    // const successCommentResponse = await fetch(uri, {
+    // const failCommentResponse = await fetch(uri, {
     //   method: "POST",
     //   headers: {
     //     Accept: "application/vnd.github+json",
@@ -41,12 +43,17 @@ The release from the \`${branch}\` branch failed.`;
     //   },
     //   body: JSON.stringify(requestBody)
     // });
-    // const { status, statusText } = successCommentResponse;
+    // const { status, statusText } = failCommentResponse;
     const issueType = isPullRequest ? "pull request" : "issue";
     if (debug) {
       logger.setDebugScope("github:post-fail-comment");
       logger.logDebug(`API entry point: ${uri}`);
       logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
+      // logger.logDebug(`Response status: ${status}`);
+      // logger.logDebug(`Response status text: ${statusText}`);
+      // logger.logDebug(
+      //   `Response JSON: ${inspect(await failCommentResponse.json(), { depth: Number.POSITIVE_INFINITY })}`
+      // );
     }
     // TODO: uncomment when the API is used
     // if (status === 201) logger.logInfo(`Added fail comment on ${issueType} #${number}.`);
@@ -55,9 +62,12 @@ The release from the \`${branch}\` branch failed.`;
     //     `The resource requested for ${issueType} #${number} has not been found; therefore, the fail comment has not been added.`
     //   );
     // else {
+    //   const responseError: GitHubResponseError = await failCommentResponse.json();
+    //   const { message, documentation_url: documentationUrl } = responseError;
+    //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     //   logger.logError(`Failed to post the fail comment on ${issueType} #${number}.`);
     //   process.exitCode = status;
-    //   throw new Error(statusText);
+    //   throw new Error(`${message}${documentationReference}`);
     // }
   } else {
     process.exitCode = 1;

@@ -1,4 +1,5 @@
 import type { Context } from "@release-change/shared";
+import type { GitHubResponseError } from "./github.types.js";
 
 import { inspect } from "node:util";
 
@@ -40,13 +41,21 @@ export const closeIssue = async (number: number, context: Context): Promise<void
     logger.setDebugScope("github:close-issue");
     logger.logDebug(`API entry point: ${uri}`);
     logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
+    logger.logDebug(`Response status: ${status}`);
+    logger.logDebug(`Response status text: ${statusText}`);
+    logger.logDebug(
+      `Response JSON: ${inspect(await issueClosingResponse.json(), { depth: Number.POSITIVE_INFINITY })}`
+    );
   }
   if (status === 200) logger.logSuccess(`Closed issue #${number} successfully.`);
   else if (status === 404) {
     logger.logWarn(`The resource requested for issue #${number} has not been found.`);
   } else {
+    const responseError: GitHubResponseError = await issueClosingResponse.json();
+    const { message, documentation_url: documentationUrl } = responseError;
+    const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     logger.logError(`Failed to close issue #${number}.`);
     process.exitCode = status;
-    throw new Error(statusText);
+    throw new Error(`${message}${documentationReference}`);
   }
 };

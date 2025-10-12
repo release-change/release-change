@@ -10,25 +10,25 @@ export const mockedFailureFetches = [
     title: "should throw an error in case of unauthorisation",
     response: {
       status: 401,
-      statusText: "Unauthorized",
-      expectedError: "Unauthorized"
-    }
+      statusText: "Unauthorized"
+    },
+    expectedError: "Unauthorized"
   },
   {
     title: "should throw an error in case of rate limit excess",
     response: {
       status: 403,
-      statusText: "rate limit exceeded",
-      expectedError: "rate limit exceeded"
-    }
+      statusText: "rate limit exceeded"
+    },
+    expectedError: "rate limit exceeded"
   },
   {
     title: "should throw an error in case of validation failure or endpoint spam",
     response: {
       status: 422,
-      statusText: "Unprocessable Entity",
-      expectedError: "Unprocessable Entity"
-    }
+      statusText: "Unprocessable Entity"
+    },
+    expectedError: "Unprocessable Entity"
   },
   {
     title: "should throw an error in case of other HTTP status code",
