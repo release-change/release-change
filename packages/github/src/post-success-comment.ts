@@ -95,7 +95,8 @@ export const postSuccessComment = async (reference: Reference, context: Context)
     //   body: JSON.stringify(requestBody)
     // });
     // const { status, statusText } = successCommentResponse;
-    const issueType = isPullRequest ? "pull request" : "issue";
+    // const issueType = isPullRequest ? "pull request" : "issue";
+    // const successCommentResponseData = successCommentResponse.json();
     if (debug) {
       logger.setDebugScope("github:post-success-comment");
       logger.logDebug(`API entry point: ${uri}`);
@@ -103,7 +104,7 @@ export const postSuccessComment = async (reference: Reference, context: Context)
       // logger.logDebug(`Response status: ${status}`);
       // logger.logDebug(`Response status text: ${statusText}`);
       // logger.logDebug(
-      //   `Response JSON: ${inspect(await successCommentResponse.json(), { depth: Number.POSITIVE_INFINITY })}`
+      //   `Response JSON: ${inspect(await successCommentResponseData, { depth: Number.POSITIVE_INFINITY })}`
       // );
     }
     // TODO: uncomment when the API is used
@@ -113,7 +114,7 @@ export const postSuccessComment = async (reference: Reference, context: Context)
     //     `The resource requested for ${issueType} #${number} has not been found; therefore, the success comment has not been added.`
     //   );
     // else {
-    //   const responseError: GitHubResponseError = await successCommentResponse.json();
+    //   const responseError: GitHubResponseError = await successCommentResponseData;
     //   const { message, documentation_url: documentationUrl } = responseError;
     //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     //   logger.logError(`Failed to post the success comment on ${issueType} #${number}.`);

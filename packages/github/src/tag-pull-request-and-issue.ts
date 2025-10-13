@@ -51,6 +51,7 @@ export const tagPullRequestAndIssue = async (
     //   body: JSON.stringify(requestBody)
     // });
     // const { status, statusText } = issueClosingResponse;
+    // const issueClosingResponseData = issueClosingResponse.json();
     if (debug) {
       logger.setDebugScope("github:tag-pull-request-and-issue");
       logger.logDebug(`API entry point: ${uri}`);
@@ -58,7 +59,7 @@ export const tagPullRequestAndIssue = async (
       // logger.logDebug(`Response status: ${status}`);
       // logger.logDebug(`Response status text: ${statusText}`);
       // logger.logDebug(
-      //   `Response JSON: ${inspect(await issueClosingResponse.json(), { depth: Number.POSITIVE_INFINITY })}`
+      //   `Response JSON: ${inspect(await issueClosingResponseData, { depth: Number.POSITIVE_INFINITY })}`
       // );
     }
     const issueType = isPullRequest ? "pull request" : "issue";
@@ -79,7 +80,7 @@ export const tagPullRequestAndIssue = async (
     //     `The resource requested for ${issueType} #${number} has not been found; therefore, no labels have been added.`
     //   );
     // } else {
-    //   const responseError: GitHubResponseError = await issueClosingResponse.json();
+    //   const responseError: GitHubResponseError = await issueClosingResponseData;
     //   const { message, documentation_url: documentationUrl } = responseError;
     //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     //   logger.logError(`Failed to tag ${issueType} #${number}.`);

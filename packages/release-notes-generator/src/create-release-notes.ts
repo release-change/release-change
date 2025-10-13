@@ -49,6 +49,7 @@ export const createReleaseNotes = async (
   //   body: JSON.stringify(requestBody)
   // });
   // const { status, statusText } = releaseNotesResponse;
+  // const releaseNotesResponseData = releaseNotesResponse.json();
   if (debug) {
     logger.setDebugScope("release-notes-generator:create-release-notes");
     logger.logDebug(`Release notes: ${inspect(releaseNotes, { depth: Number.POSITIVE_INFINITY })}`);
@@ -57,7 +58,7 @@ export const createReleaseNotes = async (
     // logger.logDebug(`Response status: ${status}`);
     // logger.logDebug(`Response status text: ${statusText}`);
     // logger.logDebug(
-    //   `Response JSON: ${inspect(await releaseNotesResponse.json(), { depth: Number.POSITIVE_INFINITY })}`
+    //   `Response JSON: ${inspect(await releaseNotesResponseData, { depth: Number.POSITIVE_INFINITY })}`
     // );
   }
   // TODO: uncomment when the API is used
@@ -74,7 +75,7 @@ export const createReleaseNotes = async (
   //     logger.logDebug(inspect(context.releaseInfos, { depth: Number.POSITIVE_INFINITY }));
   //   }
   // } else {
-  //   const responseError: GitHubResponseError = await releaseNotesResponse.json();
+  //   const responseError: GitHubResponseError = await releaseNotesResponseData;
   //   const { message, documentation_url: documentationUrl } = responseError;
   //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
   //   logger.logError(`Failed to create release notes for Git tag ${tagName}.`);

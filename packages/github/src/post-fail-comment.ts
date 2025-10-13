@@ -45,7 +45,8 @@ The release from the \`${branch}\` branch failed.`;
     //   body: JSON.stringify(requestBody)
     // });
     // const { status, statusText } = failCommentResponse;
-    const issueType = isPullRequest ? "pull request" : "issue";
+    // const issueType = isPullRequest ? "pull request" : "issue";
+    // const failCommentResponseData = failCommentResponse.json();
     if (debug) {
       logger.setDebugScope("github:post-fail-comment");
       logger.logDebug(`API entry point: ${uri}`);
@@ -53,7 +54,7 @@ The release from the \`${branch}\` branch failed.`;
       // logger.logDebug(`Response status: ${status}`);
       // logger.logDebug(`Response status text: ${statusText}`);
       // logger.logDebug(
-      //   `Response JSON: ${inspect(await failCommentResponse.json(), { depth: Number.POSITIVE_INFINITY })}`
+      //   `Response JSON: ${inspect(await failCommentResponseData, { depth: Number.POSITIVE_INFINITY })}`
       // );
     }
     // TODO: uncomment when the API is used
@@ -63,7 +64,7 @@ The release from the \`${branch}\` branch failed.`;
     //     `The resource requested for ${issueType} #${number} has not been found; therefore, the fail comment has not been added.`
     //   );
     // else {
-    //   const responseError: GitHubResponseError = await failCommentResponse.json();
+    //   const responseError: GitHubResponseError = await failCommentResponseData;
     //   const { message, documentation_url: documentationUrl } = responseError;
     //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     //   logger.logError(`Failed to post the fail comment on ${issueType} #${number}.`);

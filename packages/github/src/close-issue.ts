@@ -38,6 +38,7 @@ export const closeIssue = async (number: number, context: Context): Promise<void
     body: JSON.stringify(requestBody)
   });
   const { status, statusText } = issueClosingResponse;
+  const issueClosingResponseData = issueClosingResponse.json();
   if (debug) {
     logger.setDebugScope("github:close-issue");
     logger.logDebug(`API entry point: ${uri}`);
@@ -45,14 +46,14 @@ export const closeIssue = async (number: number, context: Context): Promise<void
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);
     logger.logDebug(
-      `Response JSON: ${inspect(await issueClosingResponse.json(), { depth: Number.POSITIVE_INFINITY })}`
+      `Response JSON: ${inspect(await issueClosingResponseData, { depth: Number.POSITIVE_INFINITY })}`
     );
   }
   if (status === 200) logger.logSuccess(`Closed issue #${number} successfully.`);
   else if (status === 404) {
     logger.logWarn(`The resource requested for issue #${number} has not been found.`);
   } else {
-    const responseError: GitHubResponseError = await issueClosingResponse.json();
+    const responseError: GitHubResponseError = await issueClosingResponseData;
     const { message, documentation_url: documentationUrl } = responseError;
     const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     logger.logError(`Failed to close issue #${number}.`);
