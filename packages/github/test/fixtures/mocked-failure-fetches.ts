@@ -45,26 +45,33 @@ export const mockedFailureFetches = [
 export const mockedFailureFetchesForCommits = [
   {
     title: "should throw an error if the URI is not found",
-    response: { status: 404 },
+    response: {
+      status: 404,
+      statusText: "Not Found",
+      json: () => Promise.resolve({ message: "Not Found" })
+    },
     expectedError: `Failed to fetch URI ${mockedUriForCommits}.`
   },
   {
     title: "should throw an error in case of conflict",
     response: {
       status: 409,
+      statusText: "Conflict detected",
       json: () =>
         Promise.resolve({
           message: "Conflict detected",
           documentation_url:
             "https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit"
-        }),
-      expectedError: `There is a conflict with the requested URI ${mockedUriForCommits}. See https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit.`
-    }
+        })
+    },
+    expectedError:
+      "Conflict detected See https://docs.github.com/rest/commits/commits#list-pull-requests-associated-with-a-commit."
   },
   {
     title: "should throw an error in case of rate limit excess",
     response: {
       status: 403,
+      statusText: "Forbidden",
       json: () =>
         Promise.resolve({
           message:
@@ -80,6 +87,7 @@ export const mockedFailureFetchesForCommits = [
     title: "should throw an error in case of request excess",
     response: {
       status: 429,
+      statusText: "Too Many Requests",
       json: () =>
         Promise.resolve({
           message:
@@ -94,6 +102,7 @@ export const mockedFailureFetchesForCommits = [
     title: "should throw an error in case of other HTTP status code",
     response: {
       status: 500,
+      statusText: "Internal server error",
       json: () => Promise.resolve({ message: "Internal server error" })
     },
     expectedError: "Internal server error"
