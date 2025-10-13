@@ -37,17 +37,18 @@ export const getAssociatedPullRequests = async (
     }
   });
   const { status, statusText } = pullRequestResponse;
+  const pullRequestResponseData = pullRequestResponse.json();
   if (debug) {
     logger.setDebugScope("github:get-associated-pull-requests");
     logger.logDebug(`API entry point: ${uri}`);
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);
     logger.logDebug(
-      `Response JSON: ${inspect(await pullRequestResponse.json(), { depth: Number.POSITIVE_INFINITY })}`
+      `Response JSON: ${inspect(await pullRequestResponseData, { depth: Number.POSITIVE_INFINITY })}`
     );
   }
   if (status === 200) {
-    const pullRequests: PullRequestAssociatedWithCommit[] = await pullRequestResponse.json();
+    const pullRequests: PullRequestAssociatedWithCommit[] = await pullRequestResponseData;
     for (const pullRequest of pullRequests) {
       const { number, title, body } = pullRequest;
       associatedPullRequest.push({
@@ -67,7 +68,7 @@ export const getAssociatedPullRequests = async (
     process.exitCode = 404;
     throw new Error(`Failed to fetch URI ${uri}.`);
   }
-  const responseError: GitHubResponseError = await pullRequestResponse.json();
+  const responseError: GitHubResponseError = await pullRequestResponseData;
   const { message, documentation_url: documentationUrl } = responseError;
   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
   if (status === 403 || status === 409 || status === 429) {

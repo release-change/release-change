@@ -55,15 +55,15 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-it.each(mockedFailureFetchesForCommits)("$title", async ({ response }) => {
+it.each(mockedFailureFetchesForCommits)("$title", async ({ response, expectedError }) => {
   vi.spyOn(process, "exit").mockImplementation(() => {
-    throw new Error(response.expectedError);
+    throw new Error(expectedError);
   });
   process.exitCode = response.status;
-  vi.mocked(getAssociatedPullRequests).mockRejectedValue(new Error(response.expectedError));
+  vi.mocked(getAssociatedPullRequests).mockRejectedValue(new Error(expectedError));
   await expect(
     getRelatedPullRequestsAndIssues(mockedCommits, mockedContextWithNextRelease)
-  ).rejects.toThrow(response.expectedError);
+  ).rejects.toThrow(expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     "Failed to get related pull requests and issues."
   );

@@ -46,7 +46,8 @@ it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
 it("should log a warning message if the URI is not found", async () => {
   vi.mocked(mockedFetch).mockResolvedValue({
     status: 404,
-    statusText: "Not Found"
+    statusText: "Not Found",
+    json: () => Promise.resolve({ message: "Not Found" })
   });
   await closeIssue(mockedIssueNumber, mockedContext);
   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
@@ -56,7 +57,8 @@ it("should log a warning message if the URI is not found", async () => {
 it("should close the issue", async () => {
   vi.mocked(mockedFetch).mockResolvedValue({
     status: 200,
-    statusText: "OK"
+    statusText: "OK",
+    json: () => Promise.resolve({ message: "OK" })
   });
   await closeIssue(mockedIssueNumber, mockedContext);
   expect(mockedFetch).toHaveBeenCalledWith(mockedUriForIssue, {
