@@ -23,9 +23,11 @@ export const updatePackageVersion = (
   const logger = setLogger(debug);
   logger.setScope("release");
   const packageName = `${name || "root"} package`;
-  const packagePath = path.join(cwd, pathname, "package.json");
-  if (fs.existsSync(packagePath)) {
-    const packageManifest: PackageManifest = JSON.parse(fs.readFileSync(packagePath, "utf-8"));
+  const packageManifestPath = path.join(cwd, pathname, "package.json");
+  if (fs.existsSync(packageManifestPath)) {
+    const packageManifest: PackageManifest = JSON.parse(
+      fs.readFileSync(packageManifestPath, "utf-8")
+    );
     packageManifest.version = version;
     // TODO: uncomment to write updated package manifest content to file
     // fs.writeFileSync(packageManifestPath, JSON.stringify(packageManifest, null, 2));
@@ -34,5 +36,5 @@ export const updatePackageVersion = (
       logger.setDebugScope("release:update-package-version");
       logger.logDebug(`Package version for ${packageName}: ${packageManifest.version}`);
     }
-  } else throw new Error(`Package ${packagePath} not found for ${packageName}.`);
+  } else throw new Error(`Package ${packageManifestPath} not found for ${packageName}.`);
 };
