@@ -104,7 +104,9 @@ describe.each(mockedReleaseNotes)(
         };
         vi.mocked(formatReleaseNotesBody).mockReturnValue(formattedBody);
         vi.mocked(mockedFetch).mockResolvedValue({
-          status: 201
+          status: 201,
+          statusText: "Created",
+          json: () => Promise.resolve({ message: "Created" })
         });
         await createReleaseNotes(
           {
