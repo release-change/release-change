@@ -57,7 +57,8 @@ it("should throw an error if `nextRelease` is not defined", async () => {
 //     it("should log a warning message if the URI is not found", async () => {
 //       vi.mocked(mockedFetch).mockResolvedValue({
 //         status: 404,
-//         statusText: "Not Found"
+//         statusText: "Not Found",
+//         json: () => Promise.resolve({ message: "Not Found" })
 //       });
 //       await tagPullRequestAndIssue(reference, context);
 //       expect(mockedLogger.logWarn).toHaveBeenCalledWith(
@@ -76,7 +77,8 @@ it("should throw an error if `nextRelease` is not defined", async () => {
 //       const expectedLabelMessage = expectedLabels.length ? ` with ${expectedLabelsDisplay}` : "";
 //       vi.mocked(mockedFetch).mockResolvedValue({
 //         status: 200,
-//         statusText: "OK"
+//         statusText: "OK",
+//         json: () => Promise.resolve({ message: "OK" })
 //       });
 //       await tagPullRequestAndIssue(reference, context);
 //       expect(mockedFetch).toHaveBeenCalledWith(mockedUriForIssue, {

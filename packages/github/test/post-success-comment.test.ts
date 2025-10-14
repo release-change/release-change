@@ -72,7 +72,8 @@ describe.each(mockedSuccessComments)(
     //     : { ...mockedContextWithNextRelease, releaseInfos };
     //   vi.mocked(mockedFetch).mockResolvedValue({
     //     status: 404,
-    //     statusText: "Not Found"
+    //     statusText: "Not Found",
+    //     json: () => Promise.resolve({ message: "Not Found" })
     //   });
     //   await postSuccessComment(reference, context);
     //   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
@@ -85,7 +86,8 @@ describe.each(mockedSuccessComments)(
     //     : { ...mockedContextWithNextRelease, releaseInfos };
     //   vi.mocked(mockedFetch).mockResolvedValue({
     //     status: 201,
-    //     statusText: "Created"
+    //     statusText: "Created",
+    //     json: () => Promise.resolve({ message: "Created" })
     //   });
     //   await postSuccessComment(reference, context);
     //   expect(mockedFetch).toHaveBeenCalledWith(mockedUriForComments, {
