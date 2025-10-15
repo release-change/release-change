@@ -48,7 +48,7 @@ export const createReleaseNotes = async (
   //   },
   //   body: JSON.stringify(requestBody)
   // });
-  // const { status, statusText } = releaseNotesResponse;
+  // const { headers, status, statusText } = releaseNotesResponse;
   // const releaseNotesResponseData = releaseNotesResponse.json();
   if (debug) {
     logger.setDebugScope("release-notes-generator:create-release-notes");
@@ -57,6 +57,7 @@ export const createReleaseNotes = async (
     logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
     // logger.logDebug(`Response status: ${status}`);
     // logger.logDebug(`Response status text: ${statusText}`);
+    // logger.logDebug(`Response headers: ${headers}`);
     // logger.logDebug(
     //   `Response JSON: ${inspect(await releaseNotesResponseData, { depth: Number.POSITIVE_INFINITY })}`
     // );

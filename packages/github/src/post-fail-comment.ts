@@ -44,7 +44,7 @@ The release from the \`${branch}\` branch failed.`;
     //   },
     //   body: JSON.stringify(requestBody)
     // });
-    // const { status, statusText } = failCommentResponse;
+    // const { headers, status, statusText } = failCommentResponse;
     // const issueType = isPullRequest ? "pull request" : "issue";
     // const failCommentResponseData = failCommentResponse.json();
     if (debug) {
@@ -53,6 +53,7 @@ The release from the \`${branch}\` branch failed.`;
       logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
       // logger.logDebug(`Response status: ${status}`);
       // logger.logDebug(`Response status text: ${statusText}`);
+      // logger.logDebug(`Response headers: ${headers}`);
       // logger.logDebug(
       //   `Response JSON: ${inspect(await failCommentResponseData, { depth: Number.POSITIVE_INFINITY })}`
       // );
