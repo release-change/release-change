@@ -27,9 +27,7 @@ it("should run the `git reset --hard` command", () => {
   // expect(mockedCommand).toHaveBeenCalledWith("git", ["reset", "--hard", mockedCommitRef], {
   //   cwd: mockedCwd
   // });
-  expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
-    `Commits since ${mockedCommitRef} cancelled successfully.`
-  );
+  expect(mockedLogger.logInfo).toHaveBeenCalledWith(`Commits since ${mockedCommitRef} cancelled.`);
 });
 it("should throw an error if the commit ref is empty", () => {
   assert.throws(

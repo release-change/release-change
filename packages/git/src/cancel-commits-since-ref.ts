@@ -25,6 +25,6 @@ export const cancelCommitsSinceRef = (commitRef: string, cwd: string, debug = fa
     //   logger.logError(`Failed to cancel the commits since ${commitRef}.`);
     //   throw new Error(stderr || stdout || `Command failed with status ${status}.`);
     // }
-    logger.logSuccess(`Commits since ${commitRef} cancelled successfully.`);
+    logger.logInfo(`Commits since ${commitRef} cancelled.`);
   } else throw new Error("The commit reference must not be empty.");
 };
