@@ -25,6 +25,6 @@ export const removeTag = (gitTag: string, cwd: string, debug = false): void => {
     //   logger.logError(`Failed to remove Git tag ${gitTag}.`);
     //   throw new Error(stderr || stdout || `Command failed with status ${status}.`);
     // }
-    logger.logSuccess(`Removed Git tag ${gitTag} successfully.`);
+    logger.logInfo(`Removed Git tag ${gitTag} successfully.`);
   } else throw new Error("The Git tag must not be empty.");
 };

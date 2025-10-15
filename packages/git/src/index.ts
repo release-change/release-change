@@ -14,5 +14,6 @@ export { getRemoteName } from "./get-remote-name.js";
 export { getTrackedRepositories } from "./get-tracked-repositories.js";
 export { push } from "./push.js";
 export { removeTag } from "./remove-tag.js";
+export { removeTagOnRemoteRepository } from "./remove-tag-on-remote-repository.js";
 
 export { COMMITTER_EMAIL, COMMITTER_NAME } from "./constants.js";

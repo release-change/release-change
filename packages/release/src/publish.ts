@@ -10,7 +10,8 @@ import {
   createTag,
   getCurrentCommitId,
   push,
-  removeTag
+  removeTag,
+  removeTagOnRemoteRepository
 } from "@release-change/git";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
@@ -97,6 +98,7 @@ export const publish = async (context: Context): Promise<void> => {
       cancelCommitsSinceRef(commitRef, cwd, debug);
       for (const newGitTag of newGitTags) {
         removeTag(newGitTag, cwd, debug);
+        await removeTagOnRemoteRepository(newGitTag, context);
       }
     }
     process.exitCode = process.exitCode || 1;

@@ -31,7 +31,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
     // expect(mockedCommand).toHaveBeenCalledWith("git", ["tag", "-d", mockedGitTag], {
     //   cwd: mockedCwd
     // });
-    expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith(
       `Removed Git tag ${mockedGitTag} successfully.`
     );
   });
