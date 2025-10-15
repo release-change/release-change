@@ -6,7 +6,8 @@ import {
   createTag,
   getCurrentCommitId,
   push,
-  removeTag
+  removeTag,
+  removeTagOnRemoteRepository
 } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
@@ -51,7 +52,8 @@ beforeEach(() => {
     createTag: vi.fn(),
     push: vi.fn(),
     cancelCommitsSinceRef: vi.fn(),
-    removeTag: vi.fn()
+    removeTag: vi.fn(),
+    removeTagOnRemoteRepository: vi.fn()
   }));
   vi.mock("@release-change/release-notes-generator", () => ({
     prepareReleaseNotes: vi.fn(),
@@ -237,6 +239,7 @@ describe.each(packageManagers)("for %s", packageManager => {
           expect.any(Boolean)
         );
         expect(removeTag).toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).toHaveBeenCalled();
       });
       it("should rollback commits and remove tags when `git commit` fails", async () => {
         vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
@@ -252,6 +255,7 @@ describe.each(packageManagers)("for %s", packageManager => {
           expect.any(Boolean)
         );
         expect(removeTag).toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).toHaveBeenCalled();
       });
       it("should rollback commits and remove tags when push fails", async () => {
         vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
@@ -267,12 +271,14 @@ describe.each(packageManagers)("for %s", packageManager => {
           expect.any(Boolean)
         );
         expect(removeTag).toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).toHaveBeenCalled();
       });
       it("should not rollback when error is not from `git add`, `git commit` or `git push`", async () => {
         vi.mocked(updateLockFile).mockRejectedValue(new Error("Lock file update failed"));
         await expect(publish(context)).rejects.toThrow();
         expect(cancelCommitsSinceRef).not.toHaveBeenCalled();
         expect(removeTag).not.toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).not.toHaveBeenCalled();
       });
       it("should set `process.exitCode` to 1 on error", async () => {
         vi.mocked(push).mockRejectedValue(new Error("Some error"));
@@ -311,11 +317,16 @@ describe.each(packageManagers)("for %s", packageManager => {
         );
         await expect(publish(context)).rejects.toThrow();
         expect(removeTag).toHaveBeenCalledTimes(context.nextRelease.length);
+        expect(removeTagOnRemoteRepository).toHaveBeenCalledTimes(context.nextRelease.length);
         for (const packageNextRelease of context.nextRelease) {
           expect(removeTag).toHaveBeenCalledWith(
             packageNextRelease.gitTag,
             expect.any(String),
             expect.any(Boolean)
+          );
+          expect(removeTagOnRemoteRepository).toHaveBeenCalledWith(
+            packageNextRelease.gitTag,
+            context
           );
         }
       });
