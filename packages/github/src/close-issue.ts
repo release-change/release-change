@@ -45,7 +45,7 @@ export const closeIssue = async (number: number, context: Context): Promise<void
     logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);
-    logger.logDebug(`Response headers: ${headers}`);
+    logger.logDebug(`Response headers: ${inspect(headers, { depth: Number.POSITIVE_INFINITY })}`);
     logger.logDebug(
       `Response JSON: ${inspect(await issueClosingResponseData, { depth: Number.POSITIVE_INFINITY })}`
     );

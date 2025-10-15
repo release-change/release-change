@@ -43,7 +43,7 @@ export const getAssociatedPullRequests = async (
     logger.logDebug(`API entry point: ${uri}`);
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);
-    logger.logDebug(`Response headers: ${headers}`);
+    logger.logDebug(`Response headers: ${inspect(headers, { depth: Number.POSITIVE_INFINITY })}`);
     logger.logDebug(
       `Response JSON: ${inspect(await pullRequestResponseData, { depth: Number.POSITIVE_INFINITY })}`
     );
