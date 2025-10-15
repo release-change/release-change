@@ -36,13 +36,14 @@ export const getAssociatedPullRequests = async (
       "X-GitHub-Api-Version": "2022-11-28"
     }
   });
-  const { status, statusText } = pullRequestResponse;
+  const { headers, status, statusText } = pullRequestResponse;
   const pullRequestResponseData = pullRequestResponse.json();
   if (debug) {
     logger.setDebugScope("github:get-associated-pull-requests");
     logger.logDebug(`API entry point: ${uri}`);
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);
+    logger.logDebug(`Response headers: ${headers}`);
     logger.logDebug(
       `Response JSON: ${inspect(await pullRequestResponseData, { depth: Number.POSITIVE_INFINITY })}`
     );

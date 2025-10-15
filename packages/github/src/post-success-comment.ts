@@ -94,7 +94,7 @@ export const postSuccessComment = async (reference: Reference, context: Context)
     //   },
     //   body: JSON.stringify(requestBody)
     // });
-    // const { status, statusText } = successCommentResponse;
+    // const { headers, status, statusText } = successCommentResponse;
     // const issueType = isPullRequest ? "pull request" : "issue";
     // const successCommentResponseData = successCommentResponse.json();
     if (debug) {
@@ -103,6 +103,7 @@ export const postSuccessComment = async (reference: Reference, context: Context)
       logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
       // logger.logDebug(`Response status: ${status}`);
       // logger.logDebug(`Response status text: ${statusText}`);
+      // logger.logDebug(`Response headers: ${headers}`);
       // logger.logDebug(
       //   `Response JSON: ${inspect(await successCommentResponseData, { depth: Number.POSITIVE_INFINITY })}`
       // );
