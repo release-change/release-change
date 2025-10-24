@@ -52,6 +52,7 @@ const mockedContext: Context = {
   },
   packages: [{ name: "", pathname: "." }],
   releaseInfos: [],
+  errors: [],
   branch: "main"
 };
 const mockedContextInMonorepo = {

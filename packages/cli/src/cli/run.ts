@@ -35,7 +35,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   logger.logInfo(`Running ${WORKSPACE_NAME} version ${WORKSPACE_VERSION}…`);
   const packages = await getPackages(contextBase);
   const config = await getConfig(cliOptions, isMonorepo(packages));
-  const branch = getBranchName(contextBase.cwd, logger);
+  const branch = getBranchName(contextBase, logger);
   const ci = configureCiEnvironment(contextBase.env);
   const context: Context = {
     ...contextBase,
@@ -45,7 +45,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
     packages,
     releaseInfos: []
   };
-  await checkRepository(context.cwd, logger);
+  await checkRepository(context, logger);
   if (isUsableCiEnvironment(context)) {
     Object.assign(context.env, {
       GIT_AUTHOR_NAME: COMMITTER_NAME,
@@ -86,6 +86,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
           }
         } catch (error) {
           logger.logError(checkErrorType(error));
+          context.errors.push(error);
           if (references) {
             for (const reference of references) {
               await postFailComment(reference, context);

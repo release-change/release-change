@@ -89,6 +89,7 @@ export const publish = async (context: Context): Promise<void> => {
   } catch (error) {
     logger.logError("Failed to publish the release.");
     logger.logError(checkErrorType(error));
+    context.errors.push(error);
     if (
       error instanceof Error &&
       (error.cause === `git push --follow-tags ${context.config.remoteName} ${context.branch}` ||

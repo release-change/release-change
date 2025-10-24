@@ -45,6 +45,7 @@ export const getCommitsSinceRef = (context: Context): Commit[] => {
   } catch (error) {
     logger.logError("Failed to find commits.");
     logger.logError(checkErrorType(error));
+    context.errors.push(error);
     process.exit(process.exitCode);
   }
 };

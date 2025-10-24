@@ -97,6 +97,7 @@ export interface ContextBase {
   config: {
     debug: boolean;
   };
+  errors: unknown[];
 }
 export interface Context extends ContextBase {
   config: Config;

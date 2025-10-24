@@ -1,3 +1,5 @@
+import type { Context } from "@release-change/shared";
+
 import { setLogger } from "@release-change/logger";
 import { runCommandSync } from "@release-change/shared";
 
@@ -5,11 +7,11 @@ import { isGitRepository } from "./is-git-repository.js";
 
 /**
  * Gets the tracked repositories.
- * @param cwd - The current working directory.
+ * @param context - The context where the CLI is running.
  * @return The value returned by `git remote -v` if this is a Git repository, `null` otherwise.
  */
-export const getTrackedRepositories = async (cwd: string): Promise<string | null> => {
-  return (await isGitRepository(cwd, setLogger()))
-    ? runCommandSync("git", ["remote", "-v"], { cwd }).stdout
+export const getTrackedRepositories = async (context: Context): Promise<string | null> => {
+  return (await isGitRepository(context, setLogger()))
+    ? runCommandSync("git", ["remote", "-v"], { cwd: context.cwd }).stdout
     : null;
 };

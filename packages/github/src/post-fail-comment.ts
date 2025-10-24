@@ -6,7 +6,7 @@ import type { GitHubResponseError } from "./github.types.js";
 import { inspect } from "node:util";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
-import { setLogger } from "@release-change/logger";
+import { checkErrorType, setLogger } from "@release-change/logger";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 
@@ -19,6 +19,7 @@ export const postFailComment = async (reference: Reference, context: Context): P
   const {
     env,
     config: { debug, repositoryUrl },
+    errors,
     branch
   } = context;
   const logger = setLogger(debug);
@@ -27,9 +28,20 @@ export const postFailComment = async (reference: Reference, context: Context): P
     const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
     const { number, isPullRequest } = reference;
     const uri = `${repositoryEntryPoint}/issues/${number}/comments`;
+    const errorsList = errors.length
+      ? errors.map(error => `- ${checkErrorType(error)}`).join("\n")
+      : "No errors reported.";
     const commentBody = `#### The release failed
 
-The release from the \`${branch}\` branch failed.`;
+The release from the \`${branch}\` branch failed.
+
+Below are the errors thrown when running the CLI.
+
+---
+
+${errorsList}
+
+---`;
     const requestBody = {
       body: commentBody
     };

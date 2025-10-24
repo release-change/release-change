@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { getTrackedRepositories } from "../src/index.js";
 import { isGitRepository } from "../src/is-git-repository.js";
+import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 const mockedRemote = [
@@ -23,7 +24,7 @@ afterEach(() => {
 
 it("should return `null` when the project is not a Git repository", async () => {
   vi.mocked(isGitRepository).mockReturnValue(Promise.resolve(false));
-  expect(await getTrackedRepositories(mockedCwd)).toBe(null);
+  expect(await getTrackedRepositories(mockedContext)).toBe(null);
 });
 it("should return the value of `git remote -v` if the project is a Git repository", async () => {
   vi.mocked(isGitRepository).mockReturnValue(Promise.resolve(true));
@@ -32,6 +33,6 @@ it("should return the value of `git remote -v` if the project is a Git repositor
     stdout: mockedRemote.join("\n"),
     stderr: ""
   });
-  expect(await getTrackedRepositories(mockedCwd)).toBe(mockedRemote.join("\n"));
+  expect(await getTrackedRepositories(mockedContext)).toBe(mockedRemote.join("\n"));
   expect(runCommandSync).toHaveBeenCalledWith("git", ["remote", "-v"], { cwd: mockedCwd });
 });

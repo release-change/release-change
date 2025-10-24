@@ -11,7 +11,8 @@ const mockedBasicContext: ContextBase = {
   env: {},
   config: {
     debug: false
-  }
+  },
+  errors: []
 };
 const mockedContext: Context = {
   ...mockedBasicContext,
