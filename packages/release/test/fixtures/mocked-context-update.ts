@@ -16,5 +16,6 @@ export const mockedContext: Context = {
     { name: "@monorepo/b", pathname: "packages/b" }
   ],
   releaseInfos: [],
+  errors: [],
   config: DEFAULT_CONFIG as unknown as Config
 };

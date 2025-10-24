@@ -23,11 +23,13 @@ afterEach(() => {
 });
 
 it("should log an error message when an error is caught", () => {
+  const expectedError = new Error("Error");
   vi.mocked(runCommandSync).mockImplementation(() => {
-    throw new Error("Error");
+    throw expectedError;
   });
   assert.throws(() => getAllTags(mockedContext));
   expect(mockedLogger.logError).toHaveBeenCalled();
+  assert.deepNestedInclude(mockedContext.errors, expectedError);
 });
 it("should return all tags if tags are found", () => {
   const mockedTags = [

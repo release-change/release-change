@@ -56,11 +56,12 @@ afterEach(() => {
 });
 
 it.each(mockedFailureFetchesForCommits)("$title", async ({ response, expectedError }) => {
+  const error = new Error(expectedError);
   vi.spyOn(process, "exit").mockImplementation(() => {
-    throw new Error(expectedError);
+    throw error;
   });
   process.exitCode = response.status;
-  vi.mocked(getAssociatedPullRequests).mockRejectedValue(new Error(expectedError));
+  vi.mocked(getAssociatedPullRequests).mockRejectedValue(error);
   await expect(
     getRelatedPullRequestsAndIssues(mockedCommits, mockedContextWithNextRelease)
   ).rejects.toThrow(expectedError);
@@ -68,6 +69,7 @@ it.each(mockedFailureFetchesForCommits)("$title", async ({ response, expectedErr
     "Failed to get related pull requests and issues."
   );
   expect(process.exitCode).toBe(response.status);
+  assert.deepNestedInclude(mockedContextWithNextRelease.errors, error);
 });
 it("should complete context with references to no pull requests and issues if no commits are provided", async () => {
   await getRelatedPullRequestsAndIssues([], mockedContextWithNextRelease);

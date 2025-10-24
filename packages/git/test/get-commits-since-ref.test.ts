@@ -53,7 +53,6 @@ beforeEach(() => {
     stderr: ""
   });
 });
-
 afterEach(() => {
   vi.clearAllMocks();
 });
@@ -62,12 +61,14 @@ it("should log an error message when an error is caught", () => {
   const mockedProcessExit = vi.spyOn(process, "exit").mockImplementation(() => {
     return undefined as never;
   });
+  const expectedError = new Error("Error");
   vi.mocked(runCommandSync).mockImplementation(() => {
-    throw new Error("Error");
+    throw expectedError;
   });
   getCommitsSinceRef(mockedContext);
   expect(mockedLogger.logError).toHaveBeenCalled();
   expect(mockedProcessExit).toHaveBeenCalled();
+  assert.deepNestedInclude(mockedContext.errors, expectedError);
   mockedProcessExit.mockRestore();
 });
 describe.each(commitsSets)(

@@ -1,6 +1,6 @@
 import type { NextRelease } from "@release-change/shared";
 
-import { setLogger } from "@release-change/logger";
+import { checkErrorType, setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { incrementVersion } from "../src/increment-version.js";
@@ -21,11 +21,28 @@ beforeEach(() => {
   }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
 });
-
 afterEach(() => {
   vi.clearAllMocks();
 });
 
+it("should throw an error if the version increment fails", () => {
+  const mockedErrorMessage = "Failed to increment the version.";
+  const mockedError = new Error(mockedErrorMessage);
+  const mockedContextWithLastRelease = {
+    ...mockedContext,
+    lastRelease: {
+      ref: "v1.0.0",
+      packages: [{ name: "", pathname: ".", gitTag: "v1.0.0", version: "1.0.0" }]
+    }
+  };
+  vi.mocked(incrementVersion).mockImplementation(() => {
+    throw mockedError;
+  });
+  vi.mocked(checkErrorType).mockReturnValue(mockedErrorMessage);
+  setNextRelease([{ name: "", releaseType: "major" }], mockedContextWithLastRelease);
+  expect(mockedLogger.logError).toHaveBeenCalledWith(mockedErrorMessage);
+  assert.deepNestedInclude(mockedContextWithLastRelease.errors, mockedError);
+});
 it("should not call `incrementVersion()` if the package cannot publish from the branch", () => {
   setNextRelease([{ name: "", releaseType: "major" }], mockedContextWithIneligibleBranch);
   expect(incrementVersion).not.toHaveBeenCalled();

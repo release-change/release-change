@@ -16,7 +16,7 @@ import {
   prepareReleaseNotes,
   updateChangelogFile
 } from "@release-change/release-notes-generator";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { commitUpdatedFiles } from "../src/commit-updated-files.js";
 import { publish } from "../src/index.js";
@@ -102,14 +102,14 @@ it.each([mockedContext, { ...mockedContext, nextRelease: [] }])(
   }
 );
 it("should throw an error if the package manager is not found or unsupported", async () => {
+  const expectedErrorMessage =
+    "The package manager is not found or is not one of those supported (npm or pnpm).";
+  const expectedError = new Error(expectedErrorMessage);
   vi.mocked(getPackageManager).mockReturnValue(null);
-  vi.mocked(updateLockFile).mockRejectedValue(
-    new Error("The package manager is not found or is not one of those supported (npm or pnpm).")
-  );
-  await expect(publish(mockedContextWithNextRelease)).rejects.toThrowError(
-    "The package manager is not found or is not one of those supported (npm or pnpm)."
-  );
+  vi.mocked(updateLockFile).mockRejectedValue(expectedError);
+  await expect(publish(mockedContextWithNextRelease)).rejects.toThrowError(expectedErrorMessage);
   expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
+  assert.deepNestedInclude(mockedContextWithNextRelease.errors, expectedError);
 });
 describe.each(packageManagers)("for %s", packageManager => {
   beforeEach(() => {
@@ -139,24 +139,26 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
 
       it("should throw an error if the package manifest file is not found", async () => {
+        const expectedErrorMessage = "Package /fake/path/package.json not found for root package.";
+        const expectedError = new Error(expectedErrorMessage);
         vi.spyOn(fs, "existsSync").mockReturnValue(false);
         vi.mocked(updatePackageVersion).mockImplementation(() => {
-          throw new Error("Package /fake/path/package.json not found for root package.");
+          throw expectedError;
         });
-        await expect(publish(context)).rejects.toThrowError(
-          "Package /fake/path/package.json not found for root package."
-        );
+        await expect(publish(context)).rejects.toThrowError(expectedErrorMessage);
         expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
+        assert.deepNestedInclude(context.errors, expectedError);
       });
       it("should throw an error if the commit reference ID is empty", async () => {
+        const expectedErrorMessage = "The commit reference must not be empty.";
+        const expectedError = new Error(expectedErrorMessage);
         vi.mocked(getCurrentCommitId).mockReturnValue("");
         vi.mocked(createTag).mockImplementation(() => {
-          throw new Error("The commit reference must not be empty.");
+          throw expectedError;
         });
-        await expect(publish(context)).rejects.toThrowError(
-          "The commit reference must not be empty."
-        );
+        await expect(publish(context)).rejects.toThrowError(expectedErrorMessage);
         expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
+        assert.deepNestedInclude(context.errors, expectedError);
       });
       describe.each([
         { case: "if the branch is not defined", errorMessage: "The branch is not defined." },
@@ -178,11 +180,13 @@ describe.each(packageManagers)("for %s", packageManager => {
         }
       ])("$case", ({ errorMessage }) => {
         it("should throw an error", async () => {
+          const expectedError = new Error(errorMessage);
           vi.mocked(prepareReleaseNotes).mockImplementation(() => {
-            throw new Error(errorMessage);
+            throw expectedError;
           });
           await expect(publish(context)).rejects.toThrowError(errorMessage);
           expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
+          assert.deepNestedInclude(context.errors, expectedError);
         });
       });
       if (context.config.isMonorepo) {

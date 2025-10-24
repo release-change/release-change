@@ -1,5 +1,5 @@
 import { setLogger } from "@release-change/logger";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { checkAuthorisation } from "../src/check-authorisation.js";
 import { checkPushPermissions } from "../src/index.js";
@@ -43,13 +43,15 @@ it("should not log a success message when the branch context is not one of those
   expect(mockedLogger.logSuccess).not.toHaveBeenCalled();
 });
 it("should log an error message when an error is thrown", async () => {
+  const mockedError = new Error("Error");
   vi.spyOn(process, "exit").mockImplementation(code => {
     throw new Error(`process.exit called with code ${code}`);
   });
-  vi.mocked(checkAuthorisation).mockRejectedValue(new Error("Error"));
+  vi.mocked(checkAuthorisation).mockRejectedValue(mockedError);
   await expect(
     checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch)
   ).rejects.toThrow("process.exit called with code 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith("Not allowed to push to the Git repository.");
   expect(process.exit).toHaveBeenCalledWith(1);
+  assert.deepNestedInclude(mockedContext.errors, mockedError);
 });

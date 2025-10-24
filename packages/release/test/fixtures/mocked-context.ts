@@ -12,6 +12,7 @@ export const mockedContext: Context = {
   },
   packages: [{ name: "", pathname: "." }],
   releaseInfos: [],
+  errors: [],
   branch: "main"
 };
 export const mockedContextWithIneligibleBranch = { ...mockedContext, branch: "unmatched-branch" };

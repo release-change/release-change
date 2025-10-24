@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the API is used> */
 /** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the API is used> */
 import { getIssueAndPullRequestToken } from "@release-change/ci";
-import { setLogger } from "@release-change/logger";
+import { checkErrorType, setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getRepositoryRelatedEntryPoint, postFailComment } from "../src/index.js";
@@ -21,7 +21,7 @@ global.fetch = mockedFetch;
 
 beforeEach(() => {
   vi.mock("@release-change/shared", () => ({ runCommand: vi.fn() }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+  vi.mock("@release-change/logger", () => ({ checkErrorType: vi.fn(), setLogger: vi.fn() }));
   vi.mock("@release-change/ci", () => ({
     getIssueAndPullRequestToken: vi.fn()
   }));
@@ -40,7 +40,7 @@ afterEach(() => {
 
 describe.each(mockedFailComments)(
   "for $type and reference $reference",
-  ({ type, isMonorepo, reference, expectedBody }) => {
+  ({ type, isMonorepo, reference, errors, expectedBody }) => {
     it("should throw an error if no branch is defined", async () => {
       await expect(postFailComment(reference, mockedContextWithoutBranch)).rejects.toThrowError(
         "The target branch is not defined."
@@ -68,8 +68,11 @@ describe.each(mockedFailComments)(
     // });
     // it("should log a warning message if the URI is not found", async () => {
     //   const context = isMonorepo
-    //     ? mockedContextWithNextReleaseInMonorepo
-    //     : mockedContextWithNextRelease;
+    //     ? { ...mockedContextWithNextReleaseInMonorepo, errors }
+    //     : { ...mockedContextWithNextRelease, errors };
+    //   vi.mocked(checkErrorType).mockImplementation(error =>
+    //     error instanceof Error ? error.message : String(error)
+    //   );
     //   vi.mocked(mockedFetch).mockResolvedValue({
     //     status: 404,
     //     statusText: "Not Found",
@@ -82,8 +85,8 @@ describe.each(mockedFailComments)(
     // });
     // it("should post a fail comment", async () => {
     //   const context = isMonorepo
-    //     ? mockedContextWithNextReleaseInMonorepo
-    //     : mockedContextWithNextRelease;
+    //     ? { ...mockedContextWithNextReleaseInMonorepo, errors }
+    //     : { ...mockedContextWithNextRelease, errors };
     //   vi.mocked(mockedFetch).mockResolvedValue({
     //     status: 201,
     //     statusText: "Created",
