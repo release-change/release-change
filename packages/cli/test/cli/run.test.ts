@@ -23,7 +23,8 @@ const mockedCliOptions: CliOptions = { debug: true }; // Add more fields if need
 const mockedContextBase: ContextBase = {
   cwd: "/fake/path",
   env: {},
-  config: { debug: false }
+  config: { debug: false },
+  errors: []
 };
 const mockedPackages = [
   {
@@ -136,7 +137,14 @@ it.each(mockedPackages)(
 it("should call `checkRepository`", async () => {
   const mockedCheckRepository = vi.mocked(checkRepository).mockResolvedValue(0);
   await run(mockedCliOptions, mockedContextBase);
-  expect(mockedCheckRepository).toHaveBeenCalledWith(mockedContextBase.cwd, mockedLogger);
+  expect(mockedCheckRepository).toHaveBeenCalledWith(
+    expect.objectContaining({
+      cwd: mockedContextBase.cwd,
+      env: mockedContextBase.env,
+      errors: mockedContextBase.errors
+    }),
+    mockedLogger
+  );
 });
 it("should set last release if CI is usable", async () => {
   vi.mocked(isUsableCiEnvironment).mockReturnValue(true);

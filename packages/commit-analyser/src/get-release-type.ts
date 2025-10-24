@@ -104,6 +104,7 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
     return packageReleaseTypes;
   } catch (error) {
     logger.logError(checkErrorType(error));
+    context.errors.push(error);
     process.exitCode = 1;
     return packageReleaseTypes;
   }

@@ -41,6 +41,7 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
           }
         } catch (error) {
           logger.logError(checkErrorType(error));
+          context.errors.push(error);
           process.exit(process.exitCode);
         }
       }
@@ -59,6 +60,7 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
       return packages;
     } catch (error) {
       logger.logError(checkErrorType(error));
+      context.errors.push(error);
       process.exit(process.exitCode);
     }
   }

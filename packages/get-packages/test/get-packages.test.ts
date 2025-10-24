@@ -16,7 +16,8 @@ import { pnpmPackages } from "./fixtures/pnpm-packages.js";
 const mockedContextBase = {
   cwd: mockedCwd,
   env: {},
-  config: { debug: false }
+  config: { debug: false },
+  errors: []
 };
 const expectedSinglePackage = [{ name: "", pathname: "." }];
 
@@ -43,22 +44,28 @@ it("should throw an error if the package manager is not found or supported", asy
   );
 });
 it("should throw an error if the package manager is npm and no `package.json` file is found at the root", async () => {
+  const expectedError = new Error(
+    "Failed to get the root package manifest (`package.json`): file not found."
+  );
   vi.mocked(getPackageManager).mockReturnValue("npm");
   vi.mocked(getRootPackageManifest).mockImplementation(() => {
-    throw new Error("Failed to get the root package manifest (`package.json`): file not found.");
+    throw expectedError;
   });
   assert.throws(() => getRootPackageManifest(`${mockedCwd}/package.json`));
   await expect(getPackages(mockedContextBase)).rejects.toThrow();
+  assert.deepNestedInclude(mockedContextBase.errors, expectedError);
 });
 it("should throw an error if the package manager is pnpm and the glob patterns do not return anything", async () => {
+  const expectedError = new Error(
+    "Failed to get the glob patterns: the root `pnpm-workspace.yaml` file must have a `packages` field."
+  );
   vi.mocked(getPackageManager).mockReturnValue("pnpm");
   vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue("no-packages:");
   vi.mocked(getPnpmGlobPatterns).mockImplementation(() => {
-    throw new Error(
-      "Failed to get the glob patterns: the root `pnpm-workspace.yaml` file must have a `packages` field."
-    );
+    throw expectedError;
   });
   await expect(getPackages(mockedContextBase)).rejects.toThrow();
+  assert.deepNestedInclude(mockedContextBase.errors, expectedError);
 });
 it("should return one single package when the package manager is npm and the glob patterns do not return anything", async () => {
   vi.mocked(getPackageManager).mockReturnValue("npm");

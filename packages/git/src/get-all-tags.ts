@@ -28,6 +28,7 @@ export const getAllTags = (context: Context): string[] => {
     return stdout ? stdout.split("\n") : [];
   } catch (error) {
     logger.logError(checkErrorType(error));
+    context.errors.push(error);
     process.exit(process.exitCode);
   }
 };

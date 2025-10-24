@@ -1,12 +1,12 @@
 import { getPackageVersion } from "@release-change/get-packages";
 import { getAllTags, getLatestValidTag } from "@release-change/git";
-import { setLogger } from "@release-change/logger";
+import { checkErrorType, setLogger } from "@release-change/logger";
 import { validate } from "@release-change/semver";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getVersionFromTag } from "../src/get-version-from-tag.js";
 import { setLastRelease } from "../src/index.js";
-import { mockedContextWithIneligibleBranch } from "./fixtures/mocked-context.js";
+import { mockedContext, mockedContextWithIneligibleBranch } from "./fixtures/mocked-context.js";
 import { mockedGitTags } from "./fixtures/mocked-git-tags.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedPackages } from "./fixtures/mocked-packages.js";
@@ -32,11 +32,47 @@ beforeEach(() => {
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
   vi.mocked(validate).mockImplementation(version => version as string);
 });
-
 afterEach(() => {
   vi.clearAllMocks();
 });
 
+it("should throw an error if the latest valid tag cannot be performed", () => {
+  const mockedErrorMessage = "Failed to get the latest valid tag.";
+  const mockedError = new Error(mockedErrorMessage);
+  vi.mocked(getLatestValidTag).mockImplementation(() => {
+    throw mockedError;
+  });
+  vi.mocked(checkErrorType).mockReturnValue(mockedErrorMessage);
+  setLastRelease(mockedContext);
+  expect(mockedLogger.logError).toHaveBeenCalledWith(mockedErrorMessage);
+  assert.deepNestedInclude(mockedContext.errors, mockedError);
+});
+it("should throw an error if the version cannot be performed from tag", () => {
+  const mockedErrorMessage = "Failed to get the version from tag.";
+  const mockedError = new Error(mockedErrorMessage);
+  vi.mocked(getAllTags).mockReturnValue([]);
+  vi.mocked(getLatestValidTag).mockReturnValue("v1.0.0");
+  vi.mocked(getVersionFromTag).mockImplementation(() => {
+    throw mockedError;
+  });
+  vi.mocked(checkErrorType).mockReturnValue(mockedErrorMessage);
+  setLastRelease(mockedContext);
+  expect(mockedLogger.logError).toHaveBeenCalledWith(mockedErrorMessage);
+  assert.deepNestedInclude(mockedContext.errors, mockedError);
+});
+it("should throw an error if the package version cannot be performed", () => {
+  const mockedErrorMessage = "Failed to get the package version.";
+  const mockedError = new Error(mockedErrorMessage);
+  vi.mocked(getLatestValidTag).mockReturnValue(null);
+  vi.mocked(getVersionFromTag).mockReturnValue("1.0.0");
+  vi.mocked(getPackageVersion).mockImplementation(() => {
+    throw mockedError;
+  });
+  vi.mocked(checkErrorType).mockReturnValue(mockedErrorMessage);
+  setLastRelease(mockedContext);
+  expect(mockedLogger.logError).toHaveBeenCalledWith(mockedErrorMessage);
+  assert.deepNestedInclude(mockedContext.errors, mockedError);
+});
 it("should not call `getLatestValidTag()` if the package cannot publish from the branch", () => {
   setLastRelease(mockedContextWithIneligibleBranch);
   expect(getLatestValidTag).not.toHaveBeenCalled();
@@ -48,6 +84,7 @@ it.each(mockedPackages)(
     vi.mocked(getAllTags).mockReturnValue([]);
     vi.mocked(getLatestValidTag).mockReturnValue(null);
     vi.mocked(validate).mockReturnValue(null);
+    vi.mocked(getPackageVersion).mockReturnValue(null);
     setLastRelease(mockedContext);
     assert.deepEqual(mockedContext.lastRelease, expectedLastReleaseWithoutAnything);
   }

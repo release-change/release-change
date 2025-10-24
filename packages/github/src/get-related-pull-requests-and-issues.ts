@@ -97,6 +97,7 @@ export const getRelatedPullRequestsAndIssues = async (
   } catch (error) {
     logger.logError("Failed to get related pull requests and issues.");
     logger.logError(checkErrorType(error));
+    context.errors.push(error);
     process.exit(process.exitCode ?? 1);
   }
 };

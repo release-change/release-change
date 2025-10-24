@@ -17,7 +17,8 @@ const mockedContext = {
   },
   config: expectedDefaultConfig,
   packages: [{ name: "", pathname: "." }],
-  releaseInfos: []
+  releaseInfos: [],
+  errors: []
 };
 
 beforeEach(() => {

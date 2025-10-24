@@ -14,13 +14,13 @@ export const checkPushPermissions = async (
   repositoryUrl: string,
   context: Context
 ): Promise<void> => {
-  const { cwd, branch, config } = context;
+  const { branch, config } = context;
   const logger = setLogger(config.debug);
   logger.setScope("git");
   try {
     await checkAuthorisation(repositoryUrl, context);
     if (branch && config.branches.includes(branch)) {
-      if (!(await isBranchUpToDate(branch, cwd))) {
+      if (!(await isBranchUpToDate(branch, context))) {
         logger.logWarn(
           `The local branch ${branch} is behind the remote one; therefore, a new version will not be published.`
         );
@@ -29,6 +29,7 @@ export const checkPushPermissions = async (
   } catch (error) {
     logger.logError("Not allowed to push to the Git repository.");
     logger.logError(checkErrorType(error));
+    context.errors.push(error);
     process.exit(process.exitCode ?? 1);
   }
 };

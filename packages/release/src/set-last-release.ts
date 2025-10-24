@@ -63,6 +63,7 @@ export const setLastRelease = (context: Context): void => {
     }
   } catch (error) {
     logger.logError(checkErrorType(error));
+    context.errors.push(error);
     process.exitCode = 1;
   }
 };

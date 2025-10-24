@@ -3,6 +3,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { getRemoteName } from "../src/index.js";
 import { isBranchUpToDate } from "../src/is-branch-up-to-date.js";
+import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 const mockedRemoteName = "origin";
@@ -19,11 +20,11 @@ afterEach(() => {
 });
 
 it("should return `false` if the branch name is empty", async () => {
-  expect(await isBranchUpToDate("", mockedCwd)).toBe(false);
+  expect(await isBranchUpToDate("", mockedContext)).toBe(false);
 });
 it("should return `false` if no remote name is defined", async () => {
   vi.mocked(getRemoteName).mockReturnValue(Promise.resolve(null));
-  expect(await isBranchUpToDate(mockedBranch, mockedCwd)).toBe(false);
+  expect(await isBranchUpToDate(mockedBranch, mockedContext)).toBe(false);
 });
 it("should return `false` if `git rev-list` returns a non-empty string", async () => {
   vi.mocked(getRemoteName).mockReturnValue(Promise.resolve(mockedRemoteName));
@@ -32,7 +33,7 @@ it("should return `false` if `git rev-list` returns a non-empty string", async (
     stdout: "fake-commit",
     stderr: ""
   });
-  expect(await isBranchUpToDate(mockedBranch, mockedCwd)).toBe(false);
+  expect(await isBranchUpToDate(mockedBranch, mockedContext)).toBe(false);
   expect(runCommandSync).toHaveBeenCalledWith("git", ["fetch", mockedRemoteName], {
     cwd: mockedCwd
   });
@@ -49,7 +50,7 @@ it("should return `true` if `git rev-list` returns an empty string", async () =>
     stdout: "",
     stderr: ""
   });
-  expect(await isBranchUpToDate(mockedBranch, mockedCwd)).toBe(true);
+  expect(await isBranchUpToDate(mockedBranch, mockedContext)).toBe(true);
   expect(runCommandSync).toHaveBeenCalledWith("git", ["fetch", mockedRemoteName], {
     cwd: mockedCwd
   });

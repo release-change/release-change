@@ -13,7 +13,8 @@ export const mockedContext: Context = {
   },
   config: expectedDefaultConfig,
   packages: [{ name: "", pathname: "." }],
-  releaseInfos: []
+  releaseInfos: [],
+  errors: []
 };
 export const mockedContextInMonorepo: Context = {
   ...mockedContext,

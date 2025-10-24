@@ -14,7 +14,8 @@ export const mockedContext: Context = {
   },
   config: mockedConfig,
   packages: [{ name: "", pathname: "." }],
-  releaseInfos: []
+  releaseInfos: [],
+  errors: []
 };
 export const mockedContextWithNoNpmPublish: Context = {
   ...mockedContext,
