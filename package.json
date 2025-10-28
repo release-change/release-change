@@ -65,7 +65,7 @@
     "@types/node": "22.18.12",
     "husky": "9.1.7",
     "typescript": "5.9.3",
-    "vitest": "4.0.3"
+    "vitest": "4.0.4"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
