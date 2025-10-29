@@ -35,7 +35,7 @@ beforeEach(() => {
     })),
     ROOT_PACKAGE_MANIFEST: {
       engines: {
-        node: "^20.18.3 || ^22.12.0",
+        node: "^20.18.3 || ^22.12.0 || ^24.0.0",
         npm: ">=10.8.2",
         pnpm: ">=10.19.0"
       }
