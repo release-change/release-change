@@ -1,5 +1,6 @@
 import fs from "node:fs";
 
+import { formatDetailedError } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { getNpmrcFile } from "../src/get-npmrc-file.js";
@@ -11,6 +12,7 @@ import { mockedPathToNpmrcFile } from "./fixtures/mocked-path-to-npmrc-file.js";
 const expectedFileWithoutToken = "someKey=value\nanotherKey=value";
 
 beforeEach(() => {
+  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
   vi.mock("../src/get-npmrc-file.js", () => ({
     getNpmrcFile: vi.fn()
   }));
@@ -20,10 +22,23 @@ afterEach(() => {
 });
 
 it("should throw an error if the `.npmrc` file does not exist", () => {
+  const expectedError = new Error(
+    "Failed to remove auth token: Could not find the `.npmrc` file.",
+    {
+      cause: {
+        title: "Failed to remove auth token",
+        message: "Could not find the `.npmrc` file.",
+        details: {
+          output: `getNpmrcFile(${mockedCwd}): null`
+        }
+      }
+    }
+  );
   vi.mocked(getNpmrcFile).mockReturnValue(null);
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   expect(() =>
-    removeAuthToken(mockedCwd, { fileExists: false, authTokenExists: false })
-  ).toThrowError();
+    removeAuthToken(mockedCwd, { fileExists: true, authTokenExists: false })
+  ).toThrowError(expectedError);
 });
 it("should remove the `.npmrc` file if it was created for that purpose", () => {
   vi.mocked(getNpmrcFile).mockReturnValue(mockedFileWithToken);

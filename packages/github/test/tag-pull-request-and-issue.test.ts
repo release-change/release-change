@@ -1,8 +1,10 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the API is used> */
+import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { agreeInNumber, formatDetailedError } from "@release-change/shared";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { tagPullRequestAndIssue } from "../src/index.js";
+import { getRepositoryRelatedEntryPoint, tagPullRequestAndIssue } from "../src/index.js";
 import {
   mockedContext,
   mockedContextInMonorepo,
@@ -19,7 +21,16 @@ import { mockedUriForIssue } from "./fixtures/mocked-uri.js";
 global.fetch = mockedFetch;
 
 beforeEach(() => {
+  vi.mock("@release-change/shared", () => ({
+    agreeInNumber: vi.fn(),
+    formatDetailedError: vi.fn(),
+    parsePathname: vi.fn()
+  }));
   vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+  vi.mock("@release-change/ci", () => ({ getIssueAndPullRequestToken: vi.fn() }));
+  vi.mock("../src/get-repository-related-entry-point.js", () => ({
+    getRepositoryRelatedEntryPoint: vi.fn()
+  }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
 });
 afterEach(() => {
@@ -27,12 +38,25 @@ afterEach(() => {
 });
 
 it("should throw an error if `nextRelease` is not defined", async () => {
+  const expectedError = new Error(
+    "Failed to tag the issue or pull request: The next release is not defined.",
+    {
+      cause: {
+        title: "Failed to tag the issue or pull request",
+        message: "The next release is not defined.",
+        details: {
+          output: "nextRelease: undefined"
+        }
+      }
+    }
+  );
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   await expect(
     tagPullRequestAndIssue(
       { number: mockedIssueNumber, isPullRequest: false, gitTags: [] },
       mockedContext
     )
-  ).rejects.toThrowError("The next release is not defined.");
+  ).rejects.toThrowError(expectedError);
 });
 // TODO: uncomment when the API is used
 // describe.each(mockedPullRequestsAndIssuesToTag)(
@@ -42,13 +66,17 @@ it("should throw an error if `nextRelease` is not defined", async () => {
 //       ? { ...mockedContextInMonorepo, nextRelease }
 //       : { ...mockedContext, nextRelease };
 //     it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
+//       vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
+//       vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
+//         "https://api.github.com/repos/user-id/repo-name"
+//       );
 //       vi.mocked(mockedFetch).mockResolvedValue({
 //         ...response,
 //         json: () => Promise.resolve({ message: response.statusText })
 //       });
-//       await expect(tagPullRequestAndIssue(reference, mockedContextWithNextRelease)).rejects.toThrow(
-//         expectedError
-//       );
+//       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+//       await expect(tagPullRequestAndIssue(reference, context)).rejects.toThrowError(expectedError);
+//       expect(nextRelease.length).toBeGreaterThan(0);
 //       expect(mockedLogger.logError).toHaveBeenCalledWith(
 //         `Failed to tag ${type} #${mockedIssueNumber}.`
 //       );
@@ -75,6 +103,7 @@ it("should throw an error if `nextRelease` is not defined", async () => {
 //           ? `labels ${expectedLabelEnumeration}`
 //           : `label \`${[expectedLabels]}\``;
 //       const expectedLabelMessage = expectedLabels.length ? ` with ${expectedLabelsDisplay}` : "";
+//       vi.mocked(agreeInNumber).mockReturnValue(expectedLabels.length > 1 ? "labels" : "label");
 //       vi.mocked(mockedFetch).mockResolvedValue({
 //         status: 200,
 //         statusText: "OK",

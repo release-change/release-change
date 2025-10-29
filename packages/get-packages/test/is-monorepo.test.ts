@@ -1,9 +1,22 @@
-import { assert, expect, it } from "vitest";
+import { expect, it } from "vitest";
 
 import { isMonorepo } from "../src/index.js";
 
 it("should throw an error if there are no packages", () => {
-  assert.throws(() => isMonorepo([]), "There must be at least one package.");
+  expect(() => isMonorepo([])).toThrowError(
+    new Error(
+      "Failed to check whether the current directory is a monorepo: There must be at least one package.",
+      {
+        cause: {
+          title: "Failed to check whether the current directory is a monorepo",
+          message: "There must be at least one package.",
+          details: {
+            output: "packages.length: 0"
+          }
+        }
+      }
+    )
+  );
 });
 it("should return `false` if there is one package only", () => {
   expect(isMonorepo([{ name: "", pathname: "." }])).toBe(false);

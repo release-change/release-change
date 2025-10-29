@@ -16,16 +16,28 @@ const mockedEnv = {
 global.fetch = mockedFetch;
 
 it("should throw an error when the request fails", async () => {
-  vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
+  const expectedError = new Error(
+    `Failed to get the associated pull requests: Failed to fetch URI ${mockedUriForCommits}.`,
+    {
+      cause: {
+        title: "Failed to get the associated pull requests",
+        message: `Failed to fetch URI ${mockedUriForCommits}.`,
+        details: {
+          output: "status: 404"
+        }
+      }
+    }
+  );
+  vi.mocked(mockedFetch).mockRejectedValue(expectedError);
   await expect(
     getAssociatedPullRequests(mockedUriForCommits, mockedGitTags, mockedContext)
-  ).rejects.toThrow("Failed to request the URI.");
+  ).rejects.toThrowError(expectedError);
 });
 it.each(mockedFailureFetchesForCommits)("$title", async ({ response, expectedError }) => {
   vi.mocked(mockedFetch).mockResolvedValue(response);
   await expect(
     getAssociatedPullRequests(mockedUriForCommits, mockedGitTags, mockedContext)
-  ).rejects.toThrow(expectedError);
+  ).rejects.toThrowError(expectedError);
   expect(process.exitCode).toBe(response.status);
 });
 it("should return the associated pull requests", async () => {

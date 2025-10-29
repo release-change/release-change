@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-import { assert, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getPackageVersion } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
@@ -18,9 +18,19 @@ it("should throw an error if the package manifest file does not have the `versio
   vi.spyOn(fs, "readFileSync").mockReturnValue(
     JSON.stringify(mockedPackageManifestFileWithoutVersion)
   );
-  assert.throws(
-    () => getPackageVersion(mockedPath),
-    `Failed to get the package version for ${mockedPath}: \`version\` property not found.`
+  expect(() => getPackageVersion(mockedPath)).toThrowError(
+    new Error(
+      `Failed to get the package version: The \`version\` property was not found for ${mockedPath}.`,
+      {
+        cause: {
+          title: "Failed to get the package version",
+          message: `The \`version\` property was not found for ${mockedPath}.`,
+          details: {
+            output: `path: ${mockedPath}`
+          }
+        }
+      }
+    )
   );
 });
 it("should return the `version` property value if the package manifest file has the `version` property", () => {

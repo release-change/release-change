@@ -1,7 +1,8 @@
 import fs from "node:fs";
 
 import { setLogger } from "@release-change/logger";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+import { formatDetailedError } from "@release-change/shared";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { updatePackageDependenciesVersions } from "../src/update-package-dependencies-versions.js";
 import { mockedConfig } from "./fixtures/mocked-config.js";
@@ -12,6 +13,10 @@ import { mockedNextReleasesWithDependencies } from "./fixtures/mocked-next-relea
 
 beforeEach(() => {
   vi.mock("node:fs");
+  vi.mock("@release-change/shared", () => ({
+    formatDetailedError: vi.fn(),
+    WORKSPACE_NAME: "release-change"
+  }));
   vi.mock("@release-change/logger", () => ({
     setLogger: vi.fn()
   }));
@@ -35,21 +40,44 @@ describe.each(mockedNextReleasesWithDependencies)(
     expectedPackageManifest
   }) => {
     it("should throw an error if `dependencyUpdateMethod` is not defined", () => {
-      assert.throws(
-        () => updatePackageDependenciesVersions(nextRelease, [], mockedContext),
-        "Dependency update method not found."
+      const expectedError = new Error(
+        "Failed to update the package dependencies versions: Dependency update method not found.",
+        {
+          cause: {
+            title: "Failed to update the package dependencies versions",
+            message: "Dependency update method not found.",
+            details: {
+              output: "dependencyUpdateMethod: undefined"
+            }
+          }
+        }
+      );
+      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+      expect(() => updatePackageDependenciesVersions(nextRelease, [], mockedContext)).toThrowError(
+        expectedError
       );
     });
     it("should throw an error if the package manifest is not found", () => {
-      vi.spyOn(fs, "existsSync").mockReturnValue(false);
-      assert.throws(
-        () =>
-          updatePackageDependenciesVersions(nextRelease, [], {
-            ...mockedContextInMonorepo,
-            config: { ...mockedConfig, dependencyUpdateMethod: "pin" }
-          }),
-        `Package ${packageManifestPath} not found for ${packageName}.`
+      const expectedError = new Error(
+        `Failed to update the package dependencies versions: Package ${packageManifestPath} not found for ${packageName}.`,
+        {
+          cause: {
+            title: "Failed to update the package dependencies versions",
+            message: `Package ${packageManifestPath} not found for ${packageName}.`,
+            details: {
+              output: `fs.existsSync(${packageManifestPath}): false`
+            }
+          }
+        }
       );
+      vi.spyOn(fs, "existsSync").mockReturnValue(false);
+      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+      expect(() =>
+        updatePackageDependenciesVersions(nextRelease, [], {
+          ...mockedContextInMonorepo,
+          config: { ...mockedConfig, dependencyUpdateMethod: "pin" }
+        })
+      ).toThrowError(expectedError);
     });
     it("should update the package dependencies versions", () => {
       const readFileSpy = vi

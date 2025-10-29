@@ -1,3 +1,5 @@
+import type { DetailedError } from "@release-change/shared";
+
 import fs from "node:fs";
 
 import { getPackageDependencies, getPackageManager } from "@release-change/get-packages";
@@ -9,7 +11,7 @@ import {
   removeTag,
   removeTagOnRemoteRepository
 } from "@release-change/git";
-import { setLogger } from "@release-change/logger";
+import { addErrorToContext, isDetailedError, setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
 import {
   createReleaseNotes,
@@ -42,7 +44,12 @@ const mockedContextInMonorepoWithNextRelease = {
 };
 
 beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn(), checkErrorType: vi.fn() }));
+  vi.mock("@release-change/logger", () => ({
+    addErrorToContext: vi.fn(),
+    checkErrorType: vi.fn(),
+    isDetailedError: vi.fn(),
+    setLogger: vi.fn()
+  }));
   vi.mock("@release-change/get-packages", () => ({
     getPackageDependencies: vi.fn(),
     getPackageManager: vi.fn()
@@ -70,6 +77,20 @@ beforeEach(() => {
   }));
   vi.mock("../src/update-lock-file.js", () => ({ updateLockFile: vi.fn() }));
   vi.mock("../src/commit-updated-files.js", () => ({ commitUpdatedFiles: vi.fn() }));
+  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+    if (error instanceof Error) {
+      const { cause } = error;
+      if (
+        cause &&
+        typeof cause === "object" &&
+        "title" in cause &&
+        "message" in cause &&
+        "details" in cause
+      ) {
+        context.errors.push(cause as DetailedError);
+      }
+    }
+  });
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
 });
 afterEach(() => {
@@ -103,13 +124,22 @@ it.each([mockedContext, { ...mockedContext, nextRelease: [] }])(
 );
 it("should throw an error if the package manager is not found or unsupported", async () => {
   const expectedErrorMessage =
-    "The package manager is not found or is not one of those supported (npm or pnpm).";
-  const expectedError = new Error(expectedErrorMessage);
+    "Failed to find the package manager: The package manager is not found or is not one of those supported (npm or pnpm).";
+  const expectedError = new Error(expectedErrorMessage, {
+    cause: {
+      title: "Failed to find the package manager.",
+      message: "The package manager is not found or is not one of those supported (npm or pnpm).",
+      details: {
+        output: "packageManager: null"
+      }
+    }
+  });
   vi.mocked(getPackageManager).mockReturnValue(null);
   vi.mocked(updateLockFile).mockRejectedValue(expectedError);
+  vi.mocked(isDetailedError).mockReturnValue(true);
   await expect(publish(mockedContextWithNextRelease)).rejects.toThrowError(expectedErrorMessage);
   expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
-  assert.deepNestedInclude(mockedContextWithNextRelease.errors, expectedError);
+  assert.deepNestedInclude(mockedContextWithNextRelease.errors, expectedError.cause);
 });
 describe.each(packageManagers)("for %s", packageManager => {
   beforeEach(() => {
@@ -139,54 +169,112 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
 
       it("should throw an error if the package manifest file is not found", async () => {
-        const expectedErrorMessage = "Package /fake/path/package.json not found for root package.";
-        const expectedError = new Error(expectedErrorMessage);
+        const expectedErrorMessage =
+          "Failed to find the package manifest file: Package /fake/path/package.json not found for root package.";
+        const expectedError = new Error(expectedErrorMessage, {
+          cause: {
+            title: "Failed to find the package manifest file.",
+            message: "Package /fake/path/package.json not found for root package.",
+            details: {
+              output: "fs.existsSync(/fake/path/package.json): false"
+            }
+          }
+        });
         vi.spyOn(fs, "existsSync").mockReturnValue(false);
         vi.mocked(updatePackageVersion).mockImplementation(() => {
           throw expectedError;
         });
         await expect(publish(context)).rejects.toThrowError(expectedErrorMessage);
         expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
-        assert.deepNestedInclude(context.errors, expectedError);
+        assert.deepNestedInclude(context.errors, expectedError.cause);
       });
       it("should throw an error if the commit reference ID is empty", async () => {
-        const expectedErrorMessage = "The commit reference must not be empty.";
-        const expectedError = new Error(expectedErrorMessage);
+        const expectedErrorMessage =
+          "Failed to create a Git tag: The commit reference must not be empty.";
+        const expectedError = new Error(expectedErrorMessage, {
+          cause: {
+            title: "Failed to create a Git tag.",
+            message: "The commit reference must not be empty.",
+            details: {
+              output: "commitRef: "
+            }
+          }
+        });
         vi.mocked(getCurrentCommitId).mockReturnValue("");
         vi.mocked(createTag).mockImplementation(() => {
           throw expectedError;
         });
         await expect(publish(context)).rejects.toThrowError(expectedErrorMessage);
         expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
-        assert.deepNestedInclude(context.errors, expectedError);
+        assert.deepNestedInclude(context.errors, expectedError.cause);
       });
       describe.each([
-        { case: "if the branch is not defined", errorMessage: "The branch is not defined." },
+        {
+          case: "if the branch is not defined",
+          errorMessage: "Failed to prepare the release notes: The branch is not defined.",
+          errorCause: {
+            title: "Failed to prepare the release notes",
+            message: "The branch is not defined.",
+            details: {
+              output: "branch: undefined"
+            }
+          }
+        },
         {
           case: "if the branch is not defined in the configuration",
-          errorMessage: "The branch unknown is not defined in the configuration."
+          errorMessage:
+            "Failed to prepare the release notes: The branch unknown is not defined in the configuration.",
+          errorCause: {
+            title: "Failed to prepare the release notes",
+            message: "The branch unknown is not defined in the configuration.",
+            details: {
+              output: "branch: unknown"
+            }
+          }
         },
         {
           case: "if the last release is not defined",
-          errorMessage: "The last release is not defined."
+          errorMessage: "Failed to prepare the relase notes: The last release is not defined.",
+          errorCause: {
+            title: "Failed to prepare the release notes",
+            message: "The last release is not defined.",
+            details: {
+              output: "lastRelease: undefined"
+            }
+          }
         },
         {
           case: "if the last release is not found for the package",
-          errorMessage: "No last release found for root package."
+          errorMessage:
+            "Failed to prepare the release notes: No last release found for root package.",
+          errorCause: {
+            title: "Failed to prepare the release notes",
+            message: "No last release found for root package.",
+            details: {
+              output: "packageLastRelease: undefined"
+            }
+          }
         },
         {
           case: "if no commits have been retrieved",
-          errorMessage: "No commits have been retrieved."
+          errorMessage: "Failed to prepare the release notes: No commits have been retrieved.",
+          errorCause: {
+            title: "Failed to prepare the release notes",
+            message: "No commits have been retrieved.",
+            details: {
+              output: "commits: undefined"
+            }
+          }
         }
-      ])("$case", ({ errorMessage }) => {
+      ])("$case", ({ errorMessage, errorCause }) => {
         it("should throw an error", async () => {
-          const expectedError = new Error(errorMessage);
+          const expectedError = new Error(errorMessage, { cause: errorCause });
           vi.mocked(prepareReleaseNotes).mockImplementation(() => {
             throw expectedError;
           });
-          await expect(publish(context)).rejects.toThrowError(errorMessage);
+          await expect(publish(context)).rejects.toThrowError(expectedError);
           expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
-          assert.deepNestedInclude(context.errors, expectedError);
+          assert.deepNestedInclude(context.errors, expectedError.cause);
         });
       });
       if (context.config.isMonorepo) {
@@ -229,46 +317,74 @@ describe.each(packageManagers)("for %s", packageManager => {
         expect(publishToRegistry).toHaveBeenCalled();
       });
       it("should rollback commits and remove tags when `git add` fails", async () => {
-        vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
-        vi.mocked(push).mockRejectedValue(
-          new Error("`git add` failed", {
-            cause:
-              "git add /fake/path/package.json /fake/path/package-lock.json /fake/path/CHANGELOG.md"
-          })
+        const mockedError = new Error(
+          "Failed to run the `git` command: The command failed with status 128.",
+          {
+            cause: {
+              title: "Failed to run the `git` command",
+              message: "The command failed with status 128.",
+              details: {
+                output: "Git error",
+                command:
+                  "git add /fake/path/package.json /fake/path/package-lock.json /fake/path/CHANGELOG.md"
+              }
+            }
+          }
         );
-        await expect(publish(context)).rejects.toThrow("`git add` failed");
+        vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
+        vi.mocked(commitUpdatedFiles).mockRejectedValue(mockedError);
+        vi.mocked(isDetailedError).mockReturnValue(true);
+        await expect(publish(context)).rejects.toThrowError(mockedError);
         expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
           "original-commit",
           expect.any(String),
           expect.any(Boolean)
         );
-        expect(removeTag).toHaveBeenCalled();
-        expect(removeTagOnRemoteRepository).toHaveBeenCalled();
+        expect(removeTag).not.toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).not.toHaveBeenCalled();
       });
       it("should rollback commits and remove tags when `git commit` fails", async () => {
-        vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
-        vi.mocked(push).mockRejectedValue(
-          new Error("Commit failed", {
-            cause: "git commit -m 'chore: v1.0.0'"
-          })
+        const mockedError = new Error(
+          "Failed to run the `git` command: The command failed with status 128.",
+          {
+            cause: {
+              title: "Failed to run the `git` command",
+              message: "The command failed with status 128.",
+              details: {
+                output: "Git error",
+                command: "git commit -m 'chore: v1.0.0'"
+              }
+            }
+          }
         );
-        await expect(publish(context)).rejects.toThrow("Commit failed");
+        vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
+        vi.mocked(commitUpdatedFiles).mockRejectedValue(mockedError);
+        await expect(publish(context)).rejects.toThrowError(mockedError);
         expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
           "original-commit",
           expect.any(String),
           expect.any(Boolean)
         );
-        expect(removeTag).toHaveBeenCalled();
-        expect(removeTagOnRemoteRepository).toHaveBeenCalled();
+        expect(removeTag).not.toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).not.toHaveBeenCalled();
       });
       it("should rollback commits and remove tags when push fails", async () => {
-        vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
-        vi.mocked(push).mockRejectedValue(
-          new Error("Push failed", {
-            cause: "git push --follow-tags origin main"
-          })
+        const mockedError = new Error(
+          "Failed to run the `git` command: The command failed with status 128.",
+          {
+            cause: {
+              title: "Failed to run the `git` command",
+              message: "The command failed with status 128.",
+              details: {
+                output: "Git error",
+                command: "git push --follow-tags origin main"
+              }
+            }
+          }
         );
-        await expect(publish(context)).rejects.toThrow("Push failed");
+        vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
+        vi.mocked(push).mockRejectedValue(mockedError);
+        await expect(publish(context)).rejects.toThrowError(mockedError);
         expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
           "original-commit",
           expect.any(String),
@@ -316,10 +432,21 @@ describe.each(packageManagers)("for %s", packageManager => {
         }
       });
       it("should remove all created tags on rollback", async () => {
-        vi.mocked(push).mockRejectedValue(
-          new Error("Push failed", { cause: "git push --follow-tags origin main" })
+        const mockedError = new Error(
+          "Failed to run the `git` command: The command failed with status 128.",
+          {
+            cause: {
+              title: "Failed to run the `git` command",
+              message: "The command failed with status 128.",
+              details: {
+                output: "Git error",
+                command: "git push --follow-tags origin main"
+              }
+            }
+          }
         );
-        await expect(publish(context)).rejects.toThrow();
+        vi.mocked(push).mockRejectedValue(mockedError);
+        await expect(publish(context)).rejects.toThrowError(mockedError);
         expect(removeTag).toHaveBeenCalledTimes(context.nextRelease.length);
         expect(removeTagOnRemoteRepository).toHaveBeenCalledTimes(context.nextRelease.length);
         for (const packageNextRelease of context.nextRelease) {

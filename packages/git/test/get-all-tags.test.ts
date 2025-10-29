@@ -1,5 +1,5 @@
-import { setLogger } from "@release-change/logger";
-import { runCommandSync } from "@release-change/shared";
+import { addErrorToContext, setLogger } from "@release-change/logger";
+import { type DetailedError, runCommandSync } from "@release-change/shared";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getAllTags } from "../src/index.js";
@@ -9,6 +9,7 @@ import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({
+    addErrorToContext: vi.fn(),
     checkErrorType: vi.fn(),
     setLogger: vi.fn()
   }));
@@ -16,6 +17,20 @@ beforeEach(() => {
     runCommandSync: vi.fn(),
     WORKSPACE_NAME: "release-change"
   }));
+  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+    if (error instanceof Error) {
+      const { cause } = error;
+      if (
+        cause &&
+        typeof cause === "object" &&
+        "title" in cause &&
+        "message" in cause &&
+        "details" in cause
+      ) {
+        context.errors.push(cause as DetailedError);
+      }
+    }
+  });
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
 });
 afterEach(() => {
@@ -23,13 +38,25 @@ afterEach(() => {
 });
 
 it("should log an error message when an error is caught", () => {
-  const expectedError = new Error("Error");
+  const mockedError = new Error(
+    "Failed to run the `git` command: The command failed with status 128.",
+    {
+      cause: {
+        title: "Failed to run the `git` command",
+        message: "The command failed with status 128.",
+        details: {
+          output: "Error",
+          command: "git tag -l --sort=-creatordate --merged origin/main"
+        }
+      }
+    }
+  );
   vi.mocked(runCommandSync).mockImplementation(() => {
-    throw expectedError;
+    throw mockedError;
   });
-  assert.throws(() => getAllTags(mockedContext));
+  expect(() => getAllTags(mockedContext)).toThrow();
   expect(mockedLogger.logError).toHaveBeenCalled();
-  assert.deepNestedInclude(mockedContext.errors, expectedError);
+  assert.deepNestedInclude(mockedContext.errors, mockedError.cause);
 });
 it("should return all tags if tags are found", () => {
   const mockedTags = [

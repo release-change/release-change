@@ -1,6 +1,6 @@
-import type { NextRelease } from "@release-change/shared";
+import type { DetailedError, NextRelease } from "@release-change/shared";
 
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { incrementVersion } from "../src/increment-version.js";
@@ -13,12 +13,27 @@ import { mockedNextReleasesInMonorepo } from "./fixtures/mocked-next-releases-in
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({
+    addErrorToContext: vi.fn(),
     checkErrorType: vi.fn(),
     setLogger: vi.fn()
   }));
   vi.mock("../src/increment-version.js", () => ({
     incrementVersion: vi.fn()
   }));
+  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+    if (error instanceof Error) {
+      const { cause } = error;
+      if (
+        cause &&
+        typeof cause === "object" &&
+        "title" in cause &&
+        "message" in cause &&
+        "details" in cause
+      ) {
+        context.errors.push(cause as DetailedError);
+      }
+    }
+  });
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
 });
 afterEach(() => {
@@ -26,8 +41,16 @@ afterEach(() => {
 });
 
 it("should throw an error if the version increment fails", () => {
-  const mockedErrorMessage = "Failed to increment the version.";
-  const mockedError = new Error(mockedErrorMessage);
+  const mockedErrorMessage = "Failed to increment version from 1.0.0: No next version given.";
+  const mockedError = new Error(mockedErrorMessage, {
+    cause: {
+      title: "Failed to increment version from 1.0.0",
+      message: "No next version given.",
+      details: {
+        output: "nextVersion: null"
+      }
+    }
+  });
   const mockedContextWithLastRelease = {
     ...mockedContext,
     lastRelease: {
@@ -41,7 +64,7 @@ it("should throw an error if the version increment fails", () => {
   vi.mocked(checkErrorType).mockReturnValue(mockedErrorMessage);
   setNextRelease([{ name: "", releaseType: "major" }], mockedContextWithLastRelease);
   expect(mockedLogger.logError).toHaveBeenCalledWith(mockedErrorMessage);
-  assert.deepNestedInclude(mockedContextWithLastRelease.errors, mockedError);
+  assert.deepNestedInclude(mockedContextWithLastRelease.errors, mockedError.cause);
 });
 it("should not call `incrementVersion()` if the package cannot publish from the branch", () => {
   setNextRelease([{ name: "", releaseType: "major" }], mockedContextWithIneligibleBranch);

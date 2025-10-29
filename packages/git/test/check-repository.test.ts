@@ -16,16 +16,22 @@ afterEach(() => {
 });
 
 it("should throw an error if the Git command fails", async () => {
-  const mockedError = new Error("Error");
+  const mockedError = new Error("Error: The command failed with status 128.", {
+    cause: {
+      title: "Error",
+      message: "The command failed with status 128.",
+      details: { output: "Error", command: "git --version" }
+    }
+  });
   const mockedProcessExit = vi.spyOn(process, "exit").mockImplementation(code => {
     throw new Error(`process.exit(${code})`);
   });
   vi.mocked(runCommand).mockRejectedValue(mockedError);
   process.exitCode = 128;
-  await expect(checkRepository(mockedContext, mockedLogger)).rejects.toThrow("process.exit(128)");
-  expect(mockedLogger.logError).toHaveBeenCalledWith("Error");
+  await expect(checkRepository(mockedContext, mockedLogger)).rejects.toThrow();
+  expect(mockedLogger.logError).toHaveBeenCalledWith("Error: The command failed with status 128.");
   expect(mockedProcessExit).toHaveBeenCalledWith(128);
-  assert.deepNestedInclude(mockedContext.errors, mockedError);
+  assert.deepNestedInclude(mockedContext.errors, mockedError.cause);
 });
 it("should call `process.exit(128)` if this is not a Git repository", async () => {
   vi.spyOn(process, "exit").mockImplementation(code => {
@@ -39,7 +45,9 @@ it("should call `process.exit(128)` if this is not a Git repository", async () =
     })
   );
   process.exitCode = 128;
-  await expect(checkRepository(mockedContext, mockedLogger)).rejects.toThrow("process.exit(128)");
+  await expect(checkRepository(mockedContext, mockedLogger)).rejects.toThrowError(
+    "process.exit(128)"
+  );
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     "The current directory is not a Git repository."
   );

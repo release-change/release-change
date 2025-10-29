@@ -1,4 +1,4 @@
-import { assert, describe, it } from "vitest";
+import { assert, describe, expect, it } from "vitest";
 
 import { getGitTags } from "../src/index.js";
 import { mockedCommits } from "./fixtures/mocked-commits.js";
@@ -31,7 +31,17 @@ const expectedGitTagsInMonorepo = ["v1.2.3", "@monorepo/a@v1.2.3"];
 
 describe.each(mockedCommits)("for $type", ({ expected }) => {
   it("should throw an error if there is no next release", () => {
-    assert.throws(() => getGitTags(expected, mockedContext), "No next release found.");
+    expect(() => getGitTags(expected, mockedContext)).toThrowError(
+      new Error("Failed to get the Git tags: No next release found.", {
+        cause: {
+          title: "Failed to get the Git tags",
+          message: "No next release found.",
+          details: {
+            output: "nextRelease: undefined"
+          }
+        }
+      })
+    );
   });
   it("should return the Git tags related to the commit", () => {
     if (expected.modifiedFiles)
