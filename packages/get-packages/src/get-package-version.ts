@@ -1,5 +1,7 @@
 import fs from "node:fs";
 
+import { formatDetailedError } from "@release-change/shared";
+
 /**
  * Gets the package version from the `package.json` file.
  * @param path - The path to the `package.json` file.
@@ -9,9 +11,13 @@ export const getPackageVersion = (path: string): string | null => {
   if (fs.existsSync(path)) {
     const { version } = JSON.parse(fs.readFileSync(path, "utf8"));
     if (version) return version;
-    throw new Error(
-      `Failed to get the package version for ${path}: \`version\` property not found.`
-    );
+    throw formatDetailedError({
+      title: "Failed to get the package version",
+      message: `The \`version\` property was not found for ${path}.`,
+      details: {
+        output: `path: ${path}`
+      }
+    });
   }
   return null;
 };

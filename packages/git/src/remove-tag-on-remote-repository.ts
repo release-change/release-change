@@ -2,7 +2,7 @@
 import type { Context } from "@release-change/shared";
 
 import { setLogger } from "@release-change/logger";
-import { runCommand } from "@release-change/shared";
+import { formatDetailedError, runCommand } from "@release-change/shared";
 
 /**
  * Removes a Git tag on a remote repository.
@@ -29,8 +29,21 @@ export const removeTagOnRemoteRepository = async (
     // TODO: uncomment when the Git command is run
     // if (status) {
     //   logger.logError(`Failed to remotely remove Git tag ${gitTag} on ${remoteName}.`);
-    //   throw new Error(stderr || stdout || `Command failed with status ${status}.`);
+    //   throw formatDetailedError({
+    //     title: "Failed to run the `git` command",
+    //     message: `The command failed with status ${status}.`,
+    //     details: {
+    //       output: stderr || stdout || `Command failed with status ${status}.`,
+    //       command: `git ${args.join(" ")}`
+    //     }
+    //   });
     // }
     logger.logInfo(`Removed remote Git tag ${gitTag} successfully.`);
-  } else throw new Error("The Git tag must not be empty.");
+  } else {
+    throw formatDetailedError({
+      title: "Failed to remove a Git tag on remote repository",
+      message: "The Git tag must not be empty.",
+      details: { output: "gitTag: " }
+    });
+  }
 };

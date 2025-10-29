@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the Git command is run> */
 /** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the Git command is run> */
 import { setLogger } from "@release-change/logger";
-import { runCommandSync } from "@release-change/shared";
+import { formatDetailedError, runCommandSync } from "@release-change/shared";
 
 /**
  * Cancels the commits since the commit reference.
@@ -23,8 +23,21 @@ export const cancelCommitsSinceRef = (commitRef: string, cwd: string, debug = fa
     // TODO: uncomment when the Git command is run
     // if (status) {
     //   logger.logError(`Failed to cancel the commits since ${commitRef}.`);
-    //   throw new Error(stderr || stdout || `Command failed with status ${status}.`);
+    //   throw formatDetailedError({
+    //     title: "Failed to run the `git` command",
+    //     message: `The command failed with status ${status}.`,
+    //     details: {
+    //       output: stderr || stdout || `Command failed with status ${status}.`,
+    //       command: `git ${args.join(" ")}`
+    //     }
+    //   });
     // }
     logger.logInfo(`Commits since ${commitRef} cancelled.`);
-  } else throw new Error("The commit reference must not be empty.");
+  } else {
+    throw formatDetailedError({
+      title: "Failed to cancel commits",
+      message: "The commit reference must not be empty.",
+      details: { output: "commitRef: " }
+    });
+  }
 };

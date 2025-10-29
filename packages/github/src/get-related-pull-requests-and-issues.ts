@@ -4,7 +4,7 @@ import type { AssociatedPullRequest } from "./github.types.js";
 import { inspect } from "node:util";
 
 import { getGitTags } from "@release-change/commit-analyser";
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 import { agreeInNumber } from "@release-change/shared";
 
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
@@ -97,7 +97,7 @@ export const getRelatedPullRequestsAndIssues = async (
   } catch (error) {
     logger.logError("Failed to get related pull requests and issues.");
     logger.logError(checkErrorType(error));
-    context.errors.push(error);
+    addErrorToContext(error, context);
     process.exit(process.exitCode ?? 1);
   }
 };

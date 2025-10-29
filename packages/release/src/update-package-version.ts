@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 /**
  * Updates the package manifest file with the new version.
@@ -36,5 +37,13 @@ export const updatePackageVersion = (
       logger.setDebugScope("release:update-package-version");
       logger.logDebug(`Package version for ${packageName}: ${packageManifest.version}`);
     }
-  } else throw new Error(`Package ${packageManifestPath} not found for ${packageName}.`);
+  } else {
+    throw formatDetailedError({
+      title: "Failed to update the package version",
+      message: `Package ${packageManifestPath} not found for ${packageName}.`,
+      details: {
+        output: `fs.existsSync(${packageManifestPath}): false`
+      }
+    });
+  }
 };

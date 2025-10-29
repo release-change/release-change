@@ -1,5 +1,7 @@
 import type { Commit, Context } from "@release-change/shared";
 
+import { formatDetailedError } from "@release-change/shared";
+
 /**
  * Gets the Git tags associated with the commit.
  * @param commit - The commit to analyse.
@@ -23,5 +25,11 @@ export const getGitTags = (commit: Commit, context: Context): string[] => {
           .map(packageNextRelease => packageNextRelease.gitTag)
       : nextRelease.map(packageNextRelease => packageNextRelease.gitTag);
   }
-  throw new Error("No next release found.");
+  throw formatDetailedError({
+    title: "Failed to get the Git tags",
+    message: "No next release found.",
+    details: {
+      output: "nextRelease: undefined"
+    }
+  });
 };

@@ -1,7 +1,6 @@
-import type { Logger } from "@release-change/logger";
 import type { ContextBase } from "@release-change/shared";
 
-import { checkErrorType } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, type Logger } from "@release-change/logger";
 import { runCommandSync } from "@release-change/shared";
 
 /**
@@ -29,7 +28,7 @@ export const getBranchName = (contextBase: ContextBase, logger: Logger): string 
   } catch (error) {
     logger.setScope("git");
     logger.logError(checkErrorType(error));
-    contextBase.errors.push(error);
+    addErrorToContext(error, contextBase);
     return undefined;
   }
 };

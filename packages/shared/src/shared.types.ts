@@ -13,6 +13,14 @@ export type ParsedCliOptions = {
   help?: true;
 };
 export type CliOptions = Omit<ParsedCliOptions, "help" | "version">;
+export type DetailedError = {
+  title: string;
+  message: string;
+  details: {
+    output: string;
+    command?: string;
+  };
+};
 export type BranchConfig = {
   channel?: string;
   prerelease?: true;
@@ -97,7 +105,7 @@ export interface ContextBase {
   config: {
     debug: boolean;
   };
-  errors: unknown[];
+  errors: DetailedError[];
 }
 export interface Context extends ContextBase {
   config: Config;

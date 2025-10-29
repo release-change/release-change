@@ -3,6 +3,8 @@ import type { CommandResult } from "./shared.types.js";
 
 import { spawn } from "node:child_process";
 
+import { formatDetailedError } from "./format-detailed-error.js";
+
 /**
  * Runs a command asynchronously.
  * @param command - The command to run.
@@ -34,8 +36,19 @@ export const runCommand = async (
       resolve(commandResult);
     });
     childProcess.on("error", error => {
-      process.exitCode = Number(childProcess.exitCode);
-      reject(new Error(error.message, { cause: `${command} ${args.join(" ")}` }));
+      const { exitCode } = childProcess;
+      const { message } = error;
+      process.exitCode = Number(exitCode);
+      reject(
+        formatDetailedError({
+          title: `Failed to run the \`${command}\` command`,
+          message: `The command failed with status ${exitCode}.`,
+          details: {
+            output: message || `Command failed with status ${exitCode}.`,
+            command: `${command} ${args.join(" ")}`
+          }
+        })
+      );
     });
   });
 };

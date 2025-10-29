@@ -1,6 +1,7 @@
 import type { BranchConfig, ReleaseType } from "@release-change/shared";
 
 import { getPrerelease, increase } from "@release-change/semver";
+import { formatDetailedError } from "@release-change/shared";
 
 /**
  * Increments the version.
@@ -80,7 +81,19 @@ export const incrementVersion = (
           ? increase(currentVersion, "patch")
           : increase(currentVersion, releaseType);
     if (nextVersion) return nextVersion;
-    throw new Error(`Failed to increment version from ${currentVersion}: no next version given.`);
+    throw formatDetailedError({
+      title: `Failed to increment version from ${currentVersion}`,
+      message: "No next version given.",
+      details: {
+        output: "nextVersion: null"
+      }
+    });
   }
-  throw new Error(`Failed to increment version from ${currentVersion}: no release type retrieved.`);
+  throw formatDetailedError({
+    title: `Failed to increment version from ${currentVersion}`,
+    message: "No release type retrieved.",
+    details: {
+      output: "releaseType: null"
+    }
+  });
 };

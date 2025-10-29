@@ -5,6 +5,7 @@ import { inspect } from "node:util";
 
 import { COMMIT_ABBREVIATED_SHA_LENGTH, COMMIT_MESSAGE } from "@release-change/commit-analyser";
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 /**
  * Prepares the release notes for a package.
@@ -104,13 +105,43 @@ export const prepareReleaseNotes = (
               body: releaseNotesBody
             };
           }
-          throw new Error("No commits have been retrieved.");
+          throw formatDetailedError({
+            title: "Failed to prepare the release notes",
+            message: "No commits have been retrieved.",
+            details: {
+              output: "commits: undefined"
+            }
+          });
         }
-        throw new Error(`No last release found for ${name || "root"} package.`);
+        throw formatDetailedError({
+          title: "Failed to prepare the release notes",
+          message: `No last release found for ${name || "root"} package.`,
+          details: {
+            output: "packageLastRelease: undefined"
+          }
+        });
       }
-      throw new Error("The last release is not defined.");
+      throw formatDetailedError({
+        title: "Failed to prepare the release notes",
+        message: "The last release is not defined.",
+        details: {
+          output: "lastRelease: undefined"
+        }
+      });
     }
-    throw new Error(`The branch ${branch} is not defined in the configuration.`);
+    throw formatDetailedError({
+      title: "Failed to prepare the release notes",
+      message: `The branch ${branch} is not defined in the configuration.`,
+      details: {
+        output: "branchConfig: undefined"
+      }
+    });
   }
-  throw new Error("The branch is not defined.");
+  throw formatDetailedError({
+    title: "Failed to prepare the release notes",
+    message: "The branch is not defined",
+    details: {
+      output: "branch: undefined"
+    }
+  });
 };

@@ -1,6 +1,7 @@
 import type { Context } from "@release-change/shared";
 
 import { getPrerelease, validate } from "@release-change/semver";
+import { formatDetailedError } from "@release-change/shared";
 
 import { getAllTags } from "./get-all-tags.js";
 
@@ -36,9 +37,21 @@ export const getLatestValidTag = (context: Context, packageName?: string): strin
         const [gitTag] = validGitTagsForBranch;
         return gitTag ?? null;
       }
-      throw new Error(`Failed to get the release type for the branch ${branch}.`);
+      throw formatDetailedError({
+        title: "Failed to get the latest valid tag",
+        message: `No release type found for the branch ${branch}.`,
+        details: {
+          output: `packageName: ${packageName}`
+        }
+      });
     }
-    throw new Error("Failed to get the branch name.");
+    throw formatDetailedError({
+      title: "Failed to get the latest valid tag",
+      message: "No branch name found.",
+      details: {
+        output: `packageName: ${packageName}`
+      }
+    });
   }
   return null;
 };

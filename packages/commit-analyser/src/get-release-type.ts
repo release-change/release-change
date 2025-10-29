@@ -3,7 +3,7 @@ import type { PackageReleaseType } from "./commit-analyser.types.js";
 
 import { inspect } from "node:util";
 
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { setLogger } from "@release-change/logger";
 import { agreeInNumber } from "@release-change/shared";
 
 import { adjustReleaseType } from "./adjust-release-type.js";
@@ -31,81 +31,74 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
     name: packageItem.name,
     releaseType: null
   }));
-  try {
-    if (debug) logger.setDebugScope("commit-analyser:get-release-type");
-    const totalCommits = commits.length;
-    if (totalCommits) {
-      const packagesPaths = packages.map(packageItem => packageItem.pathname);
-      const releaseTypesPerPackage = new Map<string, Set<ReleaseType>>();
-      for (const commit of commits) {
-        const { releaseType, modifiedFiles } = commit;
-        if (modifiedFiles?.length) {
-          for (const modifiedFile of modifiedFiles) {
-            const relatedPackagePath = packagesPaths.find(packagePath =>
-              modifiedFile.startsWith(packagePath)
-            );
-            const relatedPackageName =
-              packages.find(packageItem => packageItem.pathname === relatedPackagePath)?.name ?? "";
-            const releaseTypes =
-              releaseTypesPerPackage.get(relatedPackageName) ?? new Set<ReleaseType>();
-            releaseTypes.add(releaseType);
-            releaseTypesPerPackage.set(relatedPackageName, releaseTypes);
-          }
-        } else {
-          const releaseTypes = releaseTypesPerPackage.get("") ?? new Set<ReleaseType>();
+  if (debug) logger.setDebugScope("commit-analyser:get-release-type");
+  const totalCommits = commits.length;
+  if (totalCommits) {
+    const packagesPaths = packages.map(packageItem => packageItem.pathname);
+    const releaseTypesPerPackage = new Map<string, Set<ReleaseType>>();
+    for (const commit of commits) {
+      const { releaseType, modifiedFiles } = commit;
+      if (modifiedFiles?.length) {
+        for (const modifiedFile of modifiedFiles) {
+          const relatedPackagePath = packagesPaths.find(packagePath =>
+            modifiedFile.startsWith(packagePath)
+          );
+          const relatedPackageName =
+            packages.find(packageItem => packageItem.pathname === relatedPackagePath)?.name ?? "";
+          const releaseTypes =
+            releaseTypesPerPackage.get(relatedPackageName) ?? new Set<ReleaseType>();
           releaseTypes.add(releaseType);
-          releaseTypesPerPackage.set("", releaseTypes);
+          releaseTypesPerPackage.set(relatedPackageName, releaseTypes);
         }
-        if (debug) {
-          logger.logDebug(`Release types by package for commit “${commit.message}”:`);
-          logger.logDebug(inspect(releaseTypesPerPackage));
-        }
+      } else {
+        const releaseTypes = releaseTypesPerPackage.get("") ?? new Set<ReleaseType>();
+        releaseTypes.add(releaseType);
+        releaseTypesPerPackage.set("", releaseTypes);
       }
-      const adjustedReleaseTypesPerPackage = new Map(
-        adjustReleaseType(context, releaseTypesPerPackage)
-      );
       if (debug) {
-        logger.logDebug("Overall adjusted release types by package:");
-        logger.logDebug(inspect(adjustedReleaseTypesPerPackage));
+        logger.logDebug(`Release types by package for commit “${commit.message}”:`);
+        logger.logDebug(inspect(releaseTypesPerPackage));
       }
-      const commitWord = agreeInNumber(totalCommits, ["commit", "commits"]);
-      logger.logSuccess(`Analysis of ${totalCommits} ${commitWord} complete.`);
-      const packageReleaseTypes: PackageReleaseType[] = [];
-      for (const [name, releaseTypes] of adjustedReleaseTypesPerPackage) {
-        const packageName = `${name ? name : "root"} package`;
-        let releaseType: ReleaseType;
-        switch (true) {
-          case releaseTypes.has("major"): {
-            releaseType = "major";
-            logger.logSuccess(`For ${packageName}: major release.`);
-            break;
-          }
-          case releaseTypes.has("minor"): {
-            releaseType = "minor";
-            logger.logSuccess(`For ${packageName}: minor release.`);
-            break;
-          }
-          case releaseTypes.has("patch"): {
-            releaseType = "patch";
-            logger.logSuccess(`For ${packageName}: patch release.`);
-            break;
-          }
-          default: {
-            releaseType = null;
-            logger.logSuccess(`For ${packageName}: no release.`);
-            break;
-          }
-        }
-        packageReleaseTypes.push({ name, releaseType });
-      }
-      return packageReleaseTypes;
     }
-    logger.logWarn("No commits to analyse: no release.");
-    return packageReleaseTypes;
-  } catch (error) {
-    logger.logError(checkErrorType(error));
-    context.errors.push(error);
-    process.exitCode = 1;
+    const adjustedReleaseTypesPerPackage = new Map(
+      adjustReleaseType(context, releaseTypesPerPackage)
+    );
+    if (debug) {
+      logger.logDebug("Overall adjusted release types by package:");
+      logger.logDebug(inspect(adjustedReleaseTypesPerPackage));
+    }
+    const commitWord = agreeInNumber(totalCommits, ["commit", "commits"]);
+    logger.logSuccess(`Analysis of ${totalCommits} ${commitWord} complete.`);
+    const packageReleaseTypes: PackageReleaseType[] = [];
+    for (const [name, releaseTypes] of adjustedReleaseTypesPerPackage) {
+      const packageName = `${name ? name : "root"} package`;
+      let releaseType: ReleaseType;
+      switch (true) {
+        case releaseTypes.has("major"): {
+          releaseType = "major";
+          logger.logSuccess(`For ${packageName}: major release.`);
+          break;
+        }
+        case releaseTypes.has("minor"): {
+          releaseType = "minor";
+          logger.logSuccess(`For ${packageName}: minor release.`);
+          break;
+        }
+        case releaseTypes.has("patch"): {
+          releaseType = "patch";
+          logger.logSuccess(`For ${packageName}: patch release.`);
+          break;
+        }
+        default: {
+          releaseType = null;
+          logger.logSuccess(`For ${packageName}: no release.`);
+          break;
+        }
+      }
+      packageReleaseTypes.push({ name, releaseType });
+    }
     return packageReleaseTypes;
   }
+  logger.logWarn("No commits to analyse: no release.");
+  return packageReleaseTypes;
 };

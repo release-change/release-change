@@ -20,7 +20,7 @@ import {
   postSuccessComment,
   tagPullRequestAndIssue
 } from "@release-change/github";
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
 import { WORKSPACE_NAME, WORKSPACE_VERSION } from "@release-change/shared";
 
@@ -86,7 +86,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
           }
         } catch (error) {
           logger.logError(checkErrorType(error));
-          context.errors.push(error);
+          addErrorToContext(error, context);
           if (references) {
             for (const reference of references) {
               await postFailComment(reference, context);

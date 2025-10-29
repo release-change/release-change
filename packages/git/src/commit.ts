@@ -1,6 +1,6 @@
 import type { CommandResult } from "@release-change/shared";
 
-import { runCommand } from "@release-change/shared";
+import { formatDetailedError, runCommand } from "@release-change/shared";
 
 /**
  * Commits the changes.
@@ -11,7 +11,13 @@ import { runCommand } from "@release-change/shared";
 export const commit = async (message: string, cwd: string): Promise<CommandResult> => {
   if (!message) {
     process.exitCode = 1;
-    throw new Error("The commit message cannot be empty.");
+    throw formatDetailedError({
+      title: "Failed to run the `git` command",
+      message: "The commit message cannot be empty.",
+      details: {
+        output: "message: "
+      }
+    });
   }
   return await runCommand("git", ["commit", "-m", message], { cwd });
 };

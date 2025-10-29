@@ -3,6 +3,7 @@ import type { Commit, Context } from "@release-change/shared";
 import { inspect } from "node:util";
 
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 import { setReleaseType } from "./set-release-type.js";
 
@@ -68,9 +69,13 @@ export const parseCommit = (commit: string, context: Context): Commit => {
           );
         if (commitModifiedFiles.length) parsedCommit.modifiedFiles = commitModifiedFiles;
         else if (!commitHeader?.match(/^merge:/im)) {
-          throw new Error(
-            "Failed to parse commit: no modified files found while this repository is a monorepo."
-          );
+          throw formatDetailedError({
+            title: "Failed to parse commit",
+            message: "No modified files found while this repository is a monorepo.",
+            details: {
+              output: "commitModifiedFiles.length: 0"
+            }
+          });
         }
       }
       if (debug) {
@@ -79,7 +84,19 @@ export const parseCommit = (commit: string, context: Context): Commit => {
       }
       return parsedCommit;
     }
-    throw new Error("Failed to parse commit: no message found.");
+    throw formatDetailedError({
+      title: "Failed to parse commit",
+      message: "No message found.",
+      details: {
+        output: "commitMessage: undefined"
+      }
+    });
   }
-  throw new Error("Failed to parse commit: no header found.");
+  throw formatDetailedError({
+    title: "Failed to parse commit",
+    message: "No header found.",
+    details: {
+      output: "commitHeader: undefined"
+    }
+  });
 };

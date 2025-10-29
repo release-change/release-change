@@ -1,5 +1,7 @@
 import type { Package } from "@release-change/shared/";
 
+import { formatDetailedError } from "@release-change/shared";
+
 /**
  * Checks whether the current directory is a monorepo, based on the number of packages.
  * @param packages - The list of packages.
@@ -8,5 +10,11 @@ import type { Package } from "@release-change/shared/";
 export const isMonorepo = (packages: Package[]) => {
   const { length } = packages;
   if (length) return length > 1;
-  throw new Error("There must be at least one package.");
+  throw formatDetailedError({
+    title: "Failed to check whether the current directory is a monorepo",
+    message: "There must be at least one package.",
+    details: {
+      output: "packages.length: 0"
+    }
+  });
 };

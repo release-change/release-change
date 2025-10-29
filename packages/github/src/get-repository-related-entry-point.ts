@@ -1,4 +1,4 @@
-import { parsePathname } from "@release-change/shared";
+import { formatDetailedError, parsePathname } from "@release-change/shared";
 
 /**
  * Gets the repository-related entry point for REST API calls.
@@ -10,7 +10,13 @@ export const getRepositoryRelatedEntryPoint = (repositoryUrl: string): string =>
   const pathnameGroups = parsePathname(pathname);
   if (!pathnameGroups) {
     process.exitCode = 1;
-    throw new Error("Malformed repository URL: no owner or repository found.");
+    throw formatDetailedError({
+      title: "Failed to get the repository-related entry point",
+      message: "Malformed repository URL: no owner or repository found",
+      details: {
+        output: `repositoryUrl: ${repositoryUrl}`
+      }
+    });
   }
   const { owner, repository } = pathnameGroups;
   return `https://api.github.com/repos/${owner}/${repository}`;

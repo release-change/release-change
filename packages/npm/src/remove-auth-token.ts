@@ -3,6 +3,8 @@ import type { AuthToken } from "@release-change/shared";
 import fs from "node:fs";
 import path from "node:path";
 
+import { formatDetailedError } from "@release-change/shared";
+
 import { getNpmrcFile } from "./get-npmrc-file.js";
 
 import { NPM_AUTH_TOKEN_URL } from "./constants.js";
@@ -28,7 +30,13 @@ export const removeAuthToken = (cwd: string, authToken: AuthToken): void => {
       );
     } else {
       process.exitCode = 1;
-      throw new Error("Failed to find the `.npmrc` file.");
+      throw formatDetailedError({
+        title: "Failed to remove auth token",
+        message: "Could not find the `.npmrc` file.",
+        details: {
+          output: `getNpmrcFile(${cwd}): null`
+        }
+      });
     }
   } else fs.rmSync(pathToFile);
 };

@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 /**
  * Updates the package manifest file with the new version of the updated internal dependencies.
@@ -64,6 +65,22 @@ export const updatePackageDependenciesVersions = (
       }
       // TODO: uncomment to write updated package manifest content to file
       // fs.writeFileSync(packagePath, JSON.stringify(packageManifest, null, 2));
-    } else throw new Error(`Package ${packagePath} not found for ${packageName}.`);
-  } else throw new Error("Dependency update method not found.");
+    } else {
+      throw formatDetailedError({
+        title: "Failed to update the package dependencies versions",
+        message: `Package ${packagePath} not found for ${packageName}.`,
+        details: {
+          output: `fs.existsSync(${packagePath}): false`
+        }
+      });
+    }
+  } else {
+    throw formatDetailedError({
+      title: "Failed to update the package dependencies versions",
+      message: "The dependency update method is not found.",
+      details: {
+        output: `dependencyUpdateMethod: ${dependencyUpdateMethod}`
+      }
+    });
+  }
 };

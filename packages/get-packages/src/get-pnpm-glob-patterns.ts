@@ -1,5 +1,7 @@
 import type { GlobPatterns } from "./get-packages.types.js";
 
+import { formatDetailedError } from "@release-change/shared";
+
 /**
  * Gets glob patterns from the root `pnpm-workspace.yaml` file.
  * @param content - The content of root `pnpm-workspace.yaml`.
@@ -23,7 +25,11 @@ export const getPnpmGlobPatterns = (content: string): GlobPatterns => {
     }
   }
   if (patterns.include.length) return patterns;
-  throw new Error(
-    "Failed to get the glob patterns: the root `pnpm-workspace.yaml` file must have a `packages` field."
-  );
+  throw formatDetailedError({
+    title: "Failed to get the glob patterns",
+    message: "The root `pnpm-workspace.yaml` file must have a `packages` field.",
+    details: {
+      output: "patterns.include.length: 0"
+    }
+  });
 };

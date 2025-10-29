@@ -13,7 +13,12 @@ import {
   removeTag,
   removeTagOnRemoteRepository
 } from "@release-change/git";
-import { checkErrorType, setLogger } from "@release-change/logger";
+import {
+  addErrorToContext,
+  checkErrorType,
+  isDetailedError,
+  setLogger
+} from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
 import {
   createReleaseNotes,
@@ -89,17 +94,27 @@ export const publish = async (context: Context): Promise<void> => {
   } catch (error) {
     logger.logError("Failed to publish the release.");
     logger.logError(checkErrorType(error));
-    context.errors.push(error);
-    if (
-      error instanceof Error &&
-      (error.cause === `git push --follow-tags ${context.config.remoteName} ${context.branch}` ||
-        (typeof error.cause === "string" &&
-          (error.cause.startsWith("git add") || error.cause.startsWith("git commit"))))
-    ) {
-      cancelCommitsSinceRef(commitRef, cwd, debug);
-      for (const newGitTag of newGitTags) {
-        removeTag(newGitTag, cwd, debug);
-        await removeTagOnRemoteRepository(newGitTag, context);
+    addErrorToContext(error, context);
+    if (error instanceof Error) {
+      const { cause } = error;
+      if (cause && isDetailedError(cause)) {
+        const {
+          details: { command }
+        } = cause;
+        const isCommandGitPush =
+          command === `git push --follow-tags ${context.config.remoteName} ${context.branch}`;
+        if (
+          command &&
+          (isCommandGitPush || command.startsWith("git add") || command.startsWith("git commit"))
+        ) {
+          cancelCommitsSinceRef(commitRef, cwd, debug);
+          if (isCommandGitPush) {
+            for (const newGitTag of newGitTags) {
+              removeTag(newGitTag, cwd, debug);
+              await removeTagOnRemoteRepository(newGitTag, context);
+            }
+          }
+        }
       }
     }
     process.exitCode = process.exitCode || 1;

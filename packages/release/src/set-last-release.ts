@@ -5,7 +5,7 @@ import { inspect } from "node:util";
 
 import { getPackageVersion } from "@release-change/get-packages";
 import { getLatestValidTag } from "@release-change/git";
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 import { validate } from "@release-change/semver";
 
 import { getVersionFromTag } from "./get-version-from-tag.js";
@@ -63,7 +63,7 @@ export const setLastRelease = (context: Context): void => {
     }
   } catch (error) {
     logger.logError(checkErrorType(error));
-    context.errors.push(error);
+    addErrorToContext(error, context);
     process.exitCode = 1;
   }
 };

@@ -9,6 +9,7 @@ import { inspect } from "node:util";
 
 import { getReleaseToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 /**
  * Gets the pull requests associated with a given commit.
@@ -67,15 +68,33 @@ export const getAssociatedPullRequests = async (
   }
   if (status === 404) {
     process.exitCode = 404;
-    throw new Error(`Failed to fetch URI ${uri}.`);
+    throw formatDetailedError({
+      title: "Failed to get the associated pull requests",
+      message: `Failed to fetch URI ${uri}.`,
+      details: {
+        output: `status: ${status}`
+      }
+    });
   }
   const responseError: GitHubResponseError = await pullRequestResponseData;
   const { message, documentation_url: documentationUrl } = responseError;
   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
   if (status === 403 || status === 409 || status === 429) {
     process.exitCode = status;
-    throw new Error(`${message}${documentationReference}`);
+    throw formatDetailedError({
+      title: "Failed to get the associated pull requests",
+      message: `${message}${documentationReference}`,
+      details: {
+        output: `status: ${status}`
+      }
+    });
   }
   process.exitCode = status;
-  throw new Error(message);
+  throw formatDetailedError({
+    title: "Failed to get the associated pull requests",
+    message,
+    details: {
+      output: `status: ${status}`
+    }
+  });
 };
