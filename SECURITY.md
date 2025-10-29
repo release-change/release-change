@@ -6,7 +6,7 @@ The latest version of release-change is currently supported with security update
 
 ### Supported Node.js versions
 
-Node.js 20.18.3+ and 22.12.0+ are supported. **Odd major versions are not supported.**
+Node.js 20.18.3+, 22.12.0+ and 24.0.0+ are supported. **Odd major versions are not supported.**
 
 ### Supported package manager versions
 
