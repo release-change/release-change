@@ -28,12 +28,31 @@ const mockedBranchConfigs: Record<string, BranchConfig> = {
 };
 
 it("should throw an error if the release type is set to `null`", () => {
-  expect(() => incrementVersion("0.0.0", null, {})).toThrowError();
+  expect(() => incrementVersion("0.0.0", null, {})).toThrowError(
+    new Error("Failed to increment version from 0.0.0: No release type retrieved.", {
+      cause: {
+        title: "Failed to increment version from 0.0.0",
+        message: "No release type retrieved.",
+        details: {
+          output: "releaseType: null"
+        }
+      }
+    })
+  );
 });
 it("should throw an error if the current version is invalid", () => {
-  expect(() => incrementVersion("0", "patch", {})).toThrowError();
+  expect(() => incrementVersion("0", "patch", {})).toThrowError(
+    new Error("Failed to increment version from 0: No next version given.", {
+      cause: {
+        title: "Failed to increment version from 0",
+        message: "No next version given.",
+        details: {
+          output: "nextVersion: null"
+        }
+      }
+    })
+  );
 });
-
 describe.each(mockedReleases)(
   "increment version from $currentVersion",
   ({ currentVersion, branches }) => {

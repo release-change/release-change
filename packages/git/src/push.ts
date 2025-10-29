@@ -5,7 +5,7 @@ import type { PushOptions } from "./git.types.js";
 import { inspect } from "node:util";
 
 import { setLogger } from "@release-change/logger";
-import { runCommand } from "@release-change/shared";
+import { formatDetailedError, runCommand } from "@release-change/shared";
 
 /**
  * Pushes the current branch to the remote repository.
@@ -19,7 +19,13 @@ export const push = async (context: Context, pushOptions: PushOptions = {}): Pro
   logger.setScope("git");
   if (!branch) {
     process.exitCode = 1;
-    throw new Error("A branch name must be provided.");
+    throw formatDetailedError({
+      title: "Failed to run the `git` command",
+      message: "A branch name must be provided.",
+      details: {
+        output: "branch: undefined"
+      }
+    });
   }
   const { includeTags } = pushOptions;
   const args = ["push", includeTags && "--follow-tags", remoteName, branch].filter(
@@ -30,8 +36,13 @@ export const push = async (context: Context, pushOptions: PushOptions = {}): Pro
   // const { status, stdout, stderr } = gitCommandResult;
   // if (status) {
   //   process.exitCode = status;
-  //   throw new Error(stderr || stdout || `Command failed with status ${status}.`, {
-  //     cause: `git ${args.join(" ")}`
+  //   throw formatDetailedError({
+  //     title: "Failed to run the `git` command",
+  //     message: `The command failed with status ${status}.`,
+  //     details: {
+  //       output: stderr || stdout || `Command failed with status ${status}.`,
+  //       command: `git ${args.join(" ")}`
+  //     }
   //   });
   // }
   if (debug) {

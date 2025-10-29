@@ -1,7 +1,8 @@
 import fs from "node:fs";
 
 import { setLogger } from "@release-change/logger";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+import { formatDetailedError } from "@release-change/shared";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { updatePackageVersion } from "../src/update-package-version.js";
 import { mockedContext } from "./fixtures/mocked-context-update.js";
@@ -27,6 +28,10 @@ const mockedPrivatePackageManifest = {
 
 beforeEach(() => {
   vi.mock("node:fs");
+  vi.mock("@release-change/shared", () => ({
+    formatDetailedError: vi.fn(),
+    WORKSPACE_NAME: "release-change"
+  }));
   vi.mock("@release-change/logger", () => ({
     setLogger: vi.fn()
   }));
@@ -42,10 +47,22 @@ describe.each(mockedNextReleases)(
   "for $packageName",
   ({ packageName, packageManifestPath, nextRelease }) => {
     it("should throw an error if the package manifest is not found", () => {
+      const expectedError = new Error(
+        `Failed to update the package version: Package ${packageManifestPath} not found for ${packageName}.`,
+        {
+          cause: {
+            title: "Failed to update the package version",
+            message: `Package ${packageManifestPath} not found for ${packageName}.`,
+            details: {
+              output: `fs.existsSync(${packageManifestPath}): false`
+            }
+          }
+        }
+      );
       vi.spyOn(fs, "existsSync").mockReturnValue(false);
-      assert.throws(
-        () => updatePackageVersion(nextRelease, mockedContextWithNextRelease),
-        `Package ${packageManifestPath} not found for ${packageName}.`
+      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+      expect(() => updatePackageVersion(nextRelease, mockedContextWithNextRelease)).toThrowError(
+        expectedError
       );
     });
     it.each([mockedPackageManifest, mockedPrivatePackageManifest])(

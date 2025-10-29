@@ -19,12 +19,24 @@ afterEach(() => {
 });
 
 it("should throw an error if the Git command fails", () => {
-  const mockedError = new Error("Error");
+  const mockedError = new Error(
+    "Failed to run the `git` command: The command failed with status 1.",
+    {
+      cause: {
+        title: "Failed to run the `git` command",
+        message: "The command failed with status 1.",
+        details: {
+          output: "Error",
+          command: "git --version"
+        }
+      }
+    }
+  );
   vi.mocked(runCommandSync).mockImplementation(() => {
     throw mockedError;
   });
   expect(getBranchName(mockedContext, mockedLogger)).toBe(undefined);
-  assert.deepNestedInclude(mockedContext.errors, mockedError);
+  assert.deepNestedInclude(mockedContext.errors, mockedError.cause);
 });
 it('should return the value of `HEAD` ref when this is not `"HEAD"`', () => {
   vi.mocked(runCommandSync).mockImplementation((_gitCommand, gitCommandArgs) =>

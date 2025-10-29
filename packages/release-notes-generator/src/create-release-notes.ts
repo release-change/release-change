@@ -1,6 +1,5 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the API is used> */
 /** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the API is used> */
-
 import type { GitHubResponseError } from "@release-change/github";
 import type { Context, ReleaseInfoGithub } from "@release-change/shared";
 import type { ReleaseNotes } from "./release-notes-generator.types.js";
@@ -10,6 +9,7 @@ import { inspect } from "node:util";
 import { getReleaseToken } from "@release-change/ci";
 import { getRepositoryRelatedEntryPoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 import { formatReleaseNotesBody } from "./format-release-notes-body.js";
 
@@ -82,9 +82,21 @@ export const createReleaseNotes = async (
   //   logger.logError(`Failed to create release notes for Git tag ${tagName}.`);
   //   if (status === 404) {
   //     process.exitCode = 404;
-  //     throw new Error(`Failed to fetch URI ${uri}.`);
+  //     throw formatDetailedError({
+  //       title: "Failed to create the release notes",
+  //       message: `Failed to fetch URI ${uri}.`,
+  //       details: {
+  //         output: `status: ${status}`
+  //       }
+  //     });
   //   }
   //   process.exitCode = status;
-  //   throw new Error(`${message}${documentationReference}`);
+  //   throw formatDetailedError({
+  //     title: "Failed to create the release notes.",
+  //     message: `${message}${documentationReference}`,
+  //     details: {
+  //       output: `status: ${status}`
+  //     }
+  //   });
   // }
 };

@@ -8,6 +8,7 @@ import { inspect } from "node:util";
 
 import { getPackageManager } from "@release-change/get-packages";
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 /**
  * Prepares the package publishing to the NPM registry if the package is not private.
@@ -65,9 +66,14 @@ export const preparePublishing = async (
           return packagePublishing;
         }
         process.exitCode = 1;
-        throw new Error(
-          "The package manager is not found or is not one of those supported (npm or pnpm)."
-        );
+        throw formatDetailedError({
+          title: "Failed to prepare publishing",
+          message:
+            "The package manager is not found or is not one of those supported (npm or pnpm).",
+          details: {
+            output: `packageManager: ${packageManager}`
+          }
+        });
       }
       logger.logWarn(
         `The ${packageName} package is private; therefore, the release will not be published.`
@@ -80,5 +86,11 @@ export const preparePublishing = async (
     return null;
   }
   process.exitCode = 1;
-  throw new Error("Could not find the package.");
+  throw formatDetailedError({
+    title: "Failed to prepare publishing",
+    message: "Could not find the package.",
+    details: {
+      output: `fs.existsSync(${packageManifestPath}): false`
+    }
+  });
 };

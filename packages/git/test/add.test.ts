@@ -1,4 +1,4 @@
-import { runCommand } from "@release-change/shared";
+import { formatDetailedError, runCommand } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { add } from "../src/add.js";
@@ -12,6 +12,7 @@ const mockedFilesArgs = [
 
 beforeEach(() => {
   vi.mock("@release-change/shared", () => ({
+    formatDetailedError: vi.fn(),
     runCommand: vi.fn()
   }));
 });
@@ -20,7 +21,17 @@ afterEach(() => {
 });
 
 it("should throw an error if no files are provided", async () => {
-  await expect(add([], mockedCwd)).rejects.toThrowError("No files to add.");
+  const expectedError = new Error("Failed to run the `git` command: No files to add.", {
+    cause: {
+      title: "Failed to run the `git` command",
+      message: "No files to add.",
+      details: {
+        output: "files.length: 0"
+      }
+    }
+  });
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(add([], mockedCwd)).rejects.toThrowError(expectedError);
 });
 it.each(mockedFilesArgs)("should run the command with %o", async mockedFilesArg => {
   const mockedCommand = vi

@@ -2,6 +2,7 @@
 /** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the API is used> */
 import { getRepositoryRelatedEntryPoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { formatReleaseNotesBody } from "../src/format-release-notes-body.js";
@@ -51,6 +52,7 @@ const mockedEnv = {
 global.fetch = mockedFetch;
 
 beforeEach(() => {
+  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
   vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
   vi.mock("@release-change/github", () => ({ getRepositoryRelatedEntryPoint: vi.fn() }));
   vi.mock("../src/format-release-notes-body.js", () => ({ formatReleaseNotesBody: vi.fn() }));
@@ -65,7 +67,20 @@ afterEach(() => {
 
 // TODO: uncomment when the API is used
 // it("should throw an error when the request fails", async () => {
-//   vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
+//   const expectedError = new Error(
+//     `Failed to create the release notes: Failed to fetch URI ${mockedUri}.`,
+//     {
+//       cause: {
+//         title: "Failed to create the release notes",
+//         message: `Failed to fetch URI ${mockedUri}.`,
+//         details: {
+//           output: "status: 404"
+//         }
+//       }
+//     }
+//   );
+//   vi.mocked(mockedFetch).mockRejectedValue(expectedError);
+//   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
 //   await expect(
 //     createReleaseNotes(
 //       { tagName: "v1.0.0", target: "main", isPrerelease: true, body: {} },
@@ -74,13 +89,14 @@ afterEach(() => {
 //         env: mockedEnv
 //       }
 //     )
-//   ).rejects.toThrow("Failed to request the URI.");
+//   ).rejects.toThrowError(expectedError);
 // });
 // it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
 //   vi.mocked(mockedFetch).mockResolvedValue({
 //     ...response,
 //     json: () => Promise.resolve({ message: response.statusText })
 //   });
+//   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
 //   await expect(
 //     createReleaseNotes(
 //       { tagName: "v1.0.0", target: "main", isPrerelease: true, body: {} },
@@ -89,7 +105,7 @@ afterEach(() => {
 //         env: mockedEnv
 //       }
 //     )
-//   ).rejects.toThrow(expectedError);
+//   ).rejects.toThrowError(expectedError);
 //   expect(process.exitCode).toBe(response.status);
 // });
 describe.each(mockedReleaseNotes)(

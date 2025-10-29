@@ -9,6 +9,7 @@ export type {
   Context,
   ContextBase,
   DependencyUpdateMethod,
+  DetailedError,
   LastRelease,
   NextRelease,
   Package,
@@ -23,6 +24,7 @@ export type {
 } from "./shared.types.js";
 
 export { agreeInNumber } from "./agree-in-number.js";
+export { formatDetailedError } from "./format-detailed-error.js";
 export { parsePathname } from "./parse-pathname.js";
 export { runCommand } from "./run-command.js";
 export { runCommandSync } from "./run-command-sync.js";

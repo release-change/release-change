@@ -1,6 +1,6 @@
 import type { Context } from "@release-change/shared";
 
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 
 import { checkAuthorisation } from "./check-authorisation.js";
 import { isBranchUpToDate } from "./is-branch-up-to-date.js";
@@ -29,7 +29,7 @@ export const checkPushPermissions = async (
   } catch (error) {
     logger.logError("Not allowed to push to the Git repository.");
     logger.logError(checkErrorType(error));
-    context.errors.push(error);
+    addErrorToContext(error, context);
     process.exit(process.exitCode ?? 1);
   }
 };

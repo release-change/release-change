@@ -7,7 +7,7 @@ import path from "node:path";
 import { inspect } from "node:util";
 
 import { setLogger } from "@release-change/logger";
-import { runCommand, runCommandSync } from "@release-change/shared";
+import { formatDetailedError, runCommand, runCommandSync } from "@release-change/shared";
 
 /**
  * Updates the lock file.
@@ -55,8 +55,12 @@ export const updateLockFile = async (
     // runCommandSync("git", args);
     if (debug) logger.logDebug(`Command run: git ${args.join(" ")}`);
     process.exitCode = 1;
-    throw new Error(
-      "The package manager is not found or is not one of those supported (npm or pnpm)."
-    );
+    throw formatDetailedError({
+      title: "Failed to update the lock file",
+      message: "The package manager is not found or is not one of those supported (npm or pnpm).",
+      details: {
+        output: `packageManager: ${packageManager}`
+      }
+    });
   }
 };

@@ -5,6 +5,7 @@ import { inspect } from "node:util";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 
@@ -59,6 +60,12 @@ export const closeIssue = async (number: number, context: Context): Promise<void
     const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     logger.logError(`Failed to close issue #${number}.`);
     process.exitCode = status;
-    throw new Error(`${message}${documentationReference}`);
+    throw formatDetailedError({
+      title: "Failed to close the issue",
+      message: `${message}${documentationReference}`,
+      details: {
+        output: `status: ${status}`
+      }
+    });
   }
 };

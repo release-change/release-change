@@ -5,7 +5,7 @@ import path from "node:path";
 import { inspect } from "node:util";
 
 import { setLogger } from "@release-change/logger";
-import { runCommand } from "@release-change/shared";
+import { formatDetailedError, runCommand } from "@release-change/shared";
 
 import { getAuthToken } from "./get-auth-token.js";
 import { removeAuthToken } from "./remove-auth-token.js";
@@ -50,7 +50,14 @@ export const publishToRegistry = async (
       logger.logError(
         `Failed to publish release ${version} of ${packageName} package to the NPM registry.`
       );
-      throw new Error(stderr || stdout || `Command failed with exit code ${status}.`);
+      throw formatDetailedError({
+        title: `Failed to run the \`${packageManager}\` command`,
+        message: `The command failed with exit code ${status}.`,
+        details: {
+          output: stdout || stderr || `Command failed with exit code ${status}.`,
+          command: `${packageManager} ${args.join(" ")}`
+        }
+      });
     }
     const channel = `${npmTag ? npmTag : "default"} channel`;
     logger.logSuccess(
@@ -69,6 +76,12 @@ export const publishToRegistry = async (
     }
   } else {
     process.exitCode = 1;
-    throw new Error("Failed to load the auth token context.");
+    throw formatDetailedError({
+      title: "Failed to publish to the NPM registry",
+      message: "The auth token context could not be loaded.",
+      details: {
+        output: "authToken: undefined"
+      }
+    });
   }
 };

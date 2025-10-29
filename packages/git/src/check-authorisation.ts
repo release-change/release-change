@@ -3,7 +3,7 @@ import type { Context } from "@release-change/shared";
 import { inspect } from "node:util";
 
 import { setLogger } from "@release-change/logger";
-import { runCommand } from "@release-change/shared";
+import { formatDetailedError, runCommand } from "@release-change/shared";
 
 /**
  * Checks the authorisation to push commits to the remote repository.
@@ -21,11 +21,8 @@ export const checkAuthorisation = async (
     logger.logInfo("Skipping authorisation checking.");
     return;
   }
-  const gitCommandResult = await runCommand(
-    "git",
-    ["push", "--dry-run", "--no-verify", repositoryUrl, branch],
-    { cwd }
-  );
+  const args = ["push", "--dry-run", "--no-verify", repositoryUrl, branch];
+  const gitCommandResult = await runCommand("git", args, { cwd });
   if (config.debug) {
     logger.setDebugScope("git:check-authorisation");
     logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
@@ -33,6 +30,13 @@ export const checkAuthorisation = async (
   const { status, stdout, stderr } = gitCommandResult;
   if (status) {
     process.exitCode = status;
-    throw new Error(stderr || stdout || `Command failed with status ${status}.`);
+    throw formatDetailedError({
+      title: "Failed to run the `git` command",
+      message: `The command failed with status ${status}.`,
+      details: {
+        output: stderr || stdout || `Command failed with status ${status}.`,
+        command: `git ${args.join(" ")}`
+      }
+    });
   }
 };

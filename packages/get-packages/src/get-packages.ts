@@ -3,7 +3,8 @@ import type { ContextBase, Package } from "@release-change/shared";
 import path from "node:path";
 import { inspect } from "node:util";
 
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 import { getNpmGlobPatterns } from "./get-npm-glob-patterns.js";
 import { getPackageManager } from "./get-package-manager.js";
@@ -41,7 +42,7 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
           }
         } catch (error) {
           logger.logError(checkErrorType(error));
-          context.errors.push(error);
+          addErrorToContext(error, context);
           process.exit(process.exitCode);
         }
       }
@@ -60,9 +61,13 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
       return packages;
     } catch (error) {
       logger.logError(checkErrorType(error));
-      context.errors.push(error);
+      addErrorToContext(error, context);
       process.exit(process.exitCode);
     }
   }
-  throw new Error("Failed to get the package manager: it must be either `npm` or `pnpm`.");
+  throw formatDetailedError({
+    title: "Failed to get the package manager",
+    message: "The package manager must be either `npm` or `pnpm`.",
+    details: { output: String(packageManager) }
+  });
 };

@@ -3,7 +3,7 @@ import type { Context, PackageNextRelease } from "@release-change/shared";
 
 import { inspect } from "node:util";
 
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 
 import { incrementVersion } from "./increment-version.js";
 
@@ -74,7 +74,7 @@ export const setNextRelease = (
     }
   } catch (error) {
     logger.logError(checkErrorType(error));
-    context.errors.push(error);
+    addErrorToContext(error, context);
     process.exitCode = 1;
   }
 };

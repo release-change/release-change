@@ -1,5 +1,5 @@
-import { setLogger } from "@release-change/logger";
-import { runCommandSync } from "@release-change/shared";
+import { addErrorToContext, setLogger } from "@release-change/logger";
+import { type DetailedError, runCommandSync } from "@release-change/shared";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getCommitsSinceRef } from "../src/index.js";
@@ -37,6 +37,7 @@ const commitsSets = [
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({
+    addErrorToContext: vi.fn(),
     setLogger: vi.fn(),
     checkErrorType: vi.fn()
   }));
@@ -46,6 +47,20 @@ beforeEach(() => {
     WORKSPACE_NAME: "release-change",
     WORKSPACE_VERSION: "0.0.0"
   }));
+  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+    if (error instanceof Error) {
+      const { cause } = error;
+      if (
+        cause &&
+        typeof cause === "object" &&
+        "title" in cause &&
+        "message" in cause &&
+        "details" in cause
+      ) {
+        context.errors.push(cause as DetailedError);
+      }
+    }
+  });
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
   vi.mocked(runCommandSync).mockReturnValue({
     status: 0,
@@ -61,14 +76,23 @@ it("should log an error message when an error is caught", () => {
   const mockedProcessExit = vi.spyOn(process, "exit").mockImplementation(() => {
     return undefined as never;
   });
-  const expectedError = new Error("Error");
+  const expectedError = new Error("Error", {
+    cause: {
+      title: "Failed to run the `git` command",
+      message: "The command failed with status 128.",
+      details: {
+        output: "Error",
+        command: "git log"
+      }
+    }
+  });
   vi.mocked(runCommandSync).mockImplementation(() => {
     throw expectedError;
   });
   getCommitsSinceRef(mockedContext);
   expect(mockedLogger.logError).toHaveBeenCalled();
   expect(mockedProcessExit).toHaveBeenCalled();
-  assert.deepNestedInclude(mockedContext.errors, expectedError);
+  assert.deepNestedInclude(mockedContext.errors, expectedError.cause);
   mockedProcessExit.mockRestore();
 });
 describe.each(commitsSets)(

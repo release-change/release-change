@@ -7,6 +7,7 @@ import { inspect } from "node:util";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { checkErrorType, setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 
@@ -28,9 +29,18 @@ export const postFailComment = async (reference: Reference, context: Context): P
     const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
     const { number, isPullRequest } = reference;
     const uri = `${repositoryEntryPoint}/issues/${number}/comments`;
-    const errorsList = errors.length
-      ? errors.map(error => `- ${checkErrorType(error)}`).join("\n")
-      : "No errors reported.";
+    const errorsList: string[] = [];
+    for (const error of errors) {
+      const {
+        title,
+        message,
+        details: { output, command }
+      } = error;
+      let errorBody = `##### ${title}\n\n${message || "This error does not have any additional information."}`;
+      if (command) errorBody += `\n\nConcerned command: \`${command}\``;
+      if (output) errorBody += `\n\n\`\`\`\n${output}\n\`\`\``;
+      errorsList.push(errorBody);
+    }
     const commentBody = `#### The release failed
 
 The release from the \`${branch}\` branch failed.
@@ -39,7 +49,7 @@ Below are the errors thrown when running the CLI.
 
 ---
 
-${errorsList}
+${errorsList.length ? errorsList.join("\n\n---\n\n") : "No errors reported."}
 
 ---`;
     const requestBody = {
@@ -82,10 +92,22 @@ ${errorsList}
     //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     //   logger.logError(`Failed to post the fail comment on ${issueType} #${number}.`);
     //   process.exitCode = status;
-    //   throw new Error(`${message}${documentationReference}`);
+    //   throw formatDetailedError({
+    //     title: "Failed to post the fail comment",
+    //     message: `${message}${documentationReference}`,
+    //     details: {
+    //       output: `status: ${status}`
+    //     }
+    //   });
     // }
   } else {
     process.exitCode = 1;
-    throw new Error("The target branch is not defined.");
+    throw formatDetailedError({
+      title: "Failed to post the fail comment",
+      message: "The target branch is not defined.",
+      details: {
+        output: "branch: undefined"
+      }
+    });
   }
 };

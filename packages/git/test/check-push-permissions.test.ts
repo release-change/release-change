@@ -1,4 +1,6 @@
-import { setLogger } from "@release-change/logger";
+import type { DetailedError } from "@release-change/shared";
+
+import { addErrorToContext, setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { checkAuthorisation } from "../src/check-authorisation.js";
@@ -10,6 +12,7 @@ import { mockedRepositoryUrl } from "./fixtures/mocked-repository-url.js";
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({
+    addErrorToContext: vi.fn(),
     checkErrorType: vi.fn(),
     setLogger: vi.fn()
   }));
@@ -17,6 +20,20 @@ beforeEach(() => {
     checkAuthorisation: vi.fn()
   }));
   vi.mock("../src/is-branch-up-to-date.js", () => ({ isBranchUpToDate: vi.fn() }));
+  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+    if (error instanceof Error) {
+      const { cause } = error;
+      if (
+        cause &&
+        typeof cause === "object" &&
+        "title" in cause &&
+        "message" in cause &&
+        "details" in cause
+      ) {
+        context.errors.push(cause as DetailedError);
+      }
+    }
+  });
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
 });
 afterEach(() => {
@@ -43,15 +60,21 @@ it("should not log a success message when the branch context is not one of those
   expect(mockedLogger.logSuccess).not.toHaveBeenCalled();
 });
 it("should log an error message when an error is thrown", async () => {
-  const mockedError = new Error("Error");
+  const mockedError = new Error("Error: Error message.", {
+    cause: {
+      title: "Error: Error message.",
+      message: "Error message.",
+      details: { output: "Error", command: "git push" }
+    }
+  });
   vi.spyOn(process, "exit").mockImplementation(code => {
     throw new Error(`process.exit called with code ${code}`);
   });
   vi.mocked(checkAuthorisation).mockRejectedValue(mockedError);
   await expect(
     checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch)
-  ).rejects.toThrow("process.exit called with code 1");
+  ).rejects.toThrowError("process.exit called with code 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith("Not allowed to push to the Git repository.");
   expect(process.exit).toHaveBeenCalledWith(1);
-  assert.deepNestedInclude(mockedContext.errors, mockedError);
+  assert.deepNestedInclude(mockedContext.errors, mockedError.cause);
 });

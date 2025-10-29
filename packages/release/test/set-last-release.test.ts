@@ -1,6 +1,8 @@
+import type { DetailedError } from "@release-change/shared";
+
 import { getPackageVersion } from "@release-change/get-packages";
 import { getAllTags, getLatestValidTag } from "@release-change/git";
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 import { validate } from "@release-change/semver";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
@@ -13,6 +15,7 @@ import { mockedPackages } from "./fixtures/mocked-packages.js";
 
 beforeEach(() => {
   vi.mock("@release-change/logger", () => ({
+    addErrorToContext: vi.fn(),
     checkErrorType: vi.fn(),
     setLogger: vi.fn()
   }));
@@ -29,6 +32,20 @@ beforeEach(() => {
   vi.mock("../src/get-version-from-tag.js", () => ({
     getVersionFromTag: vi.fn()
   }));
+  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+    if (error instanceof Error) {
+      const { cause } = error;
+      if (
+        cause &&
+        typeof cause === "object" &&
+        "title" in cause &&
+        "message" in cause &&
+        "details" in cause
+      ) {
+        context.errors.push(cause as DetailedError);
+      }
+    }
+  });
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
   vi.mocked(validate).mockImplementation(version => version as string);
 });
@@ -37,19 +54,37 @@ afterEach(() => {
 });
 
 it("should throw an error if the latest valid tag cannot be performed", () => {
-  const mockedErrorMessage = "Failed to get the latest valid tag.";
-  const mockedError = new Error(mockedErrorMessage);
+  const mockedErrorMessage =
+    "Failed to get the latest valid tag: No release type found for the branch main.";
+  const mockedError = new Error(mockedErrorMessage, {
+    cause: {
+      title: "Failed to get the latest valid tag",
+      message: "No release type found for the branch main.",
+      details: {
+        output: "packageName: undefined"
+      }
+    }
+  });
   vi.mocked(getLatestValidTag).mockImplementation(() => {
     throw mockedError;
   });
   vi.mocked(checkErrorType).mockReturnValue(mockedErrorMessage);
   setLastRelease(mockedContext);
   expect(mockedLogger.logError).toHaveBeenCalledWith(mockedErrorMessage);
-  assert.deepNestedInclude(mockedContext.errors, mockedError);
+  assert.deepNestedInclude(mockedContext.errors, mockedError.cause);
 });
 it("should throw an error if the version cannot be performed from tag", () => {
-  const mockedErrorMessage = "Failed to get the version from tag.";
-  const mockedError = new Error(mockedErrorMessage);
+  const mockedErrorMessage =
+    "Failed to get the version from tag: No version could be extracted from tag v1.0.0.";
+  const mockedError = new Error(mockedErrorMessage, {
+    cause: {
+      title: "Failed to get the version from tag",
+      message: "No version could be extracted from tag v1.0.0.",
+      details: {
+        output: "tag: v1.0.0"
+      }
+    }
+  });
   vi.mocked(getAllTags).mockReturnValue([]);
   vi.mocked(getLatestValidTag).mockReturnValue("v1.0.0");
   vi.mocked(getVersionFromTag).mockImplementation(() => {
@@ -58,11 +93,19 @@ it("should throw an error if the version cannot be performed from tag", () => {
   vi.mocked(checkErrorType).mockReturnValue(mockedErrorMessage);
   setLastRelease(mockedContext);
   expect(mockedLogger.logError).toHaveBeenCalledWith(mockedErrorMessage);
-  assert.deepNestedInclude(mockedContext.errors, mockedError);
+  assert.deepNestedInclude(mockedContext.errors, mockedError.cause);
 });
 it("should throw an error if the package version cannot be performed", () => {
-  const mockedErrorMessage = "Failed to get the package version.";
-  const mockedError = new Error(mockedErrorMessage);
+  const mockedErrorMessage = `Failed to get the package version: The \`version\` property was not found for ${mockedContext.cwd}/package.json.`;
+  const mockedError = new Error(mockedErrorMessage, {
+    cause: {
+      title: "Failed to get the package version",
+      message: `The \`version\` property was not found for ${mockedContext.cwd}/package.json.`,
+      details: {
+        output: `path: ${mockedContext.cwd}/package.json`
+      }
+    }
+  });
   vi.mocked(getLatestValidTag).mockReturnValue(null);
   vi.mocked(getVersionFromTag).mockReturnValue("1.0.0");
   vi.mocked(getPackageVersion).mockImplementation(() => {
@@ -71,7 +114,7 @@ it("should throw an error if the package version cannot be performed", () => {
   vi.mocked(checkErrorType).mockReturnValue(mockedErrorMessage);
   setLastRelease(mockedContext);
   expect(mockedLogger.logError).toHaveBeenCalledWith(mockedErrorMessage);
-  assert.deepNestedInclude(mockedContext.errors, mockedError);
+  assert.deepNestedInclude(mockedContext.errors, mockedError.cause);
 });
 it("should not call `getLatestValidTag()` if the package cannot publish from the branch", () => {
   setLastRelease(mockedContextWithIneligibleBranch);

@@ -3,7 +3,7 @@ import type { Context } from "@release-change/shared";
 import fs from "node:fs";
 
 import { setLogger } from "@release-change/logger";
-import { runCommand } from "@release-change/shared";
+import { formatDetailedError, runCommand } from "@release-change/shared";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getAuthToken } from "../src/get-auth-token.js";
@@ -20,6 +20,7 @@ const mockedNpmrcFile = "//registry.npmjs.org/:_authToken=${NPM_TOKEN}";
 
 beforeEach(() => {
   vi.mock("@release-change/shared", () => ({
+    formatDetailedError: vi.fn(),
     runCommand: vi.fn(),
     WORKSPACE_NAME: "release-change"
   }));
@@ -50,8 +51,21 @@ describe.each(mockedPackagePublishingSet)(
       env: mockedContext.env
     };
     it("should throw an error if the auth token is not defined", async () => {
+      const expectedError = new Error(
+        "Failed to publish to the NPM registry: The auth token context could not be loaded.",
+        {
+          cause: {
+            title: "Failed to publish to the NPM registry",
+            message: "The auth token context could not be loaded.",
+            details: {
+              output: "authToken: undefined"
+            }
+          }
+        }
+      );
+      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
       await expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrowError(
-        "Failed to load the auth token context."
+        expectedError
       );
     });
     it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` file already exists and sets auth token", async () => {
@@ -94,13 +108,27 @@ describe.each(mockedPackagePublishingSet)(
       expect(mockedRemoveAuthToken).toHaveBeenCalled();
     });
     it("should log an error message if the publish command fails", async () => {
+      const expectedError = new Error(
+        `Failed to run the \`${packageManager}\` command: The command failed with exit code 128.`,
+        {
+          cause: {
+            title: `Failed to run the \`${packageManager}\` command`,
+            message: "The command failed with exit code 128.",
+            details: {
+              output: "Some error message.",
+              command: `${packageManager} ${args.join(" ")}`
+            }
+          }
+        }
+      );
       const mockedCommand = vi
         .mocked(runCommand)
         .mockResolvedValue({ status: 128, stdout: "", stderr: "Some error message." });
       vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
+      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
       await expect(
         publishToRegistry(packagePublishing, mockedContextWithAuthToken)
-      ).rejects.toThrowError("Some error message.");
+      ).rejects.toThrowError(expectedError);
       expect(mockedCommand).toHaveBeenCalledWith(packageManager, args, mockedOptions);
       expect(mockedLogger.logError).toHaveBeenCalledWith(
         `Failed to publish release ${version} of ${packageName} package to the NPM registry.`

@@ -1,5 +1,5 @@
 import { setLogger } from "@release-change/logger";
-import { runCommand } from "@release-change/shared";
+import { formatDetailedError, runCommand } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { checkAuthorisation } from "../src/check-authorisation.js";
@@ -14,6 +14,7 @@ beforeEach(() => {
     setLogger: vi.fn()
   }));
   vi.mock("@release-change/shared", () => ({
+    formatDetailedError: vi.fn(),
     runCommand: vi.fn(),
     WORKSPACE_NAME: "release-change"
   }));
@@ -28,6 +29,32 @@ it("should skip authorisation checking when the branch is not one of those from 
   await checkAuthorisation(mockedRepositoryUrl, mockedContext);
   expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedSkipLogMessage);
 });
+it("should throw an error when the Git command fails", async () => {
+  const expectedError = new Error(
+    "Failed to run the `git` command: The command failed with status 128.",
+    {
+      cause: {
+        title: "Failed to run the `git` command",
+        message: "The command failed with status 128.",
+        details: {
+          output: "Error",
+          command: `git push --dry-run --no-verify ${mockedRepositoryUrl} ${mockedContextWithEligibleBranch.branch}`
+        }
+      }
+    }
+  );
+  vi.mocked(runCommand).mockReturnValue(
+    Promise.resolve({
+      status: 128,
+      stdout: "",
+      stderr: "Error"
+    })
+  );
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(
+    checkAuthorisation(mockedRepositoryUrl, mockedContextWithEligibleBranch)
+  ).rejects.toThrowError(expectedError);
+});
 it("should not catch any errors when the Git command does not fail", async () => {
   vi.mocked(runCommand).mockReturnValue(
     Promise.resolve({
@@ -37,7 +64,6 @@ it("should not catch any errors when the Git command does not fail", async () =>
     })
   );
   await checkAuthorisation(mockedRepositoryUrl, mockedContextWithEligibleBranch);
-  expect(mockedLogger.logError).not.toHaveBeenCalled();
 });
 it("should call `logDebug()` when the Git command does not fail and on debug mode", async () => {
   mockedConfig.debug = true;

@@ -24,7 +24,36 @@ afterEach(() => {
 });
 
 it("should throw an error when the command fails with an error", async () => {
-  await expect(runCommand(nonExistentCommand, args)).rejects.toThrow();
+  const mockedErrorChildProcess = {
+    ...mockedChildProcess,
+    exitCode: 1
+  };
+  mockSpawn.mockImplementation(() => {
+    setTimeout(() => {
+      const errorCallback = mockedErrorChildProcess.on.mock.calls.find(
+        call => call[0] === "error"
+      )?.[1];
+      if (errorCallback) {
+        errorCallback(new Error(`spawn ${nonExistentCommand} ENOENT`));
+      }
+    }, 0);
+    return mockedErrorChildProcess;
+  });
+  await expect(runCommand(nonExistentCommand, args)).rejects.toThrowError(
+    new Error(
+      `Failed to run the \`${nonExistentCommand}\` command: The command failed with status 1.`,
+      {
+        cause: {
+          title: `Failed to run the \`${nonExistentCommand}\` command`,
+          message: "The command failed with status 1.",
+          details: {
+            output: `spawn ${nonExistentCommand} ENOENT`,
+            command: `${nonExistentCommand} ${args.join(" ")}`
+          }
+        }
+      }
+    )
+  );
 });
 it("should throw an error containing the command and args in the cause", async () => {
   const mockedRejectedChildProcess = {

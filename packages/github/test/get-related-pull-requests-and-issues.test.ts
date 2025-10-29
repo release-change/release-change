@@ -1,4 +1,6 @@
-import { setLogger } from "@release-change/logger";
+import type { DetailedError } from "@release-change/shared";
+
+import { addErrorToContext, setLogger } from "@release-change/logger";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getAssociatedPullRequests } from "../src/get-associated-pull-requests.js";
@@ -39,7 +41,11 @@ const mockedAssociatedPullRequests = [
 
 beforeEach(() => {
   global.fetch = mockedFetch;
-  vi.mock("@release-change/logger", () => ({ checkErrorType: vi.fn(), setLogger: vi.fn() }));
+  vi.mock("@release-change/logger", () => ({
+    addErrorToContext: vi.fn(),
+    checkErrorType: vi.fn(),
+    setLogger: vi.fn()
+  }));
   vi.mock("@release-change/ci", () => ({ getReleaseToken: vi.fn() }));
   vi.mock("../src/get-repository-related-entry-point.js", () => ({
     getRepositoryRelatedEntryPoint: vi.fn()
@@ -48,6 +54,20 @@ beforeEach(() => {
     getAssociatedPullRequests: vi.fn()
   }));
   vi.mock("../src/get-issues.js", () => ({ getIssues: vi.fn() }));
+  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+    if (error instanceof Error) {
+      const { cause } = error;
+      if (
+        cause &&
+        typeof cause === "object" &&
+        "title" in cause &&
+        "message" in cause &&
+        "details" in cause
+      ) {
+        context.errors.push(cause as DetailedError);
+      }
+    }
+  });
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
   vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(mockedEntryPoint);
 });
@@ -56,7 +76,7 @@ afterEach(() => {
 });
 
 it.each(mockedFailureFetchesForCommits)("$title", async ({ response, expectedError }) => {
-  const error = new Error(expectedError);
+  const error = expectedError;
   vi.spyOn(process, "exit").mockImplementation(() => {
     throw error;
   });
@@ -64,12 +84,12 @@ it.each(mockedFailureFetchesForCommits)("$title", async ({ response, expectedErr
   vi.mocked(getAssociatedPullRequests).mockRejectedValue(error);
   await expect(
     getRelatedPullRequestsAndIssues(mockedCommits, mockedContextWithNextRelease)
-  ).rejects.toThrow(expectedError);
+  ).rejects.toThrowError(expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     "Failed to get related pull requests and issues."
   );
   expect(process.exitCode).toBe(response.status);
-  assert.deepNestedInclude(mockedContextWithNextRelease.errors, error);
+  assert.deepNestedInclude(mockedContextWithNextRelease.errors, error.cause);
 });
 it("should complete context with references to no pull requests and issues if no commits are provided", async () => {
   await getRelatedPullRequestsAndIssues([], mockedContextWithNextRelease);

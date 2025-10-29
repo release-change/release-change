@@ -8,6 +8,7 @@ import { inspect } from "node:util";
 
 import { add, COMMITTER_EMAIL, COMMITTER_NAME, commit } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 /**
  * Commits the updated files.
@@ -44,9 +45,15 @@ export const commitUpdatedFiles = async (
     // } = gitAddCommandResult;
     // if (gitAddStatus) {
     //   process.exitCode = gitAddStatus;
-    //   throw new Error(
-    //     gitAddStderr || gitAddStdout || `Command failed with status code ${gitAddStatus}.`
-    //   );
+    //   throw formatDetailedError({
+    //     title: "Failed to run the `git` command",
+    //     message: `The command failed with status ${gitAddStatus}`,
+    //     details: {
+    //       output:
+    //         gitAddStderr || gitAddStdout || `Command failed with status code ${gitAddStatus}.`,
+    //       command: `git add ${filesToAdd.join(" ")}`
+    //     }
+    //   });
     // }
     const commitMessage = `chore: ${packageNextRelease.gitTag}\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
     // TODO: uncomment to run `git commit` command
@@ -58,9 +65,17 @@ export const commitUpdatedFiles = async (
     // } = gitCommitCommandResult;
     // if (gitCommitStatus) {
     //   process.exitCode = gitCommitStatus;
-    //   throw new Error(
-    //     gitCommitStderr || gitCommitStdout || `Command failed with status code ${gitCommitStatus}.`
-    //   );
+    //   throw formatDetailedError({
+    //     title: "Failed to run the `git` command",
+    //     message: `The command failed with status ${gitAddStatus}`,
+    //     details: {
+    //       output:
+    //         gitCommitStderr ||
+    //         gitCommitStdout ||
+    //         `Command failed with status code ${gitCommitStatus}.`,
+    //       command: `git commit -m ${commitMessage}`
+    //     }
+    //   });
     // }
     if (debug) {
       logger.setDebugScope("release:commit-updated-files");
@@ -73,8 +88,12 @@ export const commitUpdatedFiles = async (
     }
   } else {
     process.exitCode = process.exitCode ?? 1;
-    throw new Error(
-      "The package manager is not found or is not one of those supported (npm or pnpm)."
-    );
+    throw formatDetailedError({
+      title: "Failed to commit the updated files",
+      message: "The package manager is not found or is not one of those supported (npm or pnpm).",
+      details: {
+        output: `packageManager: ${packageManager}`
+      }
+    });
   }
 };

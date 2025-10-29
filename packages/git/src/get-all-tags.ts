@@ -2,7 +2,7 @@ import type { Context } from "@release-change/shared";
 
 import { inspect } from "node:util";
 
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 import { runCommandSync } from "@release-change/shared";
 
 /**
@@ -28,7 +28,7 @@ export const getAllTags = (context: Context): string[] => {
     return stdout ? stdout.split("\n") : [];
   } catch (error) {
     logger.logError(checkErrorType(error));
-    context.errors.push(error);
+    addErrorToContext(error, context);
     process.exit(process.exitCode);
   }
 };

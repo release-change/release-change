@@ -1,4 +1,4 @@
-import { runCommand } from "@release-change/shared";
+import { formatDetailedError, runCommand } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { commit } from "../src/commit.js";
@@ -18,6 +18,7 @@ const mockedCommitMessages = [
 
 beforeEach(() => {
   vi.mock("@release-change/shared", () => ({
+    formatDetailedError: vi.fn(),
     runCommand: vi.fn()
   }));
 });
@@ -26,7 +27,20 @@ afterEach(() => {
 });
 
 it("should throw an error if the commit message is empty", async () => {
-  await expect(commit("", mockedCwd)).rejects.toThrowError("The commit message cannot be empty.");
+  const expectedError = new Error(
+    "Failed to run the `git` command: The commit message cannot be empty.",
+    {
+      cause: {
+        title: "Failed to run the `git` command",
+        message: "The commit message cannot be empty.",
+        details: {
+          output: "commitMessage: "
+        }
+      }
+    }
+  );
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(commit("", mockedCwd)).rejects.toThrowError(expectedError);
 });
 it.each(mockedCommitMessages)(
   'should run the command with the commit message `"%s"` if correctly provided',

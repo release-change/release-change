@@ -1,4 +1,5 @@
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { closeIssue, getRepositoryRelatedEntryPoint } from "../src/index.js";
@@ -13,6 +14,7 @@ import { mockedUriForIssue } from "./fixtures/mocked-uri.js";
 global.fetch = mockedFetch;
 
 beforeEach(() => {
+  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
   vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
   vi.mock("../src/get-repository-related-entry-point.js", () => ({
     getRepositoryRelatedEntryPoint: vi.fn()
@@ -28,7 +30,7 @@ afterEach(() => {
 
 it("should throw an error when the request fails", async () => {
   vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrow(
+  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrowError(
     "Failed to request the URI."
   );
 });
@@ -37,7 +39,8 @@ it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
     ...response,
     json: () => Promise.resolve({ message: response.statusText })
   });
-  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrow(expectedError);
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrowError(expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Failed to close issue #${mockedIssueNumber}.`
   );

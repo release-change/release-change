@@ -1,4 +1,5 @@
 import { validate } from "@release-change/semver";
+import { formatDetailedError } from "@release-change/shared";
 
 /**
  * Gets the version as per semantic versioning from a tag.
@@ -8,5 +9,11 @@ import { validate } from "@release-change/semver";
 export const getVersionFromTag = (tag: string): string => {
   const version = validate(tag.replace(/^v/, ""));
   if (version) return version;
-  throw new Error(`Failed to extract the version from tag ${tag}.`);
+  throw formatDetailedError({
+    title: "Failed to get the version from tag",
+    message: `No version could be extracted from tag ${tag}.`,
+    details: {
+      output: `tag: ${tag}`
+    }
+  });
 };

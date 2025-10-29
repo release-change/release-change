@@ -7,6 +7,7 @@ import { inspect } from "node:util";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 import { linkifyReleaseInfo } from "./linkify-release-info.js";
@@ -120,10 +121,22 @@ export const postSuccessComment = async (reference: Reference, context: Context)
     //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     //   logger.logError(`Failed to post the success comment on ${issueType} #${number}.`);
     //   process.exitCode = status;
-    //   throw new Error(`${message}${documentationReference}`);
+    //   throw formatDetailedError({
+    //     title: "Failed to post the success comment",
+    //     message: `${message}${documentationReference}`,
+    //     details: {
+    //       output: `status: ${status}`
+    //     }
+    //   });
     // }
   } else {
     process.exitCode = 1;
-    throw new Error("The next release is not defined.");
+    throw formatDetailedError({
+      title: "Failed to post the success comment",
+      message: "The next release is not defined.",
+      details: {
+        output: "nextRelease: undefined"
+      }
+    });
   }
 };

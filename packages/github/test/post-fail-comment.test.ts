@@ -2,6 +2,7 @@
 /** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the API is used> */
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { checkErrorType, setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getRepositoryRelatedEntryPoint, postFailComment } from "../src/index.js";
@@ -20,7 +21,7 @@ import { mockedUriForComments } from "./fixtures/mocked-uri.js";
 global.fetch = mockedFetch;
 
 beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ runCommand: vi.fn() }));
+  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
   vi.mock("@release-change/logger", () => ({ checkErrorType: vi.fn(), setLogger: vi.fn() }));
   vi.mock("@release-change/ci", () => ({
     getIssueAndPullRequestToken: vi.fn()
@@ -42,6 +43,19 @@ describe.each(mockedFailComments)(
   "for $type and reference $reference",
   ({ type, isMonorepo, reference, errors, expectedBody }) => {
     it("should throw an error if no branch is defined", async () => {
+      const expectedError = new Error(
+        "Failed to post the fail comment: The target branch is not defined.",
+        {
+          cause: {
+            title: "Failed to post the fail comment",
+            message: "The target branch is not defined.",
+            details: {
+              output: "targetBranch: undefined"
+            }
+          }
+        }
+      );
+      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
       await expect(postFailComment(reference, mockedContextWithoutBranch)).rejects.toThrowError(
         "The target branch is not defined."
       );
@@ -49,7 +63,7 @@ describe.each(mockedFailComments)(
     // TODO: uncomment when the API is used
     // it("should throw an error when the request fails", async () => {
     //   vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-    //   await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
+    //   await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrowError(
     //     "Failed to request the URI."
     //   );
     // });
@@ -58,7 +72,8 @@ describe.each(mockedFailComments)(
     //     ...response,
     //     json: () => Promise.resolve({ message: response.statusText })
     //   });
-    //   await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
+    //   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+    //   await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrowError(
     //     expectedError
     //   );
     //   expect(mockedLogger.logError).toHaveBeenCalledWith(

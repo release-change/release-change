@@ -3,7 +3,7 @@
 import type { PackageNextRelease } from "@release-change/shared";
 
 import { setLogger } from "@release-change/logger";
-import { runCommandSync } from "@release-change/shared";
+import { formatDetailedError, runCommandSync } from "@release-change/shared";
 
 /**
  * Creates a Git tag.
@@ -35,6 +35,10 @@ export const createTag = (
     // else logger.logSuccess(`Created Git tag ${gitTag} for ${packageName}.`);
   } else {
     process.exitCode = 1;
-    throw new Error("The commit reference must not be empty.");
+    throw formatDetailedError({
+      title: "Failed to create a Git tag",
+      message: "The commit reference must not be empty.",
+      details: { output: "commitRef: " }
+    });
   }
 };

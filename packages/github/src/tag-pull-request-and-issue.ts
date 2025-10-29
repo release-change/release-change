@@ -1,6 +1,5 @@
 /** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the API is used> */
 /** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the API is used> */
-
 import type { Context, Reference } from "@release-change/shared";
 import type { GitHubResponseError } from "./github.types.js";
 
@@ -8,7 +7,7 @@ import { inspect } from "node:util";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { agreeInNumber } from "@release-change/shared";
+import { agreeInNumber, formatDetailedError } from "@release-change/shared";
 
 import { findNpmTagFromGitTag } from "./find-npm-tag-from-git-tag.js";
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
@@ -86,10 +85,22 @@ export const tagPullRequestAndIssue = async (
     //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
     //   logger.logError(`Failed to tag ${issueType} #${number}.`);
     //   process.exitCode = status;
-    //   throw new Error(`${message}${documentationReference}`);
+    //   throw formatDetailedError({
+    //     title: "Failed to tag the issue or pull request",
+    //     message: `${message}${documentationReference}`,
+    //     details: {
+    //       output: `status: ${status}`
+    //     }
+    //   });
     // }
   } else {
     process.exitCode = 1;
-    throw new Error("The next release is not defined.");
+    throw formatDetailedError({
+      title: "Failed to tag the issue or pull request",
+      message: "The next release is not defined.",
+      details: {
+        output: "nextRelease: undefined"
+      }
+    });
   }
 };

@@ -2,6 +2,7 @@
 /** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the API is used> */
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
+import { formatDetailedError } from "@release-change/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getRepositoryRelatedEntryPoint, postSuccessComment } from "../src/index.js";
@@ -20,7 +21,7 @@ import { mockedUriForComments } from "./fixtures/mocked-uri.js";
 global.fetch = mockedFetch;
 
 beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ runCommand: vi.fn() }));
+  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
   vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
   vi.mock("@release-change/ci", () => ({
     getIssueAndPullRequestToken: vi.fn()
@@ -42,25 +43,39 @@ describe.each(mockedSuccessComments)(
   "for $type and reference $reference",
   ({ type, isMonorepo, reference, releaseInfos, expectedBody }) => {
     it("should throw an error if no next release is defined", async () => {
+      const expectedError = new Error(
+        "Failed to post the success comment: The next release is not defined.",
+        {
+          cause: {
+            title: "Failed to post the success comment",
+            message: "The next release is not defined.",
+            details: {
+              output: "nextRelease: undefined"
+            }
+          }
+        }
+      );
+      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
       await expect(postSuccessComment(reference, mockedContext)).rejects.toThrowError(
-        "The next release is not defined."
+        expectedError
       );
     });
     // TODO: uncomment when the API is used
     // it("should throw an error when the request fails", async () => {
     //   vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-    //   await expect(postSuccessComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
-    //     "Failed to request the URI."
-    //   );
+    //   await expect(
+    //     postSuccessComment(reference, mockedContextWithNextRelease)
+    //   ).rejects.toThrowError("Failed to request the URI.");
     // });
     // it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
     //   vi.mocked(mockedFetch).mockResolvedValue({
     //     ...response,
     //     json: () => Promise.resolve({ message: response.statusText })
     //   });
-    //   await expect(postSuccessComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
-    //     expectedError
-    //   );
+    //   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+    //   await expect(
+    //     postSuccessComment(reference, mockedContextWithNextRelease)
+    //   ).rejects.toThrowError(expectedError);
     //   expect(mockedLogger.logError).toHaveBeenCalledWith(
     //     `Failed to post the success comment on ${type} #${reference.number}.`
     //   );

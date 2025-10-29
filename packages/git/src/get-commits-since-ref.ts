@@ -3,7 +3,7 @@ import type { Commit, Context } from "@release-change/shared";
 import { inspect } from "node:util";
 
 import { parseCommit } from "@release-change/commit-analyser";
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 import { agreeInNumber, runCommandSync } from "@release-change/shared";
 
 import { COMMIT_SEPARATOR } from "./constants.js";
@@ -45,7 +45,7 @@ export const getCommitsSinceRef = (context: Context): Commit[] => {
   } catch (error) {
     logger.logError("Failed to find commits.");
     logger.logError(checkErrorType(error));
-    context.errors.push(error);
+    addErrorToContext(error, context);
     process.exit(process.exitCode);
   }
 };
