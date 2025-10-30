@@ -4,7 +4,7 @@ import { setLogger } from "@release-change/logger";
 import { coerce } from "@release-change/semver";
 import { runCommandSync } from "@release-change/shared";
 
-import { cli } from "../cli/cli.js";
+import { cli } from "./cli.js";
 import { isGitVersionCompatible } from "./is-git-version-compatible.js";
 import { isNodeVersionCompatible } from "./is-node-version-compatible.js";
 

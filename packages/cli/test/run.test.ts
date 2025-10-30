@@ -16,8 +16,8 @@ import { setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
-import { run } from "../../src/cli/run.js";
-import { mockedLogger } from "../fixtures/mocked-logger.js";
+import { run } from "../src/run.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const mockedCliOptions: CliOptions = { debug: true }; // Add more fields if needed
 const mockedContextBase: ContextBase = {
