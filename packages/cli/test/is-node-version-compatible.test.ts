@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { isNodeVersionCompatible } from "../../src/check-requirements/is-node-version-compatible.js";
+import { isNodeVersionCompatible } from "../src/is-node-version-compatible.js";
 
 const mockedRequiredNodeVersions = "^20.18.3 || ^22.12.0 || ^24.0.0";
 

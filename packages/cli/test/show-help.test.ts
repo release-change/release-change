@@ -4,8 +4,8 @@ import { setLogger } from "@release-change/logger";
 import { WORKSPACE_NAME } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
-import { showHelp } from "../../src/cli/show-help.js";
-import { mockedLogger } from "../fixtures/mocked-logger.js";
+import { showHelp } from "../src/show-help.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const expectedOutput = `Runs automated package release and publishing
 

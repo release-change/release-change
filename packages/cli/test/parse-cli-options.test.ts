@@ -1,8 +1,8 @@
-import type { Args } from "../../src/cli/cli.types.js";
+import type { Args } from "../src/cli.types.js";
 
 import { assert, expect, it } from "vitest";
 
-import { parseCliOptions } from "../../src/cli/parse-cli-options.js";
+import { parseCliOptions } from "../src/parse-cli-options.js";
 
 it("should add the `--help` flag and return `true`", () => {
   const args: Args = ["--help"];

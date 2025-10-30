@@ -5,12 +5,12 @@ import { coerce } from "@release-change/semver";
 import { runCommandSync } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
-import { isGitVersionCompatible } from "../../src/check-requirements/is-git-version-compatible.js";
-import { isNodeVersionCompatible } from "../../src/check-requirements/is-node-version-compatible.js";
-import { checkRequirements } from "../../src/index.js";
-import { mockedLogger } from "../fixtures/mocked-logger.js";
+import { checkRequirements } from "../src/index.js";
+import { isGitVersionCompatible } from "../src/is-git-version-compatible.js";
+import { isNodeVersionCompatible } from "../src/is-node-version-compatible.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
-import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "../../src/check-requirements/constants.js";
+import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "../src/constants.js";
 
 const formerLtsReleases = [
   "4.9.1",
@@ -44,13 +44,13 @@ beforeEach(() => {
     WORKSPACE_VERSION: "0.0.0"
   }));
   vi.mock("@release-change/semver", () => ({ coerce: vi.fn() }));
-  vi.mock("../../src/check-requirements/is-git-version-compatible.js", () => ({
+  vi.mock("../src/is-git-version-compatible.js", () => ({
     isGitVersionCompatible: vi.fn()
   }));
-  vi.mock("../../src/check-requirements/is-node-version-compatible.js", () => ({
+  vi.mock("../src/is-node-version-compatible.js", () => ({
     isNodeVersionCompatible: vi.fn()
   }));
-  vi.mock("../../src/cli/cli.js", () => ({
+  vi.mock("../src/cli.js", () => ({
     cli: vi.fn(() => Promise.resolve(0))
   }));
   vi.mocked(setLogger).mockReturnValue(mockedLogger);

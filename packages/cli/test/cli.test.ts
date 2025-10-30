@@ -3,13 +3,13 @@ import process from "node:process";
 import { WORKSPACE_NAME } from "@release-change/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { cli } from "../../src/cli/cli.js";
-import { run } from "../../src/cli/run.js";
+import { cli } from "../src/cli.js";
+import { run } from "../src/run.js";
 
 const cliOptions = ["-h", "--help", "-v", "--version"];
 
 beforeEach(() => {
-  vi.mock("../../src/cli/run.js", () => ({
+  vi.mock("../src/run.js", () => ({
     run: vi.fn()
   }));
 });

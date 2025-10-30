@@ -4,8 +4,8 @@ import { setLogger } from "@release-change/logger";
 import { WORKSPACE_VERSION } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
-import { showVersion } from "../../src/cli/show-version.js";
-import { mockedLogger } from "../fixtures/mocked-logger.js";
+import { showVersion } from "../src/show-version.js";
+import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const expectedVersion = WORKSPACE_VERSION;
 const cliOptions = ["-v", "--version"];
