@@ -41,6 +41,11 @@ export const postFailComment = async (reference: Reference, context: Context): P
       if (output) errorBody += `\n\n\`\`\`\n${output}\n\`\`\``;
       errorsList.push(errorBody);
     }
+    const errorsBody = errorsList.length
+      ? [...new Set(errorsList.map(error => JSON.stringify(error)))]
+          .map(error => JSON.parse(error))
+          .join("\n\n---\n\n")
+      : "No errors reported.";
     const commentBody = `#### The release failed
 
 The release from the \`${branch}\` branch failed.
@@ -49,7 +54,7 @@ Below are the errors thrown when running the CLI.
 
 ---
 
-${errorsList.length ? errorsList.join("\n\n---\n\n") : "No errors reported."}
+${errorsBody}
 
 ---`;
     const requestBody = {
