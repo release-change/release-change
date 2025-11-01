@@ -334,5 +334,157 @@ Error output
 This error does not have any additional information.
 
 ---`
+  },
+  {
+    type: "issue",
+    isMonorepo: false,
+    reference: {
+      number: 123,
+      isPullRequest: false,
+      gitTags: ["v1.2.3"]
+    },
+    errors: [
+      {
+        title: "Some error thrown and rethrown",
+        message: "The error explained.",
+        details: { output: "output: null" }
+      },
+      {
+        title: "Some error thrown and rethrown",
+        message: "The error explained.",
+        details: { output: "output: null" }
+      }
+    ],
+    expectedBody: `#### The release failed
+
+The release from the \`main\` branch failed.
+
+Below are the errors thrown when running the CLI.
+
+---
+
+##### Some error thrown and rethrown
+
+The error explained.
+
+\`\`\`
+output: null
+\`\`\`
+
+---`
+  },
+  {
+    type: "pull request",
+    isMonorepo: false,
+    reference: {
+      number: 123,
+      isPullRequest: true,
+      gitTags: ["v1.2.3"]
+    },
+    errors: [
+      {
+        title: "Some error thrown and rethrown",
+        message: "The error explained.",
+        details: { output: "output: null" }
+      },
+      {
+        title: "Some error thrown and rethrown",
+        message: "The error explained.",
+        details: { output: "output: null" }
+      }
+    ],
+    expectedBody: `#### The release failed
+
+The release from the \`main\` branch failed.
+
+Below are the errors thrown when running the CLI.
+
+---
+
+##### Some error thrown and rethrown
+
+The error explained.
+
+\`\`\`
+output: null
+\`\`\`
+
+---`
+  },
+  {
+    type: "issue",
+    isMonorepo: true,
+    reference: {
+      number: 123,
+      isPullRequest: false,
+      gitTags: ["v1.2.3", "@monorepo/a@v1.2.3"]
+    },
+    errors: [
+      {
+        title: "Some error thrown and rethrown",
+        message: "The error explained.",
+        details: { output: "output: null" }
+      },
+      {
+        title: "Some error thrown and rethrown",
+        message: "The error explained.",
+        details: { output: "output: null" }
+      }
+    ],
+    expectedBody: `#### The release failed
+
+The release from the \`main\` branch failed.
+
+Below are the errors thrown when running the CLI.
+
+---
+
+##### Some error thrown and rethrown
+
+The error explained.
+
+\`\`\`
+output: null
+\`\`\`
+
+---`
+  },
+  {
+    type: "pull request",
+    isMonorepo: true,
+    reference: {
+      number: 123,
+      isPullRequest: true,
+      gitTags: ["v1.2.3", "@monorepo/a@v1.2.3"]
+    },
+    errors: [
+      {
+        title: "Some error thrown and rethrown",
+        message: "The error explained.",
+        details: { output: "output: null" }
+      },
+      {
+        title: "Some error thrown and rethrown",
+        message: "The error explained.",
+        details: { output: "output: null" }
+      }
+    ],
+    expectedBody: `#### The release failed
+
+The release from the \`main\` branch failed.
+
+Below are the errors thrown when running the CLI.
+
+---
+
+##### Some error thrown and rethrown
+
+The error explained.
+
+\`\`\`
+output: null
+\`\`\`
+
+---`
   }
 ];
