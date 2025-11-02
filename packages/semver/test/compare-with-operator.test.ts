@@ -1,6 +1,6 @@
 import type { SemverOperator } from "../src/semver.types.js";
 
-import { assert, describe, expect, it, test } from "vitest";
+import { describe, expect, it, test } from "vitest";
 
 import { Semver } from "../src/classes/semver.js";
 import { compareWithOperator } from "../src/index.js";
@@ -35,7 +35,7 @@ describe.each(nonStrictOperators)("try to compare a and b with %s", operator => 
   it.each([...comparisonsInLooseMode, ...equalitiesInLooseMode])(
     "should throw an error if $a and $b are compared in strict mode",
     ({ a, b }) => {
-      assert.throws(() => compareWithOperator(a, operator, b));
+      expect(() => compareWithOperator(a, operator, b)).toThrow();
     }
   );
 });
