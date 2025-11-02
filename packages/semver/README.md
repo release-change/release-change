@@ -177,6 +177,9 @@ Strict-mode comparators and ranges will be strict about the semantic versioning 
   - `release` will remove any pre-release part of the version;
   - `identifier` can be used to prefix `premajor`, `preminor`, `prepatch` or `prerelease` version increments (`identifierBase` is the base to be used for the `prerelease` identifier).
 - `getPrerelease(version)`: returns an array of pre-release components, or `null` if none exist (for example: `prerelease('1.2.3-alpha.1')` returns `['alpha', 1]`);
+- `getMajor(version)`: returns the major version number;
+- `getMinor(version)`: returns the minor version number;
+- `getPatch(version)`: returns the patch version number;
 - `parse(version)`: attempts to parse a string as a semantic version, returning either a `Semver` object or `null`.
 
 #### Comparisons
