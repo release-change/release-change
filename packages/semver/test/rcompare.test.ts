@@ -1,6 +1,6 @@
 import { expect, it, test } from "vitest";
 
-import { rcompare } from "../src/rcompare.js";
+import { rcompare } from "../src/index.js";
 import { comparisons } from "./fixtures/comparisons.js";
 import { comparisonsInLooseMode } from "./fixtures/comparisons-in-loose-mode.js";
 import { equalities } from "./fixtures/equalities.js";

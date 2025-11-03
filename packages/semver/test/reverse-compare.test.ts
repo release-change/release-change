@@ -1,6 +1,6 @@
 import { expect, it, test } from "vitest";
 
-import { reverseCompare } from "../src/reverse-compare.js";
+import { reverseCompare } from "../src/index.js";
 import { comparisons } from "./fixtures/comparisons.js";
 import { comparisonsInLooseMode } from "./fixtures/comparisons-in-loose-mode.js";
 import { equalities } from "./fixtures/equalities.js";
