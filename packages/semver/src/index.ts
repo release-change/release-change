@@ -1,3 +1,4 @@
+import { clean } from "./clean.js";
 import { cmp } from "./cmp.js";
 import { coerce } from "./coerce.js";
 import { compare } from "./compare.js";
@@ -27,6 +28,7 @@ import { valid } from "./valid.js";
 import { validate } from "./validate.js";
 
 export {
+  clean,
   cmp,
   coerce,
   compare,
@@ -60,6 +62,7 @@ export {
  * The default export is set for compatibility with npm’s semver.
  */
 export default {
+  clean,
   cmp,
   coerce,
   compare,
