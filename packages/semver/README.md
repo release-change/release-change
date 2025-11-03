@@ -213,6 +213,22 @@ If the `options.rtl` flag is set, then `coerce` will return the right-most coerc
 
 If the `options.includePrerelease` flag is set, then the `coerce` result will contain pre-release and build parts of a version: for example, `1.2.3.4-rc.1+rev.2` will preserve pre-release `rc.1` and build `rev.2` in the result.
 
+#### Cleaning
+
+- `clean(version)`: cleans a string to be a valid semantic version, if possible.
+
+This will return a cleaned and trimmed semantic version. If the provided version is not valid, `null` will be returned. This does not work for ranges.
+
+Examples:
+- `clean(" = v 2.1.5foo"); // null`,
+- `clean(" = v 2.1.5foo', { loose: true }); // '2.1.5-foo'`,
+- `clean(" = v 2.1.5-foo"); // null`,
+- `clean(" = v 2.1.5-foo", { loose: true }); // '2.1.5-foo'`,
+- `clean("=v2.1.5"); // '2.1.5'`,
+- `clean(" =v2.1.5"); // '2.1.5'`,
+- `clean(" 2.1.5 "); // '2.1.5'`,
+- `clean("~1.0.0"); // null`.
+
 ## Get help
 
 - [Stack Overflow](https://stackoverflow.com/questions/tagged/release-change-semver)
