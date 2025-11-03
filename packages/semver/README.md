@@ -192,7 +192,8 @@ Strict-mode comparators and ranges will be strict about the semantic versioning 
 - `neq(version1, version2)`: `version1 != version2` (the opposite of `eq`);
 - `compareWithOperator(version1, operator, version2)`: passes in a comparison string and calls the corresponding function above (`"==="` and `"!=="` do simple string comparison), throwing if an invalid comparison string is provided;
 - `compare(version1, version2)`: returns `0` if `version1 == version2`, `1` if `version1` is greater or `-1` if `version2` is greater;
-- `reverseCompare(version1, version2)`: returns `0` if `version1 == version2`, `1` if `version2` is greater or `-1` if `version1` is greater (the reverse of `compare`).
+- `reverseCompare(version1, version2)`: returns `0` if `version1 == version2`, `1` if `version2` is greater or `-1` if `version1` is greater (the reverse of `compare`);
+- `compareLoose(version1, version2)` (short for `compare(version1, version2, { loose: true })`).
 
 #### Ranges
 
