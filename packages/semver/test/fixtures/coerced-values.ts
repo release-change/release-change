@@ -979,7 +979,7 @@ export const coercedValues = [
     value: "1.2.3.4+rev.6",
     expected: {
       raw: "1.2.3+rev.6",
-      version: "1.2.3+rev.6",
+      version: "1.2.3",
       major: 1,
       minor: 2,
       patch: 3,
@@ -1070,7 +1070,7 @@ export const coercedValues = [
     value: "1+rev.6",
     expected: {
       raw: "1.0.0+rev.6",
-      version: "1.0.0+rev.6",
+      version: "1.0.0",
       major: 1,
       minor: 0,
       patch: 0,
@@ -1083,7 +1083,7 @@ export const coercedValues = [
     value: "1.2+rev.6",
     expected: {
       raw: "1.2.0+rev.6",
-      version: "1.2.0+rev.6",
+      version: "1.2.0",
       major: 1,
       minor: 2,
       patch: 0,
@@ -1096,7 +1096,7 @@ export const coercedValues = [
     value: "1.2.3+rev.6",
     expected: {
       raw: "1.2.3+rev.6",
-      version: "1.2.3+rev.6",
+      version: "1.2.3",
       major: 1,
       minor: 2,
       patch: 3,
@@ -1109,7 +1109,7 @@ export const coercedValues = [
     value: "1.2.3+rev.6/a",
     expected: {
       raw: "1.2.3+rev.6",
-      version: "1.2.3+rev.6",
+      version: "1.2.3",
       major: 1,
       minor: 2,
       patch: 3,
@@ -1122,7 +1122,7 @@ export const coercedValues = [
     value: "1-rc.5+rev.6",
     expected: {
       raw: "1.0.0-rc.5+rev.6",
-      version: "1.0.0-rc.5+rev.6",
+      version: "1.0.0-rc.5",
       major: 1,
       minor: 0,
       patch: 0,
@@ -1135,7 +1135,7 @@ export const coercedValues = [
     value: "1.2-rc.5+rev.6",
     expected: {
       raw: "1.2.0-rc.5+rev.6",
-      version: "1.2.0-rc.5+rev.6",
+      version: "1.2.0-rc.5",
       major: 1,
       minor: 2,
       patch: 0,
@@ -1148,7 +1148,7 @@ export const coercedValues = [
     value: "1.2.3-rc.5+rev.6",
     expected: {
       raw: "1.2.3-rc.5+rev.6",
-      version: "1.2.3-rc.5+rev.6",
+      version: "1.2.3-rc.5",
       major: 1,
       minor: 2,
       patch: 3,
@@ -1161,7 +1161,7 @@ export const coercedValues = [
     value: "1.2.3-rc.5+rev.6/a",
     expected: {
       raw: "1.2.3-rc.5+rev.6",
-      version: "1.2.3-rc.5+rev.6",
+      version: "1.2.3-rc.5",
       major: 1,
       minor: 2,
       patch: 3,
@@ -1174,7 +1174,7 @@ export const coercedValues = [
     value: "1.2-rc.5+rev.6",
     expected: {
       raw: "1.2.0-rc.5+rev.6",
-      version: "1.2.0-rc.5+rev.6",
+      version: "1.2.0-rc.5",
       major: 1,
       minor: 2,
       patch: 0,
@@ -1187,7 +1187,7 @@ export const coercedValues = [
     value: "1.2.3-rc.5+rev.6",
     expected: {
       raw: "1.2.3-rc.5+rev.6",
-      version: "1.2.3-rc.5+rev.6",
+      version: "1.2.3-rc.5",
       major: 1,
       minor: 2,
       patch: 3,
@@ -1200,7 +1200,7 @@ export const coercedValues = [
     value: "1.2.3.4-rc.5+rev.6",
     expected: {
       raw: "2.3.4-rc.5+rev.6",
-      version: "2.3.4-rc.5+rev.6",
+      version: "2.3.4-rc.5",
       major: 2,
       minor: 3,
       patch: 4,
@@ -1226,7 +1226,7 @@ export const coercedValues = [
     value: "1.2.3.4+rev.6",
     expected: {
       raw: "2.3.4+rev.6",
-      version: "2.3.4+rev.6",
+      version: "2.3.4",
       major: 2,
       minor: 3,
       patch: 4,
@@ -1252,7 +1252,7 @@ export const coercedValues = [
     value: "1.2.3.4-rc/7.5+rev.6",
     expected: {
       raw: "7.5.0+rev.6",
-      version: "7.5.0+rev.6",
+      version: "7.5.0",
       major: 7,
       minor: 5,
       patch: 0,
@@ -1265,7 +1265,7 @@ export const coercedValues = [
     value: "1.2.3.4/7-rc.5+rev.6",
     expected: {
       raw: "7.0.0-rc.5+rev.6",
-      version: "7.0.0-rc.5+rev.6",
+      version: "7.0.0-rc.5",
       major: 7,
       minor: 0,
       patch: 0,

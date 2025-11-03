@@ -36,11 +36,11 @@ it.each(validVersionsInLooseMode)(
 );
 it.each(validVersions)(
   "should create a `Semver` object from the valid version $raw",
-  ({ raw, expected }) => {
+  ({ raw, version, expected }) => {
     const { major, minor, patch, prerelease, build } = expected;
     const result = new Semver(raw);
     assert.strictEqual(result.raw, raw);
-    assert.strictEqual(result.version, raw);
+    assert.strictEqual(result.version, version);
     assert.strictEqual(result.major, major);
     assert.strictEqual(result.minor, minor);
     assert.strictEqual(result.patch, patch);
