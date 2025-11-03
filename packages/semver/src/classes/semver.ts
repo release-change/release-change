@@ -41,7 +41,7 @@ export class Semver implements SemverData {
     const { versionCore, major, minor, patch, prerelease, build } = match.groups;
     if (!versionCore) throw new Error("Invalid version core.");
     this.raw = version;
-    this.version = versionCore + (prerelease ? `-${prerelease}` : "") + (build ? `+${build}` : "");
+    this.version = versionCore + (prerelease ? `-${prerelease}` : "");
     this.major = Number(major);
     this.major = Number(major);
     this.minor = Number(minor);
