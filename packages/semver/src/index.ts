@@ -1,6 +1,7 @@
 import { cmp } from "./cmp.js";
 import { coerce } from "./coerce.js";
 import { compare } from "./compare.js";
+import { compareLoose } from "./compare-loose.js";
 import { compareWithOperator } from "./compare-with-operator.js";
 import { eq } from "./eq.js";
 import { getMajor } from "./get-major.js";
@@ -29,6 +30,7 @@ export {
   cmp,
   coerce,
   compare,
+  compareLoose,
   compareWithOperator,
   eq,
   getMajor,
@@ -61,6 +63,7 @@ export default {
   cmp,
   coerce,
   compare,
+  compareLoose,
   compareWithOperator,
   eq,
   getMajor,
