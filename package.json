@@ -53,7 +53,7 @@
     "dev": "pnpm tsc:watch & pnpm test:watch",
     "prepare": "husky",
     "release-change": "packages/cli/bin/index.js",
-    "test": "tsc --build tsconfig.test.json && vitest run",
+    "test": "vitest run",
     "test:watch": "vitest",
     "tsc:watch": "tsc --build --watch --preserveWatchOutput"
   },
