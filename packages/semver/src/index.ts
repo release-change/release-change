@@ -2,6 +2,7 @@ import { clean } from "./clean.js";
 import { cmp } from "./cmp.js";
 import { coerce } from "./coerce.js";
 import { compare } from "./compare.js";
+import { compareBuild } from "./compare-build.js";
 import { compareLoose } from "./compare-loose.js";
 import { compareWithOperator } from "./compare-with-operator.js";
 import { eq } from "./eq.js";
@@ -32,6 +33,7 @@ export {
   cmp,
   coerce,
   compare,
+  compareBuild,
   compareLoose,
   compareWithOperator,
   eq,
@@ -66,6 +68,7 @@ export default {
   cmp,
   coerce,
   compare,
+  compareBuild,
   compareLoose,
   compareWithOperator,
   eq,
