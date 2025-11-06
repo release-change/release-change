@@ -8,7 +8,7 @@ import { compareBuild } from "./compare-build.js";
  *
  * The sort is based on comparisons between versions considering the builds.
  * @param list - The list of versions to sort.
- * @param options - The options to use (`loose`: whether to use loose mode or not).
+ * @param [options] - The options to use (`loose`: whether to use loose mode or not).
  * @return The sorted list of versions.
  */
 export const sort = <TVersion extends string | Semver>(
