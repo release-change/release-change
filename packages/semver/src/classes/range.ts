@@ -41,7 +41,13 @@ export class Range implements SemverRangeData {
    * @param range - The range string.
    * @param [options] - The options to use (`includePrerelease`: whether to include pre-release versions or not, `loose`: whether to use loose mode or not).
    */
-  constructor(range: string, options?: SemverOptionsLoose & SemverOptionsIncludePrerelease) {
+  constructor(
+    range: string | null | undefined,
+    options?: SemverOptionsLoose & SemverOptionsIncludePrerelease
+  ) {
+    if (!range && typeof range !== "string") {
+      throw new Error("Invalid range: the range must be a non-empty string.");
+    }
     this.options = options ?? {};
     this.raw = range;
     this.includePrerelease = Boolean(options?.includePrerelease);
