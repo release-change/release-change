@@ -1,4 +1,6 @@
 export const invalidRanges = [
+  { raw: null, error: "Invalid range: the range must be a non-empty string." },
+  { raw: undefined, error: "Invalid range: the range must be a non-empty string." },
   { raw: ">01.02.03", error: "Invalid comparator `>01.02.03`." },
   { raw: "~1.2.3beta", error: "Invalid range `~1.2.3beta`." },
   { raw: ">=09090-0", error: "Invalid comparator `>=09090-0`." },
