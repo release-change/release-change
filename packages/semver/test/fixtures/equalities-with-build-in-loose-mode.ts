@@ -1,0 +1,6 @@
+export const equalitiesWithBuildInLooseMode = [
+  { a: "v1.0.0", b: "1.0.0" },
+  { a: "v1.0.0+0", b: "1.0.0+0" },
+  { a: "1.0.0", b: "v1.0.0" },
+  { a: "1.0.0+0", b: "v1.0.0+0" }
+];
