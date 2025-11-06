@@ -182,6 +182,11 @@ Strict-mode comparators and ranges will be strict about the semantic versioning 
 - `getPatch(version)`: returns the patch version number;
 - `parse(version)`: attempts to parse a string as a semantic version, returning either a `Semver` object or `null`.
 
+#### Sorting
+
+- `sort(versions)`: returns an array of versions sorted in ascending order, considering the builds;
+- `reverseSort(versions)`: returns an array of versions sorted in descending order, considering the builds.
+
 #### Comparisons
 
 - `gt(version1, version2)`: `version1 > version2`;
