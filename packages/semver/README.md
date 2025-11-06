@@ -199,7 +199,8 @@ Strict-mode comparators and ranges will be strict about the semantic versioning 
 - `compare(version1, version2)`: returns `0` if `version1 == version2`, `1` if `version1` is greater or `-1` if `version2` is greater;
 - `reverseCompare(version1, version2)`: returns `0` if `version1 == version2`, `1` if `version2` is greater or `-1` if `version1` is greater (the reverse of `compare`);
 - `compareBuild(version1, version2)` (the same as `compare`, but considers the builds when two versions are equal);
-- `compareLoose(version1, version2)` (short for `compare(version1, version2, { loose: true })`).
+- `compareLoose(version1, version2)` (short for `compare(version1, version2, { loose: true })`);
+- `getDifference(version1, version2)`: returns the difference between two versions by the release type (`major`, `minor`, `patch`, `premajor`, `preminor`, `prepatch` or `prerelease`) or `null` if both versions are the same.
 
 #### Ranges
 
