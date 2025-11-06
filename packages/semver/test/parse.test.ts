@@ -21,9 +21,12 @@ it.each(validVersionsInLooseMode)(
     assert.deepEqual(parse(raw, { loose: true }), { raw, version, ...expected });
   }
 );
-it.each(validVersions)("should return the object if $raw is parsed", ({ raw, expected }) => {
-  assert.deepEqual(parse(raw), { raw, version: raw, ...expected });
-});
+it.each(validVersions)(
+  "should return the object if $raw is parsed",
+  ({ raw, version, expected }) => {
+    assert.deepEqual(parse(raw), { raw, version, ...expected });
+  }
+);
 it.each(validVersions)(
   "should return the object as is if $raw is already in an object",
   ({ raw }) => {

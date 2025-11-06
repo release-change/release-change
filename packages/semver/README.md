@@ -177,7 +177,15 @@ Strict-mode comparators and ranges will be strict about the semantic versioning 
   - `release` will remove any pre-release part of the version;
   - `identifier` can be used to prefix `premajor`, `preminor`, `prepatch` or `prerelease` version increments (`identifierBase` is the base to be used for the `prerelease` identifier).
 - `getPrerelease(version)`: returns an array of pre-release components, or `null` if none exist (for example: `prerelease('1.2.3-alpha.1')` returns `['alpha', 1]`);
+- `getMajor(version)`: returns the major version number;
+- `getMinor(version)`: returns the minor version number;
+- `getPatch(version)`: returns the patch version number;
 - `parse(version)`: attempts to parse a string as a semantic version, returning either a `Semver` object or `null`.
+
+#### Sorting
+
+- `sort(versions)`: returns an array of versions sorted in ascending order, considering the builds;
+- `reverseSort(versions)`: returns an array of versions sorted in descending order, considering the builds.
 
 #### Comparisons
 
@@ -188,7 +196,11 @@ Strict-mode comparators and ranges will be strict about the semantic versioning 
 - `eq(version1, version2)`: `version1 == version2` (this is true if they are logically equivalent, even though they are not completely the same string);
 - `neq(version1, version2)`: `version1 != version2` (the opposite of `eq`);
 - `compareWithOperator(version1, operator, version2)`: passes in a comparison string and calls the corresponding function above (`"==="` and `"!=="` do simple string comparison), throwing if an invalid comparison string is provided;
-- `compare(version1, version2)`: returns `0` if `version1 == version2`, `1` if `version1` is greater or `-1` if `version2` is greater.
+- `compare(version1, version2)`: returns `0` if `version1 == version2`, `1` if `version1` is greater or `-1` if `version2` is greater;
+- `reverseCompare(version1, version2)`: returns `0` if `version1 == version2`, `1` if `version2` is greater or `-1` if `version1` is greater (the reverse of `compare`);
+- `compareBuild(version1, version2)` (the same as `compare`, but considers the builds when two versions are equal);
+- `compareLoose(version1, version2)` (short for `compare(version1, version2, { loose: true })`);
+- `getDifference(version1, version2)`: returns the difference between two versions by the release type (`major`, `minor`, `patch`, `premajor`, `preminor`, `prepatch` or `prerelease`) or `null` if both versions are the same.
 
 #### Ranges
 
@@ -207,6 +219,22 @@ This aims to provide a very forgiving translation of a non-semver string to sema
 If the `options.rtl` flag is set, then `coerce` will return the right-most coercible tuple not sharing an ending index with a longer coercible tuple: for example, `1.2.3.4` will return `2.3.4` in `rtl` mode, not `4.0.0`, `1.2.3/4` will return `4.0.0` because the `4` is not a part of any other overlapping semantic versioning tuple.
 
 If the `options.includePrerelease` flag is set, then the `coerce` result will contain pre-release and build parts of a version: for example, `1.2.3.4-rc.1+rev.2` will preserve pre-release `rc.1` and build `rev.2` in the result.
+
+#### Cleaning
+
+- `clean(version)`: cleans a string to be a valid semantic version, if possible.
+
+This will return a cleaned and trimmed semantic version. If the provided version is not valid, `null` will be returned. This does not work for ranges.
+
+Examples:
+- `clean(" = v 2.1.5foo"); // null`,
+- `clean(" = v 2.1.5foo', { loose: true }); // '2.1.5-foo'`,
+- `clean(" = v 2.1.5-foo"); // null`,
+- `clean(" = v 2.1.5-foo", { loose: true }); // '2.1.5-foo'`,
+- `clean("=v2.1.5"); // '2.1.5'`,
+- `clean(" =v2.1.5"); // '2.1.5'`,
+- `clean(" 2.1.5 "); // '2.1.5'`,
+- `clean("~1.0.0"); // null`.
 
 ## Get help
 

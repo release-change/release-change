@@ -1,4 +1,4 @@
-import { assert, expect, it, test } from "vitest";
+import { expect, it, test } from "vitest";
 
 import { gte } from "../src/index.js";
 import { comparisons } from "./fixtures/comparisons.js";
@@ -9,7 +9,7 @@ import { equalitiesInLooseMode } from "./fixtures/equalities-in-loose-mode.js";
 it.each([...comparisonsInLooseMode, ...equalitiesInLooseMode])(
   "should throw an error if $a and $b are compared in strict mode",
   ({ a, b }) => {
-    assert.throws(() => gte(a, b));
+    expect(() => gte(a, b)).toThrow();
   }
 );
 test.each([...comparisons, ...equalities])(

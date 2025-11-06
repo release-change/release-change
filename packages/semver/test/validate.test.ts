@@ -20,6 +20,6 @@ it.each(validVersionsInLooseMode)(
     assert.strictEqual(validate(raw, { loose: true }), version);
   }
 );
-it.each(validVersions)("should return $raw if $raw is to be validated", ({ raw }) => {
-  assert.strictEqual(validate(raw), raw);
+it.each(validVersions)("should return $raw if $raw is to be validated", ({ raw, version }) => {
+  assert.strictEqual(validate(raw), version);
 });

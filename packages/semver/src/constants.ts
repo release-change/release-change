@@ -4,6 +4,7 @@
 const DIGITS_PATTERN = /\d+/;
 const NUMERIC_IDENTIFIER_PATTERN = /0|[1-9]\d*/;
 const ALPHANUMERIC_IDENTIFIER_PATTERN = /[0-9a-zA-Z-]+/;
+const V_IDENTIFIER_PATTERN = /[v=\s]*/;
 const BUILD_IDENTIFIER_PATTERN = new RegExp(
   `(?:${ALPHANUMERIC_IDENTIFIER_PATTERN.source}|${DIGITS_PATTERN.source})`
 );
@@ -32,7 +33,7 @@ export const VALID_SEMVER_PATTERN = new RegExp(
   `^(?:${VERSION_CORE_PATTERN.source}${PRERELEASE_PATTERN.source}${BUILD_PATTERN.source})$`
 );
 export const VALID_SEMVER_PATTERN_LOOSE = new RegExp(
-  `^\\s*[v=]?\\s*(?:${VERSION_CORE_PATTERN_LOOSE.source}${PRERELEASE_PATTERN_LOOSE.source}${BUILD_PATTERN.source})$`
+  `^${V_IDENTIFIER_PATTERN.source}(?:${VERSION_CORE_PATTERN_LOOSE.source}${PRERELEASE_PATTERN_LOOSE.source}${BUILD_PATTERN.source})$`
 );
 export const COERCE = /(?<firstIdentifier>\d+)(?<restIdentifiers>(?:\.\d+)*)/;
 export const COERCE_INCLUDING_PRERELEASE = new RegExp(
@@ -50,7 +51,6 @@ export const SPACE_FOLLOWED_COMPARATORS_PATTERN = new RegExp(
   `(${RANGE_OPERATORS_PATTERN.source}|${TILDE_COMPARATOR_PATTERN.source}|${CARET_COMPARATOR_PATTERN.source})\\s*`,
   "g"
 );
-const V_IDENTIFIER_PATTERN = /\s*[v=]?\s*/;
 const STAR_IDENTIFIER_PATTERN = /\*/;
 const X_IDENTIFIER_PATTERN = /[xX]/;
 const X_RANGE_PATTERN = new RegExp(
@@ -81,7 +81,7 @@ const COMPARATOR_SEMVER_PATTERN = new RegExp(
   `(?:${VERSION_CORE_PATTERN.source}${PRERELEASE_PATTERN.source}${BUILD_PATTERN.source})`
 );
 const COMPARATOR_SEMVER_PATTERN_LOOSE = new RegExp(
-  `\\s*[v=]?\\s*(?:${VERSION_CORE_PATTERN_LOOSE.source}${PRERELEASE_PATTERN_LOOSE.source}${BUILD_PATTERN.source})`
+  `${V_IDENTIFIER_PATTERN.source}(?:${VERSION_CORE_PATTERN_LOOSE.source}${PRERELEASE_PATTERN_LOOSE.source}${BUILD_PATTERN.source})`
 );
 export const COMPARATOR_PATTERN = new RegExp(
   `^(?<operator>${RANGE_OPERATORS_PATTERN.source})?${COMPARATOR_SEMVER_PATTERN.source}$`

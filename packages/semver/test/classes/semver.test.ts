@@ -1,4 +1,4 @@
-import { assert, it } from "vitest";
+import { assert, expect, it } from "vitest";
 
 import { Semver } from "../../src/classes/semver.js";
 import { invalidIncrements } from "../fixtures/invalid-increments.js";
@@ -11,13 +11,13 @@ import { validVersionsInLooseMode } from "../fixtures/valid-versions-in-loose-mo
 it.each(invalidVersions)(
   "should throw an error if the version $raw is invalid",
   ({ raw, error, options }) => {
-    assert.throws(() => new Semver(raw, options), error);
+    expect(() => new Semver(raw, options)).toThrowError(error);
   }
 );
 it.each(validVersionsInLooseMode)(
   "should throw an error if the version $raw is parsed in strict mode",
   ({ raw }) => {
-    assert.throws(() => new Semver(raw));
+    expect(() => new Semver(raw)).toThrowError(`Invalid version \`${raw}\`.`);
   }
 );
 it.each(validVersionsInLooseMode)(
@@ -36,11 +36,11 @@ it.each(validVersionsInLooseMode)(
 );
 it.each(validVersions)(
   "should create a `Semver` object from the valid version $raw",
-  ({ raw, expected }) => {
+  ({ raw, version, expected }) => {
     const { major, minor, patch, prerelease, build } = expected;
     const result = new Semver(raw);
     assert.strictEqual(result.raw, raw);
-    assert.strictEqual(result.version, raw);
+    assert.strictEqual(result.version, version);
     assert.strictEqual(result.major, major);
     assert.strictEqual(result.minor, minor);
     assert.strictEqual(result.patch, patch);
@@ -55,19 +55,17 @@ it("should not convert big number prerelease values as numbers", () => {
 it.each(invalidIncrements)(
   "should throw an error if the version $version is invalid to be increased",
   ({ version, releaseType, prefix, identifierBase, errorMessage }) => {
-    assert.throws(
-      () => new Semver(version).increase(releaseType, { prefix, identifierBase }),
-      errorMessage
-    );
+    expect(() =>
+      new Semver(version).increase(releaseType, { prefix, identifierBase })
+    ).toThrowError(errorMessage);
   }
 );
 it.each(validIncrementsInLooseMode)(
   "should throw an error if the version $version is invalid to be increased in strict mode",
   ({ version, releaseType, prefix, identifierBase }) => {
-    assert.throws(
-      () => new Semver(version).increase(releaseType, { prefix, identifierBase }),
-      `Invalid version \`${version}\`.`
-    );
+    expect(() =>
+      new Semver(version).increase(releaseType, { prefix, identifierBase })
+    ).toThrowError(`Invalid version \`${version}\`.`);
   }
 );
 it.each(validIncrements)(

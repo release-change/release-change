@@ -1,4 +1,4 @@
-import { assert, it } from "vitest";
+import { assert, expect, it } from "vitest";
 
 import { Range } from "../../src/classes/range.js";
 import { invalidRanges } from "../fixtures/invalid-ranges.js";
@@ -8,13 +8,13 @@ import { validRangesInLooseMode } from "../fixtures/valid-ranges-in-loose-mode.j
 it.each(invalidRanges)(
   "should throw an error if the range $raw is invalid",
   ({ raw, error, options }) => {
-    assert.throws(() => new Range(raw, options), error);
+    expect(() => new Range(raw, options)).toThrowError(error);
   }
 );
 it.each(validRangesInLooseMode)(
   "should throw an error if the range $raw is parsed in strict mode",
   ({ raw, includePrerelease }) => {
-    assert.throws(() => new Range(raw, { includePrerelease }));
+    expect(() => new Range(raw, { includePrerelease })).toThrow();
   }
 );
 it.each(validRangesInLooseMode)(
