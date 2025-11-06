@@ -24,7 +24,10 @@ import { patch } from "./patch.js";
 import { prerelease } from "./prerelease.js";
 import { rcompare } from "./rcompare.js";
 import { reverseCompare } from "./reverse-compare.js";
+import { reverseSort } from "./reverse-sort.js";
+import { rsort } from "./rsort.js";
 import { satisfies } from "./satisfies.js";
+import { sort } from "./sort.js";
 import { valid } from "./valid.js";
 import { validate } from "./validate.js";
 
@@ -55,7 +58,10 @@ export {
   prerelease,
   rcompare,
   reverseCompare,
+  reverseSort,
+  rsort,
   satisfies,
+  sort,
   valid,
   validate
 };
@@ -90,7 +96,10 @@ export default {
   prerelease,
   rcompare,
   reverseCompare,
+  reverseSort,
+  rsort,
   satisfies,
+  sort,
   valid,
   validate
 };
