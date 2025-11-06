@@ -5,7 +5,9 @@ import { compare } from "./compare.js";
 import { compareBuild } from "./compare-build.js";
 import { compareLoose } from "./compare-loose.js";
 import { compareWithOperator } from "./compare-with-operator.js";
+import { diff } from "./diff.js";
 import { eq } from "./eq.js";
+import { getDifference } from "./get-difference.js";
 import { getMajor } from "./get-major.js";
 import { getMinor } from "./get-minor.js";
 import { getPatch } from "./get-patch.js";
@@ -39,7 +41,9 @@ export {
   compareBuild,
   compareLoose,
   compareWithOperator,
+  diff,
   eq,
+  getDifference,
   getMajor,
   getMinor,
   getPatch,
@@ -77,7 +81,9 @@ export default {
   compareBuild,
   compareLoose,
   compareWithOperator,
+  diff,
   eq,
+  getDifference,
   getMajor,
   getMinor,
   getPatch,
