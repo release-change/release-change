@@ -204,6 +204,7 @@ Strict-mode comparators and ranges will be strict about the semantic versioning 
 
 #### Ranges
 
+- `validateRange(range)`: returns the range if it is valid, `null` otherwise;
 - `satisfies(version, range)`: returns `true` if the version satisfies the range, `false` otherwise.
 
 Note that, since ranges may be non-contiguous, a version might not be greater than a range, less than a range *or* satisfy a range. For example, the range `1.2 <1.2.9 || >2.0.0` would have a hole from `1.2.9` until `2.0.0`, so version `1.2.10` would not be greater than the range (because `2.0.1` satisfies, which is higher) nor less than the range (since `1.2.8` satisfies, which is lower) and it also does not satisfy the range.
