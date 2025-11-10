@@ -313,11 +313,15 @@ export class Range implements SemverRangeData {
         const match = comparator.match(loose ? CARET_PATTERN_LOOSE : CARET_PATTERN);
         if (!match || !match.groups) return comparator;
         const { major, minor, patch, prerelease } = match.groups;
+        const digitsOnly = /^\d+$/;
+        const isMajorNumeric = major?.match(digitsOnly);
+        const isMinorNumeric = minor?.match(digitsOnly);
+        const isPatchNumeric = patch?.match(digitsOnly);
         const completeVersion = comparator.replace(CARET_COMPARATOR_PATTERN, "");
         if (
-          major &&
-          minor &&
-          patch &&
+          isMajorNumeric &&
+          isMinorNumeric &&
+          isPatchNumeric &&
           !this.isValidCompleteVersion(completeVersion, Boolean(loose))
         ) {
           throw new Error(`Invalid range \`${comparator}\`.`);
@@ -342,19 +346,25 @@ export class Range implements SemverRangeData {
    *    - a range consisting of just an `x` or a `*` is replaced by `*`;
    *    - a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, and less than the next pre-major version;
    *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-minor version;
+   *    - any prerelease identifiers are replaced by `-0` if the `includePrerelease` option is set to `true`;
    * - if the operator is greater-than:
    *    - a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to the next major version;
    *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to the next minor version;
+   *    - any prerelease identifiers are replaced by `-0` if the `includePrerelease` option is set to `true`;
    * - if the operator is greater-than-or-equal:
    *    - a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`;
    *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`;
+   *    - any prerelease identifiers are replaced by `-0` if the `includePrerelease` option is set to `true`;
    * - if the operator is less-than:
    *    - a single major-version range, whether completed by an `x` or not, is replaced by a range less than this pre-major version;
    *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than this pre-minor version;
+   *    - any prerelease identifiers are kept if the `includePrerelease` option is set to `true`;
+   *    - `-0` is appended as a prerelease identifier if the `includePrerelease` option is set to `false` or not declared;
    * - if the operator is less-than-or-equal:
-   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range less than or equal to the next major version, with minor and patch at `0`;
-   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than or equal to the next minor version, with patch at `0`;
-   * - any prerelease identifiers are kept, even tough the `includePrerelease` option is set to `false` or not declared.
+   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range less than the next pre-major version;
+   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than the next pre-minor version;
+   *    - any prerelease identifiers are kept if the `includePrerelease` option is set to `true`;
+   *    - `-0` is appended as a prerelease identifier if the `includePrerelease` option is set to `false` or not declared.
    * @example
    * `2`, `2.x`, `2.x.x`, `=2`, `=2.x` and `=2.x.x` become `>=2.0.0 <3.0.0-0`,
    * `1.2`, `1.2.x`, `1.2` and `1.2.x` become `>=1.2.0 <1.3.0-0`,
@@ -398,19 +408,18 @@ export class Range implements SemverRangeData {
             : comparator;
         }
         const lowPatch = 0;
+        const lowPrerelease = includePrerelease ? "-0" : "";
         switch (operator) {
           case ">": {
             if (!isMajorNumeric) return "<0.0.0-0";
             const lowMajor = isMinorNumeric ? Number(major) : Number(major) + 1;
             const lowMinor = isMinorNumeric ? Number(minor) + 1 : 0;
-            const lowPrerelease = prerelease ? `-${prerelease}` : includePrerelease ? "-0" : "";
             return `>=${lowMajor}.${lowMinor}.${lowPatch}${lowPrerelease}`;
           }
           case ">=": {
             if (!isMajorNumeric) return "*";
             const lowMajor = Number(major);
             const lowMinor = isMinorNumeric ? Number(minor) : 0;
-            const lowPrerelease = prerelease ? `-${prerelease}` : includePrerelease ? "-0" : "";
             return `>=${lowMajor}.${lowMinor}.${lowPatch}${lowPrerelease}`;
           }
           case "<": {
@@ -425,13 +434,12 @@ export class Range implements SemverRangeData {
             const lowMajor = isMinorNumeric ? Number(major) : Number(major) + 1;
             const lowMinor = isMinorNumeric ? Number(minor) + 1 : 0;
             const lowPrerelease = prerelease ? `-${prerelease}` : "-0";
-            return `<=${lowMajor}.${lowMinor}.${lowPatch}${lowPrerelease}`;
+            return `<${lowMajor}.${lowMinor}.${lowPatch}${lowPrerelease}`;
           }
           default: {
             if (!isMajorNumeric) return "*";
             const lowMajor = Number(major) || 0;
             const lowMinor = isMinorNumeric ? Number(minor) || 0 : 0;
-            const lowPrerelease = prerelease ? `-${prerelease}` : includePrerelease ? "-0" : "";
             const highMajor = isMinorNumeric ? lowMajor : lowMajor + 1;
             const highMinor = isMinorNumeric ? lowMinor + 1 : 0;
             const highPatch = 0;
