@@ -99,6 +99,15 @@ export class Range implements SemverRangeData {
   }
 
   /**
+   * Checks whether a string is numeric.
+   * @param string - The string to check.
+   * @return `true` if the string is numeric, `false` otherwise.
+   */
+  isNumeric(string: string | undefined): boolean {
+    return Boolean(string?.match(/^\d+$/));
+  }
+
+  /**
    * Formats the `set` property.
    *
    * The formatting follows the following rules:
@@ -178,9 +187,8 @@ export class Range implements SemverRangeData {
             if (!match || !match.groups) return `${index ? "<=" : ">="}${comparator}`;
             if (comparator.match(/^x$/i)) return "*";
             const { major, minor, patch, prerelease } = match.groups;
-            const digitsOnly = /^\d+$/;
-            const isMinorNumeric = minor?.match(digitsOnly);
-            const isPatchNumeric = patch?.match(digitsOnly);
+            const isMinorNumeric = this.isNumeric(minor);
+            const isPatchNumeric = this.isNumeric(patch);
             const operator = index
               ? includePrerelease || !isMinorNumeric || !isPatchNumeric
                 ? "<"
@@ -248,10 +256,9 @@ export class Range implements SemverRangeData {
         const match = comparator.match(loose ? TILDE_PATTERN_LOOSE : TILDE_PATTERN);
         if (!match || !match.groups) return comparator;
         const { major, minor, patch, prerelease } = match.groups;
-        const digitsOnly = /^\d+$/;
-        const isMajorNumeric = major?.match(digitsOnly);
-        const isMinorNumeric = minor?.match(digitsOnly);
-        const isPatchNumeric = patch?.match(digitsOnly);
+        const isMajorNumeric = this.isNumeric(major);
+        const isMinorNumeric = this.isNumeric(minor);
+        const isPatchNumeric = this.isNumeric(patch);
         const completeVersion = comparator.replace(TILDE_COMPARATOR_PATTERN, "");
         if (
           isMajorNumeric &&
@@ -313,10 +320,9 @@ export class Range implements SemverRangeData {
         const match = comparator.match(loose ? CARET_PATTERN_LOOSE : CARET_PATTERN);
         if (!match || !match.groups) return comparator;
         const { major, minor, patch, prerelease } = match.groups;
-        const digitsOnly = /^\d+$/;
-        const isMajorNumeric = major?.match(digitsOnly);
-        const isMinorNumeric = minor?.match(digitsOnly);
-        const isPatchNumeric = patch?.match(digitsOnly);
+        const isMajorNumeric = this.isNumeric(major);
+        const isMinorNumeric = this.isNumeric(minor);
+        const isPatchNumeric = this.isNumeric(patch);
         const completeVersion = comparator.replace(CARET_COMPARATOR_PATTERN, "");
         if (
           isMajorNumeric &&
@@ -394,10 +400,9 @@ export class Range implements SemverRangeData {
         );
         if (!match || !match.groups) return comparator;
         const { operator, major, minor, patch, prerelease } = match.groups;
-        const digitsOnly = /^\d+$/;
-        const isMajorNumeric = major?.match(digitsOnly);
-        const isMinorNumeric = minor?.match(digitsOnly);
-        const isPatchNumeric = patch?.match(digitsOnly);
+        const isMajorNumeric = this.isNumeric(major);
+        const isMinorNumeric = this.isNumeric(minor);
+        const isPatchNumeric = this.isNumeric(patch);
         const completeVersion = comparator.replace(RANGE_OPERATORS_PATTERN, "");
         if (isMajorNumeric && isMinorNumeric && isPatchNumeric) {
           if (!this.isValidCompleteVersion(completeVersion, Boolean(loose))) {
