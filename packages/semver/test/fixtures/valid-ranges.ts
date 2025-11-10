@@ -101,5 +101,34 @@ export const validRanges = [
   {
     raw: `^${Number.MAX_SAFE_INTEGER - 1}.0.0`,
     expected: { range: `>=${Number.MAX_SAFE_INTEGER - 1}.0.0 <${Number.MAX_SAFE_INTEGER}.0.0-0` }
+  },
+  { raw: "1.x.x+build >2.x+build", expected: { range: ">=1.0.0 <2.0.0-0 >=3.0.0" } },
+  { raw: ">=1.x+build <2.x.x+build", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "1.x.x+build || 2.x.x+build", expected: { range: ">=1.0.0 <2.0.0-0||>=2.0.0 <3.0.0-0" } },
+  { raw: "1.x+build.123", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "1.x.x+meta-data", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "1.x.x+build.123 >2.x.x+meta-data", expected: { range: ">=1.0.0 <2.0.0-0 >=3.0.0" } },
+  { raw: "1.x.x+build <2.x.x+meta", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: ">1.x+build <=2.x.x+meta", expected: { range: ">=2.0.0 <3.0.0-0" } },
+  { raw: " 1.x.x+build   >2.x.x+build  ", expected: { range: ">=1.0.0 <2.0.0-0 >=3.0.0" } },
+  { raw: "^1.x+build", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "^1.x.x+build", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "^1.2.x+build", expected: { range: ">=1.2.0 <2.0.0-0" } },
+  { raw: "^1.x+meta-data", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "^1.x.x+build.123", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "~1.x+build", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "~1.x.x+build", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "~1.2.x+build", expected: { range: ">=1.2.0 <1.3.0-0" } },
+  { raw: "~1.x+meta-data", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "~1.x.x+build.123", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "^1.x.x+build || ~2.x.x+meta", expected: { range: ">=1.0.0 <2.0.0-0||>=2.0.0 <3.0.0-0" } },
+  { raw: "~1.x.x+build >2.x+meta", expected: { range: ">=1.0.0 <2.0.0-0 >=3.0.0" } },
+  { raw: "^1.x+build.123 <2.x.x+meta-data", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: "1.x.x-alpha+build", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  { raw: ">1.x.x-alpha+build", expected: { range: ">=2.0.0" } },
+  { raw: ">=1.x.x-alpha+build <2.x.x+build", expected: { range: ">=1.0.0 <2.0.0-0" } },
+  {
+    raw: "1.x.x-alpha+build || 2.x.x+build",
+    expected: { range: ">=1.0.0 <2.0.0-0||>=2.0.0 <3.0.0-0" }
   }
 ];
