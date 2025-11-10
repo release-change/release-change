@@ -31,7 +31,9 @@ import { rsort } from "./rsort.js";
 import { satisfies } from "./satisfies.js";
 import { sort } from "./sort.js";
 import { valid } from "./valid.js";
+import { validRange } from "./valid-range.js";
 import { validate } from "./validate.js";
+import { validateRange } from "./validate-range.js";
 
 export {
   clean,
@@ -67,7 +69,9 @@ export {
   satisfies,
   sort,
   valid,
-  validate
+  validRange,
+  validate,
+  validateRange
 };
 
 /**
@@ -107,5 +111,7 @@ export default {
   satisfies,
   sort,
   valid,
-  validate
+  validRange,
+  validate,
+  validateRange
 };
