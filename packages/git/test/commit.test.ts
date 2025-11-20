@@ -42,15 +42,14 @@ it("should throw an error if the commit message is empty", async () => {
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   await expect(commit("", mockedCwd)).rejects.toThrowError(expectedError);
 });
-it.each(mockedCommitMessages)(
-  'should run the command with the commit message `"%s"` if correctly provided',
-  async mockedCommitMessage => {
-    const mockedCommand = vi
-      .mocked(runCommand)
-      .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-    await commit(mockedCommitMessage, mockedCwd);
-    expect(mockedCommand).toHaveBeenCalledWith("git", ["commit", "-m", mockedCommitMessage], {
-      cwd: mockedCwd
-    });
-  }
-);
+it.each(
+  mockedCommitMessages
+)('should run the command with the commit message `"%s"` if correctly provided', async mockedCommitMessage => {
+  const mockedCommand = vi
+    .mocked(runCommand)
+    .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+  await commit(mockedCommitMessage, mockedCwd);
+  expect(mockedCommand).toHaveBeenCalledWith("git", ["commit", "-m", mockedCommitMessage], {
+    cwd: mockedCwd
+  });
+});

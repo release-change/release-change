@@ -175,51 +175,55 @@ it("should throw an error if no commits have been retrieved", () => {
     )
   ).toThrowError(expectedError);
 });
-it.each(mockedPackages)(
-  "should prepare release notes for branch $branch, from $lastReleasePackage.gitTag to $nextReleasePackage.gitTag",
-  ({ branch, commits, lastReleasePackage, nextReleasePackage, expectedReleaseNotes }) => {
-    assert.deepEqual(
-      prepareReleaseNotes(nextReleasePackage, [], {
-        ...mockedContext,
-        branch,
-        lastRelease: { ref: null, packages: [lastReleasePackage] },
-        commits
-      }),
-      expectedReleaseNotes
-    );
-  }
-);
-it.each(mockedPackagesInMonorepo)(
-  "should prepare release notes in a monorepo context for branch $branch, from $lastReleasePackage.gitTag to $nextReleasePackage.gitTag",
-  ({
-    branch,
-    commits,
-    packageDependencies,
-    nextReleasePackageDependencies,
-    lastReleasePackage,
-    nextReleasePackage,
+it.each(
+  mockedPackages
+)("should prepare release notes for branch $branch, from $lastReleasePackage.gitTag to $nextReleasePackage.gitTag", ({
+  branch,
+  commits,
+  lastReleasePackage,
+  nextReleasePackage,
+  expectedReleaseNotes
+}) => {
+  assert.deepEqual(
+    prepareReleaseNotes(nextReleasePackage, [], {
+      ...mockedContext,
+      branch,
+      lastRelease: { ref: null, packages: [lastReleasePackage] },
+      commits
+    }),
     expectedReleaseNotes
-  }) => {
-    assert.deepEqual(
-      prepareReleaseNotes(nextReleasePackage, packageDependencies, {
-        ...mockedContextInMonorepo,
-        branch,
-        lastRelease: {
-          ref: null,
-          packages: [
-            lastReleasePackage,
-            {
-              name: "@monorepo/b",
-              pathname: "packages/b",
-              gitTag: "null",
-              version: "1.0.0"
-            }
-          ]
-        },
-        nextRelease: [nextReleasePackage, ...nextReleasePackageDependencies],
-        commits
-      }),
-      expectedReleaseNotes
-    );
-  }
-);
+  );
+});
+it.each(
+  mockedPackagesInMonorepo
+)("should prepare release notes in a monorepo context for branch $branch, from $lastReleasePackage.gitTag to $nextReleasePackage.gitTag", ({
+  branch,
+  commits,
+  packageDependencies,
+  nextReleasePackageDependencies,
+  lastReleasePackage,
+  nextReleasePackage,
+  expectedReleaseNotes
+}) => {
+  assert.deepEqual(
+    prepareReleaseNotes(nextReleasePackage, packageDependencies, {
+      ...mockedContextInMonorepo,
+      branch,
+      lastRelease: {
+        ref: null,
+        packages: [
+          lastReleasePackage,
+          {
+            name: "@monorepo/b",
+            pathname: "packages/b",
+            gitTag: "null",
+            version: "1.0.0"
+          }
+        ]
+      },
+      nextRelease: [nextReleasePackage, ...nextReleasePackageDependencies],
+      commits
+    }),
+    expectedReleaseNotes
+  );
+});

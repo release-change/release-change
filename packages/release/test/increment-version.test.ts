@@ -53,25 +53,25 @@ it("should throw an error if the current version is invalid", () => {
     })
   );
 });
-describe.each(mockedReleases)(
-  "increment version from $currentVersion",
-  ({ currentVersion, branches }) => {
-    for (const key in branches) {
-      const branch = branches[key];
-      const mockedBranchConfig = mockedBranchConfigs[key];
-      if (branch && mockedBranchConfig) {
-        for (const releaseType in branch) {
-          const expectedVersion = branch[releaseType];
-          it.runIf(mockedReleaseTypes.includes(releaseType))(
-            `should return '${expectedVersion}' if release type is '${releaseType}' for branch ${key}`,
-            () => {
-              expect(
-                incrementVersion(currentVersion, releaseType as ReleaseType, mockedBranchConfig)
-              ).toBe(expectedVersion);
-            }
-          );
-        }
+describe.each(mockedReleases)("increment version from $currentVersion", ({
+  currentVersion,
+  branches
+}) => {
+  for (const key in branches) {
+    const branch = branches[key];
+    const mockedBranchConfig = mockedBranchConfigs[key];
+    if (branch && mockedBranchConfig) {
+      for (const releaseType in branch) {
+        const expectedVersion = branch[releaseType];
+        it.runIf(mockedReleaseTypes.includes(releaseType))(
+          `should return '${expectedVersion}' if release type is '${releaseType}' for branch ${key}`,
+          () => {
+            expect(
+              incrementVersion(currentVersion, releaseType as ReleaseType, mockedBranchConfig)
+            ).toBe(expectedVersion);
+          }
+        );
       }
     }
   }
-);
+});

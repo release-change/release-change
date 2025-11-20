@@ -10,9 +10,9 @@ it.each(listsToSortInLooseMode)("should throw an error in strict mode", ({ list 
 it.each(listsToSort)("should sort in ascending order", ({ list, expectedDescending }) => {
   assert.deepEqual(reverseSort(list), expectedDescending);
 });
-it.each(listsToSortInLooseMode)(
-  "should sort in ascending order in loose mode",
-  ({ list, expectedDescending }) => {
-    assert.deepEqual(reverseSort(list, { loose: true }), expectedDescending);
-  }
-);
+it.each(listsToSortInLooseMode)("should sort in ascending order in loose mode", ({
+  list,
+  expectedDescending
+}) => {
+  assert.deepEqual(reverseSort(list, { loose: true }), expectedDescending);
+});

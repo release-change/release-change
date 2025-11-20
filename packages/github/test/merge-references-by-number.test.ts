@@ -61,9 +61,9 @@ const mockedArraysWithObjectsToMerge = [
   }
 ];
 
-it.each(mockedArraysWithObjectsToMerge)(
-  "should return $expected from $input",
-  ({ input, expected }) => {
-    assert.deepEqual(mergeReferencesByNumber(input), expected);
-  }
-);
+it.each(mockedArraysWithObjectsToMerge)("should return $expected from $input", ({
+  input,
+  expected
+}) => {
+  assert.deepEqual(mergeReferencesByNumber(input), expected);
+});

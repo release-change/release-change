@@ -124,16 +124,16 @@ it("should configure CI environment", async () => {
   await run(mockedCliOptions, mockedContextBase);
   expect(mockedConfigureCiEnvironment).toHaveBeenCalledWith(mockedContextBase.env);
 });
-it.each(mockedPackages)(
-  "should get packages and determine if it is a monorepo",
-  async ({ packages, expectedToBeMonorepo }) => {
-    const mockedGetPackages = vi.mocked(getPackages).mockResolvedValue(packages);
-    const mockedIsMonorepo = vi.mocked(isMonorepo).mockReturnValue(expectedToBeMonorepo);
-    await run(mockedCliOptions, mockedContextBase);
-    expect(mockedGetPackages).toHaveBeenCalledWith(mockedContextBase);
-    expect(mockedIsMonorepo).toHaveBeenCalledWith(packages);
-  }
-);
+it.each(mockedPackages)("should get packages and determine if it is a monorepo", async ({
+  packages,
+  expectedToBeMonorepo
+}) => {
+  const mockedGetPackages = vi.mocked(getPackages).mockResolvedValue(packages);
+  const mockedIsMonorepo = vi.mocked(isMonorepo).mockReturnValue(expectedToBeMonorepo);
+  await run(mockedCliOptions, mockedContextBase);
+  expect(mockedGetPackages).toHaveBeenCalledWith(mockedContextBase);
+  expect(mockedIsMonorepo).toHaveBeenCalledWith(packages);
+});
 it("should call `checkRepository`", async () => {
   const mockedCheckRepository = vi.mocked(checkRepository).mockResolvedValue(0);
   await run(mockedCliOptions, mockedContextBase);

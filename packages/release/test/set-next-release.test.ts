@@ -99,60 +99,60 @@ it("should log a warning message if no last release is found concerning the pack
   });
   expect(mockedLogger.logWarn).toHaveBeenCalledWith("No last release found for root package.");
 });
-describe.each([...mockedNextReleases, ...mockedNextReleasesInMonorepo])(
-  "add release to context (ref: $lastRelease.ref)",
-  ({ lastRelease, branches }) => {
-    describe.each(branches)("for branch $branch", ({ branch, releaseTypes }) => {
-      describe.each(releaseTypes)("for $releaseType", ({ releaseType, nextReleases }) => {
-        it("should set nextRelease with the appropriate values", () => {
-          const context = {
-            ...mockedContext,
-            config: { ...mockedConfig, isMonorepo: true },
-            branch,
-            lastRelease
-          };
-          const expectedNextRelease: NextRelease = nextReleases.map(nextRelease => {
-            const gitTag = `${nextRelease.name}${nextRelease.name ? "@" : ""}v${nextRelease.version}`;
-            return nextRelease.npmTag
-              ? {
-                  name: nextRelease.name,
-                  pathname: nextRelease.pathname,
-                  gitTag,
-                  version: nextRelease.version,
-                  npmTag: nextRelease.npmTag
-                }
-              : {
-                  name: nextRelease.name,
-                  pathname: nextRelease.pathname,
-                  gitTag,
-                  version: nextRelease.version
-                };
-          });
-          for (const nextRelease of nextReleases) {
-            vi.mocked(incrementVersion).mockReturnValueOnce(nextRelease.version);
-          }
-          setNextRelease(releaseType, context);
-          assert.deepEqual(context.nextRelease, expectedNextRelease);
-          for (const nextRelease of nextReleases) {
-            const { name, version } = nextRelease;
-            const packageLastRelease = lastRelease.packages.find(
-              packageItem => packageItem.name === name
-            );
-            const packageName = name ? name : "root";
-            if (packageLastRelease) {
-              if (packageLastRelease.gitTag) {
-                expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-                  `For ${packageName} package, the previous release is ${packageLastRelease.version} and the next release version is ${version}.`
-                );
-              } else {
-                expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-                  `For ${packageName} package, there is no previous release and the next release version is ${version}.`
-                );
+describe.each([
+  ...mockedNextReleases,
+  ...mockedNextReleasesInMonorepo
+])("add release to context (ref: $lastRelease.ref)", ({ lastRelease, branches }) => {
+  describe.each(branches)("for branch $branch", ({ branch, releaseTypes }) => {
+    describe.each(releaseTypes)("for $releaseType", ({ releaseType, nextReleases }) => {
+      it("should set nextRelease with the appropriate values", () => {
+        const context = {
+          ...mockedContext,
+          config: { ...mockedConfig, isMonorepo: true },
+          branch,
+          lastRelease
+        };
+        const expectedNextRelease: NextRelease = nextReleases.map(nextRelease => {
+          const gitTag = `${nextRelease.name}${nextRelease.name ? "@" : ""}v${nextRelease.version}`;
+          return nextRelease.npmTag
+            ? {
+                name: nextRelease.name,
+                pathname: nextRelease.pathname,
+                gitTag,
+                version: nextRelease.version,
+                npmTag: nextRelease.npmTag
               }
+            : {
+                name: nextRelease.name,
+                pathname: nextRelease.pathname,
+                gitTag,
+                version: nextRelease.version
+              };
+        });
+        for (const nextRelease of nextReleases) {
+          vi.mocked(incrementVersion).mockReturnValueOnce(nextRelease.version);
+        }
+        setNextRelease(releaseType, context);
+        assert.deepEqual(context.nextRelease, expectedNextRelease);
+        for (const nextRelease of nextReleases) {
+          const { name, version } = nextRelease;
+          const packageLastRelease = lastRelease.packages.find(
+            packageItem => packageItem.name === name
+          );
+          const packageName = name ? name : "root";
+          if (packageLastRelease) {
+            if (packageLastRelease.gitTag) {
+              expect(mockedLogger.logInfo).toHaveBeenCalledWith(
+                `For ${packageName} package, the previous release is ${packageLastRelease.version} and the next release version is ${version}.`
+              );
+            } else {
+              expect(mockedLogger.logInfo).toHaveBeenCalledWith(
+                `For ${packageName} package, there is no previous release and the next release version is ${version}.`
+              );
             }
           }
-        });
+        }
       });
     });
-  }
-);
+  });
+});
