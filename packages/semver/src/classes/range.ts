@@ -409,7 +409,7 @@ export class Range implements SemverRangeData {
             throw new Error(`Invalid range \`${comparator}\`.`);
           }
           return loose
-            ? `${operator}${Number(major)}.${Number(minor)}.${Number(patch)}${prerelease ? `-${prerelease}` : ""}`
+            ? `${operator ?? ""}${Number(major)}.${Number(minor)}.${Number(patch)}${prerelease ? `-${prerelease}` : ""}`
             : comparator;
         }
         const lowPatch = 0;
