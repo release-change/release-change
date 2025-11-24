@@ -16,17 +16,23 @@ import { getMinor } from "./get-minor.js";
 import { getPatch } from "./get-patch.js";
 import { getPrerelease } from "./get-prerelease.js";
 import { gt } from "./gt.js";
+import { gtRange } from "./gt-range.js";
 import { gte } from "./gte.js";
+import { gtr } from "./gtr.js";
 import { inc } from "./inc.js";
 import { increase } from "./increase.js";
+import { isVersionOutside } from "./is-version-outside.js";
 import { lt } from "./lt.js";
+import { ltRange } from "./lt-range.js";
 import { lte } from "./lte.js";
+import { ltr } from "./ltr.js";
 import { major } from "./major.js";
 import { maxSatisfying } from "./max-satisfying.js";
 import { minSatisfying } from "./min-satisfying.js";
 import { minVersion } from "./min-version.js";
 import { minor } from "./minor.js";
 import { neq } from "./neq.js";
+import { outside } from "./outside.js";
 import { parse } from "./parse.js";
 import { patch } from "./patch.js";
 import { prerelease } from "./prerelease.js";
@@ -60,17 +66,23 @@ export {
   getPatch,
   getPrerelease,
   gt,
+  gtRange,
   gte,
+  gtr,
   inc,
   increase,
+  isVersionOutside,
   lt,
+  ltRange,
   lte,
+  ltr,
   major,
   maxSatisfying,
   minSatisfying,
   minVersion,
   minor,
   neq,
+  outside,
   parse,
   patch,
   prerelease,
@@ -108,17 +120,23 @@ export default {
   getPatch,
   getPrerelease,
   gt,
+  gtRange,
   gte,
+  gtr,
   inc,
   increase,
+  isVersionOutside,
   lt,
+  ltRange,
   lte,
+  ltr,
   major,
   maxSatisfying,
   minSatisfying,
   minVersion,
   minor,
   neq,
+  outside,
   parse,
   patch,
   prerelease,

@@ -42,6 +42,7 @@ export type SemverReleaseType =
   | "prerelease";
 export type SemverOperator = "===" | "!==" | "" | "=" | "==" | "!=" | ">" | ">=" | "<" | "<=";
 export type SemverComparatorOperator = "" | "=" | ">" | ">=" | "<" | "<=";
+export type SemverHighLowDirection = ">" | "<";
 export interface SemverComparatorData {
   operator: SemverComparatorOperator;
   semver: SemverData;
