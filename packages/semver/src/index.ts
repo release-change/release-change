@@ -11,6 +11,7 @@ import { getDifference } from "./get-difference.js";
 import { getMajor } from "./get-major.js";
 import { getMaxSatisfyingVersion } from "./get-max-satisfying-version.js";
 import { getMinSatisfyingVersion } from "./get-min-satisfying-version.js";
+import { getMinVersion } from "./get-min-version.js";
 import { getMinor } from "./get-minor.js";
 import { getPatch } from "./get-patch.js";
 import { getPrerelease } from "./get-prerelease.js";
@@ -23,6 +24,7 @@ import { lte } from "./lte.js";
 import { major } from "./major.js";
 import { maxSatisfying } from "./max-satisfying.js";
 import { minSatisfying } from "./min-satisfying.js";
+import { minVersion } from "./min-version.js";
 import { minor } from "./minor.js";
 import { neq } from "./neq.js";
 import { parse } from "./parse.js";
@@ -53,6 +55,7 @@ export {
   getMajor,
   getMaxSatisfyingVersion,
   getMinSatisfyingVersion,
+  getMinVersion,
   getMinor,
   getPatch,
   getPrerelease,
@@ -65,6 +68,7 @@ export {
   major,
   maxSatisfying,
   minSatisfying,
+  minVersion,
   minor,
   neq,
   parse,
@@ -99,6 +103,7 @@ export default {
   getMajor,
   getMaxSatisfyingVersion,
   getMinSatisfyingVersion,
+  getMinVersion,
   getMinor,
   getPatch,
   getPrerelease,
@@ -111,6 +116,7 @@ export default {
   major,
   maxSatisfying,
   minSatisfying,
+  minVersion,
   minor,
   neq,
   parse,
