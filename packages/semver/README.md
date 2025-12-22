@@ -211,7 +211,8 @@ Strict-mode comparators and ranges will be strict about the semantic versioning 
 - `getMinVersion(range)`: returns the lowest version which can match the given range if found, or `null` otherwise;
 - `gtRange(version, range)`: returns `true` if the version is greater than all the versions within the range, `false` otherwise;
 - `ltRange(version, range)`: returns `true` if the version is less than all the versions within the range, `false` otherwise;
-- `isVersionOutside(version, range, highLowDirection)`: returns `true` if the version is outside the bounds of the range in either the high or low direction, `false` otherwise.
+- `isVersionOutside(version, range, highLowDirection)`: returns `true` if the version is outside the bounds of the range in either the high or low direction, `false` otherwise;
+- `isRangeSubset(subRange, superRange)`: returns `true` if the `subRange` range is entirely contained by the `superRange` range.
 
 Note that, since ranges may be non-contiguous, a version might not be greater than a range, less than a range *or* satisfy a range. For example, the range `1.2 <1.2.9 || >2.0.0` would have a hole from `1.2.9` until `2.0.0`, so version `1.2.10` would not be greater than the range (because `2.0.1` satisfies, which is higher) nor less than the range (since `1.2.8` satisfies, which is lower) and it also does not satisfy the range.
 
