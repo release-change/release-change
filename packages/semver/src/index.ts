@@ -21,6 +21,7 @@ import { gte } from "./gte.js";
 import { gtr } from "./gtr.js";
 import { inc } from "./inc.js";
 import { increase } from "./increase.js";
+import { isRangeSubset } from "./is-range-subset.js";
 import { isVersionOutside } from "./is-version-outside.js";
 import { lt } from "./lt.js";
 import { ltRange } from "./lt-range.js";
@@ -42,6 +43,7 @@ import { reverseSort } from "./reverse-sort.js";
 import { rsort } from "./rsort.js";
 import { satisfies } from "./satisfies.js";
 import { sort } from "./sort.js";
+import { subset } from "./subset.js";
 import { valid } from "./valid.js";
 import { validRange } from "./valid-range.js";
 import { validate } from "./validate.js";
@@ -71,6 +73,7 @@ export {
   gtr,
   inc,
   increase,
+  isRangeSubset,
   isVersionOutside,
   lt,
   ltRange,
@@ -92,6 +95,7 @@ export {
   rsort,
   satisfies,
   sort,
+  subset,
   valid,
   validRange,
   validate,
@@ -125,6 +129,7 @@ export default {
   gtr,
   inc,
   increase,
+  isRangeSubset,
   isVersionOutside,
   lt,
   ltRange,
@@ -146,6 +151,7 @@ export default {
   rsort,
   satisfies,
   sort,
+  subset,
   valid,
   validRange,
   validate,
