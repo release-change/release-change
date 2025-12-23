@@ -42,6 +42,8 @@ import { reverseCompare } from "./reverse-compare.js";
 import { reverseSort } from "./reverse-sort.js";
 import { rsort } from "./rsort.js";
 import { satisfies } from "./satisfies.js";
+import { simplify } from "./simplify.js";
+import { simplifyRange } from "./simplify-range.js";
 import { sort } from "./sort.js";
 import { subset } from "./subset.js";
 import { valid } from "./valid.js";
@@ -94,6 +96,8 @@ export {
   reverseSort,
   rsort,
   satisfies,
+  simplify,
+  simplifyRange,
   sort,
   subset,
   valid,
@@ -150,6 +154,8 @@ export default {
   reverseSort,
   rsort,
   satisfies,
+  simplify,
+  simplifyRange,
   sort,
   subset,
   valid,
