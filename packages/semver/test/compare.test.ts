@@ -6,12 +6,12 @@ import { comparisonsInLooseMode } from "./fixtures/comparisons-in-loose-mode.js"
 import { equalities } from "./fixtures/equalities.js";
 import { equalitiesInLooseMode } from "./fixtures/equalities-in-loose-mode.js";
 
-it.each([...comparisonsInLooseMode, ...equalitiesInLooseMode])(
-  "should throw an error if $a and $b are compared in strict mode",
-  ({ a, b }) => {
-    expect(() => compare(a, b)).toThrow();
-  }
-);
+it.each([
+  ...comparisonsInLooseMode,
+  ...equalitiesInLooseMode
+])("should throw an error if $a and $b are compared in strict mode", ({ a, b }) => {
+  expect(() => compare(a, b)).toThrow();
+});
 test.each(comparisons)("$a should be greater than $b", ({ a, b }) => {
   expect(compare(a, b)).toBe(1);
   expect(compare(b, a)).toBe(-1);

@@ -95,47 +95,51 @@ it("should log an error message when an error is caught", () => {
   assert.deepNestedInclude(mockedContext.errors, expectedError.cause);
   mockedProcessExit.mockRestore();
 });
-describe.each(commitsSets)(
-  "when `context.config.isMonorepo` is $isMonorepo",
-  ({ context, commits, expected, expectedNumber, commandWithTag, commandWithoutTag }) => {
-    const mockedCommandResultWithNoCommits = {
+describe.each(commitsSets)("when `context.config.isMonorepo` is $isMonorepo", ({
+  context,
+  commits,
+  expected,
+  expectedNumber,
+  commandWithTag,
+  commandWithoutTag
+}) => {
+  const mockedCommandResultWithNoCommits = {
+    status: 0,
+    stdout: "",
+    stderr: ""
+  };
+  const argsWithTag = commandWithTag.split(" ").slice(1);
+  const argsWithoutTag = commandWithoutTag.split(" ").slice(1);
+  it("should return an array of commits", () => {
+    vi.mocked(runCommandSync).mockReturnValue({
       status: 0,
-      stdout: "",
+      stdout: commits,
       stderr: ""
-    };
-    const argsWithTag = commandWithTag.split(" ").slice(1);
-    const argsWithoutTag = commandWithoutTag.split(" ").slice(1);
-    it("should return an array of commits", () => {
-      vi.mocked(runCommandSync).mockReturnValue({
-        status: 0,
-        stdout: commits,
-        stderr: ""
-      });
-      assert.deepEqual(getCommitsSinceRef(context), expected);
-      expect(mockedLogger.logInfo).toHaveBeenCalledWith(`Found ${expectedNumber} commits.`);
     });
-    it("should return an empty array when no commits are found", () => {
-      vi.mocked(runCommandSync).mockReturnValue(mockedCommandResultWithNoCommits);
-      assert.deepEqual(getCommitsSinceRef(context), []);
-      expect(mockedLogger.logInfo).toHaveBeenCalledWith("Found 0 commits.");
+    assert.deepEqual(getCommitsSinceRef(context), expected);
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith(`Found ${expectedNumber} commits.`);
+  });
+  it("should return an empty array when no commits are found", () => {
+    vi.mocked(runCommandSync).mockReturnValue(mockedCommandResultWithNoCommits);
+    assert.deepEqual(getCommitsSinceRef(context), []);
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith("Found 0 commits.");
+  });
+  it(`should run \`${commandWithoutTag}\` when there are no Git tags`, () => {
+    vi.mocked(runCommandSync).mockReturnValue(mockedCommandResultWithNoCommits);
+    getCommitsSinceRef(context);
+    expect(runCommandSync).toHaveBeenCalledWith("git", argsWithoutTag, { cwd: mockedCwd });
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving all commits…");
+  });
+  it(`should run \`${commandWithTag}\` when the ref is Git tag "v1.0.0"`, () => {
+    vi.mocked(runCommandSync).mockReturnValue(mockedCommandResultWithNoCommits);
+    getCommitsSinceRef({
+      ...context,
+      lastRelease: {
+        ref: "v1.0.0",
+        packages: [{ name: "", pathname: ".", gitTag: "v1.0.0", version: "1.0.0" }]
+      }
     });
-    it(`should run \`${commandWithoutTag}\` when there are no Git tags`, () => {
-      vi.mocked(runCommandSync).mockReturnValue(mockedCommandResultWithNoCommits);
-      getCommitsSinceRef(context);
-      expect(runCommandSync).toHaveBeenCalledWith("git", argsWithoutTag, { cwd: mockedCwd });
-      expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving all commits…");
-    });
-    it(`should run \`${commandWithTag}\` when the ref is Git tag "v1.0.0"`, () => {
-      vi.mocked(runCommandSync).mockReturnValue(mockedCommandResultWithNoCommits);
-      getCommitsSinceRef({
-        ...context,
-        lastRelease: {
-          ref: "v1.0.0",
-          packages: [{ name: "", pathname: ".", gitTag: "v1.0.0", version: "1.0.0" }]
-        }
-      });
-      expect(runCommandSync).toHaveBeenCalledWith("git", argsWithTag, { cwd: mockedCwd });
-      expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving commits since v1.0.0…");
-    });
-  }
-);
+    expect(runCommandSync).toHaveBeenCalledWith("git", argsWithTag, { cwd: mockedCwd });
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith("Retrieving commits since v1.0.0…");
+  });
+});

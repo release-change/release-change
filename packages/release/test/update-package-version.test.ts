@@ -43,47 +43,48 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe.each(mockedNextReleases)(
-  "for $packageName",
-  ({ packageName, packageManifestPath, nextRelease }) => {
-    it("should throw an error if the package manifest is not found", () => {
-      const expectedError = new Error(
-        `Failed to update the package version: Package ${packageManifestPath} not found for ${packageName}.`,
-        {
-          cause: {
-            title: "Failed to update the package version",
-            message: `Package ${packageManifestPath} not found for ${packageName}.`,
-            details: {
-              output: `fs.existsSync(${packageManifestPath}): false`
-            }
+describe.each(mockedNextReleases)("for $packageName", ({
+  packageName,
+  packageManifestPath,
+  nextRelease
+}) => {
+  it("should throw an error if the package manifest is not found", () => {
+    const expectedError = new Error(
+      `Failed to update the package version: Package ${packageManifestPath} not found for ${packageName}.`,
+      {
+        cause: {
+          title: "Failed to update the package version",
+          message: `Package ${packageManifestPath} not found for ${packageName}.`,
+          details: {
+            output: `fs.existsSync(${packageManifestPath}): false`
           }
         }
-      );
-      vi.spyOn(fs, "existsSync").mockReturnValue(false);
-      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      expect(() => updatePackageVersion(nextRelease, mockedContextWithNextRelease)).toThrowError(
-        expectedError
-      );
-    });
-    it.each([mockedPackageManifest, mockedPrivatePackageManifest])(
-      "should update the package version",
-      packageManifest => {
-        const expectedVersion = nextRelease.version;
-        const expectedContent = JSON.stringify(
-          { ...packageManifest, version: expectedVersion },
-          null,
-          2
-        );
-        const readFileSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(expectedContent);
-        updatePackageVersion(nextRelease, mockedContextWithNextRelease);
-        expect(readFileSpy).toHaveBeenCalledWith(packageManifestPath, "utf-8");
-        expect(JSON.parse(expectedContent).version).toBe(expectedVersion);
-        // TODO: uncomment when updated package manifest content is written to file
-        // expect(fs.writeFileSync).toHaveBeenCalledWith(packageManifestPath, expectedContent);
-        expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-          `Package version updated to ${expectedVersion} for ${packageName}.`
-        );
       }
     );
-  }
-);
+    vi.spyOn(fs, "existsSync").mockReturnValue(false);
+    vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+    expect(() => updatePackageVersion(nextRelease, mockedContextWithNextRelease)).toThrowError(
+      expectedError
+    );
+  });
+  it.each([
+    mockedPackageManifest,
+    mockedPrivatePackageManifest
+  ])("should update the package version", packageManifest => {
+    const expectedVersion = nextRelease.version;
+    const expectedContent = JSON.stringify(
+      { ...packageManifest, version: expectedVersion },
+      null,
+      2
+    );
+    const readFileSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(expectedContent);
+    updatePackageVersion(nextRelease, mockedContextWithNextRelease);
+    expect(readFileSpy).toHaveBeenCalledWith(packageManifestPath, "utf-8");
+    expect(JSON.parse(expectedContent).version).toBe(expectedVersion);
+    // TODO: uncomment when updated package manifest content is written to file
+    // expect(fs.writeFileSync).toHaveBeenCalledWith(packageManifestPath, expectedContent);
+    expect(mockedLogger.logInfo).toHaveBeenCalledWith(
+      `Package version updated to ${expectedVersion} for ${packageName}.`
+    );
+  });
+});

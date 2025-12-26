@@ -12,21 +12,22 @@ it.each(invalidVersionsForPrerelease)("should return `null` if %s is invalid", r
 it.each(versionsWithoutPrerelease)("should return `null` if %s is parsed", raw => {
   expect(getPrerelease(raw)).toBe(null);
 });
-it.each(versionsWithPrereleaseInLooseMode)(
-  "should return `null` if $raw is parsed in strict mode",
-  ({ raw }) => {
-    expect(getPrerelease(raw)).toBe(null);
-  }
-);
-it.each(versionsWithPrereleaseInLooseMode)(
-  "should return the prerelease components if $raw is parsed in loose mode",
-  ({ raw, prerelease }) => {
-    assert.deepEqual(getPrerelease(raw, { loose: true }), prerelease);
-  }
-);
-it.each(versionsWithPrerelease)(
-  "should return the prerelease components if $raw is parsed",
-  ({ raw, prerelease }) => {
-    assert.deepEqual(getPrerelease(raw), prerelease);
-  }
-);
+it.each(
+  versionsWithPrereleaseInLooseMode
+)("should return `null` if $raw is parsed in strict mode", ({ raw }) => {
+  expect(getPrerelease(raw)).toBe(null);
+});
+it.each(
+  versionsWithPrereleaseInLooseMode
+)("should return the prerelease components if $raw is parsed in loose mode", ({
+  raw,
+  prerelease
+}) => {
+  assert.deepEqual(getPrerelease(raw, { loose: true }), prerelease);
+});
+it.each(versionsWithPrerelease)("should return the prerelease components if $raw is parsed", ({
+  raw,
+  prerelease
+}) => {
+  assert.deepEqual(getPrerelease(raw), prerelease);
+});

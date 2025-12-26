@@ -162,25 +162,23 @@ it("should return one single package when the package manager is pnpm and no `pn
   vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(null);
   assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
 });
-describe.each(pnpmPackages)(
-  "when the package manager is pnpm",
-  ({ content, patterns, packages }) => {
-    it("should return one single package when the glob patterns return an empty array of packages", async () => {
-      vi.mocked(getPackageManager).mockReturnValue("npm");
-      vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(content);
-      vi.mocked(getPnpmGlobPatterns).mockReturnValue(patterns);
-      vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue([]);
-      assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
-    });
-    it("should return the correct packages when the glob patterns return packages", async () => {
-      vi.mocked(getPackageManager).mockReturnValue("npm");
-      vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(content);
-      vi.mocked(getPnpmGlobPatterns).mockReturnValue(patterns);
-      vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue(packages);
-      assert.deepEqual(await getPackages(mockedContextBase), [
-        ...expectedSinglePackage,
-        ...packages
-      ]);
-    });
-  }
-);
+describe.each(pnpmPackages)("when the package manager is pnpm", ({
+  content,
+  patterns,
+  packages
+}) => {
+  it("should return one single package when the glob patterns return an empty array of packages", async () => {
+    vi.mocked(getPackageManager).mockReturnValue("npm");
+    vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(content);
+    vi.mocked(getPnpmGlobPatterns).mockReturnValue(patterns);
+    vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue([]);
+    assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
+  });
+  it("should return the correct packages when the glob patterns return packages", async () => {
+    vi.mocked(getPackageManager).mockReturnValue("npm");
+    vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(content);
+    vi.mocked(getPnpmGlobPatterns).mockReturnValue(patterns);
+    vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue(packages);
+    assert.deepEqual(await getPackages(mockedContextBase), [...expectedSinglePackage, ...packages]);
+  });
+});

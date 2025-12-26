@@ -108,49 +108,49 @@ afterEach(() => {
 //   ).rejects.toThrowError(expectedError);
 //   expect(process.exitCode).toBe(response.status);
 // });
-describe.each(mockedReleaseNotes)(
-  "for $releaseNotes.tagName",
-  async ({ releaseNotes, requestBody }) => {
-    it.each(mockedReleaseNotesBodies)(
-      "should create release notes for $body",
-      async ({ body, formattedBody }) => {
-        const context = {
-          ...mockedContext,
-          env: mockedEnv
-        };
-        vi.mocked(formatReleaseNotesBody).mockReturnValue(formattedBody);
-        vi.mocked(mockedFetch).mockResolvedValue({
-          status: 201,
-          statusText: "Created",
-          json: () => Promise.resolve({ message: "Created" })
-        });
-        await createReleaseNotes(
-          {
-            ...releaseNotes,
-            body
-          },
-          context
-        );
-        // TODO: uncomment when the API is used
-        // expect(mockedFetch).toHaveBeenCalledWith(mockedUri, {
-        //   method: "POST",
-        //   headers: {
-        //     Accept: "application/vnd.github+json",
-        //     Authorization: `Bearer ${mockedEnv.RELEASE_TOKEN}`,
-        //     "Content-Type": "application/json",
-        //     "X-GitHub-Api-Version": "2022-11-28"
-        //   },
-        //   body: JSON.stringify({
-        //     ...requestBody,
-        //     body: formattedBody
-        //   })
-        // });
-        // assert.deepNestedInclude(context.releaseInfos, {
-        //   type: "github",
-        //   name: "GitHub release",
-        //   url: `${mockedRepositoryUrl}/releases/tag/${releaseNotes.tagName}`
-        // });
-      }
+describe.each(mockedReleaseNotes)("for $releaseNotes.tagName", async ({
+  releaseNotes,
+  requestBody
+}) => {
+  it.each(mockedReleaseNotesBodies)("should create release notes for $body", async ({
+    body,
+    formattedBody
+  }) => {
+    const context = {
+      ...mockedContext,
+      env: mockedEnv
+    };
+    vi.mocked(formatReleaseNotesBody).mockReturnValue(formattedBody);
+    vi.mocked(mockedFetch).mockResolvedValue({
+      status: 201,
+      statusText: "Created",
+      json: () => Promise.resolve({ message: "Created" })
+    });
+    await createReleaseNotes(
+      {
+        ...releaseNotes,
+        body
+      },
+      context
     );
-  }
-);
+    // TODO: uncomment when the API is used
+    // expect(mockedFetch).toHaveBeenCalledWith(mockedUri, {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/vnd.github+json",
+    //     Authorization: `Bearer ${mockedEnv.RELEASE_TOKEN}`,
+    //     "Content-Type": "application/json",
+    //     "X-GitHub-Api-Version": "2022-11-28"
+    //   },
+    //   body: JSON.stringify({
+    //     ...requestBody,
+    //     body: formattedBody
+    //   })
+    // });
+    // assert.deepNestedInclude(context.releaseInfos, {
+    //   type: "github",
+    //   name: "GitHub release",
+    //   url: `${mockedRepositoryUrl}/releases/tag/${releaseNotes.tagName}`
+    // });
+  });
+});

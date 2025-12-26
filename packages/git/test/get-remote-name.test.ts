@@ -30,17 +30,15 @@ it("should return `null` when there are no tracked repositories", async () => {
   vi.mocked(getTrackedRepositories).mockReturnValue(Promise.resolve(""));
   expect(await getRemoteName(mockedContext)).toBe(null);
 });
-it.each(mockedRemotesWithNoPush)(
-  'should return `null` when no remote name for push is defined (only "%s")',
-  async mockedRemoteFetch => {
-    vi.mocked(getTrackedRepositories).mockReturnValue(Promise.resolve(mockedRemoteFetch));
-    expect(await getRemoteName(mockedContext)).toBe(null);
-  }
-);
-it.each(mockedRemotes)(
-  'should return the first remote name for push found ("%s"), that is "%s"',
-  async (mockedRemote, expectedMockedRemoteName) => {
-    vi.mocked(getTrackedRepositories).mockReturnValue(Promise.resolve(mockedRemote));
-    expect(await getRemoteName(mockedContext)).toBe(expectedMockedRemoteName);
-  }
-);
+it.each(
+  mockedRemotesWithNoPush
+)('should return `null` when no remote name for push is defined (only "%s")', async mockedRemoteFetch => {
+  vi.mocked(getTrackedRepositories).mockReturnValue(Promise.resolve(mockedRemoteFetch));
+  expect(await getRemoteName(mockedContext)).toBe(null);
+});
+it.each(
+  mockedRemotes
+)('should return the first remote name for push found ("%s"), that is "%s"', async (mockedRemote, expectedMockedRemoteName) => {
+  vi.mocked(getTrackedRepositories).mockReturnValue(Promise.resolve(mockedRemote));
+  expect(await getRemoteName(mockedContext)).toBe(expectedMockedRemoteName);
+});

@@ -35,13 +35,16 @@ it("should format debug message", () => {
   );
 });
 
-it.each(messageTypes)(
-  "should format $message of type $type with $symbol when debug mode is deactivated",
-  ({ type, message, symbol }) => {
-    const mockedLoggerContext = { isDebug: false, type: type } as LoggerContext;
-    vi.mocked(setPrefix).mockReturnValue(expectedPrefix);
-    expect(formatMessage(message, mockedLoggerContext)).toBe(
-      `${expectedPrefix} ${symbol} ${message}`
-    );
-  }
-);
+it.each(
+  messageTypes
+)("should format $message of type $type with $symbol when debug mode is deactivated", ({
+  type,
+  message,
+  symbol
+}) => {
+  const mockedLoggerContext = { isDebug: false, type: type } as LoggerContext;
+  vi.mocked(setPrefix).mockReturnValue(expectedPrefix);
+  expect(formatMessage(message, mockedLoggerContext)).toBe(
+    `${expectedPrefix} ${symbol} ${message}`
+  );
+});

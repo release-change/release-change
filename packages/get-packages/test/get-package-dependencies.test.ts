@@ -37,11 +37,13 @@ it("should return an empty array if the package manifest file does not have the 
   );
   assert.deepEqual(getPackageDependencies(mockedPath), []);
 });
-it.each(mockedPackageManifests)(
-  "should return an array of the dependencies found in the `dependencies` and `devDependencies` properties",
-  ({ content, expected }) => {
-    vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(content));
-    assert.deepEqual(getPackageDependencies(mockedPath), expected);
-  }
-);
+it.each(
+  mockedPackageManifests
+)("should return an array of the dependencies found in the `dependencies` and `devDependencies` properties", ({
+  content,
+  expected
+}) => {
+  vi.spyOn(fs, "existsSync").mockReturnValue(true);
+  vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(content));
+  assert.deepEqual(getPackageDependencies(mockedPath), expected);
+});
