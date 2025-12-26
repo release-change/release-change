@@ -39,119 +39,118 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe.each(mockedPackagePublishingSet)(
-  "for package $name and version $version",
-  packagePublishing => {
-    const { name, packageManifestName, pathname, version, packageManager, args, npmTag } =
-      packagePublishing;
-    const packageName = name || "root";
-    const mockedCwd = pathname === "." ? mockedContext.cwd : `${mockedContext.cwd}/${pathname}`;
-    const mockedOptions = {
-      cwd: mockedCwd,
-      env: mockedContext.env
-    };
-    it("should throw an error if the auth token is not defined", async () => {
-      const expectedError = new Error(
-        "Failed to publish to the NPM registry: The auth token context could not be loaded.",
-        {
-          cause: {
-            title: "Failed to publish to the NPM registry",
-            message: "The auth token context could not be loaded.",
-            details: {
-              output: "authToken: undefined"
-            }
+describe.each(
+  mockedPackagePublishingSet
+)("for package $name and version $version", packagePublishing => {
+  const { name, packageManifestName, pathname, version, packageManager, args, npmTag } =
+    packagePublishing;
+  const packageName = name || "root";
+  const mockedCwd = pathname === "." ? mockedContext.cwd : `${mockedContext.cwd}/${pathname}`;
+  const mockedOptions = {
+    cwd: mockedCwd,
+    env: mockedContext.env
+  };
+  it("should throw an error if the auth token is not defined", async () => {
+    const expectedError = new Error(
+      "Failed to publish to the NPM registry: The auth token context could not be loaded.",
+      {
+        cause: {
+          title: "Failed to publish to the NPM registry",
+          message: "The auth token context could not be loaded.",
+          details: {
+            output: "authToken: undefined"
           }
         }
-      );
-      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      await expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrowError(
-        expectedError
-      );
+      }
+    );
+    vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+    await expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrowError(
+      expectedError
+    );
+  });
+  it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` file already exists and sets auth token", async () => {
+    vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
+    vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+    const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
+    const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
+    await publishToRegistry(packagePublishing, mockedContextWithAuthToken);
+    expect(mockedSetAuthToken).not.toHaveBeenCalled();
+    expect(mockedRemoveAuthToken).not.toHaveBeenCalled();
+  });
+  it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` file does not exist", async () => {
+    vi.mocked(getNpmrcFile).mockReturnValue(null);
+    vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+    const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
+    const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
+    await publishToRegistry(packagePublishing, {
+      ...mockedContext,
+      authToken: {
+        fileExists: false,
+        authTokenExists: false
+      }
     });
-    it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` file already exists and sets auth token", async () => {
-      vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
-      vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
-      const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
-      await publishToRegistry(packagePublishing, mockedContextWithAuthToken);
-      expect(mockedSetAuthToken).not.toHaveBeenCalled();
-      expect(mockedRemoveAuthToken).not.toHaveBeenCalled();
+    expect(mockedSetAuthToken).toHaveBeenCalled();
+    expect(mockedRemoveAuthToken).toHaveBeenCalled();
+  });
+  it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` file does not set auth token", async () => {
+    vi.mocked(getNpmrcFile).mockReturnValue(null);
+    vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+    const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
+    const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
+    await publishToRegistry(packagePublishing, {
+      ...mockedContext,
+      authToken: {
+        fileExists: true,
+        authTokenExists: false
+      }
     });
-    it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` file does not exist", async () => {
-      vi.mocked(getNpmrcFile).mockReturnValue(null);
-      vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
-      const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
-      await publishToRegistry(packagePublishing, {
-        ...mockedContext,
-        authToken: {
-          fileExists: false,
-          authTokenExists: false
-        }
-      });
-      expect(mockedSetAuthToken).toHaveBeenCalled();
-      expect(mockedRemoveAuthToken).toHaveBeenCalled();
-    });
-    it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` file does not set auth token", async () => {
-      vi.mocked(getNpmrcFile).mockReturnValue(null);
-      vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
-      const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
-      await publishToRegistry(packagePublishing, {
-        ...mockedContext,
-        authToken: {
-          fileExists: true,
-          authTokenExists: false
-        }
-      });
-      expect(mockedSetAuthToken).toHaveBeenCalled();
-      expect(mockedRemoveAuthToken).toHaveBeenCalled();
-    });
-    it("should log an error message if the publish command fails", async () => {
-      const expectedError = new Error(
-        `Failed to run the \`${packageManager}\` command: The command failed with exit code 128.`,
-        {
-          cause: {
-            title: `Failed to run the \`${packageManager}\` command`,
-            message: "The command failed with exit code 128.",
-            details: {
-              output: "Some error message.",
-              command: `${packageManager} ${args.join(" ")}`
-            }
+    expect(mockedSetAuthToken).toHaveBeenCalled();
+    expect(mockedRemoveAuthToken).toHaveBeenCalled();
+  });
+  it("should log an error message if the publish command fails", async () => {
+    const expectedError = new Error(
+      `Failed to run the \`${packageManager}\` command: The command failed with exit code 128.`,
+      {
+        cause: {
+          title: `Failed to run the \`${packageManager}\` command`,
+          message: "The command failed with exit code 128.",
+          details: {
+            output: "Some error message.",
+            command: `${packageManager} ${args.join(" ")}`
           }
         }
-      );
-      const mockedCommand = vi
-        .mocked(runCommand)
-        .mockResolvedValue({ status: 128, stdout: "", stderr: "Some error message." });
-      vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
-      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      await expect(
-        publishToRegistry(packagePublishing, mockedContextWithAuthToken)
-      ).rejects.toThrowError(expectedError);
-      expect(mockedCommand).toHaveBeenCalledWith(packageManager, args, mockedOptions);
-      expect(mockedLogger.logError).toHaveBeenCalledWith(
-        `Failed to publish release ${version} of ${packageName} package to the NPM registry.`
-      );
+      }
+    );
+    const mockedCommand = vi
+      .mocked(runCommand)
+      .mockResolvedValue({ status: 128, stdout: "", stderr: "Some error message." });
+    vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
+    vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+    await expect(
+      publishToRegistry(packagePublishing, mockedContextWithAuthToken)
+    ).rejects.toThrowError(expectedError);
+    expect(mockedCommand).toHaveBeenCalledWith(packageManager, args, mockedOptions);
+    expect(mockedLogger.logError).toHaveBeenCalledWith(
+      `Failed to publish release ${version} of ${packageName} package to the NPM registry.`
+    );
+  });
+  it(`should run the \`${packageManager} publish\` command with the appropriate flags`, async () => {
+    const context: Context = mockedContextWithAuthToken;
+    const mockedCommand = vi
+      .mocked(runCommand)
+      .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+    vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
+    await publishToRegistry(packagePublishing, context);
+    expect(mockedCommand).toHaveBeenCalledWith(packageManager, args, mockedOptions);
+    expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
+      `Published release ${version} of ${packageName} package to the NPM registry on ${
+        npmTag || "default"
+      } channel.`
+    );
+    assert.deepNestedInclude(context.releaseInfos, {
+      type: "npm",
+      name: `NPM (${npmTag ?? "latest"} distribution tag)`,
+      url: `https://www.npmjs.com/package/${packageManifestName}/v/${version}`
     });
-    it(`should run the \`${packageManager} publish\` command with the appropriate flags`, async () => {
-      const context: Context = mockedContextWithAuthToken;
-      const mockedCommand = vi
-        .mocked(runCommand)
-        .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
-      await publishToRegistry(packagePublishing, context);
-      expect(mockedCommand).toHaveBeenCalledWith(packageManager, args, mockedOptions);
-      expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
-        `Published release ${version} of ${packageName} package to the NPM registry on ${
-          npmTag || "default"
-        } channel.`
-      );
-      assert.deepNestedInclude(context.releaseInfos, {
-        type: "npm",
-        name: `NPM (${npmTag ?? "latest"} distribution tag)`,
-        url: `https://www.npmjs.com/package/${packageManifestName}/v/${version}`
-      });
-    });
-  }
-);
+  });
+});

@@ -20,9 +20,11 @@ it("should throw an error when no `packages` field is found in `pnpm-workspace.y
     })
   );
 });
-it.each(pnpmWorkspaceManifestFiles)(
-  "should get the including and excluding patterns from `pnpm-workspace.yaml`",
-  ({ content, patterns }) => {
-    assert.deepEqual(getPnpmGlobPatterns(content), patterns);
-  }
-);
+it.each(
+  pnpmWorkspaceManifestFiles
+)("should get the including and excluding patterns from `pnpm-workspace.yaml`", ({
+  content,
+  patterns
+}) => {
+  assert.deepEqual(getPnpmGlobPatterns(content), patterns);
+});

@@ -99,39 +99,40 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
       `The ${nextRelease.name || "root"} package is private; therefore, the release will not be published.`
     );
   });
-  describe.each(packageManagers)(
-    "for package manager $packageManager",
-    ({ packageManager, args, noGitChecks }) => {
-      const { name, pathname, version, npmTag } = nextRelease;
-      const expectedArgs = noGitChecks
-        ? npmTag
-          ? [...args, "--tag", npmTag, noGitChecks]
-          : [...args, noGitChecks]
-        : npmTag
-          ? [...args, "--tag", npmTag]
-          : args;
-      it("should prepare the publishing with the expected values", async () => {
-        const context: Context = {
-          ...mockedContext,
-          nextRelease: [nextRelease],
-          authToken: {
-            fileExists: true,
-            authTokenExists: true
-          }
-        };
-        const expectedPackagePublishing: PackagePublishing = {
-          name: name,
-          packageManifestName: packageManifestContent.name,
-          pathname,
-          version,
-          packageManager,
-          args: expectedArgs
-        };
-        if (npmTag) expectedPackagePublishing.npmTag = npmTag;
-        vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(packageManifestContent));
-        vi.mocked(getPackageManager).mockReturnValue(packageManager);
-        assert.deepEqual(await preparePublishing(nextRelease, context), expectedPackagePublishing);
-      });
-    }
-  );
+  describe.each(packageManagers)("for package manager $packageManager", ({
+    packageManager,
+    args,
+    noGitChecks
+  }) => {
+    const { name, pathname, version, npmTag } = nextRelease;
+    const expectedArgs = noGitChecks
+      ? npmTag
+        ? [...args, "--tag", npmTag, noGitChecks]
+        : [...args, noGitChecks]
+      : npmTag
+        ? [...args, "--tag", npmTag]
+        : args;
+    it("should prepare the publishing with the expected values", async () => {
+      const context: Context = {
+        ...mockedContext,
+        nextRelease: [nextRelease],
+        authToken: {
+          fileExists: true,
+          authTokenExists: true
+        }
+      };
+      const expectedPackagePublishing: PackagePublishing = {
+        name: name,
+        packageManifestName: packageManifestContent.name,
+        pathname,
+        version,
+        packageManager,
+        args: expectedArgs
+      };
+      if (npmTag) expectedPackagePublishing.npmTag = npmTag;
+      vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(packageManifestContent));
+      vi.mocked(getPackageManager).mockReturnValue(packageManager);
+      assert.deepEqual(await preparePublishing(nextRelease, context), expectedPackagePublishing);
+    });
+  });
 });

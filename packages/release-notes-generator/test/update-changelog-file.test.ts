@@ -21,50 +21,47 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-describe.each(mockedChangelogFiles)(
-  "for $nextRelease.name",
-  ({
-    nextRelease,
-    packageName,
-    path,
-    releaseNotesBody,
-    releaseNotesBodyWithoutChangelog,
-    formattedReleaseNotesBody,
-    existingChangelogFile,
-    expectedUpdatedChangelogFile
-  }) => {
-    it("should write a new changelog file", () => {
-      vi.spyOn(fs, "existsSync").mockReturnValue(false);
-      vi.mocked(getPackageName).mockReturnValue(packageName);
-      updateChangelogFile(nextRelease, releaseNotesBodyWithoutChangelog, mockedContext.cwd);
-      expect(createChangelogFile).toHaveBeenCalledWith(
-        path,
-        `# ${packageName}\n\n## 1.0.0\n\n`,
-        releaseNotesBodyWithoutChangelog
-      );
-    });
-    it("should write a new changelog file if the existing one is empty", () => {
-      vi.spyOn(fs, "existsSync").mockReturnValue(true);
-      vi.spyOn(fs, "readFileSync").mockReturnValue("");
-      vi.mocked(getPackageName).mockReturnValue(packageName);
-      updateChangelogFile(nextRelease, releaseNotesBodyWithoutChangelog, mockedContext.cwd);
-      expect(createChangelogFile).toHaveBeenCalledWith(
-        path,
-        `# ${packageName}\n\n## 1.0.0\n\n`,
-        releaseNotesBodyWithoutChangelog
-      );
-    });
-    it("should update an existing changelog file", () => {
-      const mockedSpyOn = vi
-        .spyOn(fs, "writeFileSync")
-        .mockImplementation((_path, _expectedUpdatedChangelogFile) => undefined);
-      vi.spyOn(fs, "existsSync").mockReturnValue(true);
-      vi.spyOn(fs, "readFileSync").mockReturnValue(existingChangelogFile);
-      vi.mocked(getPackageName).mockReturnValue(packageName);
-      vi.mocked(formatReleaseNotesBody).mockReturnValue(formattedReleaseNotesBody);
-      updateChangelogFile(nextRelease, releaseNotesBody, mockedContext.cwd);
-      // TODO: uncomment when the file is written
-      // expect(mockedSpyOn).toHaveBeenCalledWith(path, expectedUpdatedChangelogFile);
-    });
-  }
-);
+describe.each(mockedChangelogFiles)("for $nextRelease.name", ({
+  nextRelease,
+  packageName,
+  path,
+  releaseNotesBody,
+  releaseNotesBodyWithoutChangelog,
+  formattedReleaseNotesBody,
+  existingChangelogFile,
+  expectedUpdatedChangelogFile
+}) => {
+  it("should write a new changelog file", () => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(false);
+    vi.mocked(getPackageName).mockReturnValue(packageName);
+    updateChangelogFile(nextRelease, releaseNotesBodyWithoutChangelog, mockedContext.cwd);
+    expect(createChangelogFile).toHaveBeenCalledWith(
+      path,
+      `# ${packageName}\n\n## 1.0.0\n\n`,
+      releaseNotesBodyWithoutChangelog
+    );
+  });
+  it("should write a new changelog file if the existing one is empty", () => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    vi.spyOn(fs, "readFileSync").mockReturnValue("");
+    vi.mocked(getPackageName).mockReturnValue(packageName);
+    updateChangelogFile(nextRelease, releaseNotesBodyWithoutChangelog, mockedContext.cwd);
+    expect(createChangelogFile).toHaveBeenCalledWith(
+      path,
+      `# ${packageName}\n\n## 1.0.0\n\n`,
+      releaseNotesBodyWithoutChangelog
+    );
+  });
+  it("should update an existing changelog file", () => {
+    const mockedSpyOn = vi
+      .spyOn(fs, "writeFileSync")
+      .mockImplementation((_path, _expectedUpdatedChangelogFile) => undefined);
+    vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    vi.spyOn(fs, "readFileSync").mockReturnValue(existingChangelogFile);
+    vi.mocked(getPackageName).mockReturnValue(packageName);
+    vi.mocked(formatReleaseNotesBody).mockReturnValue(formattedReleaseNotesBody);
+    updateChangelogFile(nextRelease, releaseNotesBody, mockedContext.cwd);
+    // TODO: uncomment when the file is written
+    // expect(mockedSpyOn).toHaveBeenCalledWith(path, expectedUpdatedChangelogFile);
+  });
+});

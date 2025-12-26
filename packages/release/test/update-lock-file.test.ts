@@ -52,30 +52,31 @@ describe.each(mockedNextReleases)("for $packageName", ({ packageManifestPath, ne
     // TODO: uncomment when command is run
     // expect(mockedCommand).toHaveBeenCalledWith("git", ["restore", packageManifestPath]);
   });
-  it.each(mockedPackageManagerCommands)(
-    "should not run the $command command if the lock file does not exist",
-    async ({ command }) => {
-      vi.spyOn(fs, "existsSync").mockReturnValue(false);
-      // TODO: uncomment when command is run
-      // const mockedCommand = vi
-      //   .mocked(runCommand)
-      //   .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      await updateLockFile(nextRelease, mockedContext, command);
-      // TODO: uncomment when command is run
-      // expect(mockedCommand).not.toHaveBeenCalled();
-    }
-  );
-  it.each(mockedPackageManagerCommands)(
-    "should run the $command command if the package manager used is $command and the lock file exists",
-    async ({ command, args }) => {
-      vi.spyOn(fs, "existsSync").mockReturnValue(true);
-      // TODO: uncomment when command is run
-      // const mockedCommand = vi
-      //   .mocked(runCommand)
-      //   .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      await updateLockFile(nextRelease, mockedContext, command);
-      // TODO: uncomment when command is run
-      // expect(mockedCommand).toHaveBeenCalledWith(command, args);
-    }
-  );
+  it.each(
+    mockedPackageManagerCommands
+  )("should not run the $command command if the lock file does not exist", async ({ command }) => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(false);
+    // TODO: uncomment when command is run
+    // const mockedCommand = vi
+    //   .mocked(runCommand)
+    //   .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+    await updateLockFile(nextRelease, mockedContext, command);
+    // TODO: uncomment when command is run
+    // expect(mockedCommand).not.toHaveBeenCalled();
+  });
+  it.each(
+    mockedPackageManagerCommands
+  )("should run the $command command if the package manager used is $command and the lock file exists", async ({
+    command,
+    args
+  }) => {
+    vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    // TODO: uncomment when command is run
+    // const mockedCommand = vi
+    //   .mocked(runCommand)
+    //   .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+    await updateLockFile(nextRelease, mockedContext, command);
+    // TODO: uncomment when command is run
+    // expect(mockedCommand).toHaveBeenCalledWith(command, args);
+  });
 });
