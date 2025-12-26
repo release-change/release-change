@@ -204,7 +204,17 @@ Strict-mode comparators and ranges will be strict about the semantic versioning 
 
 #### Ranges
 
-- `satisfies(version, range)`: returns `true` if the version satisfies the range, `false` otherwise.
+- `validateRange(range)`: returns the range if it is valid, `null` otherwise;
+- `satisfies(version, range)`: returns `true` if the version satisfies the range, `false` otherwise;
+- `getMaxSatisfyingVersion(versions, range)`: returns the highest version in the list if there is one satisfying the range, `null` otherwise;
+- `getMinSatisfyingVersion(versions, range)`: returns the lowest version in the list if there is one satisfying the range, `null` otherwise;
+- `getMinVersion(range)`: returns the lowest version which can match the given range if found, or `null` otherwise;
+- `gtRange(version, range)`: returns `true` if the version is greater than all the versions within the range, `false` otherwise;
+- `ltRange(version, range)`: returns `true` if the version is less than all the versions within the range, `false` otherwise;
+- `isVersionOutside(version, range, highLowDirection)`: returns `true` if the version is outside the bounds of the range in either the high or low direction, `false` otherwise;
+- `intersects(range1, range2)`: returns `true` if any of the range comparators intersect, `false` otherwise;
+- `simplifyRange(versions, range)`: returns a simplified range matching the same items in the `versions` list as the range specified, which is useful when generating ranges by joining together multiple versions with `||` programmatically (note that it does not guarantee that it would match the same versions in all cases, only for the set of versions provided);
+- `isRangeSubset(subRange, superRange)`: returns `true` if the `subRange` range is entirely contained by the `superRange` range.
 
 Note that, since ranges may be non-contiguous, a version might not be greater than a range, less than a range *or* satisfy a range. For example, the range `1.2 <1.2.9 || >2.0.0` would have a hole from `1.2.9` until `2.0.0`, so version `1.2.10` would not be greater than the range (because `2.0.1` satisfies, which is higher) nor less than the range (since `1.2.8` satisfies, which is lower) and it also does not satisfy the range.
 

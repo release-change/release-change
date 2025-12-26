@@ -41,7 +41,13 @@ export class Range implements SemverRangeData {
    * @param range - The range string.
    * @param [options] - The options to use (`includePrerelease`: whether to include pre-release versions or not, `loose`: whether to use loose mode or not).
    */
-  constructor(range: string, options?: SemverOptionsLoose & SemverOptionsIncludePrerelease) {
+  constructor(
+    range: string | null | undefined,
+    options?: SemverOptionsLoose & SemverOptionsIncludePrerelease
+  ) {
+    if (!range && typeof range !== "string") {
+      throw new Error("Invalid range: the range must be a non-empty string.");
+    }
     this.options = options ?? {};
     this.raw = range;
     this.includePrerelease = Boolean(options?.includePrerelease);
@@ -90,6 +96,15 @@ export class Range implements SemverRangeData {
    */
   isValidCompleteVersion(version: string, loose: boolean): boolean {
     return Boolean(version.match(loose ? VALID_SEMVER_PATTERN_LOOSE : VALID_SEMVER_PATTERN));
+  }
+
+  /**
+   * Checks whether a string is numeric.
+   * @param string - The string to check.
+   * @return `true` if the string is numeric, `false` otherwise.
+   */
+  isNumeric(string: string | undefined): boolean {
+    return Boolean(string?.match(/^\d+$/));
   }
 
   /**
@@ -172,9 +187,8 @@ export class Range implements SemverRangeData {
             if (!match || !match.groups) return `${index ? "<=" : ">="}${comparator}`;
             if (comparator.match(/^x$/i)) return "*";
             const { major, minor, patch, prerelease } = match.groups;
-            const digitsOnly = /^\d+$/;
-            const isMinorNumeric = minor?.match(digitsOnly);
-            const isPatchNumeric = patch?.match(digitsOnly);
+            const isMinorNumeric = this.isNumeric(minor);
+            const isPatchNumeric = this.isNumeric(patch);
             const operator = index
               ? includePrerelease || !isMinorNumeric || !isPatchNumeric
                 ? "<"
@@ -242,10 +256,9 @@ export class Range implements SemverRangeData {
         const match = comparator.match(loose ? TILDE_PATTERN_LOOSE : TILDE_PATTERN);
         if (!match || !match.groups) return comparator;
         const { major, minor, patch, prerelease } = match.groups;
-        const digitsOnly = /^\d+$/;
-        const isMajorNumeric = major?.match(digitsOnly);
-        const isMinorNumeric = minor?.match(digitsOnly);
-        const isPatchNumeric = patch?.match(digitsOnly);
+        const isMajorNumeric = this.isNumeric(major);
+        const isMinorNumeric = this.isNumeric(minor);
+        const isPatchNumeric = this.isNumeric(patch);
         const completeVersion = comparator.replace(TILDE_COMPARATOR_PATTERN, "");
         if (
           isMajorNumeric &&
@@ -307,11 +320,14 @@ export class Range implements SemverRangeData {
         const match = comparator.match(loose ? CARET_PATTERN_LOOSE : CARET_PATTERN);
         if (!match || !match.groups) return comparator;
         const { major, minor, patch, prerelease } = match.groups;
+        const isMajorNumeric = this.isNumeric(major);
+        const isMinorNumeric = this.isNumeric(minor);
+        const isPatchNumeric = this.isNumeric(patch);
         const completeVersion = comparator.replace(CARET_COMPARATOR_PATTERN, "");
         if (
-          major &&
-          minor &&
-          patch &&
+          isMajorNumeric &&
+          isMinorNumeric &&
+          isPatchNumeric &&
           !this.isValidCompleteVersion(completeVersion, Boolean(loose))
         ) {
           throw new Error(`Invalid range \`${comparator}\`.`);
@@ -336,19 +352,25 @@ export class Range implements SemverRangeData {
    *    - a range consisting of just an `x` or a `*` is replaced by `*`;
    *    - a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, and less than the next pre-major version;
    *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-minor version;
+   *    - any prerelease identifiers are replaced by `-0` if the `includePrerelease` option is set to `true`;
    * - if the operator is greater-than:
    *    - a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to the next major version;
    *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to the next minor version;
+   *    - any prerelease identifiers are replaced by `-0` if the `includePrerelease` option is set to `true`;
    * - if the operator is greater-than-or-equal:
    *    - a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`;
    *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`;
+   *    - any prerelease identifiers are replaced by `-0` if the `includePrerelease` option is set to `true`;
    * - if the operator is less-than:
    *    - a single major-version range, whether completed by an `x` or not, is replaced by a range less than this pre-major version;
    *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than this pre-minor version;
+   *    - any prerelease identifiers are kept if the `includePrerelease` option is set to `true`;
+   *    - `-0` is appended as a prerelease identifier if the `includePrerelease` option is set to `false` or not declared;
    * - if the operator is less-than-or-equal:
-   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range less than or equal to the next major version, with minor and patch at `0`;
-   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than or equal to the next minor version, with patch at `0`;
-   * - any prerelease identifiers are kept, even tough the `includePrerelease` option is set to `false` or not declared.
+   *    - a single major-version range, whether completed by an `x` or not, is replaced by a range less than the next pre-major version;
+   *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than the next pre-minor version;
+   *    - any prerelease identifiers are kept if the `includePrerelease` option is set to `true`;
+   *    - `-0` is appended as a prerelease identifier if the `includePrerelease` option is set to `false` or not declared.
    * @example
    * `2`, `2.x`, `2.x.x`, `=2`, `=2.x` and `=2.x.x` become `>=2.0.0 <3.0.0-0`,
    * `1.2`, `1.2.x`, `1.2` and `1.2.x` become `>=1.2.0 <1.3.0-0`,
@@ -378,33 +400,31 @@ export class Range implements SemverRangeData {
         );
         if (!match || !match.groups) return comparator;
         const { operator, major, minor, patch, prerelease } = match.groups;
-        const digitsOnly = /^\d+$/;
-        const isMajorNumeric = major?.match(digitsOnly);
-        const isMinorNumeric = minor?.match(digitsOnly);
-        const isPatchNumeric = patch?.match(digitsOnly);
+        const isMajorNumeric = this.isNumeric(major);
+        const isMinorNumeric = this.isNumeric(minor);
+        const isPatchNumeric = this.isNumeric(patch);
         const completeVersion = comparator.replace(RANGE_OPERATORS_PATTERN, "");
         if (isMajorNumeric && isMinorNumeric && isPatchNumeric) {
           if (!this.isValidCompleteVersion(completeVersion, Boolean(loose))) {
             throw new Error(`Invalid range \`${comparator}\`.`);
           }
           return loose
-            ? `${operator}${Number(major)}.${Number(minor)}.${Number(patch)}${prerelease ? `-${prerelease}` : ""}`
+            ? `${operator ?? ""}${Number(major)}.${Number(minor)}.${Number(patch)}${prerelease ? `-${prerelease}` : ""}`
             : comparator;
         }
         const lowPatch = 0;
+        const lowPrerelease = includePrerelease ? "-0" : "";
         switch (operator) {
           case ">": {
             if (!isMajorNumeric) return "<0.0.0-0";
             const lowMajor = isMinorNumeric ? Number(major) : Number(major) + 1;
             const lowMinor = isMinorNumeric ? Number(minor) + 1 : 0;
-            const lowPrerelease = prerelease ? `-${prerelease}` : includePrerelease ? "-0" : "";
             return `>=${lowMajor}.${lowMinor}.${lowPatch}${lowPrerelease}`;
           }
           case ">=": {
             if (!isMajorNumeric) return "*";
             const lowMajor = Number(major);
             const lowMinor = isMinorNumeric ? Number(minor) : 0;
-            const lowPrerelease = prerelease ? `-${prerelease}` : includePrerelease ? "-0" : "";
             return `>=${lowMajor}.${lowMinor}.${lowPatch}${lowPrerelease}`;
           }
           case "<": {
@@ -419,13 +439,12 @@ export class Range implements SemverRangeData {
             const lowMajor = isMinorNumeric ? Number(major) : Number(major) + 1;
             const lowMinor = isMinorNumeric ? Number(minor) + 1 : 0;
             const lowPrerelease = prerelease ? `-${prerelease}` : "-0";
-            return `<=${lowMajor}.${lowMinor}.${lowPatch}${lowPrerelease}`;
+            return `<${lowMajor}.${lowMinor}.${lowPatch}${lowPrerelease}`;
           }
           default: {
             if (!isMajorNumeric) return "*";
             const lowMajor = Number(major) || 0;
             const lowMinor = isMinorNumeric ? Number(minor) || 0 : 0;
-            const lowPrerelease = prerelease ? `-${prerelease}` : includePrerelease ? "-0" : "";
             const highMajor = isMinorNumeric ? lowMajor : lowMajor + 1;
             const highMinor = isMinorNumeric ? lowMinor + 1 : 0;
             const highPatch = 0;
@@ -549,5 +568,57 @@ export class Range implements SemverRangeData {
       }
     }
     return false;
+  }
+
+  /**
+   * Checks if there is a version which can satisfy a set of comparators.
+   * @param comparators - The set of comparators to check.
+   * @param [options] - The options to use (`loose`: whether to use loose mode or not, `includePrerelease`: whether to include pre-release versions in the range).
+   * @return `true` if there is a version which can satisfy the set of comparators, `false` otherwise.
+   */
+  isSatisfiable(
+    comparators: SemverComparatorData[],
+    options?: SemverOptionsLoose & SemverOptionsIncludePrerelease
+  ): boolean {
+    let result = true;
+    const remainingComparators = comparators.slice();
+    let testComparator = remainingComparators.pop();
+    while (result && remainingComparators.length) {
+      result = remainingComparators.every(otherComparator => {
+        return new Comparator(testComparator ? testComparator.value : "", options).intersects(
+          new Comparator(otherComparator.value, options),
+          options
+        );
+      });
+      testComparator = remainingComparators.pop();
+    }
+    return result;
+  }
+
+  /**
+   * Checks if the `Range` instance intersects another one.
+   * @param range - The range to check against.
+   * @param [options] - The options to use (`loose`: whether to use loose mode or not, `includePrerelease`: whether to include pre-release versions in the range).
+   * @return `true` if the ranges intersect, `false` otherwise.
+   */
+  intersects(range: Range, options?: SemverOptionsLoose & SemverOptionsIncludePrerelease): boolean {
+    return this.set.some(thisComparators => {
+      return (
+        this.isSatisfiable(thisComparators, options) &&
+        range.set.some(rangeComparators => {
+          return (
+            this.isSatisfiable(rangeComparators, options) &&
+            thisComparators.every(thisComparator => {
+              return rangeComparators.every(rangeComparator => {
+                return new Comparator(thisComparator.value, options).intersects(
+                  new Comparator(rangeComparator.value, options),
+                  options
+                );
+              });
+            })
+          );
+        })
+      );
+    });
   }
 }

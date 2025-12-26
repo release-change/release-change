@@ -13,7 +13,7 @@ import { compareVersionCores } from "./utils/compare-version-cores.js";
  * - `patch` if both versions share the same version core and the lower version has a patch (e.g.: `1.2.3-rc.1` compared to `1.2.3`).
  * @param version1 - The first version to compare.
  * @param version2 - The second version to compare.
- * @param options - The options to use (`loose`: whether to use loose mode or not).
+ * @param [options] - The options to use (`loose`: whether to use loose mode or not).
  * @return The release type making the difference if both versions are different, `null` otherwise.
  */
 export const getDifference = (
