@@ -26,41 +26,37 @@ test("any versions should match anything", () => {
 test("'=' should be ignored", () => {
   assert.deepEqual(new Comparator("=1.2.3"), new Comparator("1.2.3"));
 });
-it.each(comparatorIntersections)(
-  "should return `$2` when $0 intersects $1",
-  (comparator1, comparator2, expected, options) => {
-    expect(new Comparator(comparator1).intersects(new Comparator(comparator2), options)).toBe(
-      expected
-    );
-  }
-);
-it.each(comparatorIntersections)(
-  "should return `$2` when $1 intersects $0",
-  (comparator1, comparator2, expected, options) => {
-    expect(new Comparator(comparator2).intersects(new Comparator(comparator1), options)).toBe(
-      expected
-    );
-  }
-);
-it.each(comparatorIntersectionsInLooseMode)(
-  "should return `$2` when $0 intersects $1 in loose mode",
-  (comparator1, comparator2, expected, options) => {
-    expect(
-      new Comparator(comparator1, { loose: true }).intersects(
-        new Comparator(comparator2, { loose: true }),
-        options
-      )
-    ).toBe(expected);
-  }
-);
-it.each(comparatorIntersectionsInLooseMode)(
-  "should return `$2` when $1 intersects $0 in loose mode",
-  (comparator1, comparator2, expected, options) => {
-    expect(
-      new Comparator(comparator2, { loose: true }).intersects(
-        new Comparator(comparator1, { loose: true }),
-        options
-      )
-    ).toBe(expected);
-  }
-);
+it.each(
+  comparatorIntersections
+)("should return `$2` when $0 intersects $1", (comparator1, comparator2, expected, options) => {
+  expect(new Comparator(comparator1).intersects(new Comparator(comparator2), options)).toBe(
+    expected
+  );
+});
+it.each(
+  comparatorIntersections
+)("should return `$2` when $1 intersects $0", (comparator1, comparator2, expected, options) => {
+  expect(new Comparator(comparator2).intersects(new Comparator(comparator1), options)).toBe(
+    expected
+  );
+});
+it.each(
+  comparatorIntersectionsInLooseMode
+)("should return `$2` when $0 intersects $1 in loose mode", (comparator1, comparator2, expected, options) => {
+  expect(
+    new Comparator(comparator1, { loose: true }).intersects(
+      new Comparator(comparator2, { loose: true }),
+      options
+    )
+  ).toBe(expected);
+});
+it.each(
+  comparatorIntersectionsInLooseMode
+)("should return `$2` when $1 intersects $0 in loose mode", (comparator1, comparator2, expected, options) => {
+  expect(
+    new Comparator(comparator2, { loose: true }).intersects(
+      new Comparator(comparator1, { loose: true }),
+      options
+    )
+  ).toBe(expected);
+});

@@ -32,12 +32,12 @@ const strictInequalities = [
 ];
 
 describe.each(nonStrictOperators)("try to compare a and b with %s", operator => {
-  it.each([...comparisonsInLooseMode, ...equalitiesInLooseMode])(
-    "should throw an error if $a and $b are compared in strict mode",
-    ({ a, b }) => {
-      expect(() => compareWithOperator(a, operator, b)).toThrow();
-    }
-  );
+  it.each([
+    ...comparisonsInLooseMode,
+    ...equalitiesInLooseMode
+  ])("should throw an error if $a and $b are compared in strict mode", ({ a, b }) => {
+    expect(() => compareWithOperator(a, operator, b)).toThrow();
+  });
 });
 test.each(strictEqualities)("$a and $b should match the operator ===", ({ a, b }) => {
   expect(compareWithOperator(a, "===", b)).toBe(true);
@@ -58,18 +58,17 @@ describe.each(equalityOperators)("compare a and b with %s", operator => {
   test.each(comparisons)("$a and $b should not match the operator $operator", ({ a, b }) => {
     expect(compareWithOperator(a, operator, b)).toBe(false);
   });
-  test.each(equalitiesInLooseMode)(
-    "$a and $b should match the operator $operator in loose mode",
-    ({ a, b }) => {
-      expect(compareWithOperator(a, operator, b, { loose: true })).toBe(true);
-    }
-  );
-  test.each(comparisonsInLooseMode)(
-    "$a and $b should not match the operator $operator in loose mode",
-    ({ a, b }) => {
-      expect(compareWithOperator(a, operator, b, { loose: true })).toBe(false);
-    }
-  );
+  test.each(equalitiesInLooseMode)("$a and $b should match the operator $operator in loose mode", ({
+    a,
+    b
+  }) => {
+    expect(compareWithOperator(a, operator, b, { loose: true })).toBe(true);
+  });
+  test.each(
+    comparisonsInLooseMode
+  )("$a and $b should not match the operator $operator in loose mode", ({ a, b }) => {
+    expect(compareWithOperator(a, operator, b, { loose: true })).toBe(false);
+  });
 });
 test.each(comparisons)("$a and $b should match the operator !=", ({ a, b }) => {
   expect(compareWithOperator(a, "!=", b)).toBe(true);
@@ -77,93 +76,93 @@ test.each(comparisons)("$a and $b should match the operator !=", ({ a, b }) => {
 test.each(equalities)("$a and $b should not match the operator !=", ({ a, b }) => {
   expect(compareWithOperator(a, "!=", b)).toBe(false);
 });
-test.each(comparisonsInLooseMode)(
-  "$a and $b should match the operator != in loose mode",
-  ({ a, b }) => {
-    expect(compareWithOperator(a, "!=", b, { loose: true })).toBe(true);
-  }
-);
-test.each(equalitiesInLooseMode)(
-  "$a and $b should not match the operator != in loose mode",
-  ({ a, b }) => {
-    expect(compareWithOperator(a, "!=", b, { loose: true })).toBe(false);
-  }
-);
+test.each(comparisonsInLooseMode)("$a and $b should match the operator != in loose mode", ({
+  a,
+  b
+}) => {
+  expect(compareWithOperator(a, "!=", b, { loose: true })).toBe(true);
+});
+test.each(equalitiesInLooseMode)("$a and $b should not match the operator != in loose mode", ({
+  a,
+  b
+}) => {
+  expect(compareWithOperator(a, "!=", b, { loose: true })).toBe(false);
+});
 test.each(comparisons)("$a and $b should match the operator >", ({ a, b }) => {
   expect(compareWithOperator(a, ">", b)).toBe(true);
 });
-test.each([...comparisons, ...equalities])(
-  "$a and $b should not match the operator >",
-  ({ a, b }) => {
-    expect(compareWithOperator(b, ">", a)).toBe(false);
-  }
-);
-test.each(comparisonsInLooseMode)(
-  "$a and $b should match the operator > in loose mode",
-  ({ a, b }) => {
-    expect(compareWithOperator(a, ">", b, { loose: true })).toBe(true);
-  }
-);
-test.each([...comparisonsInLooseMode, ...equalitiesInLooseMode])(
-  "$a and $b should not match the operator > in loose mode",
-  ({ a, b }) => {
-    expect(compareWithOperator(b, ">", a, { loose: true })).toBe(false);
-  }
-);
+test.each([...comparisons, ...equalities])("$a and $b should not match the operator >", ({
+  a,
+  b
+}) => {
+  expect(compareWithOperator(b, ">", a)).toBe(false);
+});
+test.each(comparisonsInLooseMode)("$a and $b should match the operator > in loose mode", ({
+  a,
+  b
+}) => {
+  expect(compareWithOperator(a, ">", b, { loose: true })).toBe(true);
+});
+test.each([
+  ...comparisonsInLooseMode,
+  ...equalitiesInLooseMode
+])("$a and $b should not match the operator > in loose mode", ({ a, b }) => {
+  expect(compareWithOperator(b, ">", a, { loose: true })).toBe(false);
+});
 test.each([...comparisons, ...equalities])("$a and $b should match the operator >=", ({ a, b }) => {
   expect(compareWithOperator(a, ">=", b)).toBe(true);
 });
 test.each(comparisons)("$a and $b should not match the operator >=", ({ a, b }) => {
   expect(compareWithOperator(b, ">=", a)).toBe(false);
 });
-test.each([...comparisonsInLooseMode, ...equalitiesInLooseMode])(
-  "$a and $b should match the operator >= in loose mode",
-  ({ a, b }) => {
-    expect(compareWithOperator(a, ">=", b, { loose: true })).toBe(true);
-  }
-);
-test.each(comparisonsInLooseMode)(
-  "$a and $b should not match the operator >= in loose mode",
-  ({ a, b }) => {
-    expect(compareWithOperator(b, ">=", a, { loose: true })).toBe(false);
-  }
-);
+test.each([
+  ...comparisonsInLooseMode,
+  ...equalitiesInLooseMode
+])("$a and $b should match the operator >= in loose mode", ({ a, b }) => {
+  expect(compareWithOperator(a, ">=", b, { loose: true })).toBe(true);
+});
+test.each(comparisonsInLooseMode)("$a and $b should not match the operator >= in loose mode", ({
+  a,
+  b
+}) => {
+  expect(compareWithOperator(b, ">=", a, { loose: true })).toBe(false);
+});
 test.each(comparisons)("$a and $b should match the operator <", ({ a, b }) => {
   expect(compareWithOperator(b, "<", a)).toBe(true);
 });
-test.each([...comparisons, ...equalities])(
-  "$a and $b should not match the operator <",
-  ({ a, b }) => {
-    expect(compareWithOperator(a, "<", b)).toBe(false);
-  }
-);
-test.each(comparisonsInLooseMode)(
-  "$a and $b should match the operator < in loose mode",
-  ({ a, b }) => {
-    expect(compareWithOperator(b, "<", a, { loose: true })).toBe(true);
-  }
-);
-test.each([...comparisonsInLooseMode, ...equalitiesInLooseMode])(
-  "$a and $b should not match the operator < in loose mode",
-  ({ a, b }) => {
-    expect(compareWithOperator(a, "<", b, { loose: true })).toBe(false);
-  }
-);
+test.each([...comparisons, ...equalities])("$a and $b should not match the operator <", ({
+  a,
+  b
+}) => {
+  expect(compareWithOperator(a, "<", b)).toBe(false);
+});
+test.each(comparisonsInLooseMode)("$a and $b should match the operator < in loose mode", ({
+  a,
+  b
+}) => {
+  expect(compareWithOperator(b, "<", a, { loose: true })).toBe(true);
+});
+test.each([
+  ...comparisonsInLooseMode,
+  ...equalitiesInLooseMode
+])("$a and $b should not match the operator < in loose mode", ({ a, b }) => {
+  expect(compareWithOperator(a, "<", b, { loose: true })).toBe(false);
+});
 test.each([...comparisons, ...equalities])("$a and $b should match the operator <=", ({ a, b }) => {
   expect(compareWithOperator(b, "<=", a)).toBe(true);
 });
 test.each(comparisons)("$a and $b should not match the operator <=", ({ a, b }) => {
   expect(compareWithOperator(a, "<=", b)).toBe(false);
 });
-test.each([...comparisonsInLooseMode, ...equalitiesInLooseMode])(
-  "$a and $b should match the operator <= in loose mode",
-  ({ a, b }) => {
-    expect(compareWithOperator(b, "<=", a, { loose: true })).toBe(true);
-  }
-);
-test.each(comparisonsInLooseMode)(
-  "$a and $b should not match the operator <= in loose mode",
-  ({ a, b }) => {
-    expect(compareWithOperator(a, "<=", b, { loose: true })).toBe(false);
-  }
-);
+test.each([
+  ...comparisonsInLooseMode,
+  ...equalitiesInLooseMode
+])("$a and $b should match the operator <= in loose mode", ({ a, b }) => {
+  expect(compareWithOperator(b, "<=", a, { loose: true })).toBe(true);
+});
+test.each(comparisonsInLooseMode)("$a and $b should not match the operator <= in loose mode", ({
+  a,
+  b
+}) => {
+  expect(compareWithOperator(a, "<=", b, { loose: true })).toBe(false);
+});
