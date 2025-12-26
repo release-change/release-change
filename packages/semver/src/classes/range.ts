@@ -569,4 +569,56 @@ export class Range implements SemverRangeData {
     }
     return false;
   }
+
+  /**
+   * Checks if there is a version which can satisfy a set of comparators.
+   * @param comparators - The set of comparators to check.
+   * @param [options] - The options to use (`loose`: whether to use loose mode or not, `includePrerelease`: whether to include pre-release versions in the range).
+   * @return `true` if there is a version which can satisfy the set of comparators, `false` otherwise.
+   */
+  isSatisfiable(
+    comparators: SemverComparatorData[],
+    options?: SemverOptionsLoose & SemverOptionsIncludePrerelease
+  ): boolean {
+    let result = true;
+    const remainingComparators = comparators.slice();
+    let testComparator = remainingComparators.pop();
+    while (result && remainingComparators.length) {
+      result = remainingComparators.every(otherComparator => {
+        return new Comparator(testComparator ? testComparator.value : "", options).intersects(
+          new Comparator(otherComparator.value, options),
+          options
+        );
+      });
+      testComparator = remainingComparators.pop();
+    }
+    return result;
+  }
+
+  /**
+   * Checks if the `Range` instance intersects another one.
+   * @param range - The range to check against.
+   * @param [options] - The options to use (`loose`: whether to use loose mode or not, `includePrerelease`: whether to include pre-release versions in the range).
+   * @return `true` if the ranges intersect, `false` otherwise.
+   */
+  intersects(range: Range, options?: SemverOptionsLoose & SemverOptionsIncludePrerelease): boolean {
+    return this.set.some(thisComparators => {
+      return (
+        this.isSatisfiable(thisComparators, options) &&
+        range.set.some(rangeComparators => {
+          return (
+            this.isSatisfiable(rangeComparators, options) &&
+            thisComparators.every(thisComparator => {
+              return rangeComparators.every(rangeComparator => {
+                return new Comparator(thisComparator.value, options).intersects(
+                  new Comparator(rangeComparator.value, options),
+                  options
+                );
+              });
+            })
+          );
+        })
+      );
+    });
+  }
 }

@@ -21,6 +21,7 @@ import { gte } from "./gte.js";
 import { gtr } from "./gtr.js";
 import { inc } from "./inc.js";
 import { increase } from "./increase.js";
+import { intersects } from "./intersects.js";
 import { isRangeSubset } from "./is-range-subset.js";
 import { isVersionOutside } from "./is-version-outside.js";
 import { lt } from "./lt.js";
@@ -75,6 +76,7 @@ export {
   gtr,
   inc,
   increase,
+  intersects,
   isRangeSubset,
   isVersionOutside,
   lt,
@@ -133,6 +135,7 @@ export default {
   gtr,
   inc,
   increase,
+  intersects,
   isRangeSubset,
   isVersionOutside,
   lt,

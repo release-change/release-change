@@ -2,11 +2,13 @@ import type {
   SemverComparatorData,
   SemverComparatorOperator,
   SemverData,
+  SemverOptionsIncludePrerelease,
   SemverOptionsLoose
 } from "../semver.types.js";
 
 import { compareWithOperator } from "../compare-with-operator.js";
 import { validate } from "../validate.js";
+import { Range } from "./range.js";
 import { Semver } from "./semver.js";
 
 import { COMPARATOR_PATTERN, COMPARATOR_PATTERN_LOOSE } from "../constants.js";
@@ -76,5 +78,65 @@ export class Comparator implements SemverComparatorData {
     } catch {
       return false;
     }
+  }
+
+  /**
+   * Checks if the `Comparator` instance intersects another one.
+   * @param comparator - The comparator to check against.
+   * @param [options] - The options to use (`loose`: whether to use loose mode or not, `includePrerelease`: whether to include pre-release versions in the range).
+   * @return `true` if the comparators intersect, `false` otherwise.
+   */
+  intersects(
+    comparator: Comparator,
+    options?: SemverOptionsLoose & SemverOptionsIncludePrerelease
+  ): boolean {
+    const {
+      operator: operatorA,
+      value: valueA,
+      semver: { version: versionA }
+    } = this;
+    const {
+      operator: operatorB,
+      value: valueB,
+      semver: { version: versionB }
+    } = comparator;
+    if (!operatorA) {
+      if (!valueA) return true;
+      return new Range(valueB, options).test(versionA);
+    }
+    if (!operatorB) {
+      if (!valueB) return true;
+      return new Range(valueA, options).test(versionB);
+    }
+    const { includePrerelease } = options ?? {};
+    const ltMinVersion = "<0.0.0";
+    const ltMinVersionWithPrerelease = "<0.0.0-0";
+    if (
+      includePrerelease &&
+      (valueA === ltMinVersionWithPrerelease || valueB === ltMinVersionWithPrerelease)
+    ) {
+      return false;
+    }
+    if (
+      !includePrerelease &&
+      (valueA.startsWith(ltMinVersion) || valueB.startsWith(ltMinVersion))
+    ) {
+      return false;
+    }
+    if (operatorA.startsWith("<") && operatorB.startsWith("<")) return true;
+    if (operatorA.startsWith(">") && operatorB.startsWith(">")) return true;
+    if (versionA === versionB && operatorA.includes("=") && operatorB.includes("=")) return true;
+    if (
+      compareWithOperator(versionA, "<", versionB, options) &&
+      operatorA.startsWith(">") &&
+      operatorB.startsWith("<")
+    ) {
+      return true;
+    }
+    return (
+      compareWithOperator(versionA, ">", versionB, options) &&
+      operatorA.startsWith("<") &&
+      operatorB.startsWith(">")
+    );
   }
 }
