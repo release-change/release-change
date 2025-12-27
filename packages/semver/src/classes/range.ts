@@ -233,7 +233,7 @@ export class Range implements SemverRangeData {
    * - a tilde followed by a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-minor version;
    * - a tilde followed by a complete version range (major, minor and patch) is replaced by a range greater than or equal to this version and less than the next pre-minor version;
    * - a tilde followed by a zero-version range is replaced by a range greater than or equal to this version and less than the next pre-minor version;
-   * - any prerelease identifiers are kept, even tough the `includePrerelease` option is set to `false` or not declared.
+   * - any prerelease identifiers are kept, even though the `includePrerelease` option is set to `false` or not declared.
    * @example
    * `~2`, `~2.x`, `~2.x.x`, `~>2`, `~>2.x` and `~>2.x.x` become `>=2.0.0 <3.0.0-0`,
    * `~2.0`, `~2.0.x`, "~>2.0"` and `~>2.0.x` become `>=2.0.0 <2.1.0-0`,
@@ -294,7 +294,7 @@ export class Range implements SemverRangeData {
    * - a caret followed by a single zero-version range is replaced by a range less than the next pre-major version;
    * - a caret followed by a zero-version range with minor at `0` is replaced by a range greater than or equal to this version and less than the next pre-patch version;
    * - a caret followed by a complete zero-version range is replaced by a range greater than or equal to this version and less than the next pre-minor version;
-   * - any prerelease identifiers are kept, even tough the `includePrerelease` option is set to `false` or not declared.
+   * - any prerelease identifiers are kept, even though the `includePrerelease` option is set to `false` or not declared.
    * @example
    * `^2`, `^2.x` and `^2.x.x` become `>=2.0.0 <3.0.0-0`,
    * `^2.0` and `^2.0.x` become `>=2.0.0 <3.0.0-0`,
