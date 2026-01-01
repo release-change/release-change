@@ -1,6 +1,7 @@
 import { expect, it } from "vitest";
 
 import { getVersionFromTag } from "../src/get-version-from-tag.js";
+import { mockedVersionsFromGitTag } from "./fixtures/mocked-versions-from-git-tag.js";
 
 it("should throw an error if the version is invalid", () => {
   expect(() => getVersionFromTag("v1")).toThrowError(
@@ -15,6 +16,8 @@ it("should throw an error if the version is invalid", () => {
     })
   );
 });
-it("should return the version if it is valid", () => {
-  expect(getVersionFromTag("v1.0.0")).toBe("1.0.0");
+it.each(
+  mockedVersionsFromGitTag
+)("should return the version $1 from $0 if it is valid", (gitTag, version) => {
+  expect(getVersionFromTag(gitTag)).toBe(version);
 });
