@@ -92,7 +92,7 @@ export const createReleaseNotes = async (
   //   }
   //   process.exitCode = status;
   //   throw formatDetailedError({
-  //     title: "Failed to create the release notes.",
+  //     title: "Failed to create the release notes",
   //     message: `${message}${documentationReference}`,
   //     details: {
   //       output: `status: ${status}`
