@@ -27,7 +27,7 @@ const mockedReleaseNotes = [
       target_commitish: "alpha",
       name: "v1.0.0-alpha.1",
       prerelease: true,
-      make_latest: false
+      make_latest: "false"
     }
   },
   {
@@ -41,7 +41,7 @@ const mockedReleaseNotes = [
       target_commitish: "main",
       name: "v1.0.0",
       prerelease: false,
-      make_latest: true
+      make_latest: "true"
     }
   }
 ];
