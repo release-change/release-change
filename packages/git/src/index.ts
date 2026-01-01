@@ -16,4 +16,4 @@ export { push } from "./push.js";
 export { removeTag } from "./remove-tag.js";
 export { removeTagOnRemoteRepository } from "./remove-tag-on-remote-repository.js";
 
-export { COMMITTER_EMAIL, COMMITTER_NAME } from "./constants.js";
+export { COMMITTER_EMAIL, COMMITTER_NAME, GIT_TAG_PATTERN } from "./constants.js";
