@@ -34,7 +34,7 @@ export const createReleaseNotes = async (
     target_commitish: target,
     name: tagName,
     prerelease: isPrerelease,
-    make_latest: !isPrerelease,
+    make_latest: String(!isPrerelease),
     body: formatReleaseNotesBody(body)
   };
   // TODO: uncomment to use GitHub API
