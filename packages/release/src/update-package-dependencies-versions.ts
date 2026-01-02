@@ -44,7 +44,7 @@ export const updatePackageDependenciesVersions = (
           if (dependencyUpdateMethod === "workspace") {
             packageManifest[dependencyType][name] = "workspace:*";
             logger.logInfo(
-              `Package version updated to workspace:* for package dependency ${name}.`
+              `Package version updated to workspace:* for package dependency ${name} in ${packageName}.`
             );
           } else {
             const range =
@@ -54,11 +54,13 @@ export const updatePackageDependenciesVersions = (
                   ? "~"
                   : "";
             packageManifest[dependencyType][name] = range + version;
-            logger.logInfo(`Package version updated to ${version} for package dependency ${name}.`);
+            logger.logInfo(
+              `Package version updated to ${version} for package dependency ${name} in ${packageName}.`
+            );
           }
           if (debug) {
             logger.logDebug(
-              `Package version for package dependency ${name}: ${packageManifest[dependencyType][name]}`
+              `Package version for package dependency ${name} in ${packageName}: ${packageManifest[dependencyType][name]}`
             );
           }
         }
