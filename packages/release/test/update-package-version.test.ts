@@ -72,11 +72,11 @@ describe.each(mockedNextReleases)("for $packageName", ({
     mockedPrivatePackageManifest
   ])("should update the package version", packageManifest => {
     const expectedVersion = nextRelease.version;
-    const expectedContent = JSON.stringify(
+    const expectedContent = `${JSON.stringify(
       { ...packageManifest, version: expectedVersion },
       null,
       2
-    );
+    )}\n`;
     const readFileSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(expectedContent);
     updatePackageVersion(nextRelease, mockedContextWithNextRelease);
     expect(readFileSpy).toHaveBeenCalledWith(packageManifestPath, "utf-8");

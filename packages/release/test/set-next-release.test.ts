@@ -129,8 +129,11 @@ describe.each([
                 version: nextRelease.version
               };
         });
-        for (const nextRelease of nextReleases) {
-          vi.mocked(incrementVersion).mockReturnValueOnce(nextRelease.version);
+        for (const releaseTypeItem of releaseType) {
+          vi.mocked(incrementVersion).mockReturnValueOnce(
+            expectedNextRelease.find(nextRelease => nextRelease.name === releaseTypeItem.name)
+              ?.version ?? ""
+          );
         }
         setNextRelease(releaseType, context);
         assert.deepEqual(context.nextRelease, expectedNextRelease);

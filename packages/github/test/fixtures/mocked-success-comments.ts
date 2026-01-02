@@ -118,7 +118,7 @@ The release is available on [GitHub release](https://github.com/user-id/repo-nam
       {
         type: "github",
         name: "GitHub release",
-        url: "https://github.com/user-id/repo-name/releases/tag/%40monorepo%2Fa%40v1.2.3"
+        url: "https://github.com/user-id/repo-name/releases/tag/@monorepo/a@v1.2.3"
       }
     ],
     expectedBody: `#### The release succeeded
@@ -131,7 +131,7 @@ The release is available on [GitHub release](https://github.com/user-id/repo-nam
 
 ##### @monorepo/a@1.2.3
 
-The release is available on [GitHub release](https://github.com/user-id/repo-name/releases/tag/%40monorepo%2Fa%40v1.2.3).`
+The release is available on [GitHub release](https://github.com/user-id/repo-name/releases/tag/@monorepo/a@v1.2.3).`
   },
   {
     type: "pull request",
@@ -150,7 +150,7 @@ The release is available on [GitHub release](https://github.com/user-id/repo-nam
       {
         type: "github",
         name: "GitHub release",
-        url: "https://github.com/user-id/repo-name/releases/tag/%40monorepo%2Fa%40v1.2.3"
+        url: "https://github.com/user-id/repo-name/releases/tag/@monorepo/a@v1.2.3"
       }
     ],
     expectedBody: `#### The release succeeded
@@ -163,7 +163,7 @@ The release is available on [GitHub release](https://github.com/user-id/repo-nam
 
 ##### @monorepo/a@1.2.3
 
-The release is available on [GitHub release](https://github.com/user-id/repo-name/releases/tag/%40monorepo%2Fa%40v1.2.3).`
+The release is available on [GitHub release](https://github.com/user-id/repo-name/releases/tag/@monorepo/a@v1.2.3).`
   },
   {
     type: "issue",
@@ -219,7 +219,7 @@ The release is available on [NPM (latest distribution tag)](https://npmjs.com/pa
       {
         type: "npm",
         name: "NPM (latest distribution tag)",
-        url: "https://npmjs.com/package/%40monorepo%2Fa/v/1.2.3"
+        url: "https://npmjs.com/package/@monorepo/a/v/1.2.3"
       }
     ],
     expectedBody: `#### The release succeeded
@@ -228,7 +228,7 @@ This issue has been resolved in versions 1.2.3 of root package and 1.2.3 of @mon
 
 ##### @monorepo/a@1.2.3
 
-The release is available on [NPM (latest distribution tag)](https://npmjs.com/package/%40monorepo%2Fa/v/1.2.3).`
+The release is available on [NPM (latest distribution tag)](https://npmjs.com/package/@monorepo/a/v/1.2.3).`
   },
   {
     type: "pull request",
@@ -242,7 +242,7 @@ The release is available on [NPM (latest distribution tag)](https://npmjs.com/pa
       {
         type: "npm",
         name: "NPM (latest distribution tag)",
-        url: "https://npmjs.com/package/%40monorepo%2Fa/v/1.2.3"
+        url: "https://npmjs.com/package/@monorepo/a/v/1.2.3"
       }
     ],
     expectedBody: `#### The release succeeded
@@ -251,7 +251,7 @@ This pull request is included in versions 1.2.3 of root package and 1.2.3 of @mo
 
 ##### @monorepo/a@1.2.3
 
-The release is available on [NPM (latest distribution tag)](https://npmjs.com/package/%40monorepo%2Fa/v/1.2.3).`
+The release is available on [NPM (latest distribution tag)](https://npmjs.com/package/@monorepo/a/v/1.2.3).`
   },
   {
     type: "issue",
@@ -326,12 +326,12 @@ The release is available on:
       {
         type: "github",
         name: "GitHub release",
-        url: "https://github.com/user-id/repo-name/releases/tag/%40monorepo%2Fa%40v1.2.3"
+        url: "https://github.com/user-id/repo-name/releases/tag/@monorepo/a@v1.2.3"
       },
       {
         type: "npm",
         name: "NPM (latest distribution tag)",
-        url: "https://npmjs.com/package/%40monorepo%2Fa/v/1.2.3"
+        url: "https://npmjs.com/package/@monorepo/a/v/1.2.3"
       }
     ],
     expectedBody: `#### The release succeeded
@@ -345,8 +345,8 @@ The release is available on [GitHub release](https://github.com/user-id/repo-nam
 ##### @monorepo/a@1.2.3
 
 The release is available on:
-- [GitHub release](https://github.com/user-id/repo-name/releases/tag/%40monorepo%2Fa%40v1.2.3),
-- [NPM (latest distribution tag)](https://npmjs.com/package/%40monorepo%2Fa/v/1.2.3).`
+- [GitHub release](https://github.com/user-id/repo-name/releases/tag/@monorepo/a@v1.2.3),
+- [NPM (latest distribution tag)](https://npmjs.com/package/@monorepo/a/v/1.2.3).`
   },
   {
     type: "pull request",
@@ -365,12 +365,12 @@ The release is available on:
       {
         type: "github",
         name: "GitHub release",
-        url: "https://github.com/user-id/repo-name/releases/tag/%40monorepo%2Fa%40v1.2.3"
+        url: "https://github.com/user-id/repo-name/releases/tag/@monorepo/a@v1.2.3"
       },
       {
         type: "npm",
         name: "NPM (latest distribution tag)",
-        url: "https://npmjs.com/package/%40monorepo%2Fa/v/1.2.3"
+        url: "https://npmjs.com/package/@monorepo/a/v/1.2.3"
       }
     ],
     expectedBody: `#### The release succeeded
@@ -384,7 +384,7 @@ The release is available on [GitHub release](https://github.com/user-id/repo-nam
 ##### @monorepo/a@1.2.3
 
 The release is available on:
-- [GitHub release](https://github.com/user-id/repo-name/releases/tag/%40monorepo%2Fa%40v1.2.3),
-- [NPM (latest distribution tag)](https://npmjs.com/package/%40monorepo%2Fa/v/1.2.3).`
+- [GitHub release](https://github.com/user-id/repo-name/releases/tag/@monorepo/a@v1.2.3),
+- [NPM (latest distribution tag)](https://npmjs.com/package/@monorepo/a/v/1.2.3).`
   }
 ];

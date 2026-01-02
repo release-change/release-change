@@ -31,7 +31,7 @@ export const updatePackageVersion = (
     );
     packageManifest.version = version;
     // TODO: uncomment to write updated package manifest content to file
-    // fs.writeFileSync(packageManifestPath, JSON.stringify(packageManifest, null, 2));
+    // fs.writeFileSync(packageManifestPath, `${JSON.stringify(packageManifest, null, 2)}\n`);
     logger.logInfo(`Package version updated to ${version} for ${packageName}.`);
     if (debug) {
       logger.setDebugScope("release:update-package-version");

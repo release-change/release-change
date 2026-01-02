@@ -33,7 +33,12 @@ export const getRelatedPullRequestsAndIssues = async (
       logger.logInfo("Searching for related pull requests and issues…");
       const references: Reference[] = [];
       const relatedPullRequests: AssociatedPullRequest[] = [];
-      const commitsWithSha = commits.filter(commit => typeof commit.sha === "string");
+      const commitsWithSha = commits.filter(
+        commit =>
+          typeof commit.sha === "string" &&
+          !commit.message.match(/^chore: (@[^@]+)?v\d+\.\d+\.\d+$/i) &&
+          !commit.message.startsWith("chore: release version package")
+      );
       if (commitsWithSha.length) {
         const pullRequestReferences: Reference[] = [];
         for (const commitWithSha of commitsWithSha) {

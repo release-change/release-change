@@ -6,7 +6,7 @@ import type { GitHubResponseError } from "./github.types.js";
 import { inspect } from "node:util";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
-import { checkErrorType, setLogger } from "@release-change/logger";
+import { setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";

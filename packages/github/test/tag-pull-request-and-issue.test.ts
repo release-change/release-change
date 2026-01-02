@@ -2,14 +2,10 @@
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
 import { agreeInNumber, formatDetailedError } from "@release-change/shared";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getRepositoryRelatedEntryPoint, tagPullRequestAndIssue } from "../src/index.js";
-import {
-  mockedContext,
-  mockedContextInMonorepo,
-  mockedContextWithNextRelease
-} from "./fixtures/mocked-context.js";
+import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 import { mockedFailureFetches } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
 import { mockedIssueNumber } from "./fixtures/mocked-issue-number.js";

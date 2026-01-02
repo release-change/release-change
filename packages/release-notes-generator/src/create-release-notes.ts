@@ -34,7 +34,7 @@ export const createReleaseNotes = async (
     target_commitish: target,
     name: tagName,
     prerelease: isPrerelease,
-    make_latest: !isPrerelease,
+    make_latest: String(!isPrerelease),
     body: formatReleaseNotesBody(body)
   };
   // TODO: uncomment to use GitHub API
@@ -92,7 +92,7 @@ export const createReleaseNotes = async (
   //   }
   //   process.exitCode = status;
   //   throw formatDetailedError({
-  //     title: "Failed to create the release notes.",
+  //     title: "Failed to create the release notes",
   //     message: `${message}${documentationReference}`,
   //     details: {
   //       output: `status: ${status}`

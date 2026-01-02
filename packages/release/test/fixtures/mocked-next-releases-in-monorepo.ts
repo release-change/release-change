@@ -43,8 +43,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.0.0" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0" },
+              { name: "", pathname: ".", version: "1.0.0" }
             ]
           },
           {
@@ -53,8 +53,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "0.1.0" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.0" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.0" },
+              { name: "", pathname: ".", version: "0.1.0" }
             ]
           },
           {
@@ -63,8 +63,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "0.0.1" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.0.1" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "0.0.1" },
+              { name: "", pathname: ".", version: "0.0.1" }
             ]
           }
         ]
@@ -78,13 +78,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.0.0-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "1.0.0-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.0.0-alpha.1", npmTag: "alpha" }
             ]
           },
           {
@@ -93,13 +93,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "0.1.0-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.1.0-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "0.1.0-alpha.1", npmTag: "alpha" }
             ]
           },
           {
@@ -108,13 +108,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "0.0.1-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.0.1-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "0.0.1-alpha.1", npmTag: "alpha" }
             ]
           }
         ]
@@ -128,13 +128,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.0.0-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "1.0.0-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.0.0-beta.1", npmTag: "beta" }
             ]
           },
           {
@@ -143,13 +143,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "0.1.0-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.1.0-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "0.1.0-beta.1", npmTag: "beta" }
             ]
           },
           {
@@ -158,13 +158,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "0.0.1-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.0.1-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "0.0.1-beta.1", npmTag: "beta" }
             ]
           }
         ]
@@ -178,8 +178,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.0.0-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "1.0.0-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.0.0-rc.1", npmTag: "next" }
             ]
           },
           {
@@ -188,8 +193,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "0.1.0-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.0-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "0.1.0-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "0.1.0-rc.1", npmTag: "next" }
             ]
           },
           {
@@ -198,8 +208,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "0.0.1-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.0.1-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "0.0.1-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "0.0.1-rc.1", npmTag: "next" }
             ]
           }
         ]
@@ -234,8 +249,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0" },
+              { name: "", pathname: ".", version: "1.2.3" }
             ]
           },
           {
@@ -244,8 +259,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.0" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.0" },
+              { name: "", pathname: ".", version: "1.2.3" }
             ]
           },
           {
@@ -254,8 +269,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.0.1" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "0.0.1" },
+              { name: "", pathname: ".", version: "1.2.3" }
             ]
           }
         ]
@@ -265,17 +280,17 @@ export const mockedNextReleasesInMonorepo: {
         releaseTypes: [
           {
             releaseType: [
-              { name: "", pathname: ".", releaseType: "major" },
-              { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
+              { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" },
+              { name: "", pathname: ".", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-alpha.2", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "1.0.0-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-alpha.2", npmTag: "alpha" }
             ]
           },
           {
@@ -284,13 +299,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-alpha.2", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.1.0-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-alpha.2", npmTag: "alpha" }
             ]
           },
           {
@@ -299,13 +314,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-alpha.2", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.0.1-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-alpha.2", npmTag: "alpha" }
             ]
           }
         ]
@@ -319,13 +334,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "1.0.0-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" }
             ]
           },
           {
@@ -334,13 +349,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.1.0-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" }
             ]
           },
           {
@@ -349,13 +364,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.0.1-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" }
             ]
           }
         ]
@@ -369,8 +384,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "1.0.0-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" }
             ]
           },
           {
@@ -379,8 +399,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.0-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "0.1.0-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" }
             ]
           },
           {
@@ -389,8 +414,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.0.1-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "0.0.1-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" }
             ]
           }
         ]
@@ -425,8 +455,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0" },
+              { name: "", pathname: ".", version: "1.2.3" }
             ]
           },
           {
@@ -435,8 +465,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.2.0" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "0.2.0" },
+              { name: "", pathname: ".", version: "1.2.3" }
             ]
           },
           {
@@ -445,8 +475,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.1" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.1" },
+              { name: "", pathname: ".", version: "1.2.3" }
             ]
           }
         ]
@@ -460,13 +490,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "1.0.0-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" }
             ]
           },
           {
@@ -475,13 +505,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.2.0-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" }
             ]
           },
           {
@@ -490,13 +520,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.1.1-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" }
             ]
           }
         ]
@@ -510,13 +540,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-beta.2", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "1.0.0-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-beta.2", npmTag: "beta" }
             ]
           },
           {
@@ -525,13 +555,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-beta.2", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.2.0-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-beta.2", npmTag: "beta" }
             ]
           },
           {
@@ -540,13 +570,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-beta.2", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.1.1-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-beta.2", npmTag: "beta" }
             ]
           }
         ]
@@ -560,8 +590,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "1.0.0-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" }
             ]
           },
           {
@@ -570,8 +605,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.2.0-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "0.2.0-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" }
             ]
           },
           {
@@ -580,8 +620,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.1-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "0.1.1-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.2.3-rc.1", npmTag: "next" }
             ]
           }
         ]
@@ -616,8 +661,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0" },
+              { name: "", pathname: ".", version: "1.2.3" }
             ]
           },
           {
@@ -626,8 +671,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.10.0" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "0.10.0" },
+              { name: "", pathname: ".", version: "1.2.3" }
             ]
           },
           {
@@ -636,8 +681,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.9.9" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "0.9.9" },
+              { name: "", pathname: ".", version: "1.2.3" }
             ]
           }
         ]
@@ -651,13 +696,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "1.0.0-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" }
             ]
           },
           {
@@ -666,13 +711,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.10.0-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" }
             ]
           },
           {
@@ -681,13 +726,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.9.9-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-alpha.1", npmTag: "alpha" }
             ]
           }
         ]
@@ -701,13 +746,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "1.0.0-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" }
             ]
           },
           {
@@ -716,13 +761,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.10.0-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" }
             ]
           },
           {
@@ -731,13 +776,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.9.9-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-beta.1", npmTag: "beta" }
             ]
           }
         ]
@@ -751,8 +796,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-rc.2", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "1.0.0-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.2.3-rc.2", npmTag: "next" }
             ]
           },
           {
@@ -761,13 +811,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-rc.2", npmTag: "next" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.10.0-rc.1",
                 npmTag: "next"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.3-rc.2", npmTag: "next" }
             ]
           },
           {
@@ -776,8 +826,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.3-rc.2", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.9.9-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "0.9.9-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.2.3-rc.2", npmTag: "next" }
             ]
           }
         ]
@@ -812,8 +867,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "2.0.0" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0" },
+              { name: "", pathname: ".", version: "2.0.0" }
             ]
           },
           {
@@ -822,8 +877,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.3.0" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.0" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.0" },
+              { name: "", pathname: ".", version: "1.3.0" }
             ]
           },
           {
@@ -832,8 +887,8 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.4" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.0.1" }
+              { name: "@monorepo/a", pathname: "packages/a", version: "0.0.1" },
+              { name: "", pathname: ".", version: "1.2.4" }
             ]
           }
         ]
@@ -847,13 +902,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "2.0.0-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "1.0.0-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "2.0.0-alpha.1", npmTag: "alpha" }
             ]
           },
           {
@@ -862,13 +917,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.3.0-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.1.0-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.3.0-alpha.1", npmTag: "alpha" }
             ]
           },
           {
@@ -877,13 +932,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.4-alpha.1", npmTag: "alpha" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.0.1-alpha.1",
                 npmTag: "alpha"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.4-alpha.1", npmTag: "alpha" }
             ]
           }
         ]
@@ -897,13 +952,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "2.0.0-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "1.0.0-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "2.0.0-beta.1", npmTag: "beta" }
             ]
           },
           {
@@ -912,13 +967,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.3.0-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.1.0-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.3.0-beta.1", npmTag: "beta" }
             ]
           },
           {
@@ -927,13 +982,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.4-beta.1", npmTag: "beta" },
               {
                 name: "@monorepo/a",
                 pathname: "packages/a",
                 version: "0.0.1-beta.1",
                 npmTag: "beta"
-              }
+              },
+              { name: "", pathname: ".", version: "1.2.4-beta.1", npmTag: "beta" }
             ]
           }
         ]
@@ -947,8 +1002,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "major" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "2.0.0-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "1.0.0-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "1.0.0-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "2.0.0-rc.1", npmTag: "next" }
             ]
           },
           {
@@ -957,8 +1017,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "minor" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.3.0-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.1.0-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "0.1.0-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.3.0-rc.1", npmTag: "next" }
             ]
           },
           {
@@ -967,8 +1032,13 @@ export const mockedNextReleasesInMonorepo: {
               { name: "@monorepo/a", pathname: "packages/a", releaseType: "patch" }
             ],
             nextReleases: [
-              { name: "", pathname: ".", version: "1.2.4-rc.1", npmTag: "next" },
-              { name: "@monorepo/a", pathname: "packages/a", version: "0.0.1-rc.1", npmTag: "next" }
+              {
+                name: "@monorepo/a",
+                pathname: "packages/a",
+                version: "0.0.1-rc.1",
+                npmTag: "next"
+              },
+              { name: "", pathname: ".", version: "1.2.4-rc.1", npmTag: "next" }
             ]
           }
         ]

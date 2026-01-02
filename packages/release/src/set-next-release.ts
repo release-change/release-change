@@ -9,6 +9,8 @@ import { incrementVersion } from "./increment-version.js";
 
 /**
  * Sets the next release based on the last one and the release types of each concerned package and adds it to the context where the CLI is running.
+ *
+ * Due to GitHub limitations in terms of “latest” labelling and for correct lock file updates, the root package appears last in a monorepo context.
  * @param packageReleaseTypes - The release types for each package.
  * @param context - The context where the CLI is running.
  */
@@ -31,6 +33,7 @@ export const setNextRelease = (
     );
     if (branchConfig && nonNullablePackageReleaseTypes.length) {
       const nextRelease: PackageNextRelease[] = [];
+      let rootPackageNextRelease: PackageNextRelease | null = null;
       for (const packageReleaseType of nonNullablePackageReleaseTypes) {
         const { name, releaseType } = packageReleaseType;
         const packageLastRelease = lastRelease.packages.find(
@@ -42,7 +45,7 @@ export const setNextRelease = (
           const { channel } = branchConfig;
           const npmTag = channel && channel !== "default" ? channel : "latest";
           const preparedGitTag = `${name ? `${name}@` : ""}v${version}`;
-          nextRelease.push(
+          const packageNextRelease =
             npmTag === "latest"
               ? {
                   name,
@@ -56,8 +59,9 @@ export const setNextRelease = (
                   gitTag: preparedGitTag,
                   version,
                   npmTag
-                }
-          );
+                };
+          if (config.isMonorepo && !name) rootPackageNextRelease = packageNextRelease;
+          else nextRelease.push(packageNextRelease);
           const previousReleaseInfoMessage = gitTag
             ? `the previous release is ${currentVersion}`
             : "there is no previous release";
@@ -66,6 +70,7 @@ export const setNextRelease = (
           );
         } else logger.logWarn(`No last release found for ${name || "root"} package.`);
       }
+      if (config.isMonorepo && rootPackageNextRelease) nextRelease.push(rootPackageNextRelease);
       context.nextRelease = nextRelease;
     } else logger.logInfo("There are no relevant changes; therefore, no new version is released.");
     if (config.debug) {

@@ -1,3 +1,4 @@
+import { GIT_TAG_PATTERN } from "@release-change/git";
 import { validate } from "@release-change/semver";
 import { formatDetailedError } from "@release-change/shared";
 
@@ -7,7 +8,7 @@ import { formatDetailedError } from "@release-change/shared";
  * @return The version if valid.
  */
 export const getVersionFromTag = (tag: string): string => {
-  const version = validate(tag.replace(/^v/, ""));
+  const version = validate(tag.replace(GIT_TAG_PATTERN, ""));
   if (version) return version;
   throw formatDetailedError({
     title: "Failed to get the version from tag",
