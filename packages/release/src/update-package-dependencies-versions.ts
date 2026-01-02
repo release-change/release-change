@@ -64,7 +64,7 @@ export const updatePackageDependenciesVersions = (
         }
       }
       // TODO: uncomment to write updated package manifest content to file
-      // fs.writeFileSync(packagePath, JSON.stringify(packageManifest, null, 2));
+      // fs.writeFileSync(packagePath, `${JSON.stringify(packageManifest, null, 2)}\n`);
     } else {
       throw formatDetailedError({
         title: "Failed to update the package dependencies versions",
