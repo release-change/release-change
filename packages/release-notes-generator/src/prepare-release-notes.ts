@@ -85,7 +85,7 @@ export const prepareReleaseNotes = (
               }
             }
             const fullChangelog = lastGitTag
-              ? `**Full changelog:** [\`${lastGitTag}...${gitTag}\`](${repositoryUrl.replace(".git", "")}/compare/${encodeURIComponent(lastGitTag)}...${encodeURIComponent(gitTag)})`
+              ? `**Full changelog:** [\`${lastGitTag}...${gitTag}\`](${repositoryUrl.replace(".git", "")}/compare/${lastGitTag}...${gitTag})`
               : "";
             const releaseNotesBody: ReleaseNotes["body"] = {};
             if (majorChanges.length) releaseNotesBody.major = majorChanges;
