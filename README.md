@@ -273,4 +273,4 @@ This optional option, when set, can only be `false`. When this option is set, no
 
 ## Copyright & licence
 
-© 2025 Victor Brito — Released under the [MIT licence](./LICENSE).
+© 2025-present Victor Brito — Released under the [MIT licence](./LICENSE).
