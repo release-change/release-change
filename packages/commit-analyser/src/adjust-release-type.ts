@@ -7,7 +7,9 @@ import { getPackageDependencies } from "@release-change/get-packages";
 /**
  * Adjusts the release type based on the internal dependencies.
  *
- * The root package is considered having all other internal packages as dependencies.
+ * The root package is considered to have all other internal packages as dependencies.
+ *
+ * For each package, the existing release types are kept.
  * @param context - The context where the CLI is running.
  * @param releaseTypesMap - The map of release types.
  * @return The adjusted map of release types.
@@ -24,7 +26,7 @@ export const adjustReleaseType = (
       ? getPackageDependencies(path.join(cwd, pathname, "package.json"))
       : packages.map(packageItem => packageItem.name);
     if (dependencies?.length) {
-      const releaseTypes = new Set<ReleaseType>();
+      const releaseTypes = completedReleaseTypesMap.get(name) ?? new Set<ReleaseType>();
       for (const dependency of dependencies) {
         if (completedReleaseTypesMap.has(dependency)) {
           const dependencyReleaseTypes = completedReleaseTypesMap.get(dependency);

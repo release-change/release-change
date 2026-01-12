@@ -111,13 +111,13 @@ describe.each(
         expect(expectedPackageManifest.devDependencies[name]).toBe(expectedRange + expectedVersion);
       }
       expect(mockedLogger.logInfo).toHaveBeenCalledWith(
-        `Package version updated to ${expectedVersion} for package dependency ${name}.`
+        `Package version updated to ${expectedVersion} for package dependency ${name} in ${packageName}.`
       );
     }
     // TODO: uncomment when updated package manifest content is written to file
     // expect(fs.writeFileSync).toHaveBeenCalledWith(
     //   packageManifestPath,
-    //   JSON.stringify(expectedPackageManifest, null, 2)
+    //   `${JSON.stringify(expectedPackageManifest, null, 2)}\n`
     // );
   });
 });

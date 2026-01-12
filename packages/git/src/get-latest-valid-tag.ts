@@ -5,6 +5,8 @@ import { formatDetailedError } from "@release-change/shared";
 
 import { getAllTags } from "./get-all-tags.js";
 
+import { GIT_TAG_PATTERN } from "./constants.js";
+
 /**
  * Gets the latest valid Git tag for the branch.
  * @param context - The context where the CLI is running.
@@ -13,9 +15,8 @@ import { getAllTags } from "./get-all-tags.js";
  */
 export const getLatestValidTag = (context: Context, packageName?: string): string | null => {
   const { branch, config } = context;
-  const tagPattern = /^(@[^@]+@)?v/;
   const gitTags = getAllTags(context)
-    .filter(gitTag => validate(gitTag.replace(tagPattern, "")))
+    .filter(gitTag => validate(gitTag.replace(GIT_TAG_PATTERN, "")))
     .filter(gitTag =>
       typeof packageName === "string" ? gitTag.startsWith(packageName ? packageName : "v") : true
     );
@@ -24,7 +25,7 @@ export const getLatestValidTag = (context: Context, packageName?: string): strin
       const branchReleaseType = config.releaseType[branch];
       if (branchReleaseType) {
         const validGitTagsForBranch = gitTags.filter(gitTag => {
-          const prereleaseIdentifiers = getPrerelease(gitTag.replace(tagPattern, ""));
+          const prereleaseIdentifiers = getPrerelease(gitTag.replace(GIT_TAG_PATTERN, ""));
           if (branchReleaseType.prerelease) {
             if (prereleaseIdentifiers) {
               const [prereleaseIdentifier] = prereleaseIdentifiers;

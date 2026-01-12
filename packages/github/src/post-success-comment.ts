@@ -40,10 +40,8 @@ export const postSuccessComment = async (reference: Reference, context: Context)
       const npmVersion = `/v/${version}`;
       const versionReleaseInfos = releaseInfos.filter(
         releaseInfo =>
-          releaseInfo.url.endsWith(`/tag/${encodeURIComponent(gitTag)}`) ||
-          releaseInfo.url.endsWith(
-            isMonorepo ? `/${encodeURIComponent(packageName)}${npmVersion}` : npmVersion
-          )
+          releaseInfo.url.endsWith(`/tag/${gitTag}`) ||
+          releaseInfo.url.endsWith(isMonorepo ? `/${packageName}${npmVersion}` : npmVersion)
       );
       const totalReleaseInfos = versionReleaseInfos.length;
       const [firstReleaseInfo] = versionReleaseInfos;
