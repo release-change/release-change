@@ -12,4 +12,4 @@ Functions used internally in release-change to release packages
 
 ## Copyright & licence
 
-© 2025 Victor Brito — Released under the [MIT licence](./LICENSE).
+© 2025-present Victor Brito — Released under the [MIT licence](./LICENSE).

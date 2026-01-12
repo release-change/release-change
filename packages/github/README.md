@@ -12,4 +12,4 @@ Functions used internally in release-change to publish a GitHub release and comm
 
 ## Copyright & licence
 
-© 2025 Victor Brito — Released under the [MIT licence](./LICENSE).
+© 2025-present Victor Brito — Released under the [MIT licence](./LICENSE).
