@@ -35,6 +35,7 @@
     "@release-change/commit-analyser": "workspace:*",
     "@release-change/get-packages": "workspace:*",
     "@release-change/git": "workspace:*",
+    "@release-change/github": "workspace:*",
     "@release-change/logger": "workspace:*",
     "@release-change/npm": "workspace:*",
     "@release-change/release-notes-generator": "workspace:*",

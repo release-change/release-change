@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the file is written> */
 import type { PackageNextRelease } from "@release-change/shared";
 import type { ReleaseNotes } from "./release-notes-generator.types.js";
 
@@ -37,8 +36,7 @@ export const updateChangelogFile = (
         blankLineIndex === -1
           ? `${fileData}\n\n${formattedReleaseNotesBody}`
           : `${fileData.slice(0, blankLineIndex)}${versionHeader}${formattedReleaseNotesBody}${fileData.slice(blankLineIndex + 1)}`;
-      // TODO: uncomment when release notes are written to file
-      // fs.writeFileSync(changelogFilePath, updatedFileData);
+      fs.writeFileSync(changelogFilePath, updatedFileData);
     } else {
       const newFileHeader = `# ${packageName ?? "root package"}${versionHeader}`;
       createChangelogFile(changelogFilePath, newFileHeader, { major, minor, patch, dependencies });

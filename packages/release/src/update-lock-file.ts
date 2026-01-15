@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when commands are run> */
 import type { PackageManager } from "@release-change/get-packages";
 import type { Context, PackageNextRelease } from "@release-change/shared";
 
@@ -29,30 +28,25 @@ export const updateLockFile = async (
   if (packageManager === "pnpm") {
     if (fs.existsSync(path.join(cwd, pathname, "pnpm-lock.yaml"))) {
       args.push("install", "--lockfile-only");
-      // TODO: uncomment to run command
-      // const pnpmCommandResult = await runCommand("pnpm", args);
+      const pnpmCommandResult = await runCommand("pnpm", args);
       if (debug) {
         logger.logDebug(`Command run: pnpm ${args.join(" ")}`);
-        // TODO: uncomment when command is run
-        // logger.logDebug(inspect(pnpmCommandResult, { depth: Number.POSITIVE_INFINITY }));
+        logger.logDebug(inspect(pnpmCommandResult, { depth: Number.POSITIVE_INFINITY }));
       }
     }
   } else if (packageManager === "npm") {
     if (fs.existsSync(path.join(cwd, pathname, "package-lock.json"))) {
       args.push("install", "--package-lock-only");
-      // TODO: uncomment to run command
-      // const npmCommandResult = await runCommand("npm", args);
+      const npmCommandResult = await runCommand("npm", args);
       if (debug) {
         logger.logDebug(`Command run: npm ${args.join(" ")}`);
-        // TODO: uncomment when command is run
-        // logger.logDebug(inspect(npmCommandResult, { depth: Number.POSITIVE_INFINITY }));
+        logger.logDebug(inspect(npmCommandResult, { depth: Number.POSITIVE_INFINITY }));
       }
     }
   } else {
     const { pathname } = packageNextRelease;
     args.push("restore", path.join(cwd, pathname, "package.json"));
-    // TODO: uncomment to run command
-    // runCommandSync("git", args);
+    runCommandSync("git", args);
     if (debug) logger.logDebug(`Command run: git ${args.join(" ")}`);
     process.exitCode = 1;
     throw formatDetailedError({

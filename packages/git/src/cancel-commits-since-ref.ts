@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the Git command is run> */
-/** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the Git command is run> */
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommandSync } from "@release-change/shared";
 
@@ -14,24 +12,22 @@ export const cancelCommitsSinceRef = (commitRef: string, cwd: string, debug = fa
   logger.setScope("git");
   if (commitRef) {
     const args = ["reset", "--hard", commitRef];
-    // TODO: uncomment to run the Git command
-    // const { status, stdout, stderr } = runCommandSync("git", args, { cwd });
+    const { status, stdout, stderr } = runCommandSync("git", args, { cwd });
     if (debug) {
       logger.setDebugScope("git:cancel-commits-since-ref");
       logger.logDebug(`Command run: git ${args.join(" ")}`);
     }
-    // TODO: uncomment when the Git command is run
-    // if (status) {
-    //   logger.logError(`Failed to cancel the commits since ${commitRef}.`);
-    //   throw formatDetailedError({
-    //     title: "Failed to run the `git` command",
-    //     message: `The command failed with status ${status}.`,
-    //     details: {
-    //       output: stderr || stdout || `Command failed with status ${status}.`,
-    //       command: `git ${args.join(" ")}`
-    //     }
-    //   });
-    // }
+    if (status) {
+      logger.logError(`Failed to cancel the commits since ${commitRef}.`);
+      throw formatDetailedError({
+        title: "Failed to run the `git` command",
+        message: `The command failed with status ${status}.`,
+        details: {
+          output: stderr || stdout || `Command failed with status ${status}.`,
+          command: `git ${args.join(" ")}`
+        }
+      });
+    }
     logger.logInfo(`Commits since ${commitRef} cancelled.`);
   } else {
     throw formatDetailedError({

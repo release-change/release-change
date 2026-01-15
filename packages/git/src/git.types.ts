@@ -1,1 +1,1 @@
-export type PushOptions = { includeTags?: boolean };
+export type PushOptions = { destinationBranch: string; includeTags?: boolean };

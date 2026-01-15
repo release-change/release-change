@@ -11,8 +11,11 @@ import {
   getCurrentCommitId,
   push,
   removeTag,
-  removeTagOnRemoteRepository
+  removeTagOnRemoteRepository,
+  setBranchName,
+  switchToNewBranch
 } from "@release-change/git";
+import { createPullRequest } from "@release-change/github";
 import {
   addErrorToContext,
   checkErrorType,
@@ -40,6 +43,7 @@ export const publish = async (context: Context): Promise<void> => {
     cwd,
     env,
     config: { debug, isMonorepo },
+    branch,
     nextRelease
   } = context;
   const logger = setLogger(debug);
@@ -51,6 +55,8 @@ export const publish = async (context: Context): Promise<void> => {
       const packageManager = getPackageManager(cwd, env);
       const packagePublishingSet: PackagePublishing[] = [];
       const releaseNotesSet: ReleaseNotes[] = [];
+      const newBranch = setBranchName(branch, nextRelease);
+      switchToNewBranch(newBranch, cwd);
       for (const nextReleasePackage of nextRelease) {
         const { pathname } = nextReleasePackage;
         const packageDependencies = getPackageDependencies(
@@ -83,7 +89,8 @@ export const publish = async (context: Context): Promise<void> => {
         const packagePublishing = await preparePublishing(nextReleasePackage, context);
         if (packagePublishing) packagePublishingSet.push(packagePublishing);
       }
-      await push(context, { includeTags: true });
+      await push(context, { destinationBranch: newBranch, includeTags: true });
+      await createPullRequest(newBranch, context);
       for (const releaseNotes of releaseNotesSet) {
         await createReleaseNotes(releaseNotes, context);
       }
@@ -105,14 +112,15 @@ export const publish = async (context: Context): Promise<void> => {
           command === `git push --follow-tags ${context.config.remoteName} ${context.branch}`;
         if (
           command &&
-          (isCommandGitPush || command.startsWith("git add") || command.startsWith("git commit"))
+          (isCommandGitPush ||
+            command.startsWith("git add") ||
+            command.startsWith("git commit") ||
+            command.match(/^POST \S+\/pulls$/))
         ) {
           cancelCommitsSinceRef(commitRef, cwd, debug);
-          if (isCommandGitPush) {
-            for (const newGitTag of newGitTags) {
-              removeTag(newGitTag, cwd, debug);
-              await removeTagOnRemoteRepository(newGitTag, context);
-            }
+          for (const newGitTag of newGitTags) {
+            removeTag(newGitTag, cwd, debug);
+            await removeTagOnRemoteRepository(newGitTag, context);
           }
         }
       }

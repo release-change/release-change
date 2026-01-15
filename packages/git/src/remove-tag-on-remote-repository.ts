@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the Git command is run> */
 import type { Context } from "@release-change/shared";
 
 import { setLogger } from "@release-change/logger";
@@ -20,24 +19,22 @@ export const removeTagOnRemoteRepository = async (
   logger.setScope("git");
   if (gitTag) {
     const args = ["push", "--delete", remoteName, gitTag];
-    // TODO: uncomment to run the Git command
-    // const { status, stdout, stderr } = await runCommand("git", args);
+    const { status, stdout, stderr } = await runCommand("git", args);
     if (debug) {
       logger.setDebugScope("git:remove-tag-on-remote-repository");
       logger.logDebug(`Command run: git ${args.join(" ")}`);
     }
-    // TODO: uncomment when the Git command is run
-    // if (status) {
-    //   logger.logError(`Failed to remotely remove Git tag ${gitTag} on ${remoteName}.`);
-    //   throw formatDetailedError({
-    //     title: "Failed to run the `git` command",
-    //     message: `The command failed with status ${status}.`,
-    //     details: {
-    //       output: stderr || stdout || `Command failed with status ${status}.`,
-    //       command: `git ${args.join(" ")}`
-    //     }
-    //   });
-    // }
+    if (status) {
+      logger.logError(`Failed to remotely remove Git tag ${gitTag} on ${remoteName}.`);
+      throw formatDetailedError({
+        title: "Failed to run the `git` command",
+        message: `The command failed with status ${status}.`,
+        details: {
+          output: stderr || stdout || `Command failed with status ${status}.`,
+          command: `git ${args.join(" ")}`
+        }
+      });
+    }
     logger.logInfo(`Removed remote Git tag ${gitTag} successfully.`);
   } else {
     throw formatDetailedError({
