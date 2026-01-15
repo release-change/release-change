@@ -114,10 +114,9 @@ describe.each(
         `Package version updated to ${expectedVersion} for package dependency ${name} in ${packageName}.`
       );
     }
-    // TODO: uncomment when updated package manifest content is written to file
-    // expect(fs.writeFileSync).toHaveBeenCalledWith(
-    //   packageManifestPath,
-    //   `${JSON.stringify(expectedPackageManifest, null, 2)}\n`
-    // );
+    expect(fs.writeFileSync).toHaveBeenCalledWith(
+      packageManifestPath,
+      `${JSON.stringify(expectedPackageManifest, null, 2)}\n`
+    );
   });
 });

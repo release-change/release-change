@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the API is used> */
-/** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the API is used> */
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
@@ -62,65 +60,62 @@ describe.each(mockedSuccessComments)("for $type and reference $reference", ({
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
     await expect(postSuccessComment(reference, mockedContext)).rejects.toThrowError(expectedError);
   });
-  // TODO: uncomment when the API is used
-  // it("should throw an error when the request fails", async () => {
-  //   vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-  //   await expect(
-  //     postSuccessComment(reference, mockedContextWithNextRelease)
-  //   ).rejects.toThrowError("Failed to request the URI.");
-  // });
-  // it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
-  //   vi.mocked(mockedFetch).mockResolvedValue({
-  //     ...response,
-  //     json: () => Promise.resolve({ message: response.statusText })
-  //   });
-  //   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  //   await expect(
-  //     postSuccessComment(reference, mockedContextWithNextRelease)
-  //   ).rejects.toThrowError(expectedError);
-  //   expect(mockedLogger.logError).toHaveBeenCalledWith(
-  //     `Failed to post the success comment on ${type} #${reference.number}.`
-  //   );
-  //   expect(process.exitCode).toBe(response.status);
-  // });
-  // it("should log a warning message if the URI is not found", async () => {
-  //   const context = isMonorepo
-  //     ? { ...mockedContextWithNextReleaseInMonorepo, releaseInfos }
-  //     : { ...mockedContextWithNextRelease, releaseInfos };
-  //   vi.mocked(mockedFetch).mockResolvedValue({
-  //     status: 404,
-  //     statusText: "Not Found",
-  //     json: () => Promise.resolve({ message: "Not Found" })
-  //   });
-  //   await postSuccessComment(reference, context);
-  //   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
-  //     `The resource requested for ${type} #123 has not been found; therefore, the success comment has not been added.`
-  //   );
-  // });
-  // it("should post a success comment", async () => {
-  //   const context = isMonorepo
-  //     ? { ...mockedContextWithNextReleaseInMonorepo, releaseInfos }
-  //     : { ...mockedContextWithNextRelease, releaseInfos };
-  //   vi.mocked(mockedFetch).mockResolvedValue({
-  //     status: 201,
-  //     statusText: "Created",
-  //     json: () => Promise.resolve({ message: "Created" })
-  //   });
-  //   await postSuccessComment(reference, context);
-  //   expect(mockedFetch).toHaveBeenCalledWith(mockedUriForComments, {
-  //     method: "POST",
-  //     headers: {
-  //       Accept: "application/vnd.github+json",
-  //       Authorization: `Bearer ${mockedIssuePRToken}`,
-  //       "Content-Type": "application/json",
-  //       "X-GitHub-Api-Version": "2022-11-28"
-  //     },
-  //     body: JSON.stringify({
-  //       body: expectedBody
-  //     })
-  //   });
-  //   expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
-  //     `Added success comment on ${type} #123.`
-  //   );
-  // });
+  it("should throw an error when the request fails", async () => {
+    vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
+    await expect(postSuccessComment(reference, mockedContextWithNextRelease)).rejects.toThrowError(
+      "Failed to request the URI."
+    );
+  });
+  it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
+    vi.mocked(mockedFetch).mockResolvedValue({
+      ...response,
+      json: () => Promise.resolve({ message: response.statusText })
+    });
+    vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+    await expect(postSuccessComment(reference, mockedContextWithNextRelease)).rejects.toThrowError(
+      expectedError
+    );
+    expect(mockedLogger.logError).toHaveBeenCalledWith(
+      `Failed to post the success comment on ${type} #${reference.number}.`
+    );
+    expect(process.exitCode).toBe(response.status);
+  });
+  it("should log a warning message if the URI is not found", async () => {
+    const context = isMonorepo
+      ? { ...mockedContextWithNextReleaseInMonorepo, releaseInfos }
+      : { ...mockedContextWithNextRelease, releaseInfos };
+    vi.mocked(mockedFetch).mockResolvedValue({
+      status: 404,
+      statusText: "Not Found",
+      json: () => Promise.resolve({ message: "Not Found" })
+    });
+    await postSuccessComment(reference, context);
+    expect(mockedLogger.logWarn).toHaveBeenCalledWith(
+      `The resource requested for ${type} #123 has not been found; therefore, the success comment has not been added.`
+    );
+  });
+  it("should post a success comment", async () => {
+    const context = isMonorepo
+      ? { ...mockedContextWithNextReleaseInMonorepo, releaseInfos }
+      : { ...mockedContextWithNextRelease, releaseInfos };
+    vi.mocked(mockedFetch).mockResolvedValue({
+      status: 201,
+      statusText: "Created",
+      json: () => Promise.resolve({ message: "Created" })
+    });
+    await postSuccessComment(reference, context);
+    expect(mockedFetch).toHaveBeenCalledWith(mockedUriForComments, {
+      method: "POST",
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${mockedIssuePRToken}`,
+        "Content-Type": "application/json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+      body: JSON.stringify({
+        body: expectedBody
+      })
+    });
+    expect(mockedLogger.logSuccess).toHaveBeenCalledWith(`Added success comment on ${type} #123.`);
+  });
 });

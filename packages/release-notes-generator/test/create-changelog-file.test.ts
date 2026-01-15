@@ -1,6 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the file is written> */
-/** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the file is written> */
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the file is written> */
 import fs from "node:fs";
 
 import { getPackageName } from "@release-change/get-packages";
@@ -38,7 +35,6 @@ describe.each(mockedChangelogFiles)("for $nextRelease.name", ({
       formattedReleaseNotesBodyWithoutFullChangelog
     );
     updateChangelogFile(nextRelease, releaseNotesBodyWithoutChangelog, mockedContext.cwd);
-    // TODO: uncomment when the file is written
-    // expect(mockedSpyOn).toHaveBeenCalledWith(path, expectedNewChangelogFile);
+    expect(mockedSpyOn).toHaveBeenCalledWith(path, expectedNewChangelogFile);
   });
 });

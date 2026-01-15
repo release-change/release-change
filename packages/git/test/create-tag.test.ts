@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the command is run> */
-/** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the command is run> */
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommandSync } from "@release-change/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -47,26 +45,24 @@ describe.each(mockedNextReleases)("for $packageName", ({ packageName, nextReleas
       stderr: "Some error message."
     });
     createTag(nextRelease, mockedCommitRef);
-    // TODO: uncomment when the command is run
-    // expect(mockedLogger.logError).toHaveBeenCalledWith(
-    //   `Failed to create Git tag ${gitTag} for ${packageName}: Some error message.`
-    // );
+    expect(mockedLogger.logError).toHaveBeenCalledWith(
+      `Failed to create Git tag ${gitTag} for ${packageName}: Some error message.`
+    );
   });
   it("should run the `git tag` command", () => {
     const mockedCommand = vi
       .mocked(runCommandSync)
       .mockReturnValue({ status: 0, stdout: "", stderr: "" });
     createTag(nextRelease, mockedCommitRef);
-    // TODO: uncomment when the command is run
-    // expect(mockedCommand).toHaveBeenCalledWith("git", [
-    //   "tag",
-    //   gitTag,
-    //   "-m",
-    //   gitTag,
-    //   mockedCommitRef
-    // ]);
-    // expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
-    //   `Created Git tag ${gitTag} for ${packageName}.`
-    // );
+    expect(mockedCommand).toHaveBeenCalledWith("git", [
+      "tag",
+      gitTag,
+      "-m",
+      gitTag,
+      mockedCommitRef
+    ]);
+    expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
+      `Created Git tag ${gitTag} for ${packageName}.`
+    );
   });
 });

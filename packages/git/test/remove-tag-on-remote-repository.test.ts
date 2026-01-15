@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this lien when the Git command is run> */
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this lien when the Git command is run> */
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommand } from "@release-change/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -41,38 +39,36 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
       .mocked(runCommand)
       .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
     await removeTagOnRemoteRepository(mockedGitTag, mockedContext);
-    // TODO: uncomment when the command is run
-    // expect(mockedCommand).toHaveBeenCalledWith("git", ["push", "--delete", "origin", mockedGitTag]);
+    expect(mockedCommand).toHaveBeenCalledWith("git", ["push", "--delete", "origin", mockedGitTag]);
     expect(mockedLogger.logInfo).toHaveBeenCalledWith(
       `Removed remote Git tag ${mockedGitTag} successfully.`
     );
   });
-  // TODO: uncomment when the command is run
-  // it("should throw an error if the `git tag` command is run and fails", async () => {
-  //   const expectedError = new Error(
-  //     "Failed to run the `git` command: The command failed with status 128.",
-  //     {
-  //       cause: {
-  //         title: "Failed to run the `git` command",
-  //         message: "The command failed with status 128.",
-  //         details: {
-  //           output: "Some error message.",
-  //           command: `git push --delete origin ${mockedGitTag}`
-  //         }
-  //       }
-  //     }
-  //   );
-  //   vi.mocked(runCommand).mockResolvedValue({
-  //     status: 128,
-  //     stdout: "",
-  //     stderr: "Some error message."
-  //   });
-  //   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  //   await expect(removeTagOnRemoteRepository(mockedGitTag, mockedContext)).rejects.toThrowError(
-  //     expectedError
-  //   );
-  //   expect(mockedLogger.logError).toHaveBeenCalledWith(
-  //     `Failed to remotely remove Git tag ${mockedGitTag} on origin.`
-  //   );
-  // });
+  it("should throw an error if the `git tag` command is run and fails", async () => {
+    const expectedError = new Error(
+      "Failed to run the `git` command: The command failed with status 128.",
+      {
+        cause: {
+          title: "Failed to run the `git` command",
+          message: "The command failed with status 128.",
+          details: {
+            output: "Some error message.",
+            command: `git push --delete origin ${mockedGitTag}`
+          }
+        }
+      }
+    );
+    vi.mocked(runCommand).mockResolvedValue({
+      status: 128,
+      stdout: "",
+      stderr: "Some error message."
+    });
+    vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+    await expect(removeTagOnRemoteRepository(mockedGitTag, mockedContext)).rejects.toThrowError(
+      expectedError
+    );
+    expect(mockedLogger.logError).toHaveBeenCalledWith(
+      `Failed to remotely remove Git tag ${mockedGitTag} on origin.`
+    );
+  });
 });

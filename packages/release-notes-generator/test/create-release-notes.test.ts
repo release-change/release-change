@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the API is used> */
-/** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the API is used> */
 import { getRepositoryRelatedEntryPoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
@@ -65,49 +63,48 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-// TODO: uncomment when the API is used
-// it("should throw an error when the request fails", async () => {
-//   const expectedError = new Error(
-//     `Failed to create the release notes: Failed to fetch URI ${mockedUri}.`,
-//     {
-//       cause: {
-//         title: "Failed to create the release notes",
-//         message: `Failed to fetch URI ${mockedUri}.`,
-//         details: {
-//           output: "status: 404"
-//         }
-//       }
-//     }
-//   );
-//   vi.mocked(mockedFetch).mockRejectedValue(expectedError);
-//   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-//   await expect(
-//     createReleaseNotes(
-//       { tagName: "v1.0.0", target: "main", isPrerelease: true, body: {} },
-//       {
-//         ...mockedContext,
-//         env: mockedEnv
-//       }
-//     )
-//   ).rejects.toThrowError(expectedError);
-// });
-// it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
-//   vi.mocked(mockedFetch).mockResolvedValue({
-//     ...response,
-//     json: () => Promise.resolve({ message: response.statusText })
-//   });
-//   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-//   await expect(
-//     createReleaseNotes(
-//       { tagName: "v1.0.0", target: "main", isPrerelease: true, body: {} },
-//       {
-//         ...mockedContext,
-//         env: mockedEnv
-//       }
-//     )
-//   ).rejects.toThrowError(expectedError);
-//   expect(process.exitCode).toBe(response.status);
-// });
+it("should throw an error when the request fails", async () => {
+  const expectedError = new Error(
+    `Failed to create the release notes: Failed to fetch URI ${mockedUri}.`,
+    {
+      cause: {
+        title: "Failed to create the release notes",
+        message: `Failed to fetch URI ${mockedUri}.`,
+        details: {
+          output: "status: 404"
+        }
+      }
+    }
+  );
+  vi.mocked(mockedFetch).mockRejectedValue(expectedError);
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(
+    createReleaseNotes(
+      { tagName: "v1.0.0", target: "main", isPrerelease: true, body: {} },
+      {
+        ...mockedContext,
+        env: mockedEnv
+      }
+    )
+  ).rejects.toThrowError(expectedError);
+});
+it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
+  vi.mocked(mockedFetch).mockResolvedValue({
+    ...response,
+    json: () => Promise.resolve({ message: response.statusText })
+  });
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(
+    createReleaseNotes(
+      { tagName: "v1.0.0", target: "main", isPrerelease: true, body: {} },
+      {
+        ...mockedContext,
+        env: mockedEnv
+      }
+    )
+  ).rejects.toThrowError(expectedError);
+  expect(process.exitCode).toBe(response.status);
+});
 describe.each(mockedReleaseNotes)("for $releaseNotes.tagName", async ({
   releaseNotes,
   requestBody
@@ -133,24 +130,23 @@ describe.each(mockedReleaseNotes)("for $releaseNotes.tagName", async ({
       },
       context
     );
-    // TODO: uncomment when the API is used
-    // expect(mockedFetch).toHaveBeenCalledWith(mockedUri, {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/vnd.github+json",
-    //     Authorization: `Bearer ${mockedEnv.RELEASE_TOKEN}`,
-    //     "Content-Type": "application/json",
-    //     "X-GitHub-Api-Version": "2022-11-28"
-    //   },
-    //   body: JSON.stringify({
-    //     ...requestBody,
-    //     body: formattedBody
-    //   })
-    // });
-    // assert.deepNestedInclude(context.releaseInfos, {
-    //   type: "github",
-    //   name: "GitHub release",
-    //   url: `${mockedRepositoryUrl}/releases/tag/${releaseNotes.tagName}`
-    // });
+    expect(mockedFetch).toHaveBeenCalledWith(mockedUri, {
+      method: "POST",
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${mockedEnv.RELEASE_TOKEN}`,
+        "Content-Type": "application/json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+      body: JSON.stringify({
+        ...requestBody,
+        body: formattedBody
+      })
+    });
+    assert.deepNestedInclude(context.releaseInfos, {
+      type: "github",
+      name: "GitHub release",
+      url: `${mockedRepositoryUrl}/releases/tag/${releaseNotes.tagName}`
+    });
   });
 });

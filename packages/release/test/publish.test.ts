@@ -9,8 +9,11 @@ import {
   getCurrentCommitId,
   push,
   removeTag,
-  removeTagOnRemoteRepository
+  removeTagOnRemoteRepository,
+  setBranchName,
+  switchToNewBranch
 } from "@release-change/git";
+import { createPullRequest } from "@release-change/github";
 import { addErrorToContext, isDetailedError, setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
 import {
@@ -55,6 +58,8 @@ beforeEach(() => {
     getPackageManager: vi.fn()
   }));
   vi.mock("@release-change/git", () => ({
+    setBranchName: vi.fn(),
+    switchToNewBranch: vi.fn(),
     getCurrentCommitId: vi.fn(),
     createTag: vi.fn(),
     push: vi.fn(),
@@ -62,6 +67,7 @@ beforeEach(() => {
     removeTag: vi.fn(),
     removeTagOnRemoteRepository: vi.fn()
   }));
+  vi.mock("@release-change/github", () => ({ createPullRequest: vi.fn() }));
   vi.mock("@release-change/release-notes-generator", () => ({
     prepareReleaseNotes: vi.fn(),
     updateChangelogFile: vi.fn(),
@@ -104,6 +110,15 @@ it("should not call `getPackageManager()` if `context.nextRelease` is undefined"
 it("should not call `push()` if `context.nextRelease` is undefined", async () => {
   await publish(mockedContext);
   expect(push).not.toHaveBeenCalled();
+});
+it("should not call `createPullRequest()` if `context.nextRelease` is undefined", async () => {
+  await publish(mockedContext);
+  expect(createPullRequest).not.toHaveBeenCalled();
+});
+it("should not call any functions allowing to switch to a new branch if `context.nextRelease` is undefined", async () => {
+  await publish(mockedContext);
+  expect(setBranchName).not.toHaveBeenCalled();
+  expect(switchToNewBranch).not.toHaveBeenCalled();
 });
 it.each([
   mockedContext,
@@ -314,6 +329,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
       await publish(context);
       expect(push).toHaveBeenCalledWith(context, { includeTags: true });
+      expect(createPullRequest).toHaveBeenCalled();
       expect(createReleaseNotes).toHaveBeenCalled();
       expect(publishToRegistry).toHaveBeenCalled();
     });
@@ -394,7 +410,31 @@ describe.each(packageManagers)("for %s", packageManager => {
       expect(removeTag).toHaveBeenCalled();
       expect(removeTagOnRemoteRepository).toHaveBeenCalled();
     });
-    it("should not rollback when error is not from `git add`, `git commit` or `git push`", async () => {
+    it("should rollback commits and remove tags when pull request creation fails", async () => {
+      const mockedError = new Error(
+        "Failed to create the pull request: The command failed with status 128.",
+        {
+          cause: {
+            title: "Failed to create the pull request",
+            message: "The command failed with status 128.",
+            details: {
+              output: "GitHub API error",
+              command: "POST /repos/:owner/:repo/pulls"
+            }
+          }
+        }
+      );
+      vi.mocked(createPullRequest).mockRejectedValue(mockedError);
+      await expect(publish(context)).rejects.toThrowError(mockedError);
+      expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
+        "0123456",
+        expect.any(String),
+        expect.any(Boolean)
+      );
+      expect(removeTag).toHaveBeenCalled();
+      expect(removeTagOnRemoteRepository).toHaveBeenCalled();
+    });
+    it("should not rollback when error is not from `git add`, `git commit`, `git push` or pull request creation", async () => {
       vi.mocked(updateLockFile).mockRejectedValue(new Error("Lock file update failed"));
       await expect(publish(context)).rejects.toThrow();
       expect(cancelCommitsSinceRef).not.toHaveBeenCalled();
@@ -413,6 +453,9 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
       vi.mocked(push).mockImplementation(async () => {
         operations.push("push");
+      });
+      vi.mocked(createPullRequest).mockImplementation(async () => {
+        operations.push("pullRequest");
       });
       await publish(context);
       expect(operations.lastIndexOf("tag")).toBeLessThan(operations.indexOf("push"));
@@ -470,6 +513,9 @@ describe.each(packageManagers)("for %s", packageManager => {
       const operations: string[] = [];
       vi.mocked(push).mockImplementation(async () => {
         operations.push("push");
+      });
+      vi.mocked(createPullRequest).mockImplementation(async () => {
+        operations.push("pullRequest");
       });
       vi.mocked(createReleaseNotes).mockImplementation(async () => {
         operations.push("releaseNotes");
