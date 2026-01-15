@@ -44,8 +44,7 @@ export const preparePublishing = async (
       if (!isPackagePrivate) {
         const packageManager = getPackageManager(cwd, env);
         if (packageManager) {
-          // TODO: remove `--dry-run` flag to truly publish the release to the NPM registry
-          const args = ["publish", "--dry-run", "--access", "public"];
+          const args = ["publish", "--access", "public"];
           const packagePublishing: PackagePublishing = {
             name,
             packageManifestName: packageManifest.name,
