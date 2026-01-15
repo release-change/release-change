@@ -34,6 +34,7 @@
   "type": "module",
   "license": "MIT",
   "files": [
+    "configuration-schema.json",
     "dist"
   ],
   "exports": {

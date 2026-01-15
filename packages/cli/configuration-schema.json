@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Configuration",
+  "description": "The configuration which is contained inside the `release-change.config.json` file",
+  "type": "object",
+  "properties": {
+    "$schema": "string",
+    "branches": {
+      "description": "The branches on which releases should happen",
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "repositoryUrl": {
+      "description": "The Git repository URL",
+      "type": "string"
+    },
+    "remoteName": {
+      "description": "The remote repository name",
+      "type": "string"
+    },
+    "debug": {
+      "description": "Output debugging information",
+      "type": "boolean"
+    },
+    "dryRun": {
+      "description": "Whether to activate the dry-run mode or not",
+      "type": "boolean"
+    },
+    "releaseType": {
+      "description": "The release type configuration on the branches on which the releases should happen",
+      "type": "object",
+      "patternProperties": {
+        "description": "The name of the branch used as a property key",
+        "\\S+": {
+          "type": "object",
+          "properties": {
+            "channel": {
+              "description": "The distribution tag associated with the releases when publishing to NPM",
+              "type": "string"
+            },
+            "prerelease": {
+              "description": "Whether the release should be treated like a pre-release or not",
+              "type": "boolean"
+            },
+            "prereleaseIdentifier": {
+              "description": "The identifier to use when tagging a pre-release version",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "dependencyUpdateMethod": {
+      "description": "The method to use to update internal dependencies in a monorepo",
+      "enum": ["pin", "caret-range", "tilde-range", "workspace", null]
+    },
+    "npmPublish": {
+      "description": "To prevent package publishing to NPM",
+      "const": false
+    }
+  },
+  "additionalProperties": false
+}

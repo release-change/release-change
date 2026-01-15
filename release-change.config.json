@@ -1,3 +1,4 @@
 {
+  "$schema": "./packages/cli/configuration-schema.json",
   "dependencyUpdateMethod": "workspace"
 }
