@@ -1,10 +1,11 @@
+import type { Context } from "@release-change/shared";
 import type { PackagePublishing } from "../src/index.js";
 
 import fs from "node:fs";
 
 import { getPackageManager } from "@release-change/get-packages";
 import { setLogger } from "@release-change/logger";
-import { type Context, formatDetailedError } from "@release-change/shared";
+import { formatDetailedError } from "@release-change/shared";
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { preparePublishing } from "../src/index.js";

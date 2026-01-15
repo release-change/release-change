@@ -179,6 +179,9 @@ importers:
       '@release-change/git':
         specifier: workspace:*
         version: link:../git
+      '@release-change/github':
+        specifier: workspace:*
+        version: link:../github
       '@release-change/logger':
         specifier: workspace:*
         version: link:../logger

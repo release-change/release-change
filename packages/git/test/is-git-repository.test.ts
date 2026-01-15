@@ -1,5 +1,7 @@
+import type { DetailedError } from "@release-change/shared";
+
 import { addErrorToContext } from "@release-change/logger";
-import { type DetailedError, runCommand } from "@release-change/shared";
+import { runCommand } from "@release-change/shared";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { isGitRepository } from "../src/is-git-repository.js";

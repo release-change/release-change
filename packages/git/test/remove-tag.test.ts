@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the command is run> */
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommandSync } from "@release-change/shared";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -40,34 +39,32 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
       .mocked(runCommandSync)
       .mockReturnValue({ status: 0, stdout: "", stderr: "" });
     removeTag(mockedGitTag, mockedCwd);
-    // TODO: uncomment when the command is run
-    // expect(mockedCommand).toHaveBeenCalledWith("git", ["tag", "-d", mockedGitTag], {
-    //   cwd: mockedCwd
-    // });
+    expect(mockedCommand).toHaveBeenCalledWith("git", ["tag", "-d", mockedGitTag], {
+      cwd: mockedCwd
+    });
     expect(mockedLogger.logInfo).toHaveBeenCalledWith(`Removed Git tag ${mockedGitTag}.`);
   });
-  // TODO: uncomment when the command is run
-  // it("should throw an error if the `git tag` command is run and fails", () => {
-  //   const expectedError = new Error(
-  //     "Failed to run the `git` command: The command failed with status 128.",
-  //     {
-  //       cause: {
-  //         title: "Failed to run the `git` command",
-  //         message: "The command failed with status 128.",
-  //         details: {
-  //           output: "Some error message.",
-  //           command: `git tag -d ${mockedGitTag}`
-  //         }
-  //       }
-  //     }
-  //   );
-  //   vi.mocked(runCommandSync).mockReturnValue({
-  //     status: 128,
-  //     stdout: "",
-  //     stderr: "Some error message."
-  //   });
-  //   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  //   expect(() => removeTag(mockedGitTag, mockedCwd)).toThrowError(expectedError);
-  //   expect(mockedLogger.logError).toHaveBeenCalledWith(`Failed to remove Git tag ${mockedGitTag}.`);
-  // });
+  it("should throw an error if the `git tag` command is run and fails", () => {
+    const expectedError = new Error(
+      "Failed to run the `git` command: The command failed with status 128.",
+      {
+        cause: {
+          title: "Failed to run the `git` command",
+          message: "The command failed with status 128.",
+          details: {
+            output: "Some error message.",
+            command: `git tag -d ${mockedGitTag}`
+          }
+        }
+      }
+    );
+    vi.mocked(runCommandSync).mockReturnValue({
+      status: 128,
+      stdout: "",
+      stderr: "Some error message."
+    });
+    vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+    expect(() => removeTag(mockedGitTag, mockedCwd)).toThrowError(expectedError);
+    expect(mockedLogger.logError).toHaveBeenCalledWith(`Failed to remove Git tag ${mockedGitTag}.`);
+  });
 });

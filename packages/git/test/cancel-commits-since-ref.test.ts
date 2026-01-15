@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the command is run> */
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommandSync } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
@@ -26,10 +25,9 @@ it("should run the `git reset --hard` command", () => {
     .mocked(runCommandSync)
     .mockReturnValue({ status: 0, stdout: "", stderr: "" });
   cancelCommitsSinceRef(mockedCommitRef, mockedCwd);
-  // TODO: uncomment when the command is run
-  // expect(mockedCommand).toHaveBeenCalledWith("git", ["reset", "--hard", mockedCommitRef], {
-  //   cwd: mockedCwd
-  // });
+  expect(mockedCommand).toHaveBeenCalledWith("git", ["reset", "--hard", mockedCommitRef], {
+    cwd: mockedCwd
+  });
   expect(mockedLogger.logInfo).toHaveBeenCalledWith(`Commits since ${mockedCommitRef} cancelled.`);
 });
 it("should throw an error if the commit ref is empty", () => {
@@ -48,29 +46,28 @@ it("should throw an error if the commit ref is empty", () => {
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   expect(() => cancelCommitsSinceRef("", mockedCwd)).toThrowError(expectedError);
 });
-// TODO: uncomment when the command is run
-// it("should throw an error if the `git reset --hard` command is run and fails", () => {
-//   const expectedError = new Error(
-//     "Failed to run the `git` command: The command failed with status 128.",
-//     {
-//       cause: {
-//         title: "Failed to run the `git` command",
-//         message: "The command failed with status 128.",
-//         details: {
-//           output: "Some error message.",
-//           command: `git reset --hard ${mockedCommitRef}`
-//         }
-//       }
-//     }
-//   );
-//   vi.mocked(runCommandSync).mockReturnValue({
-//     status: 128,
-//     stdout: "",
-//     stderr: "Some error message."
-//   });
-//   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-//   expect(() => cancelCommitsSinceRef(mockedCommitRef, mockedCwd)).toThrowError(expectedError);
-//   expect(mockedLogger.logError).toHaveBeenCalledWith(
-//     `Failed to cancel the commits since ${mockedCommitRef}.`
-//   );
-// });
+it("should throw an error if the `git reset --hard` command is run and fails", () => {
+  const expectedError = new Error(
+    "Failed to run the `git` command: The command failed with status 128.",
+    {
+      cause: {
+        title: "Failed to run the `git` command",
+        message: "The command failed with status 128.",
+        details: {
+          output: "Some error message.",
+          command: `git reset --hard ${mockedCommitRef}`
+        }
+      }
+    }
+  );
+  vi.mocked(runCommandSync).mockReturnValue({
+    status: 128,
+    stdout: "",
+    stderr: "Some error message."
+  });
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  expect(() => cancelCommitsSinceRef(mockedCommitRef, mockedCwd)).toThrowError(expectedError);
+  expect(mockedLogger.logError).toHaveBeenCalledWith(
+    `Failed to cancel the commits since ${mockedCommitRef}.`
+  );
+});

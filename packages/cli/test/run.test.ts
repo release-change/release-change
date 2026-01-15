@@ -19,7 +19,7 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { run } from "../src/run.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
-const mockedCliOptions: CliOptions = { debug: true }; // Add more fields if needed
+const mockedCliOptions: CliOptions = { debug: true };
 const mockedContextBase: ContextBase = {
   cwd: "/fake/path",
   env: {},

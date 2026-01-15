@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when commands are run> */
-/** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this lien when commands are run> */
 import fs from "node:fs";
 
 import { formatDetailedError, runCommand, runCommandSync } from "@release-change/shared";
@@ -41,28 +39,24 @@ describe.each(mockedNextReleases)("for $packageName", ({ packageManifestPath, ne
         }
       }
     );
-    // TODO: uncomment when command is run
-    // const mockedCommand = vi
-    //   .mocked(runCommandSync)
-    //   .mockReturnValue({ status: 0, stdout: "", stderr: "" });
+    const mockedCommand = vi
+      .mocked(runCommandSync)
+      .mockReturnValue({ status: 0, stdout: "", stderr: "" });
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
     await expect(updateLockFile(nextRelease, mockedContext, null)).rejects.toThrowError(
       expectedError
     );
-    // TODO: uncomment when command is run
-    // expect(mockedCommand).toHaveBeenCalledWith("git", ["restore", packageManifestPath]);
+    expect(mockedCommand).toHaveBeenCalledWith("git", ["restore", packageManifestPath]);
   });
   it.each(
     mockedPackageManagerCommands
   )("should not run the $command command if the lock file does not exist", async ({ command }) => {
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
-    // TODO: uncomment when command is run
-    // const mockedCommand = vi
-    //   .mocked(runCommand)
-    //   .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+    const mockedCommand = vi
+      .mocked(runCommand)
+      .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
     await updateLockFile(nextRelease, mockedContext, command);
-    // TODO: uncomment when command is run
-    // expect(mockedCommand).not.toHaveBeenCalled();
+    expect(mockedCommand).not.toHaveBeenCalled();
   });
   it.each(
     mockedPackageManagerCommands
@@ -71,12 +65,10 @@ describe.each(mockedNextReleases)("for $packageName", ({ packageManifestPath, ne
     args
   }) => {
     vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    // TODO: uncomment when command is run
-    // const mockedCommand = vi
-    //   .mocked(runCommand)
-    //   .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+    const mockedCommand = vi
+      .mocked(runCommand)
+      .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
     await updateLockFile(nextRelease, mockedContext, command);
-    // TODO: uncomment when command is run
-    // expect(mockedCommand).toHaveBeenCalledWith(command, args);
+    expect(mockedCommand).toHaveBeenCalledWith(command, args);
   });
 });

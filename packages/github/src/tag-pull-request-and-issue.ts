@@ -1,5 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the API is used> */
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the API is used> */
 import type { Context, Reference } from "@release-change/shared";
 import type { GitHubResponseError } from "./github.types.js";
 
@@ -38,61 +36,59 @@ export const tagPullRequestAndIssue = async (
         )
       ]
     };
-    // TODO: uncomment to use GiHub API
-    // const issueClosingResponse = await fetch(uri, {
-    //   method: "PATCH",
-    //   headers: {
-    //     Accept: "application/vnd.github+json",
-    //     Authorization: `Bearer ${issuePullRequestToken}`,
-    //     "Content-Type": "application/json",
-    //     "X-GitHub-Api-Version": "2022-11-28"
-    //   },
-    //   body: JSON.stringify(requestBody)
-    // });
-    // const { headers, status, statusText } = issueClosingResponse;
-    // const issueClosingResponseData = issueClosingResponse.json();
+    const issueClosingResponse = await fetch(uri, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${issuePullRequestToken}`,
+        "Content-Type": "application/json",
+        "X-GitHub-Api-Version": "2022-11-28"
+      },
+      body: JSON.stringify(requestBody)
+    });
+    const { headers, status, statusText } = issueClosingResponse;
+    const issueClosingResponseData = issueClosingResponse.json();
     if (debug) {
       logger.setDebugScope("github:tag-pull-request-and-issue");
       logger.logDebug(`API entry point: ${uri}`);
       logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
-      // logger.logDebug(`Response status: ${status}`);
-      // logger.logDebug(`Response status text: ${statusText}`);
-      // logger.logDebug(`Response headers: ${inspect(headers, { depth: Number.POSITIVE_INFINITY })}`);
-      // logger.logDebug(
-      //   `Response JSON: ${inspect(await issueClosingResponseData, { depth: Number.POSITIVE_INFINITY })}`
-      // );
+      logger.logDebug(`Response status: ${status}`);
+      logger.logDebug(`Response status text: ${statusText}`);
+      logger.logDebug(`Response headers: ${inspect(headers, { depth: Number.POSITIVE_INFINITY })}`);
+      logger.logDebug(
+        `Response JSON: ${inspect(await issueClosingResponseData, { depth: Number.POSITIVE_INFINITY })}`
+      );
     }
     const issueType = isPullRequest ? "pull request" : "issue";
-    // TODO: uncomment when the API is used
-    // if (status === 200) {
-    //   const { labels } = requestBody;
-    //   const totalLabels = labels.length;
-    //   const labelEnumeration = new Intl.ListFormat("en-GB", {
-    //     style: "long",
-    //     type: "conjunction"
-    //   }).format(labels.map(label => `\`${label}\``));
-    //   const labelMessage = totalLabels
-    //     ? ` with ${agreeInNumber(totalLabels, ["label", "labels"])} ${labelEnumeration}`
-    //     : "";
-    //   logger.logSuccess(`Tagged ${issueType} #${number} successfully${labelMessage}.`);
-    // } else if (status === 404) {
-    //   logger.logWarn(
-    //     `The resource requested for ${issueType} #${number} has not been found; therefore, no labels have been added.`
-    //   );
-    // } else {
-    //   const responseError: GitHubResponseError = await issueClosingResponseData;
-    //   const { message, documentation_url: documentationUrl } = responseError;
-    //   const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
-    //   logger.logError(`Failed to tag ${issueType} #${number}.`);
-    //   process.exitCode = status;
-    //   throw formatDetailedError({
-    //     title: "Failed to tag the issue or pull request",
-    //     message: `${message}${documentationReference}`,
-    //     details: {
-    //       output: `status: ${status}`
-    //     }
-    //   });
-    // }
+    if (status === 200) {
+      const { labels } = requestBody;
+      const totalLabels = labels.length;
+      const labelEnumeration = new Intl.ListFormat("en-GB", {
+        style: "long",
+        type: "conjunction"
+      }).format(labels.map(label => `\`${label}\``));
+      const labelMessage = totalLabels
+        ? ` with ${agreeInNumber(totalLabels, ["label", "labels"])} ${labelEnumeration}`
+        : "";
+      logger.logSuccess(`Tagged ${issueType} #${number} successfully${labelMessage}.`);
+    } else if (status === 404) {
+      logger.logWarn(
+        `The resource requested for ${issueType} #${number} has not been found; therefore, no labels have been added.`
+      );
+    } else {
+      const responseError: GitHubResponseError = await issueClosingResponseData;
+      const { message, documentation_url: documentationUrl } = responseError;
+      const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
+      logger.logError(`Failed to tag ${issueType} #${number}.`);
+      process.exitCode = status;
+      throw formatDetailedError({
+        title: "Failed to tag the issue or pull request",
+        message: `${message}${documentationReference}`,
+        details: {
+          output: `status: ${status}`
+        }
+      });
+    }
   } else {
     process.exitCode = 1;
     throw formatDetailedError({

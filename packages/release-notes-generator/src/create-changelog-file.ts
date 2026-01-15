@@ -1,6 +1,3 @@
-/** biome-ignore-all lint/correctness/noUnusedImports: <TODO: drop this line when the file is written> */
-/** biome-ignore-all lint/correctness/noUnusedFunctionParameters: <TODO: drop this line when the file is written> */
-/** biome-ignore-all lint/correctness/noUnusedVariables: <TODO: drop this line when the file is written> */
 import type { ReleaseNotes } from "./release-notes-generator.types.js";
 
 import fs from "node:fs";
@@ -20,6 +17,5 @@ export const createChangelogFile = (
 ): void => {
   const formattedReleaseNotesBody = formatReleaseNotesBody(releaseNotesBody, true);
   const newFileData = header + formattedReleaseNotesBody;
-  // TODO: uncomment when release notes are written to file
-  // fs.writeFileSync(changelogFilePath, newFileData);
+  fs.writeFileSync(changelogFilePath, newFileData);
 };

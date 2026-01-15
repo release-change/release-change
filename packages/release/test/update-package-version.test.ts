@@ -81,8 +81,7 @@ describe.each(mockedNextReleases)("for $packageName", ({
     updatePackageVersion(nextRelease, mockedContextWithNextRelease);
     expect(readFileSpy).toHaveBeenCalledWith(packageManifestPath, "utf-8");
     expect(JSON.parse(expectedContent).version).toBe(expectedVersion);
-    // TODO: uncomment when updated package manifest content is written to file
-    // expect(fs.writeFileSync).toHaveBeenCalledWith(packageManifestPath, expectedContent);
+    expect(fs.writeFileSync).toHaveBeenCalledWith(packageManifestPath, expectedContent);
     expect(mockedLogger.logInfo).toHaveBeenCalledWith(
       `Package version updated to ${expectedVersion} for ${packageName}.`
     );
