@@ -1,5 +1,7 @@
+import type { DetailedError } from "@release-change/shared";
+
 import { addErrorToContext, setLogger } from "@release-change/logger";
-import { type DetailedError, runCommandSync } from "@release-change/shared";
+import { runCommandSync } from "@release-change/shared";
 import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
 
 import { getAllTags } from "../src/index.js";
