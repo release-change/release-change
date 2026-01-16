@@ -46,8 +46,7 @@ beforeEach(() => {
   vi.mock("@release-change/shared", () => ({
     agreeInNumber: vi.fn((count, words) => (count === 1 ? words[0] : words[1])),
     runCommandSync: vi.fn(),
-    WORKSPACE_NAME: "release-change",
-    WORKSPACE_VERSION: "0.0.0"
+    WORKSPACE_NAME: "release-change"
   }));
   vi.mocked(addErrorToContext).mockImplementation((error, context) => {
     if (error instanceof Error) {

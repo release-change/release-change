@@ -29,4 +29,4 @@ export { parsePathname } from "./parse-pathname.js";
 export { runCommand } from "./run-command.js";
 export { runCommandSync } from "./run-command-sync.js";
 
-export { ROOT_PACKAGE_MANIFEST, WORKSPACE_NAME, WORKSPACE_VERSION } from "./constants.js";
+export { WORKSPACE_NAME } from "./constants.js";

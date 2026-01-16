@@ -1,5 +1,6 @@
 import { setLogger } from "@release-change/logger";
-import { WORKSPACE_VERSION } from "@release-change/shared";
+
+import { WORKSPACE_VERSION } from "./constants.js";
 
 /**
  * Shows the current version of `release-change`.
