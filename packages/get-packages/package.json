@@ -1,6 +1,6 @@
 {
   "name": "@release-change/get-packages",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Functions used internally in release-change to get the packages from a monorepo",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",
