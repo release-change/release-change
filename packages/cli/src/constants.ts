@@ -1,6 +1,7 @@
-import { ROOT_PACKAGE_MANIFEST } from "@release-change/shared";
+import packageManifest from "../package.json" with { type: "json" };
 
-export const REQUIRED_NODE_VERSIONS = ROOT_PACKAGE_MANIFEST.engines.node;
+export const WORKSPACE_VERSION = packageManifest.version;
+export const REQUIRED_NODE_VERSIONS = packageManifest.engines.node;
 export const GIT_MIN_VERSION = "2.48.1";
 export const TAB = " ".repeat(2);
 export const AVAILABLE_CLI_OPTIONS = {

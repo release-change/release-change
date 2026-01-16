@@ -22,7 +22,9 @@ import {
 } from "@release-change/github";
 import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
-import { WORKSPACE_NAME, WORKSPACE_VERSION } from "@release-change/shared";
+import { WORKSPACE_NAME } from "@release-change/shared";
+
+import { WORKSPACE_VERSION } from "./constants.js";
 
 /**
  * Runs the CLI.
