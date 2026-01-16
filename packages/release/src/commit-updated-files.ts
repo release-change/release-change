@@ -24,6 +24,7 @@ export const commitUpdatedFiles = async (
   const { debug } = config;
   const logger = setLogger(debug);
   if (packageManager) {
+    if (debug) logger.setDebugScope("release:commit-updated-files");
     const { pathname } = packageNextRelease;
     const packageManifestFile = path.join(cwd, pathname, "package.json");
     const lockFile = path.join(
@@ -41,6 +42,10 @@ export const commitUpdatedFiles = async (
       stdout: gitAddStdout,
       stderr: gitAddStderr
     } = gitAddCommandResult;
+    if (debug) {
+      logger.logDebug(`Command run: git add ${filesToAdd.join(" ")}`);
+      logger.logDebug(inspect(gitAddCommandResult, { depth: Number.POSITIVE_INFINITY }));
+    }
     if (gitAddStatus) {
       process.exitCode = gitAddStatus;
       throw formatDetailedError({
@@ -60,6 +65,10 @@ export const commitUpdatedFiles = async (
       stdout: gitCommitStdout,
       stderr: gitCommitStderr
     } = gitCommitCommandResult;
+    if (debug) {
+      logger.logDebug(`Command run: git commit -m '${commitMessage.replace(/\n/g, "\\n")}'`);
+      logger.logDebug(inspect(gitCommitCommandResult, { depth: Number.POSITIVE_INFINITY }));
+    }
     if (gitCommitStatus) {
       process.exitCode = gitCommitStatus;
       throw formatDetailedError({
@@ -73,13 +82,6 @@ export const commitUpdatedFiles = async (
           command: `git commit -m ${commitMessage}`
         }
       });
-    }
-    if (debug) {
-      logger.setDebugScope("release:commit-updated-files");
-      logger.logDebug(`Command run: git add ${filesToAdd.join(" ")}`);
-      logger.logDebug(inspect(gitAddCommandResult, { depth: Number.POSITIVE_INFINITY }));
-      logger.logDebug(`Command run: git commit -m '${commitMessage.replace(/\n/g, "\\n")}'`);
-      logger.logDebug(inspect(gitCommitCommandResult, { depth: Number.POSITIVE_INFINITY }));
     }
   } else {
     process.exitCode = process.exitCode ?? 1;
