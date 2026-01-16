@@ -1,5 +1,15 @@
 # @release-change/logger
 
+## 0.1.1
+
+### Dependencies updates
+
+- @release-change/shared@0.1.1
+
+---
+
+**Full changelog:** [`@release-change/logger@v0.1.0...@release-change/logger@v0.1.1`](https://github.com/release-change/release-change/compare/@release-change/logger@v0.1.0...@release-change/logger@v0.1.1)
+
 ## 0.1.0
 
 ### Minor changes
