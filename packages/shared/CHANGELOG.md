@@ -1,5 +1,16 @@
 # @release-change/shared
 
+## 0.1.1
+
+### Patch changes
+
+- **cli:** use `cli` package manifest for workspace version and required Node versions ([`09ee7a5`](https://github.com/release-change/release-change/commit/09ee7a51b66ee3497be5c614a63ef79122ac1bea))
+- **shared:** fix value of workspace name ([`cb757e8`](https://github.com/release-change/release-change/commit/cb757e88474f68d19167de7bcb6a7027c5f72020))
+
+---
+
+**Full changelog:** [`@release-change/shared@v0.1.0...@release-change/shared@v0.1.1`](https://github.com/release-change/release-change/compare/@release-change/shared@v0.1.0...@release-change/shared@v0.1.1)
+
 ## 0.1.0
 
 ### Minor changes

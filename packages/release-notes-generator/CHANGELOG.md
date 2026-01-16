@@ -1,5 +1,20 @@
 # @release-change/release-notes-generator
 
+## 0.1.1
+
+### Dependencies updates
+
+- @release-change/ci@0.1.1
+- @release-change/commit-analyser@0.1.1
+- @release-change/get-packages@0.1.1
+- @release-change/github@0.1.1
+- @release-change/logger@0.1.1
+- @release-change/shared@0.1.1
+
+---
+
+**Full changelog:** [`@release-change/release-notes-generator@v0.1.0...@release-change/release-notes-generator@v0.1.1`](https://github.com/release-change/release-change/compare/@release-change/release-notes-generator@v0.1.0...@release-change/release-notes-generator@v0.1.1)
+
 ## 0.1.0
 
 ### Minor changes

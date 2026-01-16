@@ -1,5 +1,27 @@
 # @release-change/cli
 
+## 0.1.1
+
+### Patch changes
+
+- **cli:** use `cli` package manifest for workspace version and required Node versions ([`09ee7a5`](https://github.com/release-change/release-change/commit/09ee7a51b66ee3497be5c614a63ef79122ac1bea))
+
+### Dependencies updates
+
+- @release-change/ci@0.1.1
+- @release-change/commit-analyser@0.1.1
+- @release-change/config@0.1.1
+- @release-change/get-packages@0.1.1
+- @release-change/git@0.1.1
+- @release-change/github@0.1.1
+- @release-change/logger@0.1.1
+- @release-change/release@0.1.1
+- @release-change/shared@0.1.1
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.1.0...@release-change/cli@v0.1.1`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.1.0...@release-change/cli@v0.1.1)
+
 ## 0.1.0
 
 ### Minor changes
