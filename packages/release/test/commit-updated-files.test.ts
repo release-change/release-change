@@ -62,10 +62,10 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
     );
     it("should throw an error if the `git add` command fails", async () => {
       const expectedError = new Error(
-        "Failed to run the `git` command: The command failed with status 128.",
+        "Failed to run the `git add` command: The command failed with status 128.",
         {
           cause: {
-            title: "Failed to run the `git` command",
+            title: "Failed to run the `git add` command",
             message: "The command failed with status 128.",
             details: {
               output: "fatal: path spec '/fake/path' did not match any files",
@@ -86,10 +86,10 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
     });
     it("should throw an error if the `git commit` command fails", async () => {
       const expectedError = new Error(
-        "Failed to run the `git` command: The command failed with status 1.",
+        "Failed to run the `git commit` command: The command failed with status 1.",
         {
           cause: {
-            title: "Failed to run the `git` command",
+            title: "Failed to run the `git commit` command",
             message: "The command failed with status 1.",
             details: {
               output: 'no changes added to commit (use "git add" and/or "git commit -a")',
