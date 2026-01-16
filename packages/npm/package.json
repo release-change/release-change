@@ -1,6 +1,6 @@
 {
   "name": "@release-change/npm",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Functions used internally in release-change to publish packages to NPM",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",
