@@ -44,7 +44,7 @@ export const commitUpdatedFiles = async (
     if (gitAddStatus) {
       process.exitCode = gitAddStatus;
       throw formatDetailedError({
-        title: "Failed to run the `git` command",
+        title: "Failed to run the `git add` command",
         message: `The command failed with status ${gitAddStatus}`,
         details: {
           output:
@@ -63,8 +63,8 @@ export const commitUpdatedFiles = async (
     if (gitCommitStatus) {
       process.exitCode = gitCommitStatus;
       throw formatDetailedError({
-        title: "Failed to run the `git` command",
-        message: `The command failed with status ${gitAddStatus}`,
+        title: "Failed to run the `git commit` command",
+        message: `The command failed with status ${gitCommitStatus}`,
         details: {
           output:
             gitCommitStderr ||
