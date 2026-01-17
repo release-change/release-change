@@ -62,7 +62,7 @@ npx release-change
 
 release-change requires access to the project repository. The Git authentication is set with the `RELEASE_TOKEN` environment variable, which is a [GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
-Here are examples of the workflow configuration (the file must be saved in the `.github/workflows/` directory):
+Here are examples of the workflow configuration (the file must be saved in the `.github/workflows/` directory and make sure the option “Allow GitHub Actions to create and approve pull requests” is enabled in your repository settings):
 - using `pnpm`:
   ```yaml
   name: Release
