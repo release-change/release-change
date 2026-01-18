@@ -1,11 +1,9 @@
 import type { Context } from "@release-change/shared";
 import type { GitHubResponseError } from "./github.types.js";
 
-import { inspect } from "node:util";
-
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 export const isAutoMergeAllowed = async (
   repositoryEntryPoint: string,
@@ -33,10 +31,8 @@ export const isAutoMergeAllowed = async (
       logger.logDebug(`API entry point: ${repositoryEntryPoint}`);
       logger.logDebug(`Response status: ${status}`);
       logger.logDebug(`Response status text: ${statusText}`);
-      logger.logDebug(`Response headers: ${inspect(headers, { depth: Number.POSITIVE_INFINITY })}`);
-      logger.logDebug(
-        `Response JSON: ${inspect(repositoryResponseData, { depth: Number.POSITIVE_INFINITY })}`
-      );
+      logger.logDebug(`Response headers: ${deepInspectObject(headers)}`);
+      logger.logDebug(`Response JSON: ${deepInspectObject(repositoryResponseData)}`);
     }
     if (status === 200) return Boolean(repositoryResponseData.allow_auto_merge);
     const responseError: GitHubResponseError = repositoryResponseData;

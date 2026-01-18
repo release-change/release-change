@@ -3,11 +3,10 @@ import type { Context, PackageNextRelease } from "@release-change/shared";
 
 import fs from "node:fs";
 import path from "node:path";
-import { inspect } from "node:util";
 
 import { add, COMMITTER_EMAIL, COMMITTER_NAME, commit } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 /**
  * Commits the updated files.
@@ -44,7 +43,7 @@ export const commitUpdatedFiles = async (
     } = gitAddCommandResult;
     if (debug) {
       logger.logDebug(`Command run: git add ${filesToAdd.join(" ")}`);
-      logger.logDebug(inspect(gitAddCommandResult, { depth: Number.POSITIVE_INFINITY }));
+      logger.logDebug(deepInspectObject(gitAddCommandResult));
     }
     if (gitAddStatus) {
       process.exitCode = gitAddStatus;
@@ -67,7 +66,7 @@ export const commitUpdatedFiles = async (
     } = gitCommitCommandResult;
     if (debug) {
       logger.logDebug(`Command run: git commit -m '${commitMessage.replace(/\n/g, "\\n")}'`);
-      logger.logDebug(inspect(gitCommitCommandResult, { depth: Number.POSITIVE_INFINITY }));
+      logger.logDebug(deepInspectObject(gitCommitCommandResult));
     }
     if (gitCommitStatus) {
       process.exitCode = gitCommitStatus;

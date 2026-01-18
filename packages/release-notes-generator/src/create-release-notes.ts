@@ -2,12 +2,10 @@ import type { GitHubResponseError } from "@release-change/github";
 import type { Context, ReleaseInfoGithub } from "@release-change/shared";
 import type { ReleaseNotes } from "./release-notes-generator.types.js";
 
-import { inspect } from "node:util";
-
 import { getReleaseToken } from "@release-change/ci";
 import { getRepositoryRelatedEntryPoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 import { formatReleaseNotesBody } from "./format-release-notes-body.js";
 
@@ -49,15 +47,13 @@ export const createReleaseNotes = async (
   const releaseNotesResponseData = releaseNotesResponse.json();
   if (debug) {
     logger.setDebugScope("release-notes-generator:create-release-notes");
-    logger.logDebug(`Release notes: ${inspect(releaseNotes, { depth: Number.POSITIVE_INFINITY })}`);
+    logger.logDebug(`Release notes: ${deepInspectObject(releaseNotes)}`);
     logger.logDebug(`API entry point: ${uri}`);
-    logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
+    logger.logDebug(`Request body: ${deepInspectObject(requestBody)}`);
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);
-    logger.logDebug(`Response headers: ${inspect(headers, { depth: Number.POSITIVE_INFINITY })}`);
-    logger.logDebug(
-      `Response JSON: ${inspect(await releaseNotesResponseData, { depth: Number.POSITIVE_INFINITY })}`
-    );
+    logger.logDebug(`Response headers: ${deepInspectObject(headers)}`);
+    logger.logDebug(`Response JSON: ${deepInspectObject(await releaseNotesResponseData)}`);
   }
   if (status === 201) {
     logger.logSuccess(`Created release notes for Git tag ${tagName}.`);
@@ -69,7 +65,7 @@ export const createReleaseNotes = async (
     context.releaseInfos.push(releaseInfo);
     if (debug) {
       logger.logDebug("context.releaseInfos:");
-      logger.logDebug(inspect(context.releaseInfos, { depth: Number.POSITIVE_INFINITY }));
+      logger.logDebug(deepInspectObject(context.releaseInfos));
     }
   } else {
     const responseError: GitHubResponseError = await releaseNotesResponseData;

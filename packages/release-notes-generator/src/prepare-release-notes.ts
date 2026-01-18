@@ -1,11 +1,9 @@
 import type { Context, PackageNextRelease } from "@release-change/shared";
 import type { ReleaseNotes } from "./release-notes-generator.types.js";
 
-import { inspect } from "node:util";
-
 import { COMMIT_ABBREVIATED_SHA_LENGTH, COMMIT_MESSAGE } from "@release-change/commit-analyser";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 /**
  * Prepares the release notes for a package.
@@ -96,7 +94,7 @@ export const prepareReleaseNotes = (
             if (debug) {
               logger.setDebugScope("release-notes-generator:prepare-release-notes");
               logger.logDebug(`Release notes for ${name || "root"} package:`);
-              logger.logDebug(inspect(releaseNotesBody, { depth: Number.POSITIVE_INFINITY }));
+              logger.logDebug(deepInspectObject(releaseNotesBody));
             }
             return {
               tagName: gitTag,

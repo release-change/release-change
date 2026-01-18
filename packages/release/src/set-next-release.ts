@@ -1,9 +1,8 @@
 import type { PackageReleaseType } from "@release-change/commit-analyser";
 import type { Context, PackageNextRelease } from "@release-change/shared";
 
-import { inspect } from "node:util";
-
 import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
+import { deepInspectObject } from "@release-change/shared";
 
 import { incrementVersion } from "./increment-version.js";
 
@@ -75,7 +74,7 @@ export const setNextRelease = (
     } else logger.logInfo("There are no relevant changes; therefore, no new version is released.");
     if (config.debug) {
       logger.setDebugScope("cli:release:set-next-release");
-      logger.logDebug(inspect(context.nextRelease, { depth: Number.POSITIVE_INFINITY }));
+      logger.logDebug(deepInspectObject(context.nextRelease));
     }
   } catch (error) {
     logger.logError(checkErrorType(error));

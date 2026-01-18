@@ -2,10 +2,9 @@ import type { Context, ReleaseInfoNpm } from "@release-change/shared";
 import type { PackagePublishing } from "./npm.types.js";
 
 import path from "node:path";
-import { inspect } from "node:util";
 
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommand } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError, runCommand } from "@release-change/shared";
 
 import { getAuthToken } from "./get-auth-token.js";
 import { removeAuthToken } from "./remove-auth-token.js";
@@ -42,9 +41,9 @@ export const publishToRegistry = async (
     const packageName = name || "root";
     if (debug) {
       logger.setDebugScope("npm:publish-to-registry");
-      logger.logDebug(`Auth token: ${inspect(authToken, { depth: Number.POSITIVE_INFINITY })}`);
+      logger.logDebug(`Auth token: ${deepInspectObject(authToken)}`);
       logger.logDebug(`Command run: ${packageManager} ${args.join(" ")}`);
-      logger.logDebug(inspect(packageManagerCommandResult, { depth: Number.POSITIVE_INFINITY }));
+      logger.logDebug(deepInspectObject(packageManagerCommandResult));
     }
     if (status) {
       logger.logError(
@@ -72,7 +71,7 @@ export const publishToRegistry = async (
     context.releaseInfos.push(releaseInfo);
     if (debug) {
       logger.logDebug("context.releaseInfos:");
-      logger.logDebug(inspect(context.releaseInfos, { depth: Number.POSITIVE_INFINITY }));
+      logger.logDebug(deepInspectObject(context.releaseInfos));
     }
   } else {
     process.exitCode = 1;

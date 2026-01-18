@@ -4,11 +4,10 @@ import type { PackagePublishing } from "./npm.types.js";
 
 import fs from "node:fs";
 import path from "node:path";
-import { inspect } from "node:util";
 
 import { getPackageManager } from "@release-change/get-packages";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 /**
  * Prepares the package publishing to the NPM registry if the package is not private.
@@ -60,7 +59,7 @@ export const preparePublishing = async (
           if (packageManager === "pnpm") args.push("--no-git-checks");
           if (debug) {
             logger.logDebug(`Publishing info prepared for ${packageName} package:`);
-            logger.logDebug(inspect(packagePublishing, { depth: Number.POSITIVE_INFINITY }));
+            logger.logDebug(deepInspectObject(packagePublishing));
           }
           return packagePublishing;
         }

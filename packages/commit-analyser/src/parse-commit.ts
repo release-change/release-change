@@ -1,9 +1,7 @@
 import type { Commit, Context } from "@release-change/shared";
 
-import { inspect } from "node:util";
-
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 import { setReleaseType } from "./set-release-type.js";
 
@@ -80,7 +78,7 @@ export const parseCommit = (commit: string, context: Context): Commit => {
       }
       if (debug) {
         logger.setDebugScope("commit-analyser:parse-commit");
-        logger.logDebug(inspect(parsedCommit, { depth: Number.POSITIVE_INFINITY }));
+        logger.logDebug(deepInspectObject(parsedCommit));
       }
       return parsedCommit;
     }

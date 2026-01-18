@@ -1,10 +1,8 @@
 import type { Commit, Context } from "@release-change/shared";
 
-import { inspect } from "node:util";
-
 import { parseCommit } from "@release-change/commit-analyser";
 import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
-import { agreeInNumber, runCommandSync } from "@release-change/shared";
+import { agreeInNumber, deepInspectObject, runCommandSync } from "@release-change/shared";
 
 import { COMMIT_SEPARATOR } from "./constants.js";
 
@@ -36,9 +34,9 @@ export const getCommitsSinceRef = (context: Context): Commit[] => {
       logger.setDebugScope("git:get-commits-since-ref");
       logger.logDebug(`Command run: git ${args.join(" ")}`);
       logger.logDebug("Commits as returned by Git");
-      logger.logDebug(inspect(commits));
+      logger.logDebug(deepInspectObject(commits));
       logger.logDebug("Parsed commits");
-      logger.logDebug(inspect(parsedCommits, { depth: Number.POSITIVE_INFINITY }));
+      logger.logDebug(deepInspectObject(parsedCommits));
     }
     logger.logInfo(`Found ${totalCommits} ${commitWord}.`);
     return parsedCommits;

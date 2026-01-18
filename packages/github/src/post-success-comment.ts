@@ -1,11 +1,9 @@
 import type { Context, Reference } from "@release-change/shared";
 import type { GitHubResponseError } from "./github.types.js";
 
-import { inspect } from "node:util";
-
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 import { linkifyReleaseInfo } from "./linkify-release-info.js";
@@ -96,13 +94,11 @@ export const postSuccessComment = async (reference: Reference, context: Context)
     if (debug) {
       logger.setDebugScope("github:post-success-comment");
       logger.logDebug(`API entry point: ${uri}`);
-      logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
+      logger.logDebug(`Request body: ${deepInspectObject(requestBody)}`);
       logger.logDebug(`Response status: ${status}`);
       logger.logDebug(`Response status text: ${statusText}`);
-      logger.logDebug(`Response headers: ${inspect(headers, { depth: Number.POSITIVE_INFINITY })}`);
-      logger.logDebug(
-        `Response JSON: ${inspect(await successCommentResponseData, { depth: Number.POSITIVE_INFINITY })}`
-      );
+      logger.logDebug(`Response headers: ${deepInspectObject(headers)}`);
+      logger.logDebug(`Response JSON: ${deepInspectObject(await successCommentResponseData)}`);
     }
     if (status === 201) logger.logSuccess(`Added success comment on ${issueType} #${number}.`);
     else if (status === 404)

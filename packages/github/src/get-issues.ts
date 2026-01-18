@@ -1,9 +1,8 @@
 import type { Commit, Reference } from "@release-change/shared";
 
-import { inspect } from "node:util";
-
 import { ISSUE_ID } from "@release-change/commit-analyser";
 import { setLogger } from "@release-change/logger";
+import { deepInspectObject } from "@release-change/shared";
 
 import { mergeReferencesByNumber } from "./merge-references-by-number.js";
 
@@ -34,7 +33,7 @@ export const getIssues = (
     issues.push(issue);
     if (debug) {
       logger.setDebugScope("github:get-issues");
-      logger.logDebug(`Associated issue: ${inspect(issue, { depth: Number.POSITIVE_INFINITY })}`);
+      logger.logDebug(`Associated issue: ${deepInspectObject(issue)}`);
     }
   }
   return mergeReferencesByNumber(issues);

@@ -1,12 +1,12 @@
 import type { Context, LastRelease, PackageLastRelease } from "@release-change/shared";
 
 import path from "node:path";
-import { inspect } from "node:util";
 
 import { getPackageVersion } from "@release-change/get-packages";
 import { getLatestValidTag } from "@release-change/git";
 import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
 import { validate } from "@release-change/semver";
+import { deepInspectObject } from "@release-change/shared";
 
 import { getVersionFromTag } from "./get-version-from-tag.js";
 
@@ -59,7 +59,7 @@ export const setLastRelease = (context: Context): void => {
     context.lastRelease = lastRelease;
     if (config.debug) {
       logger.setDebugScope("cli:release:set-last-release");
-      logger.logDebug(inspect(context.lastRelease, { depth: Number.POSITIVE_INFINITY }));
+      logger.logDebug(deepInspectObject(context.lastRelease));
     }
   } catch (error) {
     logger.logError(checkErrorType(error));
