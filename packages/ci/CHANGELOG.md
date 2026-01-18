@@ -1,5 +1,17 @@
 # @release-change/ci
 
+## 0.1.2
+
+### Dependencies updates
+
+- @release-change/config@0.1.2
+- @release-change/logger@0.1.2
+- @release-change/shared@0.1.2
+
+---
+
+**Full changelog:** [`@release-change/ci@v0.1.1...@release-change/ci@v0.1.2`](https://github.com/release-change/release-change/compare/@release-change/ci@v0.1.1...@release-change/ci@v0.1.2)
+
 ## 0.1.1
 
 ### Dependencies updates
