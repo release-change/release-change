@@ -1,5 +1,17 @@
 # @release-change/git
 
+## 0.1.3
+
+### Dependencies updates
+
+- @release-change/commit-analyser@0.1.2
+- @release-change/logger@0.1.2
+- @release-change/shared@0.1.2
+
+---
+
+**Full changelog:** [`@release-change/git@v0.1.2...@release-change/git@v0.1.3`](https://github.com/release-change/release-change/compare/@release-change/git@v0.1.2...@release-change/git@v0.1.3)
+
 ## 0.1.2
 
 ### Patch changes
