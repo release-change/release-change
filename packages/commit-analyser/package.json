@@ -1,6 +1,6 @@
 {
   "name": "@release-change/commit-analyser",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Functions used internally in release-change to analyse the commits, based on the Conventional Commits specification",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",
