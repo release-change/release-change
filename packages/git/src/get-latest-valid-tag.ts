@@ -18,7 +18,9 @@ export const getLatestValidTag = (context: Context, packageName?: string): strin
   const gitTags = getAllTags(context)
     .filter(gitTag => validate(gitTag.replace(GIT_TAG_PATTERN, "")))
     .filter(gitTag =>
-      typeof packageName === "string" ? gitTag.startsWith(packageName ? packageName : "v") : true
+      typeof packageName === "string"
+        ? gitTag.startsWith(packageName ? `${packageName}@v` : "v")
+        : true
     );
   if (gitTags.length) {
     if (branch) {
