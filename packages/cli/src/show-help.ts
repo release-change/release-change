@@ -11,7 +11,7 @@ import { TAB } from "./constants.js";
 export const showHelp = (): void => {
   const logger = setLogger();
   const intro = "Runs automated package release and publishing";
-  const usage = `Usage:\n${TAB}${WORKSPACE_NAME} [options]`;
+  const usage = `Usage:\n${TAB}@${WORKSPACE_NAME}/cli [options]`;
   const cliOptions = displayCliOptions();
   const output = [intro, usage, cliOptions].join("\n".repeat(2));
   logger.logWithoutFormatting(output);
