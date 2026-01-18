@@ -1,5 +1,20 @@
 # @release-change/git
 
+## 0.1.4
+
+### Patch changes
+
+- **git:** add `@v` delimiter to get latest valid tag for package ([`9ad4de8`](https://github.com/release-change/release-change/commit/9ad4de8ab6ebc326807a86feb25ba26c02854dd9))
+- **github:** remove end assertion ([`e134614`](https://github.com/release-change/release-change/commit/e1346143514bb0a21b4d240ebe5af47739717a85))
+
+### Dependencies updates
+
+- @release-change/commit-analyser@0.1.3
+
+---
+
+**Full changelog:** [`@release-change/git@v0.1.3...@release-change/git@v0.1.4`](https://github.com/release-change/release-change/compare/@release-change/git@v0.1.3...@release-change/git@v0.1.4)
+
 ## 0.1.3
 
 ### Dependencies updates
