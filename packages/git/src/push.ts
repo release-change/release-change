@@ -1,10 +1,8 @@
 import type { Context } from "@release-change/shared";
 import type { PushOptions } from "./git.types.js";
 
-import { inspect } from "node:util";
-
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommand } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError, runCommand } from "@release-change/shared";
 
 /**
  * Pushes the current branch to the remote repository.
@@ -46,6 +44,6 @@ export const push = async (context: Context, pushOptions: PushOptions): Promise<
   if (debug) {
     logger.setDebugScope("git:push");
     logger.logDebug(`Command run: git ${args.join(" ")}`);
-    logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
+    logger.logDebug(deepInspectObject(gitCommandResult));
   }
 };

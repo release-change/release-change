@@ -1,9 +1,7 @@
 import type { Context } from "@release-change/shared";
 
-import { inspect } from "node:util";
-
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommand } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError, runCommand } from "@release-change/shared";
 
 /**
  * Checks the authorisation to push commits to the remote repository.
@@ -25,7 +23,7 @@ export const checkAuthorisation = async (
   const gitCommandResult = await runCommand("git", args, { cwd });
   if (config.debug) {
     logger.setDebugScope("git:check-authorisation");
-    logger.logDebug(inspect(gitCommandResult, { depth: Number.POSITIVE_INFINITY }));
+    logger.logDebug(deepInspectObject(gitCommandResult));
   }
   const { status, stdout, stderr } = gitCommandResult;
   if (status) {

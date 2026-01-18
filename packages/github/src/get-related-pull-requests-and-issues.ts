@@ -1,11 +1,9 @@
 import type { Commit, Context, Reference } from "@release-change/shared";
 import type { AssociatedPullRequest } from "./github.types.js";
 
-import { inspect } from "node:util";
-
 import { getGitTags } from "@release-change/commit-analyser";
 import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
-import { agreeInNumber } from "@release-change/shared";
+import { agreeInNumber, deepInspectObject } from "@release-change/shared";
 
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";
@@ -97,7 +95,7 @@ export const getRelatedPullRequestsAndIssues = async (
     if (debug) {
       logger.setDebugScope("github:get-related-pull-requests-and-issues");
       logger.logDebug("context.references:");
-      logger.logDebug(inspect(context.references, { depth: Number.POSITIVE_INFINITY }));
+      logger.logDebug(deepInspectObject(context.references));
     }
   } catch (error) {
     logger.logError("Failed to get related pull requests and issues.");

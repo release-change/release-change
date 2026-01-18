@@ -1,8 +1,7 @@
 import type { Context } from "@release-change/shared";
 
-import { inspect } from "node:util";
-
 import { setLogger } from "@release-change/logger";
+import { deepInspectObject } from "@release-change/shared";
 
 /**
  * Checks whether the CI environment is usable for the run to proceed.
@@ -18,7 +17,7 @@ export const isUsableCiEnvironment = (context: Context): boolean => {
   logger.setScope("ci");
   if (config.debug) {
     logger.setDebugScope("ci:is-usable-ci-environment");
-    logger.logDebug(inspect(ci, { depth: Number.POSITIVE_INFINITY }));
+    logger.logDebug(deepInspectObject(ci));
   }
   if (isCi && isPullRequest) {
     logger.logWarn(

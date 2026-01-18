@@ -1,11 +1,9 @@
 import type { Context } from "@release-change/shared";
 import type { GitHubResponseError } from "./github.types.js";
 
-import { inspect } from "node:util";
-
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 
@@ -43,13 +41,11 @@ export const closeIssue = async (number: number, context: Context): Promise<void
   if (debug) {
     logger.setDebugScope("github:close-issue");
     logger.logDebug(`API entry point: ${uri}`);
-    logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
+    logger.logDebug(`Request body: ${deepInspectObject(requestBody)}`);
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);
-    logger.logDebug(`Response headers: ${inspect(headers, { depth: Number.POSITIVE_INFINITY })}`);
-    logger.logDebug(
-      `Response JSON: ${inspect(await issueClosingResponseData, { depth: Number.POSITIVE_INFINITY })}`
-    );
+    logger.logDebug(`Response headers: ${deepInspectObject(headers)}`);
+    logger.logDebug(`Response JSON: ${deepInspectObject(await issueClosingResponseData)}`);
   }
   if (status === 200) logger.logSuccess(`Closed issue #${number} successfully.`);
   else if (status === 404) {

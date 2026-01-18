@@ -14,6 +14,7 @@ beforeEach(() => {
     setLogger: vi.fn()
   }));
   vi.mock("@release-change/shared", () => ({
+    deepInspectObject: vi.fn(),
     formatDetailedError: vi.fn(),
     runCommand: vi.fn(),
     WORKSPACE_NAME: "release-change"

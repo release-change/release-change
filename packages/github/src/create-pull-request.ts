@@ -1,11 +1,9 @@
 import type { Context } from "@release-change/shared";
 import type { GitHubResponseError } from "./github.types.js";
 
-import { inspect } from "node:util";
-
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 import { isAutoMergeAllowed } from "./is-auto-merge-allowed.js";
@@ -60,13 +58,11 @@ ${releasesBody}`;
     if (debug) {
       logger.setDebugScope("github:create-pull-request");
       logger.logDebug(`API entry point: ${uri}`);
-      logger.logDebug(`Request body: ${inspect(requestBody, { depth: Number.POSITIVE_INFINITY })}`);
+      logger.logDebug(`Request body: ${deepInspectObject(requestBody)}`);
       logger.logDebug(`Response status: ${status}`);
       logger.logDebug(`Response status text: ${statusText}`);
-      logger.logDebug(`Response headers: ${inspect(headers, { depth: Number.POSITIVE_INFINITY })}`);
-      logger.logDebug(
-        `Response JSON: ${inspect(await pullRequestCreationResponseData, { depth: Number.POSITIVE_INFINITY })}`
-      );
+      logger.logDebug(`Response headers: ${deepInspectObject(headers)}`);
+      logger.logDebug(`Response JSON: ${deepInspectObject(await pullRequestCreationResponseData)}`);
     }
     if (status === 201) logger.logSuccess("Created the pull request successfully.");
     else {

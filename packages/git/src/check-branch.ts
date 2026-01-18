@@ -1,9 +1,7 @@
 import type { Context } from "@release-change/shared";
 
-import util from "node:util";
-
 import { setLogger } from "@release-change/logger";
-import { WORKSPACE_NAME } from "@release-change/shared";
+import { deepInspectObject, WORKSPACE_NAME } from "@release-change/shared";
 
 /**
  * Checks whether the current branch is part of the branches from which the package can publish.
@@ -19,7 +17,7 @@ export const checkBranch = (context: Context): undefined | false => {
   context.branch = branch;
   if (config.debug) {
     logger.setDebugScope("git:check-branch");
-    logger.logDebug(`Branches from where to publish: ${util.inspect(branches)}`);
+    logger.logDebug(`Branches from where to publish: ${deepInspectObject(branches)}`);
     logger.logDebug(`Branch name: ${branch}`);
   }
   if (!branch || !branches.includes(branch)) {

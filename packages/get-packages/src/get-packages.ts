@@ -1,10 +1,9 @@
 import type { ContextBase, Package } from "@release-change/shared";
 
 import path from "node:path";
-import { inspect } from "node:util";
 
 import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 import { getNpmGlobPatterns } from "./get-npm-glob-patterns.js";
 import { getPackageManager } from "./get-package-manager.js";
@@ -38,7 +37,7 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
           packages.push(...(await getPackagesFromGlobPatterns(globPatterns, cwd)));
           if (debug) {
             logger.logDebug(`Packages found (including root package): ${packages.length}`);
-            logger.logDebug(inspect(packages, { depth: Number.POSITIVE_INFINITY }));
+            logger.logDebug(deepInspectObject(packages));
           }
         } catch (error) {
           logger.logError(checkErrorType(error));
@@ -56,7 +55,7 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
       }
       if (debug) {
         logger.logDebug(`Packages found (including root package): ${packages.length}`);
-        logger.logDebug(inspect(packages, { depth: Number.POSITIVE_INFINITY }));
+        logger.logDebug(deepInspectObject(packages));
       }
       return packages;
     } catch (error) {

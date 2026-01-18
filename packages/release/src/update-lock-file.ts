@@ -3,10 +3,14 @@ import type { Context, PackageNextRelease } from "@release-change/shared";
 
 import fs from "node:fs";
 import path from "node:path";
-import { inspect } from "node:util";
 
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommand, runCommandSync } from "@release-change/shared";
+import {
+  deepInspectObject,
+  formatDetailedError,
+  runCommand,
+  runCommandSync
+} from "@release-change/shared";
 
 /**
  * Updates the lock file.
@@ -31,7 +35,7 @@ export const updateLockFile = async (
       const pnpmCommandResult = await runCommand("pnpm", args);
       if (debug) {
         logger.logDebug(`Command run: pnpm ${args.join(" ")}`);
-        logger.logDebug(inspect(pnpmCommandResult, { depth: Number.POSITIVE_INFINITY }));
+        logger.logDebug(deepInspectObject(pnpmCommandResult));
       }
     }
   } else if (packageManager === "npm") {
@@ -40,7 +44,7 @@ export const updateLockFile = async (
       const npmCommandResult = await runCommand("npm", args);
       if (debug) {
         logger.logDebug(`Command run: npm ${args.join(" ")}`);
-        logger.logDebug(inspect(npmCommandResult, { depth: Number.POSITIVE_INFINITY }));
+        logger.logDebug(deepInspectObject(npmCommandResult));
       }
     }
   } else {

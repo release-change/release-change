@@ -24,6 +24,7 @@ export type {
 } from "./shared.types.js";
 
 export { agreeInNumber } from "./agree-in-number.js";
+export { deepInspectObject } from "./deep-inspect-object.js";
 export { formatDetailedError } from "./format-detailed-error.js";
 export { parsePathname } from "./parse-pathname.js";
 export { runCommand } from "./run-command.js";

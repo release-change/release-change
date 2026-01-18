@@ -1,10 +1,8 @@
 import type { Commit, Context, ReleaseType } from "@release-change/shared";
 import type { PackageReleaseType } from "./commit-analyser.types.js";
 
-import { inspect } from "node:util";
-
 import { setLogger } from "@release-change/logger";
-import { agreeInNumber } from "@release-change/shared";
+import { agreeInNumber, deepInspectObject } from "@release-change/shared";
 
 import { adjustReleaseType } from "./adjust-release-type.js";
 
@@ -57,7 +55,7 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
       }
       if (debug) {
         logger.logDebug(`Release types by package for commit “${commit.message}”:`);
-        logger.logDebug(inspect(releaseTypesPerPackage));
+        logger.logDebug(deepInspectObject(releaseTypesPerPackage));
       }
     }
     const adjustedReleaseTypesPerPackage = new Map(
@@ -65,7 +63,7 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
     );
     if (debug) {
       logger.logDebug("Overall adjusted release types by package:");
-      logger.logDebug(inspect(adjustedReleaseTypesPerPackage));
+      logger.logDebug(deepInspectObject(adjustedReleaseTypesPerPackage));
     }
     const commitWord = agreeInNumber(totalCommits, ["commit", "commits"]);
     logger.logSuccess(`Analysis of ${totalCommits} ${commitWord} complete.`);

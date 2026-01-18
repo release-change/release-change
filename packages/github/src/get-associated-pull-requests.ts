@@ -5,11 +5,9 @@ import type {
   PullRequestAssociatedWithCommit
 } from "./github.types.js";
 
-import { inspect } from "node:util";
-
 import { getReleaseToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
 /**
  * Gets the pull requests associated with a given commit.
@@ -44,10 +42,8 @@ export const getAssociatedPullRequests = async (
     logger.logDebug(`API entry point: ${uri}`);
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);
-    logger.logDebug(`Response headers: ${inspect(headers, { depth: Number.POSITIVE_INFINITY })}`);
-    logger.logDebug(
-      `Response JSON: ${inspect(await pullRequestResponseData, { depth: Number.POSITIVE_INFINITY })}`
-    );
+    logger.logDebug(`Response headers: ${deepInspectObject(headers)}`);
+    logger.logDebug(`Response JSON: ${deepInspectObject(await pullRequestResponseData)}`);
   }
   if (status === 200) {
     const pullRequests: PullRequestAssociatedWithCommit[] = await pullRequestResponseData;
@@ -60,9 +56,7 @@ export const getAssociatedPullRequests = async (
       });
     }
     if (debug) {
-      logger.logDebug(
-        `Associated pull requests: ${inspect(associatedPullRequest, { depth: Number.POSITIVE_INFINITY })}`
-      );
+      logger.logDebug(`Associated pull requests: ${deepInspectObject(associatedPullRequest)}`);
     }
     return associatedPullRequest;
   }
