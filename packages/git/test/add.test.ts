@@ -21,9 +21,9 @@ afterEach(() => {
 });
 
 it("should throw an error if no files are provided", async () => {
-  const expectedError = new Error("Failed to run the `git` command: No files to add.", {
+  const expectedError = new Error("Failed to run the `git add` command: No files to add.", {
     cause: {
-      title: "Failed to run the `git` command",
+      title: "Failed to run the `git add` command",
       message: "No files to add.",
       details: {
         output: "files.length: 0"

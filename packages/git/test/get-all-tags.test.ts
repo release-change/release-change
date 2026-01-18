@@ -41,10 +41,10 @@ afterEach(() => {
 
 it("should log an error message when an error is caught", () => {
   const mockedError = new Error(
-    "Failed to run the `git` command: The command failed with status 128.",
+    "Failed to run the `git tag` command: The command failed with status 128.",
     {
       cause: {
-        title: "Failed to run the `git` command",
+        title: "Failed to run the `git tag` command",
         message: "The command failed with status 128.",
         details: {
           output: "Error",

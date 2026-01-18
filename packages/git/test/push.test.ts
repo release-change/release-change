@@ -18,10 +18,10 @@ afterEach(() => {
 
 it("should throw an error if the branch name is not defined", () => {
   const expectedError = new Error(
-    "Failed to run the `git` command: A branch name must be provided.",
+    "Failed to run the `git push` command: A branch name must be provided.",
     {
       cause: {
-        title: "Failed to run the `git` command",
+        title: "Failed to run the `git push` command",
         message: "A branch name must be provided.",
         details: {
           output: "destinationBranch: "
@@ -36,10 +36,10 @@ it("should throw an error if the branch name is not defined", () => {
 });
 it("should throw an error if the `git push` command fails", () => {
   const expectedError = new Error(
-    "Failed to run the `git` command: The command failed with status 1.",
+    "Failed to run the `git push` command: The command failed with status 1.",
     {
       cause: {
-        title: "Failed to run the `git` command",
+        title: "Failed to run the `git push` command",
         message: "The command failed with status 1.",
         details: {
           output: "remote: error: GH013: Repository rule violations found for refs/heads/main.",

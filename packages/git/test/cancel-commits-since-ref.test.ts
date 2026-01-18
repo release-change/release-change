@@ -48,10 +48,10 @@ it("should throw an error if the commit ref is empty", () => {
 });
 it("should throw an error if the `git reset --hard` command is run and fails", () => {
   const expectedError = new Error(
-    "Failed to run the `git` command: The command failed with status 128.",
+    "Failed to run the `git reset` command: The command failed with status 128.",
     {
       cause: {
-        title: "Failed to run the `git` command",
+        title: "Failed to run the `git reset` command",
         message: "The command failed with status 128.",
         details: {
           output: "Some error message.",

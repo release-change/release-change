@@ -12,7 +12,7 @@ export const commit = async (message: string, cwd: string): Promise<CommandResul
   if (!message) {
     process.exitCode = 1;
     throw formatDetailedError({
-      title: "Failed to run the `git` command",
+      title: "Failed to run the `git commit` command",
       message: "The commit message cannot be empty.",
       details: {
         output: "message: "

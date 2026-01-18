@@ -12,7 +12,7 @@ export const add = async (files: string[], cwd: string): Promise<CommandResult> 
   if (!files.length) {
     process.exitCode = 1;
     throw formatDetailedError({
-      title: "Failed to run the `git` command",
+      title: "Failed to run the `git add` command",
       message: "No files to add.",
       details: {
         output: "files.length: 0"

@@ -79,7 +79,7 @@ it("should log an error message when an error is caught", () => {
   });
   const expectedError = new Error("Error", {
     cause: {
-      title: "Failed to run the `git` command",
+      title: "Failed to run the `git log` command",
       message: "The command failed with status 128.",
       details: {
         output: "Error",
