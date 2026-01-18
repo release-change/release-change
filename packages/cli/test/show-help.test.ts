@@ -1,7 +1,6 @@
 import childProcess from "node:child_process";
 
 import { setLogger } from "@release-change/logger";
-import { WORKSPACE_NAME } from "@release-change/shared";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { showHelp } from "../src/show-help.js";
@@ -10,7 +9,7 @@ import { mockedLogger } from "./fixtures/mocked-logger.js";
 const expectedOutput = `Runs automated package release and publishing
 
 Usage:
-  ${WORKSPACE_NAME} [options]
+  @release-change/cli [options]
 
 Options
   -b, --branches        Git branches to release from    [array]
@@ -33,7 +32,7 @@ afterEach(() => {
 });
 
 it.each(cliOptions)("should display the help content when using the `%s` command", option => {
-  vi.spyOn(childProcess, "execSync").mockReturnValue(`npx release-change ${option}`);
+  vi.spyOn(childProcess, "execSync").mockReturnValue(`npx @release-change/cli ${option}`);
   showHelp();
   expect(mockedLogger.logWithoutFormatting).toHaveBeenCalledWith(expectedOutput);
 });
