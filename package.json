@@ -1,6 +1,6 @@
 {
   "name": "release-change",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "Fully automated version management, changelog management and package publishing with a focus on monorepos, pre-releases and major version zero",
   "keywords": [
