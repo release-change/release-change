@@ -1,5 +1,17 @@
 # release-change
 
+## 0.1.5
+
+### Patch changes
+
+- **git:** add `@v` delimiter to get latest valid tag for package ([`9ad4de8`](https://github.com/release-change/release-change/commit/9ad4de8ab6ebc326807a86feb25ba26c02854dd9))
+- **commit-analyser:** add `/` to package path string to match against modified file ([`b39d822`](https://github.com/release-change/release-change/commit/b39d822d21d0e11a4169783e0f8288cc00e8ebc3))
+- **github:** remove end assertion ([`e134614`](https://github.com/release-change/release-change/commit/e1346143514bb0a21b4d240ebe5af47739717a85))
+
+---
+
+**Full changelog:** [`v0.1.4...v0.1.5`](https://github.com/release-change/release-change/compare/v0.1.4...v0.1.5)
+
 ## 0.1.4
 
 ### Patch changes

@@ -1,5 +1,15 @@
 # @release-change/commit-analyser
 
+## 0.1.3
+
+### Patch changes
+
+- **commit-analyser:** add `/` to package path string to match against modified file ([`b39d822`](https://github.com/release-change/release-change/commit/b39d822d21d0e11a4169783e0f8288cc00e8ebc3))
+
+---
+
+**Full changelog:** [`@release-change/commit-analyser@v0.1.2...@release-change/commit-analyser@v0.1.3`](https://github.com/release-change/release-change/compare/@release-change/commit-analyser@v0.1.2...@release-change/commit-analyser@v0.1.3)
+
 ## 0.1.2
 
 ### Dependencies updates
