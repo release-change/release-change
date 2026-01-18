@@ -1,5 +1,15 @@
 # release-change
 
+## 0.1.2
+
+### Patch changes
+
+- **git:** remove `--merged` and remote branch when getting all tags ([`5a16cea`](https://github.com/release-change/release-change/commit/5a16cea83f7acce7226efa646851d54b83b5a669))
+
+---
+
+**Full changelog:** [`v0.1.1...v0.1.2`](https://github.com/release-change/release-change/compare/v0.1.1...v0.1.2)
+
 ## 0.1.1
 
 ### Patch changes
