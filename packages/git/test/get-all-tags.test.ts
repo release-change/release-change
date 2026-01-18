@@ -48,7 +48,7 @@ it("should log an error message when an error is caught", () => {
         message: "The command failed with status 128.",
         details: {
           output: "Error",
-          command: "git tag -l --sort=-creatordate --merged origin/main"
+          command: "git tag -l --sort=-creatordate"
         }
       }
     }
@@ -96,17 +96,9 @@ it("should return all tags if tags are found", () => {
     stderr: ""
   });
   assert.deepEqual(getAllTags(mockedContext), mockedTags);
-  expect(runCommandSync).toHaveBeenCalledWith(
-    "git",
-    [
-      "tag",
-      "-l",
-      "--sort=-creatordate",
-      "--merged",
-      `${mockedContext.config.remoteName}/${mockedContext.branch}`
-    ],
-    { cwd: mockedCwd }
-  );
+  expect(runCommandSync).toHaveBeenCalledWith("git", ["tag", "-l", "--sort=-creatordate"], {
+    cwd: mockedCwd
+  });
 });
 it("should return an empty array if no tags are found", () => {
   vi.mocked(runCommandSync).mockReturnValue({
@@ -115,15 +107,7 @@ it("should return an empty array if no tags are found", () => {
     stderr: ""
   });
   assert.deepEqual(getAllTags(mockedContext), []);
-  expect(runCommandSync).toHaveBeenCalledWith(
-    "git",
-    [
-      "tag",
-      "-l",
-      "--sort=-creatordate",
-      "--merged",
-      `${mockedContext.config.remoteName}/${mockedContext.branch}`
-    ],
-    { cwd: mockedCwd }
-  );
+  expect(runCommandSync).toHaveBeenCalledWith("git", ["tag", "-l", "--sort=-creatordate"], {
+    cwd: mockedCwd
+  });
 });

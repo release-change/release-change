@@ -9,15 +9,11 @@ import { deepInspectObject, runCommandSync } from "@release-change/shared";
  * @return An array containing the tags if tags are found, an empty array otherwise.
  */
 export const getAllTags = (context: Context): string[] => {
-  const { cwd, branch, config } = context;
+  const { cwd, config } = context;
   const logger = setLogger(config.debug);
   logger.setScope("git");
   try {
-    const gitCommandResult = runCommandSync(
-      "git",
-      ["tag", "-l", "--sort=-creatordate", "--merged", `${config.remoteName}/${branch}`],
-      { cwd }
-    );
+    const gitCommandResult = runCommandSync("git", ["tag", "-l", "--sort=-creatordate"], { cwd });
     if (config.debug) {
       logger.setDebugScope("git:get-all-tags");
       logger.logDebug(deepInspectObject(gitCommandResult));
