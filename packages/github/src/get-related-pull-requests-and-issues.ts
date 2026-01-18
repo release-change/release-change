@@ -34,7 +34,7 @@ export const getRelatedPullRequestsAndIssues = async (
       const commitsWithSha = commits.filter(
         commit =>
           typeof commit.sha === "string" &&
-          !commit.message.match(/^chore: (@[^@]+)?v\d+\.\d+\.\d+$/i) &&
+          !commit.message.match(/^chore: (@[^@]+)?v\d+\.\d+\.\d+/i) &&
           !commit.message.startsWith("chore: release version package")
       );
       if (commitsWithSha.length) {
