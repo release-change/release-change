@@ -51,11 +51,11 @@ npm install --save-dev @release-change/cli
 
 Use the following command to run release-change in the CI environment:
 ```
-pnpx release-change
+pnpx @release-change/cli
 ```
 If you are using `npm`:
 ```
-npx release-change
+npx @release-change/cli
 ```
 
 ## Documentation
@@ -108,7 +108,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
             ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
             NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
             NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
-          run: pnpx release-change
+          run: pnpx @release-change/cli
   ```
 - using `npm`:
   ```yaml
@@ -149,7 +149,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
             ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
             NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
             NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
-          run: npx release-change
+          run: npx @release-change/cli
   ```
 
 ### Configuration
