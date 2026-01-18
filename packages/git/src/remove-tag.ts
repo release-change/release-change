@@ -20,7 +20,7 @@ export const removeTag = (gitTag: string, cwd: string, debug = false): void => {
     if (status) {
       logger.logError(`Failed to remove Git tag ${gitTag}.`);
       throw formatDetailedError({
-        title: "Failed to run the `git` command",
+        title: "Failed to run the `git tag` command",
         message: `The command failed with status ${status}.`,
         details: {
           output: stderr || stdout || `Command failed with status ${status}.`,

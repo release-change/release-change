@@ -18,7 +18,7 @@ export const push = async (context: Context, pushOptions: PushOptions): Promise<
   if (!destinationBranch) {
     process.exitCode = 1;
     throw formatDetailedError({
-      title: "Failed to run the `git` command",
+      title: "Failed to run the `git push` command",
       message: "A branch name must be provided.",
       details: {
         output: "destinationBranch: "
@@ -33,7 +33,7 @@ export const push = async (context: Context, pushOptions: PushOptions): Promise<
   if (status) {
     process.exitCode = status;
     throw formatDetailedError({
-      title: "Failed to run the `git` command",
+      title: "Failed to run the `git push` command",
       message: `The command failed with status ${status}.`,
       details: {
         output: stderr || stdout || `Command failed with status ${status}.`,

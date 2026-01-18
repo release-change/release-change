@@ -32,10 +32,10 @@ it("should skip authorisation checking when the branch is not one of those from 
 });
 it("should throw an error when the Git command fails", async () => {
   const expectedError = new Error(
-    "Failed to run the `git` command: The command failed with status 128.",
+    "Failed to run the `git push` command: The command failed with status 128.",
     {
       cause: {
-        title: "Failed to run the `git` command",
+        title: "Failed to run the `git push` command",
         message: "The command failed with status 128.",
         details: {
           output: "Error",

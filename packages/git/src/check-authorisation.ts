@@ -29,7 +29,7 @@ export const checkAuthorisation = async (
   if (status) {
     process.exitCode = status;
     throw formatDetailedError({
-      title: "Failed to run the `git` command",
+      title: "Failed to run the `git push` command",
       message: `The command failed with status ${status}.`,
       details: {
         output: stderr || stdout || `Command failed with status ${status}.`,

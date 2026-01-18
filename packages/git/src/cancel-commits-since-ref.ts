@@ -20,7 +20,7 @@ export const cancelCommitsSinceRef = (commitRef: string, cwd: string, debug = fa
     if (status) {
       logger.logError(`Failed to cancel the commits since ${commitRef}.`);
       throw formatDetailedError({
-        title: "Failed to run the `git` command",
+        title: "Failed to run the `git reset` command",
         message: `The command failed with status ${status}.`,
         details: {
           output: stderr || stdout || `Command failed with status ${status}.`,

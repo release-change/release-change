@@ -335,10 +335,10 @@ describe.each(packageManagers)("for %s", packageManager => {
     });
     it("should rollback commits and remove tags when `git add` fails", async () => {
       const mockedError = new Error(
-        "Failed to run the `git` command: The command failed with status 128.",
+        "Failed to run the `git add` command: The command failed with status 128.",
         {
           cause: {
-            title: "Failed to run the `git` command",
+            title: "Failed to run the `git add` command",
             message: "The command failed with status 128.",
             details: {
               output: "Git error",
@@ -362,10 +362,10 @@ describe.each(packageManagers)("for %s", packageManager => {
     });
     it("should rollback commits and remove tags when `git commit` fails", async () => {
       const mockedError = new Error(
-        "Failed to run the `git` command: The command failed with status 128.",
+        "Failed to run the `git commit` command: The command failed with status 128.",
         {
           cause: {
-            title: "Failed to run the `git` command",
+            title: "Failed to run the `git commit` command",
             message: "The command failed with status 128.",
             details: {
               output: "Git error",
@@ -387,10 +387,10 @@ describe.each(packageManagers)("for %s", packageManager => {
     });
     it("should rollback commits and remove tags when push fails", async () => {
       const mockedError = new Error(
-        "Failed to run the `git` command: The command failed with status 128.",
+        "Failed to run the `git push` command: The command failed with status 128.",
         {
           cause: {
-            title: "Failed to run the `git` command",
+            title: "Failed to run the `git push` command",
             message: "The command failed with status 128.",
             details: {
               output: "Git error",
@@ -477,10 +477,10 @@ describe.each(packageManagers)("for %s", packageManager => {
     });
     it("should remove all created tags on rollback", async () => {
       const mockedError = new Error(
-        "Failed to run the `git` command: The command failed with status 128.",
+        "Failed to run the `git push` command: The command failed with status 128.",
         {
           cause: {
-            title: "Failed to run the `git` command",
+            title: "Failed to run the `git push` command",
             message: "The command failed with status 128.",
             details: {
               output: "Git error",

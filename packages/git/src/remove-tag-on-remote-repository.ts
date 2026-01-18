@@ -27,7 +27,7 @@ export const removeTagOnRemoteRepository = async (
     if (status) {
       logger.logError(`Failed to remotely remove Git tag ${gitTag} on ${remoteName}.`);
       throw formatDetailedError({
-        title: "Failed to run the `git` command",
+        title: "Failed to run the `git push` command",
         message: `The command failed with status ${status}.`,
         details: {
           output: stderr || stdout || `Command failed with status ${status}.`,

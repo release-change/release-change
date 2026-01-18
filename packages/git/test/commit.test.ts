@@ -28,10 +28,10 @@ afterEach(() => {
 
 it("should throw an error if the commit message is empty", async () => {
   const expectedError = new Error(
-    "Failed to run the `git` command: The commit message cannot be empty.",
+    "Failed to run the `git commit` command: The commit message cannot be empty.",
     {
       cause: {
-        title: "Failed to run the `git` command",
+        title: "Failed to run the `git commit` command",
         message: "The commit message cannot be empty.",
         details: {
           output: "commitMessage: "
