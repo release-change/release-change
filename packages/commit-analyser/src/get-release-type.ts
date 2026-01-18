@@ -39,7 +39,7 @@ export const getReleaseType = (commits: Commit[], context: Context): PackageRele
       if (modifiedFiles?.length) {
         for (const modifiedFile of modifiedFiles) {
           const relatedPackagePath = packagesPaths.find(packagePath =>
-            modifiedFile.startsWith(packagePath)
+            modifiedFile.startsWith(`${packagePath}/`)
           );
           const relatedPackageName =
             packages.find(packageItem => packageItem.pathname === relatedPackagePath)?.name ?? "";
