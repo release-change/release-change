@@ -90,15 +90,15 @@ export type ReleaseInfoNpm = {
   url: string;
 };
 export type ReleaseInfo = ReleaseInfoGithub | ReleaseInfoNpm;
-type FileExists = {
-  fileExists: true;
-  authTokenExists: boolean;
-};
-type FileNotExists = {
-  fileExists: false;
-  authTokenExists: false;
-};
-export type AuthToken = FileExists | FileNotExists;
+export type AuthToken =
+  | {
+      fileExists: true;
+      authTokenExists: boolean;
+    }
+  | {
+      fileExists: false;
+      authTokenExists: false;
+    };
 export interface ContextBase {
   cwd: string;
   env: NodeJS.ProcessEnv;
