@@ -1,5 +1,19 @@
 # @release-change/github
 
+## 0.1.3
+
+### Patch changes
+
+- **github:** remove end assertion ([`e134614`](https://github.com/release-change/release-change/commit/e1346143514bb0a21b4d240ebe5af47739717a85))
+
+### Dependencies updates
+
+- @release-change/commit-analyser@0.1.3
+
+---
+
+**Full changelog:** [`@release-change/github@v0.1.2...@release-change/github@v0.1.3`](https://github.com/release-change/release-change/compare/@release-change/github@v0.1.2...@release-change/github@v0.1.3)
+
 ## 0.1.2
 
 ### Dependencies updates
