@@ -1,6 +1,6 @@
 {
   "name": "@release-change/logger",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Print messages in the terminal for release-change",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",

@@ -1,5 +1,15 @@
 # release-change
 
+## 0.1.4
+
+### Patch changes
+
+- **shared:** force patch to benefit all packages from refactoring ([`7dcaf69`](https://github.com/release-change/release-change/commit/7dcaf696d5afed1f2e76da9615de6de01ee1afbc))
+
+---
+
+**Full changelog:** [`v0.1.3...v0.1.4`](https://github.com/release-change/release-change/compare/v0.1.3...v0.1.4)
+
 ## 0.1.3
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@release-change/github",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Functions used internally in release-change to publish a GitHub release and comment on released pull requests and issues",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",

@@ -1,5 +1,15 @@
 # @release-change/shared
 
+## 0.1.2
+
+### Patch changes
+
+- **shared:** force patch to benefit all packages from refactoring ([`7dcaf69`](https://github.com/release-change/release-change/commit/7dcaf696d5afed1f2e76da9615de6de01ee1afbc))
+
+---
+
+**Full changelog:** [`@release-change/shared@v0.1.1...@release-change/shared@v0.1.2`](https://github.com/release-change/release-change/compare/@release-change/shared@v0.1.1...@release-change/shared@v0.1.2)
+
 ## 0.1.1
 
 ### Patch changes

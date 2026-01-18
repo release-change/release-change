@@ -1,6 +1,6 @@
 {
   "name": "@release-change/git",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Functions used internally in release-change to make Git operations easier",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",
