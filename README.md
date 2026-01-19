@@ -176,7 +176,7 @@ The following examples are the same:
 
 Type: `array`  
 Default: `["alpha", "beta", "main", "master", "next"]`  
-CLI arguments: `-b`, `--branches`
+CLI arguments: `-b <space-separated branches>`, `--branches <space-separated branches>`
 
 The branches on which releases should happen.
 
@@ -184,7 +184,7 @@ The branches on which releases should happen.
 
 Type: `string`  
 Default: `repository` property in `package.json` file  
-CLI arguments: `-r`, `--repository-url`
+CLI arguments: `-r <url>`, `--repository-url <url>`
 
 The Git repository URL.
 
@@ -192,7 +192,7 @@ The Git repository URL.
 
 Type: `string`  
 Default: `"origin"`  
-CLI arguments: `--remote-name`
+CLI arguments: `--remote-name <name>`
 
 The remote repository name.
 
