@@ -1,5 +1,16 @@
 # @release-change/release
 
+## 0.1.5
+
+### Dependencies updates
+
+- @release-change/github@0.1.4
+- @release-change/release-notes-generator@0.1.4
+
+---
+
+**Full changelog:** [`@release-change/release@v0.1.4...@release-change/release@v0.1.5`](https://github.com/release-change/release-change/compare/@release-change/release@v0.1.4...@release-change/release@v0.1.5)
+
 ## 0.1.4
 
 ### Dependencies updates
