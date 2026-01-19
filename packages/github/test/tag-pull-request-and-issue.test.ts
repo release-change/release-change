@@ -11,7 +11,7 @@ import { mockedIssueNumber } from "./fixtures/mocked-issue-number.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedPullRequestsAndIssuesToTag } from "./fixtures/mocked-pull-requests-and-issues-to-tag.js";
 import { mockedIssuePRToken } from "./fixtures/mocked-token.js";
-import { mockedUriForIssue } from "./fixtures/mocked-uri.js";
+import { mockedUri, mockedUriForLabels } from "./fixtures/mocked-uri.js";
 
 global.fetch = mockedFetch;
 
@@ -67,9 +67,7 @@ describe.each(
     : { ...mockedContext, nextRelease };
   it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
     vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
-    vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
-      "https://api.github.com/repos/user-id/repo-name"
-    );
+    vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(mockedUri);
     vi.mocked(mockedFetch).mockResolvedValue({
       ...response,
       json: () => Promise.resolve({ message: response.statusText })
@@ -110,8 +108,8 @@ describe.each(
       json: () => Promise.resolve({ message: "OK" })
     });
     await tagPullRequestAndIssue(reference, context);
-    expect(mockedFetch).toHaveBeenCalledWith(mockedUriForIssue, {
-      method: "PATCH",
+    expect(mockedFetch).toHaveBeenCalledWith(mockedUriForLabels, {
+      method: "POST",
       headers: {
         Accept: "application/vnd.github+json",
         Authorization: `Bearer ${mockedIssuePRToken}`,
