@@ -1,5 +1,15 @@
 # @release-change/github
 
+## 0.1.4
+
+### Patch changes
+
+- **github:** use POST method and issue entrypoint for labels ([`cfba964`](https://github.com/release-change/release-change/commit/cfba9643e55241d222e2ddb9aacf7d0685fb126c))
+
+---
+
+**Full changelog:** [`@release-change/github@v0.1.3...@release-change/github@v0.1.4`](https://github.com/release-change/release-change/compare/@release-change/github@v0.1.3...@release-change/github@v0.1.4)
+
 ## 0.1.3
 
 ### Patch changes
