@@ -23,7 +23,7 @@ export const tagPullRequestAndIssue = async (
   if (nextRelease) {
     const issuePullRequestToken = getIssueAndPullRequestToken(env);
     const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
-    const uri = `${repositoryEntryPoint}/issues/${number}`;
+    const uri = `${repositoryEntryPoint}/issues/${number}/labels`;
     const requestBody = {
       labels: [
         ...new Set(
@@ -35,7 +35,7 @@ export const tagPullRequestAndIssue = async (
       ]
     };
     const issueClosingResponse = await fetch(uri, {
-      method: "PATCH",
+      method: "POST",
       headers: {
         Accept: "application/vnd.github+json",
         Authorization: `Bearer ${issuePullRequestToken}`,
