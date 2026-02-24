@@ -2,7 +2,7 @@ import packageManifest from "../package.json" with { type: "json" };
 
 export const WORKSPACE_VERSION = packageManifest.version;
 export const REQUIRED_NODE_VERSIONS = packageManifest.engines.node;
-export const GIT_MIN_VERSION = "2.48.1";
+export const GIT_MIN_VERSION = "2.23.0";
 export const TAB = " ".repeat(2);
 export const AVAILABLE_CLI_OPTIONS = {
   branches: {

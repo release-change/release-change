@@ -30,7 +30,7 @@ beforeEach(() => {
   vi.mock("@release-change/shared", () => ({
     runCommandSync: vi.fn(() => ({
       status: 0,
-      stdout: "git version 2.48.1",
+      stdout: "git version 2.23.0",
       stderr: ""
     })),
     ROOT_PACKAGE_MANIFEST: {
@@ -72,7 +72,7 @@ it.each(
     throw new Error("process.exit called with 1");
   });
   vi.mocked(isNodeVersionCompatible).mockReturnValue(false);
-  await expect(checkRequirements()).rejects.toThrowError("process.exit called with 1");
+  expect(checkRequirements()).rejects.toThrowError("process.exit called with 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Required one of the following Node versions: ${formattedRequiredNodeVersions}. Found ${mockedNodeVersion}.`
   );
@@ -99,7 +99,7 @@ it(`should call \`process.exit(1)\` and display an error message if Git version 
   });
   vi.mocked(isNodeVersionCompatible).mockReturnValue(true);
   vi.mocked(isGitVersionCompatible).mockReturnValue(false);
-  await expect(checkRequirements()).rejects.toThrowError("process.exit called with 1");
+  expect(checkRequirements()).rejects.toThrowError("process.exit called with 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Git version ${GIT_MIN_VERSION} required. Found ${mockedVersion}.`
   );
@@ -107,5 +107,5 @@ it(`should call \`process.exit(1)\` and display an error message if Git version 
 it("should complete successfully when requirements are met", async () => {
   vi.mocked(isNodeVersionCompatible).mockReturnValue(true);
   vi.mocked(isGitVersionCompatible).mockReturnValue(true);
-  await expect(checkRequirements()).resolves.not.toThrow();
+  expect(checkRequirements()).resolves.not.toThrow();
 });
