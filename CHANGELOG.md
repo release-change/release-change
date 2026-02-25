@@ -1,5 +1,15 @@
 # release-change
 
+## 0.2.0
+
+### Minor changes
+
+- **cli:** require Git version from 2.23.0 instead of 2.48.1 ([`b610cca`](https://github.com/release-change/release-change/commit/b610cca53035c9ff378e606ec6c2e8096daabd05))
+
+---
+
+**Full changelog:** [`v0.1.6...v0.2.0`](https://github.com/release-change/release-change/compare/v0.1.6...v0.2.0)
+
 ## 0.1.6
 
 ### Patch changes
