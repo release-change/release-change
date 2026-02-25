@@ -78,7 +78,8 @@ export const createReleaseNotes = async (
         title: "Failed to create the release notes",
         message: `Failed to fetch URI ${uri}.`,
         details: {
-          output: `status: ${status}`
+          output: `status: ${status}`,
+          command: `POST ${uri}`
         }
       });
     }
@@ -87,7 +88,8 @@ export const createReleaseNotes = async (
       title: "Failed to create the release notes",
       message: `${message}${documentationReference}`,
       details: {
-        output: `status: ${status}`
+        output: `status: ${status}`,
+        command: `POST ${uri}`
       }
     });
   }

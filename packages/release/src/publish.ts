@@ -115,7 +115,7 @@ export const publish = async (context: Context): Promise<void> => {
           (isCommandGitPush ||
             command.startsWith("git add") ||
             command.startsWith("git commit") ||
-            command.match(/^POST \S+\/pulls$/))
+            command.match(/^POST \S+\/(pull|release)s$/))
         ) {
           cancelCommitsSinceRef(commitRef, cwd, debug);
           for (const newGitTag of newGitTags) {
