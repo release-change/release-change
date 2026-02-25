@@ -50,12 +50,13 @@ export const publish = async (context: Context): Promise<void> => {
   logger.setScope("release");
   const commitRef = getCurrentCommitId(cwd);
   const newGitTags: string[] = [];
+  let newBranch: string | undefined;
   try {
     if (nextRelease) {
       const packageManager = getPackageManager(cwd, env);
       const packagePublishingSet: PackagePublishing[] = [];
       const releaseNotesSet: ReleaseNotes[] = [];
-      const newBranch = setBranchName(branch, nextRelease);
+      newBranch = setBranchName(branch, nextRelease);
       switchToNewBranch(newBranch, cwd);
       for (const nextReleasePackage of nextRelease) {
         const { pathname } = nextReleasePackage;
@@ -109,7 +110,8 @@ export const publish = async (context: Context): Promise<void> => {
           details: { command }
         } = cause;
         const isCommandGitPush =
-          command === `git push --follow-tags ${context.config.remoteName} ${context.branch}`;
+          newBranch &&
+          command === `git push --follow-tags ${context.config.remoteName} ${newBranch}`;
         if (
           command &&
           (isCommandGitPush ||

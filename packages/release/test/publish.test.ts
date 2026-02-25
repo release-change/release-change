@@ -312,10 +312,12 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
     }
     it("should execute the full publishing workflow successfully", async () => {
+      const mockedBranch = "release-change/main/1.2.3";
       const args =
         packageManager === "pnpm"
           ? ["publish", "--access", "public", "--not-git-checks"]
           : ["publish", "--access", "public"];
+      vi.mocked(setBranchName).mockReturnValue(mockedBranch);
       vi.mocked(getPackageDependencies).mockReturnValue([]);
       vi.mocked(prepareReleaseNotes).mockReturnValue(mockedReleaseNotes);
       vi.mocked(getCurrentCommitId).mockReturnValue("abc123");
@@ -328,7 +330,10 @@ describe.each(packageManagers)("for %s", packageManager => {
         args
       });
       await publish(context);
-      expect(push).toHaveBeenCalledWith(context, { includeTags: true });
+      expect(push).toHaveBeenCalledWith(context, {
+        destinationBranch: mockedBranch,
+        includeTags: true
+      });
       expect(createPullRequest).toHaveBeenCalled();
       expect(createReleaseNotes).toHaveBeenCalled();
       expect(publishToRegistry).toHaveBeenCalled();
@@ -386,6 +391,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       expect(removeTagOnRemoteRepository).not.toHaveBeenCalled();
     });
     it("should rollback commits and remove tags when push fails", async () => {
+      const mockedBranch = "release-change/main/1.2.3";
       const mockedError = new Error(
         "Failed to run the `git push` command: The command failed with status 128.",
         {
@@ -394,11 +400,12 @@ describe.each(packageManagers)("for %s", packageManager => {
             message: "The command failed with status 128.",
             details: {
               output: "Git error",
-              command: "git push --follow-tags origin main"
+              command: `git push --follow-tags origin ${mockedBranch}`
             }
           }
         }
       );
+      vi.mocked(setBranchName).mockReturnValue(mockedBranch);
       vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
       vi.mocked(push).mockRejectedValue(mockedError);
       await expect(publish(context)).rejects.toThrowError(mockedError);
@@ -476,6 +483,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       }
     });
     it("should remove all created tags on rollback", async () => {
+      const mockedBranch = "release-change/main/1.2.3";
       const mockedError = new Error(
         "Failed to run the `git push` command: The command failed with status 128.",
         {
@@ -484,7 +492,7 @@ describe.each(packageManagers)("for %s", packageManager => {
             message: "The command failed with status 128.",
             details: {
               output: "Git error",
-              command: "git push --follow-tags origin main"
+              command: `git push --follow-tags origin ${mockedBranch}`
             }
           }
         }
