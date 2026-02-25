@@ -6,5 +6,5 @@ it("tests an incompatible Git version", () => {
   expect(isGitVersionCompatible("2.7.1")).toBe(false);
 });
 it("tests a compatible Git version", () => {
-  expect(isGitVersionCompatible("2.48.1")).toBe(true);
+  expect(isGitVersionCompatible("2.23.0")).toBe(true);
 });

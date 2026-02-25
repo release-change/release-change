@@ -30,7 +30,7 @@ It is meant to be integrated in a CI environment. For each new commit added to o
 To use release-change, you need:
 - to host your code in a GitHub repository,
 - to use GitHub Actions,
-- Git 2.48.1+,
+- Git 2.23.0+,
 - a [Node.js](https://nodejs.org) which meets the [version requirements](./SECURITY.md#supported-nodejs-versions),
 - a package manager which meets the [version requirements](./SECURITY.md#supported-package-manager-versions).
 
