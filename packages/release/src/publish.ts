@@ -112,13 +112,13 @@ export const publish = async (context: Context): Promise<void> => {
         const isCommandGitPush =
           newBranch &&
           command === `git push --follow-tags ${context.config.remoteName} ${newBranch}`;
-        if (
+        const shouldRollback =
           command &&
           (isCommandGitPush ||
             command.startsWith("git add") ||
             command.startsWith("git commit") ||
-            command.match(/^POST \S+\/(pull|release)s$/))
-        ) {
+            command.match(/^POST \S+\/(pull|release)s$/));
+        if (shouldRollback) {
           cancelCommitsSinceRef(commitRef, cwd, debug);
           for (const newGitTag of newGitTags) {
             removeTag(newGitTag, cwd, debug);
