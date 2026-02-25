@@ -91,10 +91,10 @@ export const publish = async (context: Context): Promise<void> => {
         if (packagePublishing) packagePublishingSet.push(packagePublishing);
       }
       await push(context, { destinationBranch: newBranch, includeTags: true });
-      await createPullRequest(newBranch, context);
       for (const releaseNotes of releaseNotesSet) {
         await createReleaseNotes(releaseNotes, context);
       }
+      await createPullRequest(newBranch, context);
       for (const packagePublishing of packagePublishingSet) {
         await publishToRegistry(packagePublishing, context);
       }
