@@ -1,5 +1,15 @@
 # @release-change/release-notes-generator
 
+## 0.1.5
+
+### Patch changes
+
+- **release:** rollback commits and remove Git tags when release notes creation fails ([`eb2a507`](https://github.com/release-change/release-change/commit/eb2a50745ddbd0241558a1beef9123cc516f9748))
+
+---
+
+**Full changelog:** [`@release-change/release-notes-generator@v0.1.4...@release-change/release-notes-generator@v0.1.5`](https://github.com/release-change/release-change/compare/@release-change/release-notes-generator@v0.1.4...@release-change/release-notes-generator@v0.1.5)
+
 ## 0.1.4
 
 ### Dependencies updates
