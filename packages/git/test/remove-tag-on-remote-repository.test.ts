@@ -44,7 +44,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
       `Removed remote Git tag ${mockedGitTag} successfully.`
     );
   });
-  it("should throw an error if the `git tag` command is run and fails", async () => {
+  it("should throw an error if the `git push` command is run and fails", async () => {
     const expectedError = new Error(
       "Failed to run the `git push` command: The command failed with status 128.",
       {
