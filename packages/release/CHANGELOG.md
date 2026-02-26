@@ -1,5 +1,26 @@
 # @release-change/release
 
+## 0.2.0
+
+### Minor changes
+
+- **release:** delete release branch when release fails and needs rollback ([`40820d5`](https://github.com/release-change/release-change/commit/40820d56aeb7359e2e32c98f5754381e14fe8f72))
+
+### Patch changes
+
+- **release:** create the pull request after release notes ([`a6b66b1`](https://github.com/release-change/release-change/commit/a6b66b16b313f009121048dab3198ae385a5ecb9))
+- **release:** fix `git push` command condition ([`bad4da7`](https://github.com/release-change/release-change/commit/bad4da78b2af9fcb549821763428eb903c5726fd))
+- **release:** rollback commits and remove Git tags when release notes creation fails ([`eb2a507`](https://github.com/release-change/release-change/commit/eb2a50745ddbd0241558a1beef9123cc516f9748))
+
+### Dependencies updates
+
+- @release-change/git@0.2.0
+- @release-change/release-notes-generator@0.1.5
+
+---
+
+**Full changelog:** [`@release-change/release@v0.1.5...@release-change/release@v0.2.0`](https://github.com/release-change/release-change/compare/@release-change/release@v0.1.5...@release-change/release@v0.2.0)
+
 ## 0.1.5
 
 ### Dependencies updates
