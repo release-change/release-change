@@ -8,11 +8,14 @@ import { getPackageDependencies, getPackageManager } from "@release-change/get-p
 import {
   cancelCommitsSinceRef,
   createTag,
+  deleteBranch,
+  deleteBranchOnRemoteRepository,
   getCurrentCommitId,
   push,
   removeTag,
   removeTagOnRemoteRepository,
   setBranchName,
+  switchToBranch,
   switchToNewBranch
 } from "@release-change/git";
 import { createPullRequest } from "@release-change/github";
@@ -120,6 +123,11 @@ export const publish = async (context: Context): Promise<void> => {
             command.match(/^POST \S+\/(pull|release)s$/));
         if (shouldRollback) {
           cancelCommitsSinceRef(commitRef, cwd, debug);
+          if (branch && newBranch && newBranch !== branch) {
+            switchToBranch(branch, cwd);
+            deleteBranch(newBranch, cwd, debug);
+            await deleteBranchOnRemoteRepository(newBranch, context);
+          }
           for (const newGitTag of newGitTags) {
             removeTag(newGitTag, cwd, debug);
             await removeTagOnRemoteRepository(newGitTag, context);
