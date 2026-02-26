@@ -1,5 +1,15 @@
 # @release-change/git
 
+## 0.2.0
+
+### Minor changes
+
+- **release:** delete release branch when release fails and needs rollback ([`40820d5`](https://github.com/release-change/release-change/commit/40820d56aeb7359e2e32c98f5754381e14fe8f72))
+
+---
+
+**Full changelog:** [`@release-change/git@v0.1.4...@release-change/git@v0.2.0`](https://github.com/release-change/release-change/compare/@release-change/git@v0.1.4...@release-change/git@v0.2.0)
+
 ## 0.1.4
 
 ### Patch changes
