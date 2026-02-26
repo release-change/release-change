@@ -6,11 +6,14 @@ import { getPackageDependencies, getPackageManager } from "@release-change/get-p
 import {
   cancelCommitsSinceRef,
   createTag,
+  deleteBranch,
+  deleteBranchOnRemoteRepository,
   getCurrentCommitId,
   push,
   removeTag,
   removeTagOnRemoteRepository,
   setBranchName,
+  switchToBranch,
   switchToNewBranch
 } from "@release-change/git";
 import { createPullRequest } from "@release-change/github";
@@ -64,6 +67,9 @@ beforeEach(() => {
     createTag: vi.fn(),
     push: vi.fn(),
     cancelCommitsSinceRef: vi.fn(),
+    switchToBranch: vi.fn(),
+    deleteBranch: vi.fn(),
+    deleteBranchOnRemoteRepository: vi.fn(),
     removeTag: vi.fn(),
     removeTagOnRemoteRepository: vi.fn()
   }));
@@ -168,6 +174,8 @@ describe.each(packageManagers)("for %s", packageManager => {
     mockedContextWithNextRelease,
     mockedContextInMonorepoWithNextRelease
   ])("for isMonorepo: $config.isMonorepo", context => {
+    const mockedReleaseBranch = "release-change/main/1.2.3";
+
     beforeEach(() => {
       vi.mocked(getPackageDependencies).mockReturnValue([]);
       vi.mocked(prepareReleaseNotes).mockReturnValue(mockedReleaseNotes);
@@ -338,7 +346,8 @@ describe.each(packageManagers)("for %s", packageManager => {
       expect(createReleaseNotes).toHaveBeenCalled();
       expect(publishToRegistry).toHaveBeenCalled();
     });
-    it("should rollback commits and remove tags when `git add` fails", async () => {
+    it("should rollback commits and delete release branch when `git add` fails", async () => {
+      const { branch, cwd } = context;
       const mockedError = new Error(
         "Failed to run the `git add` command: The command failed with status 128.",
         {
@@ -362,10 +371,14 @@ describe.each(packageManagers)("for %s", packageManager => {
         expect.any(String),
         expect.any(Boolean)
       );
+      expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
+      expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
+      expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
       expect(removeTag).not.toHaveBeenCalled();
       expect(removeTagOnRemoteRepository).not.toHaveBeenCalled();
     });
-    it("should rollback commits and remove tags when `git commit` fails", async () => {
+    it("should rollback commits and delete release branch when `git commit` fails", async () => {
+      const { branch, cwd } = context;
       const mockedError = new Error(
         "Failed to run the `git commit` command: The command failed with status 128.",
         {
@@ -387,11 +400,14 @@ describe.each(packageManagers)("for %s", packageManager => {
         expect.any(String),
         expect.any(Boolean)
       );
+      expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
+      expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
+      expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
       expect(removeTag).not.toHaveBeenCalled();
       expect(removeTagOnRemoteRepository).not.toHaveBeenCalled();
     });
-    it("should rollback commits and remove tags when push fails", async () => {
-      const mockedBranch = "release-change/main/1.2.3";
+    it("should rollback commits, remove tags and delete release branch when push fails", async () => {
+      const { branch, cwd } = context;
       const mockedError = new Error(
         "Failed to run the `git push` command: The command failed with status 128.",
         {
@@ -400,12 +416,12 @@ describe.each(packageManagers)("for %s", packageManager => {
             message: "The command failed with status 128.",
             details: {
               output: "Git error",
-              command: `git push --follow-tags origin ${mockedBranch}`
+              command: `git push --follow-tags origin ${mockedReleaseBranch}`
             }
           }
         }
       );
-      vi.mocked(setBranchName).mockReturnValue(mockedBranch);
+      vi.mocked(setBranchName).mockReturnValue(mockedReleaseBranch);
       vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
       vi.mocked(push).mockRejectedValue(mockedError);
       await expect(publish(context)).rejects.toThrowError(mockedError);
@@ -414,10 +430,14 @@ describe.each(packageManagers)("for %s", packageManager => {
         expect.any(String),
         expect.any(Boolean)
       );
+      expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
+      expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
+      expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
       expect(removeTag).toHaveBeenCalled();
       expect(removeTagOnRemoteRepository).toHaveBeenCalled();
     });
-    it("should rollback commits and remove tags when pull request creation fails", async () => {
+    it("should rollback commits, remove tags and delete release branch when pull request creation fails", async () => {
+      const { branch, cwd } = context;
       const mockedError = new Error(
         "Failed to create the pull request: The command failed with status 128.",
         {
@@ -438,13 +458,47 @@ describe.each(packageManagers)("for %s", packageManager => {
         expect.any(String),
         expect.any(Boolean)
       );
+      expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
+      expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
+      expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
       expect(removeTag).toHaveBeenCalled();
       expect(removeTagOnRemoteRepository).toHaveBeenCalled();
     });
-    it("should not rollback when error is not from `git add`, `git commit`, `git push` or pull request creation", async () => {
+    it("should rollback commits, remove tags and delete release branch when release notes creation fails", async () => {
+      const { branch, cwd } = context;
+      const mockedError = new Error(
+        "Failed to create the release notes: Failed to fetch URI https://api.github.com/repos/user-id/repo-name/releases",
+        {
+          cause: {
+            title: "Failed to create the release notes",
+            message: "Failed to fetch URI https://api.github.com/repos/user-id/repo-name/releases",
+            details: {
+              output: "GitHub API error",
+              command: "POST https://api.github.com/repos/user-id/repo-name/releases"
+            }
+          }
+        }
+      );
+      vi.mocked(createReleaseNotes).mockRejectedValue(mockedError);
+      await expect(publish(context)).rejects.toThrowError(mockedError);
+      expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
+        "0123456",
+        expect.any(String),
+        expect.any(Boolean)
+      );
+      expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
+      expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
+      expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
+      expect(removeTag).toHaveBeenCalled();
+      expect(removeTagOnRemoteRepository).toHaveBeenCalled();
+    });
+    it("should not rollback when error is not from `git add`, `git commit`, `git push`, pull request creation or release notes creation", async () => {
       vi.mocked(updateLockFile).mockRejectedValue(new Error("Lock file update failed"));
       await expect(publish(context)).rejects.toThrow();
       expect(cancelCommitsSinceRef).not.toHaveBeenCalled();
+      expect(switchToBranch).not.toHaveBeenCalled();
+      expect(deleteBranch).not.toHaveBeenCalled();
+      expect(deleteBranchOnRemoteRepository).not.toHaveBeenCalled();
       expect(removeTag).not.toHaveBeenCalled();
       expect(removeTagOnRemoteRepository).not.toHaveBeenCalled();
     });
