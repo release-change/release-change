@@ -8,11 +8,14 @@ import { getPackageDependencies, getPackageManager } from "@release-change/get-p
 import {
   cancelCommitsSinceRef,
   createTag,
+  deleteBranch,
+  deleteBranchOnRemoteRepository,
   getCurrentCommitId,
   push,
   removeTag,
   removeTagOnRemoteRepository,
   setBranchName,
+  switchToBranch,
   switchToNewBranch
 } from "@release-change/git";
 import { createPullRequest } from "@release-change/github";
@@ -50,12 +53,13 @@ export const publish = async (context: Context): Promise<void> => {
   logger.setScope("release");
   const commitRef = getCurrentCommitId(cwd);
   const newGitTags: string[] = [];
+  let newBranch: string | undefined;
   try {
     if (nextRelease) {
       const packageManager = getPackageManager(cwd, env);
       const packagePublishingSet: PackagePublishing[] = [];
       const releaseNotesSet: ReleaseNotes[] = [];
-      const newBranch = setBranchName(branch, nextRelease);
+      newBranch = setBranchName(branch, nextRelease);
       switchToNewBranch(newBranch, cwd);
       for (const nextReleasePackage of nextRelease) {
         const { pathname } = nextReleasePackage;
@@ -90,10 +94,10 @@ export const publish = async (context: Context): Promise<void> => {
         if (packagePublishing) packagePublishingSet.push(packagePublishing);
       }
       await push(context, { destinationBranch: newBranch, includeTags: true });
-      await createPullRequest(newBranch, context);
       for (const releaseNotes of releaseNotesSet) {
         await createReleaseNotes(releaseNotes, context);
       }
+      await createPullRequest(newBranch, context);
       for (const packagePublishing of packagePublishingSet) {
         await publishToRegistry(packagePublishing, context);
       }
@@ -109,15 +113,21 @@ export const publish = async (context: Context): Promise<void> => {
           details: { command }
         } = cause;
         const isCommandGitPush =
-          command === `git push --follow-tags ${context.config.remoteName} ${context.branch}`;
-        if (
+          newBranch &&
+          command === `git push --follow-tags ${context.config.remoteName} ${newBranch}`;
+        const shouldRollback =
           command &&
           (isCommandGitPush ||
             command.startsWith("git add") ||
             command.startsWith("git commit") ||
-            command.match(/^POST \S+\/pulls$/))
-        ) {
+            command.match(/^POST \S+\/(pull|release)s$/));
+        if (shouldRollback) {
           cancelCommitsSinceRef(commitRef, cwd, debug);
+          if (branch && newBranch && newBranch !== branch) {
+            switchToBranch(branch, cwd);
+            deleteBranch(newBranch, cwd, debug);
+            await deleteBranchOnRemoteRepository(newBranch, context);
+          }
           for (const newGitTag of newGitTags) {
             removeTag(newGitTag, cwd, debug);
             await removeTagOnRemoteRepository(newGitTag, context);

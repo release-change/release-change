@@ -5,6 +5,8 @@ export { checkPushPermissions } from "./check-push-permissions.js";
 export { checkRepository } from "./check-repository.js";
 export { commit } from "./commit.js";
 export { createTag } from "./create-tag.js";
+export { deleteBranch } from "./delete-branch.js";
+export { deleteBranchOnRemoteRepository } from "./delete-branch-on-remote-repository.js";
 export { getAllTags } from "./get-all-tags.js";
 export { getBranchName } from "./get-branch-name.js";
 export { getCommitsSinceRef } from "./get-commits-since-ref.js";
@@ -16,6 +18,7 @@ export { push } from "./push.js";
 export { removeTag } from "./remove-tag.js";
 export { removeTagOnRemoteRepository } from "./remove-tag-on-remote-repository.js";
 export { setBranchName } from "./set-branch-name.js";
+export { switchToBranch } from "./switch-to-branch.js";
 export { switchToNewBranch } from "./switch-to-new-branch.js";
 
 export { COMMITTER_EMAIL, COMMITTER_NAME, GIT_TAG_PATTERN } from "./constants.js";

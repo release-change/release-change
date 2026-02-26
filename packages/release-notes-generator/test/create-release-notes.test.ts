@@ -71,7 +71,8 @@ it("should throw an error when the request fails", async () => {
         title: "Failed to create the release notes",
         message: `Failed to fetch URI ${mockedUri}.`,
         details: {
-          output: "status: 404"
+          output: "status: 404",
+          command: `POST ${mockedUri}`
         }
       }
     }
