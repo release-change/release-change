@@ -14,49 +14,50 @@
     "module": "NodeNext",
     "sourceMap": true,
     "declaration": true,
+    "composite": true,
     "declarationMap": true
   },
   "exclude": ["**/dist", "**/bin/**/*", "**/test", "**/vitest.config.*", "node_modules"],
   "files": [],
   "references": [
     {
-      "path": "./packages/shared"
+      "path": "./packages/shared/tsconfig.json"
     },
     {
-      "path": "./packages/logger"
+      "path": "./packages/logger/tsconfig.json"
     },
     {
-      "path": "./packages/semver"
+      "path": "./packages/semver/tsconfig.json"
     },
     {
-      "path": "./packages/config"
+      "path": "./packages/config/tsconfig.json"
     },
     {
-      "path": "./packages/get-packages"
+      "path": "./packages/get-packages/tsconfig.json"
     },
     {
-      "path": "./packages/commit-analyser"
+      "path": "./packages/commit-analyser/tsconfig.json"
     },
     {
-      "path": "./packages/git"
+      "path": "./packages/git/tsconfig.json"
     },
     {
-      "path": "./packages/ci"
+      "path": "./packages/ci/tsconfig.json"
     },
     {
-      "path": "./packages/github"
+      "path": "./packages/github/tsconfig.json"
     },
     {
-      "path": "./packages/npm"
+      "path": "./packages/npm/tsconfig.json"
     },
     {
-      "path": "./packages/release-notes-generator"
+      "path": "./packages/release-notes-generator/tsconfig.json"
     },
     {
-      "path": "./packages/release"
+      "path": "./packages/release/tsconfig.json"
     },
     {
-      "path": "./packages/cli"
+      "path": "./packages/cli/tsconfig.json"
     }
   ]
 }
