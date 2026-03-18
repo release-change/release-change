@@ -90,7 +90,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
           with:
             fetch-depth: 0 # to clone the whole Git history
         - name: Install pnpm
-          uses: pnpm/action-setup@v4
+          uses: pnpm/action-setup@v5
           with:
             version: 10
         - name: Setup Node.js
