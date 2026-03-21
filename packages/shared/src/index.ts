@@ -26,6 +26,7 @@ export type {
 export { agreeInNumber } from "./agree-in-number.js";
 export { deepInspectObject } from "./deep-inspect-object.js";
 export { formatDetailedError } from "./format-detailed-error.js";
+export { formatOutputFromCommandResult } from "./format-output-from-command-result.js";
 export { parsePathname } from "./parse-pathname.js";
 export { runCommand } from "./run-command.js";
 export { runCommandSync } from "./run-command-sync.js";

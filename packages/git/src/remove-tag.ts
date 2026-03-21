@@ -1,5 +1,9 @@
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommandSync } from "@release-change/shared";
+import {
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommandSync
+} from "@release-change/shared";
 
 /**
  * Removes a Git tag.
@@ -12,7 +16,8 @@ export const removeTag = (gitTag: string, cwd: string, debug = false): void => {
   logger.setScope("git");
   if (gitTag) {
     const args = ["tag", "-d", gitTag];
-    const { status, stdout, stderr } = runCommandSync("git", args, { cwd });
+    const commandResult = runCommandSync("git", args, { cwd });
+    const { status } = commandResult;
     if (debug) {
       logger.setDebugScope("git:remove-tag");
       logger.logDebug(`Command run: git ${args.join(" ")}`);
@@ -23,7 +28,7 @@ export const removeTag = (gitTag: string, cwd: string, debug = false): void => {
         title: "Failed to run the `git tag` command",
         message: `The command failed with status ${status}.`,
         details: {
-          output: stderr || stdout || `Command failed with status ${status}.`,
+          output: formatOutputFromCommandResult(commandResult),
           command: `git ${args.join(" ")}`
         }
       });

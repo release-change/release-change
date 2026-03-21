@@ -4,7 +4,12 @@ import type { PackagePublishing } from "./npm.types.js";
 import path from "node:path";
 
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError, runCommand } from "@release-change/shared";
+import {
+  deepInspectObject,
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommand
+} from "@release-change/shared";
 
 import { getAuthToken } from "./get-auth-token.js";
 import { removeAuthToken } from "./remove-auth-token.js";
@@ -33,17 +38,17 @@ export const publishToRegistry = async (
   if (authToken) {
     const isAuthTokenNotDefined = !authToken.fileExists || !authToken.authTokenExists;
     if (isAuthTokenNotDefined) setAuthToken(cwd);
-    const packageManagerCommandResult = await runCommand(packageManager, args, {
+    const commandResult = await runCommand(packageManager, args, {
       cwd: path.resolve(cwd, pathname),
       env
     });
-    const { status, stdout, stderr } = packageManagerCommandResult;
+    const { status } = commandResult;
     const packageName = name || "root";
     if (debug) {
       logger.setDebugScope("npm:publish-to-registry");
       logger.logDebug(`Auth token: ${deepInspectObject(authToken)}`);
       logger.logDebug(`Command run: ${packageManager} ${args.join(" ")}`);
-      logger.logDebug(deepInspectObject(packageManagerCommandResult));
+      logger.logDebug(deepInspectObject(commandResult));
     }
     if (status) {
       logger.logError(
@@ -53,7 +58,7 @@ export const publishToRegistry = async (
         title: `Failed to run the \`${packageManager}\` command`,
         message: `The command failed with exit code ${status}.`,
         details: {
-          output: stdout || stderr || `Command failed with exit code ${status}.`,
+          output: formatOutputFromCommandResult(commandResult),
           command: `${packageManager} ${args.join(" ")}`
         }
       });

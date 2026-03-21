@@ -3,7 +3,7 @@ import type { CommandResult } from "./shared.types.js";
 
 import { spawnSync } from "node:child_process";
 
-import { formatDetailedError } from "./index.js";
+import { formatDetailedError, formatOutputFromCommandResult } from "./index.js";
 
 /**
  * Runs a command synchronously.
@@ -27,7 +27,11 @@ export const runCommandSync = (
       title: `Failed to run the \`${command}\` command`,
       message: `The command failed with status ${status}.`,
       details: {
-        output: stderrString || stdoutString || `Command failed with status ${status}.`,
+        output: formatOutputFromCommandResult({
+          status,
+          stdout: stdoutString,
+          stderr: stderrString
+        }),
         command: `${command} ${args.join(" ")}`
       }
     });

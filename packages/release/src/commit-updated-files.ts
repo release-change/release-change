@@ -6,7 +6,11 @@ import path from "node:path";
 
 import { add, COMMITTER_EMAIL, COMMITTER_NAME, commit } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError } from "@release-change/shared";
+import {
+  deepInspectObject,
+  formatDetailedError,
+  formatOutputFromCommandResult
+} from "@release-change/shared";
 
 /**
  * Commits the updated files.
@@ -36,11 +40,7 @@ export const commitUpdatedFiles = async (
       ? [packageManifestFile, lockFile, changelogFile]
       : [packageManifestFile, changelogFile];
     const gitAddCommandResult = await add(filesToAdd, cwd);
-    const {
-      status: gitAddStatus,
-      stdout: gitAddStdout,
-      stderr: gitAddStderr
-    } = gitAddCommandResult;
+    const { status: gitAddStatus } = gitAddCommandResult;
     if (debug) {
       logger.logDebug(`Command run: git add ${filesToAdd.join(" ")}`);
       logger.logDebug(deepInspectObject(gitAddCommandResult));
@@ -51,19 +51,14 @@ export const commitUpdatedFiles = async (
         title: "Failed to run the `git add` command",
         message: `The command failed with status ${gitAddStatus}`,
         details: {
-          output:
-            gitAddStderr || gitAddStdout || `Command failed with status code ${gitAddStatus}.`,
+          output: formatOutputFromCommandResult(gitAddCommandResult),
           command: `git add ${filesToAdd.join(" ")}`
         }
       });
     }
     const commitMessage = `chore: ${packageNextRelease.gitTag} [skip ci]\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
     const gitCommitCommandResult = await commit(commitMessage, cwd);
-    const {
-      status: gitCommitStatus,
-      stdout: gitCommitStdout,
-      stderr: gitCommitStderr
-    } = gitCommitCommandResult;
+    const { status: gitCommitStatus } = gitCommitCommandResult;
     if (debug) {
       logger.logDebug(`Command run: git commit -m '${commitMessage.replace(/\n/g, "\\n")}'`);
       logger.logDebug(deepInspectObject(gitCommitCommandResult));
@@ -74,10 +69,7 @@ export const commitUpdatedFiles = async (
         title: "Failed to run the `git commit` command",
         message: `The command failed with status ${gitCommitStatus}`,
         details: {
-          output:
-            gitCommitStderr ||
-            gitCommitStdout ||
-            `Command failed with status code ${gitCommitStatus}.`,
+          output: formatOutputFromCommandResult(gitCommitCommandResult),
           command: `git commit -m ${commitMessage}`
         }
       });

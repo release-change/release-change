@@ -2,7 +2,12 @@ import type { Context } from "@release-change/shared";
 import type { PushOptions } from "./git.types.js";
 
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError, runCommand } from "@release-change/shared";
+import {
+  deepInspectObject,
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommand
+} from "@release-change/shared";
 
 /**
  * Pushes the current branch to the remote repository.
@@ -28,15 +33,15 @@ export const push = async (context: Context, pushOptions: PushOptions): Promise<
   const args = ["push", includeTags && "--follow-tags", remoteName, destinationBranch].filter(
     arg => typeof arg === "string"
   );
-  const gitCommandResult = await runCommand("git", args);
-  const { status, stdout, stderr } = gitCommandResult;
+  const commandResult = await runCommand("git", args);
+  const { status } = commandResult;
   if (status) {
     process.exitCode = status;
     throw formatDetailedError({
       title: "Failed to run the `git push` command",
       message: `The command failed with status ${status}.`,
       details: {
-        output: stderr || stdout || `Command failed with status ${status}.`,
+        output: formatOutputFromCommandResult(commandResult),
         command: `git ${args.join(" ")}`
       }
     });
@@ -44,6 +49,6 @@ export const push = async (context: Context, pushOptions: PushOptions): Promise<
   if (debug) {
     logger.setDebugScope("git:push");
     logger.logDebug(`Command run: git ${args.join(" ")}`);
-    logger.logDebug(deepInspectObject(gitCommandResult));
+    logger.logDebug(deepInspectObject(commandResult));
   }
 };
