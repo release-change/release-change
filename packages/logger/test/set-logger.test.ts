@@ -1,5 +1,5 @@
 import { WORKSPACE_NAME } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { formatMessage } from "../src/format-message.js";
 import { setLogger } from "../src/index.js";
@@ -13,12 +13,7 @@ const warningMessage = "This is a warning message.";
 const successMessage = "This is a success message.";
 const unformattedMessage = "This is a message without formatting.";
 
-beforeEach(() => {
-  vi.mock("../src/format-message.js", () => ({ formatMessage: vi.fn() }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("../src/format-message.js", () => ({ formatMessage: vi.fn() }));
 
 it("should display a message in debug mode with its own prefix", () => {
   const expectedOutput = `\x1b[1;34m[debug] ${WORKSPACE_NAME}:test\x1b[0m ${debugMessage}`;

@@ -13,12 +13,12 @@ it.each(invalidVersions)("should throw an error if the version $raw is invalid",
   error,
   options
 }) => {
-  expect(() => new Semver(raw, options)).toThrowError(error);
+  expect(() => new Semver(raw, options)).toThrow(error);
 });
 it.each(
   validVersionsInLooseMode
 )("should throw an error if the version $raw is parsed in strict mode", ({ raw }) => {
-  expect(() => new Semver(raw)).toThrowError(`Invalid version \`${raw}\`.`);
+  expect(() => new Semver(raw)).toThrow(`Invalid version \`${raw}\`.`);
 });
 it.each(
   validVersionsInLooseMode
@@ -65,7 +65,7 @@ it.each(
   identifierBase,
   errorMessage
 }) => {
-  expect(() => new Semver(version).increase(releaseType, { prefix, identifierBase })).toThrowError(
+  expect(() => new Semver(version).increase(releaseType, { prefix, identifierBase })).toThrow(
     errorMessage
   );
 });
@@ -77,7 +77,7 @@ it.each(
   prefix,
   identifierBase
 }) => {
-  expect(() => new Semver(version).increase(releaseType, { prefix, identifierBase })).toThrowError(
+  expect(() => new Semver(version).increase(releaseType, { prefix, identifierBase })).toThrow(
     `Invalid version \`${version}\`.`
   );
 });

@@ -1,6 +1,6 @@
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommand } from "@release-change/shared";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { removeTagOnRemoteRepository } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
@@ -8,14 +8,9 @@ import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const mockedGitTags = ["v1.0.0", "@monorepo/a@v1.0.0"];
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it("should throw an error if the Git tag is empty", async () => {
   const expectedError = new Error(
@@ -31,7 +26,7 @@ it("should throw an error if the Git tag is empty", async () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(removeTagOnRemoteRepository("", mockedContext)).rejects.toThrowError(expectedError);
+  await expect(removeTagOnRemoteRepository("", mockedContext)).rejects.toThrow(expectedError);
 });
 describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
   it("should run the `git push --delete` command", async () => {
@@ -64,7 +59,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
       stderr: "Some error message."
     });
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(removeTagOnRemoteRepository(mockedGitTag, mockedContext)).rejects.toThrowError(
+    await expect(removeTagOnRemoteRepository(mockedGitTag, mockedContext)).rejects.toThrow(
       expectedError
     );
     expect(mockedLogger.logError).toHaveBeenCalledWith(

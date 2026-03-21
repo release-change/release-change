@@ -1,7 +1,7 @@
 import childProcess from "node:child_process";
 
 import { setLogger } from "@release-change/logger";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { showHelp } from "../src/show-help.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
@@ -21,15 +21,10 @@ Options
   -h, --help            Show help                     [boolean]`;
 const cliOptions = ["-h", "--help"];
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    setLogger: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/logger", () => ({
+  setLogger: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it.each(cliOptions)("should display the help content when using the `%s` command", option => {
   vi.spyOn(childProcess, "execSync").mockReturnValue(`npx @release-change/cli ${option}`);

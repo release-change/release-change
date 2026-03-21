@@ -1,19 +1,17 @@
 import fs from "node:fs/promises";
 
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 
 import { browseDirectories } from "../src/browse-directories.js";
-import { getPackageName } from "../src/get-package-name.js";
 import { getPackagesFromGlobPatterns } from "../src/get-packages-from-glob-patterns.js";
+import { getPackageName } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
+vi.mock("../src/browse-directories.js", () => ({ browseDirectories: vi.fn() }));
+vi.mock("../src/get-package-name.js", () => ({ getPackageName: vi.fn() }));
+
 beforeEach(() => {
-  vi.mock("../src/browse-directories.js", () => ({ browseDirectories: vi.fn() }));
-  vi.mock("../src/get-package-name.js", () => ({ getPackageName: vi.fn() }));
   vi.spyOn(fs, "access").mockResolvedValue(undefined);
-});
-afterEach(() => {
-  vi.clearAllMocks();
 });
 
 it("should filter directories according to including glob patterns", async () => {

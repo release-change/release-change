@@ -3,7 +3,7 @@ import { expect, it } from "vitest";
 import { isMonorepo } from "../src/index.js";
 
 it("should throw an error if there are no packages", () => {
-  expect(() => isMonorepo([])).toThrowError(
+  expect(() => isMonorepo([])).toThrow(
     new Error(
       "Failed to check whether the current directory is a monorepo: There must be at least one package.",
       {

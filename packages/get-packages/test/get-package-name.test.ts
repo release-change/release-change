@@ -1,7 +1,7 @@
 import fs from "node:fs";
 
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getPackageName } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
@@ -11,12 +11,7 @@ const mockedPackageManifestFileWithoutName = {};
 const mockedPackageManifestFileWithInvalidName = { name: true };
 const mockedPackageManifestFileWithValidName = { name: "@monorepo/a" };
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
 
 it("should return `null` if the package manifest file is not found", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(false);
@@ -40,7 +35,7 @@ it("should throw an error if the package manifest file does not have the `name` 
     JSON.stringify(mockedPackageManifestFileWithoutName)
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => getPackageName(mockedPath)).toThrowError(expectedError);
+  expect(() => getPackageName(mockedPath)).toThrow(expectedError);
 });
 it("should throw an error if the package manifest file has the `name` property, but with a value other than a string", () => {
   const expectedError = new Error(
@@ -60,7 +55,7 @@ it("should throw an error if the package manifest file has the `name` property, 
     JSON.stringify(mockedPackageManifestFileWithInvalidName)
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => getPackageName(mockedPath)).toThrowError(expectedError);
+  expect(() => getPackageName(mockedPath)).toThrow(expectedError);
 });
 it("should return the `name` property value if the package manifest file has the `name` property", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(true);

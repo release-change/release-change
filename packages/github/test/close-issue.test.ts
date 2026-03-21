@@ -1,6 +1,6 @@
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { closeIssue, getRepositoryRelatedEntryPoint } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
@@ -13,24 +13,19 @@ import { mockedUriForIssue } from "./fixtures/mocked-uri.js";
 
 global.fetch = mockedFetch;
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mock("../src/get-repository-related-entry-point.js", () => ({
-    getRepositoryRelatedEntryPoint: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-  vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
-    "https://api.github.com/repos/user-id/repo-name"
-  );
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mock("../src/get-repository-related-entry-point.js", () => ({
+  getRepositoryRelatedEntryPoint: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
+  "https://api.github.com/repos/user-id/repo-name"
+);
 
 it("should throw an error when the request fails", async () => {
   vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrowError(
+  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrow(
     "Failed to request the URI."
   );
 });
@@ -40,7 +35,7 @@ it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
     json: () => Promise.resolve({ message: response.statusText })
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrowError(expectedError);
+  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrow(expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Failed to close issue #${mockedIssueNumber}.`
   );

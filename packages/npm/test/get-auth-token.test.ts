@@ -1,6 +1,6 @@
 import type { Context } from "@release-change/shared";
 
-import { afterEach, assert, beforeEach, it, vi } from "vitest";
+import { assert, it, vi } from "vitest";
 
 import { getAuthToken } from "../src/get-auth-token.js";
 import { getNpmrcFile } from "../src/get-npmrc-file.js";
@@ -8,14 +8,9 @@ import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedFileWithToken } from "./fixtures/mocked-file-with-token.js";
 import { mockedFileWithoutToken } from "./fixtures/mocked-file-without-token.js";
 
-beforeEach(() => {
-  vi.mock("../src/get-npmrc-file.js", () => ({
-    getNpmrcFile: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("../src/get-npmrc-file.js", () => ({
+  getNpmrcFile: vi.fn()
+}));
 
 it("should fill the context with `authToken: { fileExists: false, authTokenExists: false }` if the `.npmrc` file does not exist", () => {
   const expectedContext: Context = {

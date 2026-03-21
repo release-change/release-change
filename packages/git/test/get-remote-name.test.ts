@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getRemoteName, getTrackedRepositories } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
@@ -14,13 +14,7 @@ const mockedRemotesWithNoPush = [
   `distant\t${mockedHttpsRemoteUrl} (fetch)`
 ];
 
-beforeEach(() => {
-  vi.mock("../src/get-tracked-repositories.js");
-});
-
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("../src/get-tracked-repositories.js");
 
 it("should return `null` if the project is not a Git repository", async () => {
   vi.mocked(getTrackedRepositories).mockReturnValue(Promise.resolve(null));

@@ -1,5 +1,5 @@
 import { setLogger } from "@release-change/logger";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { setReleaseType } from "../src/index.js";
 import {
@@ -20,16 +20,11 @@ const expectedMinorLogMessage = "The release type for the commit is minor.";
 const expectedPatchLogMessage = "The release type for the commit is patch.";
 const expectedNoReleaseLogMessage = "The commit does not trigger a release.";
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    checkErrorType: vi.fn(),
-    setLogger: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/logger", () => ({
+  checkErrorType: vi.fn(),
+  setLogger: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it.each(
   majorTypeCommits

@@ -31,7 +31,7 @@ const expectedGitTagsInMonorepo = ["v1.2.3", "@monorepo/a@v1.2.3"];
 
 describe.each(mockedCommits)("for $type", ({ expected }) => {
   it("should throw an error if there is no next release", () => {
-    expect(() => getGitTags(expected, mockedContext)).toThrowError(
+    expect(() => getGitTags(expected, mockedContext)).toThrow(
       new Error("Failed to get the Git tags: No next release found.", {
         cause: {
           title: "Failed to get the Git tags",

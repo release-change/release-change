@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 
-import { afterEach, beforeEach, expect, expectTypeOf, it, vi } from "vitest";
+import { expect, expectTypeOf, it, vi } from "vitest";
 
 import { runCommandSync } from "../src/index.js";
 import { mockedArgs } from "./fixtures/mocked-args.js";
@@ -8,12 +8,7 @@ import { mockedOptionsSync } from "./fixtures/mocked-options.js";
 
 const mockSpawnSync = spawnSync as ReturnType<typeof vi.fn>;
 
-beforeEach(() => {
-  vi.mock("node:child_process", () => ({ spawnSync: vi.fn() }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("node:child_process", () => ({ spawnSync: vi.fn() }));
 
 it("should throw an error containing the command and args in the cause if the command returns a non-zero status", () => {
   const mockedCommand = "git";
@@ -23,7 +18,7 @@ it("should throw an error containing the command and args in the cause if the co
     stdout: "",
     stderr: "Stderr"
   }));
-  expect(() => runCommandSync(mockedCommand, mockedArgs)).toThrowError(
+  expect(() => runCommandSync(mockedCommand, mockedArgs)).toThrow(
     new Error("Failed to run the `git` command: The command failed with status 1.", {
       cause: {
         title: "Failed to run the `git` command",

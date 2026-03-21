@@ -2,7 +2,7 @@ import type { Config } from "@release-change/shared";
 
 import { DEFAULT_CONFIG } from "@release-change/config";
 import { setLogger } from "@release-change/logger";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { afterEach, expect, it, vi } from "vitest";
 
 import { isUsableCiEnvironment } from "../src/index.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
@@ -39,13 +39,11 @@ const mockedContextWithCiOnPushEvent = {
   }
 };
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    checkErrorType: vi.fn(),
-    setLogger: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
+vi.mock("@release-change/logger", () => ({
+  checkErrorType: vi.fn(),
+  setLogger: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 afterEach(() => {
   vi.clearAllMocks();

@@ -1,7 +1,7 @@
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
 import { agreeInNumber, formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { getRepositoryRelatedEntryPoint, tagPullRequestAndIssue } from "../src/index.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
@@ -15,22 +15,17 @@ import { mockedUri, mockedUriForLabels } from "./fixtures/mocked-uri.js";
 
 global.fetch = mockedFetch;
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    agreeInNumber: vi.fn(),
-    formatDetailedError: vi.fn(),
-    parsePathname: vi.fn()
-  }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mock("@release-change/ci", () => ({ getIssueAndPullRequestToken: vi.fn() }));
-  vi.mock("../src/get-repository-related-entry-point.js", () => ({
-    getRepositoryRelatedEntryPoint: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  agreeInNumber: vi.fn(),
+  formatDetailedError: vi.fn(),
+  parsePathname: vi.fn()
+}));
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mock("@release-change/ci", () => ({ getIssueAndPullRequestToken: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mock("../src/get-repository-related-entry-point.js", () => ({
+  getRepositoryRelatedEntryPoint: vi.fn()
+}));
 
 it("should throw an error if `nextRelease` is not defined", async () => {
   const expectedError = new Error(
@@ -51,7 +46,7 @@ it("should throw an error if `nextRelease` is not defined", async () => {
       { number: mockedIssueNumber, isPullRequest: false, gitTags: [] },
       mockedContext
     )
-  ).rejects.toThrowError(expectedError);
+  ).rejects.toThrow(expectedError);
 });
 describe.each(
   mockedPullRequestsAndIssuesToTag
@@ -73,7 +68,7 @@ describe.each(
       json: () => Promise.resolve({ message: response.statusText })
     });
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(tagPullRequestAndIssue(reference, context)).rejects.toThrowError(expectedError);
+    await expect(tagPullRequestAndIssue(reference, context)).rejects.toThrow(expectedError);
     expect(nextRelease.length).toBeGreaterThan(0);
     expect(mockedLogger.logError).toHaveBeenCalledWith(
       `Failed to tag ${type} #${mockedIssueNumber}.`

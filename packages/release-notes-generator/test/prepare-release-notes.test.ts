@@ -1,17 +1,12 @@
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
+import { assert, expect, it, vi } from "vitest";
 
 import { prepareReleaseNotes } from "../src/index.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 import { mockedPackages } from "./fixtures/mocked-packages.js";
 import { mockedPackagesInMonorepo } from "./fixtures/mocked-packages-in-monorepo.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
 
 it("should throw an error if the target branch is not defined", () => {
   const expectedError = new Error(
@@ -41,7 +36,7 @@ it("should throw an error if the target branch is not defined", () => {
         branch: undefined
       }
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it("should throw an error if the target branch is not supported by the configuration", () => {
   const expectedError = new Error(
@@ -71,7 +66,7 @@ it("should throw an error if the target branch is not supported by the configura
         branch: "unknown"
       }
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it("should throw an error if no last release is defined", () => {
   const expectedError = new Error(
@@ -98,7 +93,7 @@ it("should throw an error if no last release is defined", () => {
       [],
       { ...mockedContext, branch: "main" }
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it("should throw an error if the target package has no last release", () => {
   const expectedError = new Error(
@@ -132,7 +127,7 @@ it("should throw an error if the target package has no last release", () => {
         }
       }
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it("should throw an error if no commits have been retrieved", () => {
   const expectedError = new Error(
@@ -173,7 +168,7 @@ it("should throw an error if no commits have been retrieved", () => {
         }
       }
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it.each(
   mockedPackages

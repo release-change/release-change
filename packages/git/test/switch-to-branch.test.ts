@@ -1,18 +1,13 @@
 import { formatDetailedError, runCommandSync } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { switchToBranch } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    runCommandSync: vi.fn(),
-    formatDetailedError: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  runCommandSync: vi.fn(),
+  formatDetailedError: vi.fn()
+}));
 
 it("should throw an error if the branch name is an empty string", () => {
   const expectedError = new Error(
@@ -28,7 +23,7 @@ it("should throw an error if the branch name is an empty string", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => switchToBranch("", mockedCwd)).toThrowError(expectedError);
+  expect(() => switchToBranch("", mockedCwd)).toThrow(expectedError);
 });
 it("should run the `git switch` command if the branch name is correctly provided", () => {
   const mockedCommand = vi

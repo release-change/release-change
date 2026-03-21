@@ -1,5 +1,5 @@
 import { runCommandSync } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getTrackedRepositories } from "../src/index.js";
 import { isGitRepository } from "../src/is-git-repository.js";
@@ -11,16 +11,11 @@ const mockedRemote = [
   "origin\tgit@github.com:release-change/release-change.git (push)"
 ];
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    runCommandSync: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-  vi.mock("../src/is-git-repository.js", () => ({ isGitRepository: vi.fn() }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  runCommandSync: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
+vi.mock("../src/is-git-repository.js", () => ({ isGitRepository: vi.fn() }));
 
 it("should return `null` when the project is not a Git repository", async () => {
   vi.mocked(isGitRepository).mockReturnValue(Promise.resolve(false));

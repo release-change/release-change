@@ -1,7 +1,7 @@
 import type { Config } from "@release-change/shared";
 
 import { setLogger } from "@release-change/logger";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { DEFAULT_CONFIG, debugConfig } from "../src/index.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
@@ -21,17 +21,11 @@ const mockedContext = {
   errors: []
 };
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    checkErrorType: vi.fn(),
-    setLogger: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/logger", () => ({
+  checkErrorType: vi.fn(),
+  setLogger: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it("should not log debug logs when not in debug mode", () => {
   debugConfig(mockedContext);

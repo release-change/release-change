@@ -1,15 +1,10 @@
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { setBranchName } from "../src/index.js";
 import { mockedBranchNames } from "./fixtures/mocked-branch-names.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
 
 it("should throw an error when the target branch name is not defined", () => {
   const expectedError = new Error(
@@ -25,7 +20,7 @@ it("should throw an error when the target branch name is not defined", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => setBranchName(undefined, [])).toThrowError(expectedError);
+  expect(() => setBranchName(undefined, [])).toThrow(expectedError);
 });
 it("should throw an error when the target branch name is an empty string", () => {
   const expectedError = new Error(
@@ -41,7 +36,7 @@ it("should throw an error when the target branch name is an empty string", () =>
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => setBranchName("", [])).toThrowError(expectedError);
+  expect(() => setBranchName("", [])).toThrow(expectedError);
 });
 it("should throw an error when there are no next releases", () => {
   const expectedError = new Error(
@@ -57,7 +52,7 @@ it("should throw an error when there are no next releases", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => setBranchName("branch", [])).toThrowError(expectedError);
+  expect(() => setBranchName("branch", [])).toThrow(expectedError);
 });
 it.each(mockedBranchNames)("should set branch name as $expected", ({
   branch,

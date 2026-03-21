@@ -2,41 +2,36 @@ import type { DetailedError } from "@release-change/shared";
 
 import { addErrorToContext, setLogger } from "@release-change/logger";
 import { runCommandSync } from "@release-change/shared";
-import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
+import { assert, expect, it, vi } from "vitest";
 
 import { getAllTags } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    addErrorToContext: vi.fn(),
-    checkErrorType: vi.fn(),
-    setLogger: vi.fn()
-  }));
-  vi.mock("@release-change/shared", () => ({
-    runCommandSync: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
-    if (error instanceof Error) {
-      const { cause } = error;
-      if (
-        cause &&
-        typeof cause === "object" &&
-        "title" in cause &&
-        "message" in cause &&
-        "details" in cause
-      ) {
-        context.errors.push(cause as DetailedError);
-      }
+vi.mock("@release-change/logger", () => ({
+  addErrorToContext: vi.fn(),
+  checkErrorType: vi.fn(),
+  setLogger: vi.fn()
+}));
+vi.mock("@release-change/shared", () => ({
+  runCommandSync: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+  if (error instanceof Error) {
+    const { cause } = error;
+    if (
+      cause &&
+      typeof cause === "object" &&
+      "title" in cause &&
+      "message" in cause &&
+      "details" in cause
+    ) {
+      context.errors.push(cause as DetailedError);
     }
-  });
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
+  }
 });
 
 it("should log an error message when an error is caught", () => {

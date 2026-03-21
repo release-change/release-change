@@ -1,5 +1,5 @@
 import { runCommandSync } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getRemoteName } from "../src/index.js";
 import { isBranchUpToDate } from "../src/is-branch-up-to-date.js";
@@ -9,15 +9,10 @@ import { mockedCwd } from "./fixtures/mocked-cwd.js";
 const mockedRemoteName = "origin";
 const mockedBranch = "main";
 
-beforeEach(() => {
-  vi.mock("../src/get-remote-name.js", () => ({
-    getRemoteName: vi.fn()
-  }));
-  vi.mock("@release-change/shared", () => ({ runCommandSync: vi.fn() }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("../src/get-remote-name.js", () => ({
+  getRemoteName: vi.fn()
+}));
+vi.mock("@release-change/shared", () => ({ runCommandSync: vi.fn() }));
 
 it("should return `false` if the branch name is empty", async () => {
   expect(await isBranchUpToDate("", mockedContext)).toBe(false);

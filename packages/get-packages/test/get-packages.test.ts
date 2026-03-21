@@ -2,7 +2,7 @@ import type { DetailedError } from "@release-change/shared";
 
 import { addErrorToContext, setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+import { assert, describe, expect, it, vi } from "vitest";
 
 import { getPackagesFromGlobPatterns } from "../src/get-packages-from-glob-patterns.js";
 import {
@@ -26,44 +26,39 @@ const mockedContextBase = {
 };
 const expectedSinglePackage = [{ name: "", pathname: "." }];
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn()
-  }));
-  vi.mock("@release-change/logger", () => ({
-    addErrorToContext: vi.fn(),
-    checkErrorType: vi.fn(),
-    isDetailedError: vi.fn(),
-    setLogger: vi.fn()
-  }));
-  vi.mock("../src/get-package-manager.js", () => ({ getPackageManager: vi.fn() }));
-  vi.mock("../src/get-root-package-manifest.js", () => ({ getRootPackageManifest: vi.fn() }));
-  vi.mock("../src/get-root-pnpm-workspace-manifest.js", () => ({
-    getRootPnpmWorkspaceManifest: vi.fn()
-  }));
-  vi.mock("../src/get-npm-glob-patterns.js", () => ({ getNpmGlobPatterns: vi.fn() }));
-  vi.mock("../src/get-pnpm-glob-patterns.js", () => ({ getPnpmGlobPatterns: vi.fn() }));
-  vi.mock("../src/get-packages-from-glob-patterns.js", () => ({
-    getPackagesFromGlobPatterns: vi.fn()
-  }));
-  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
-    if (error instanceof Error) {
-      const { cause } = error;
-      if (
-        cause &&
-        typeof cause === "object" &&
-        "title" in cause &&
-        "message" in cause &&
-        "details" in cause
-      ) {
-        context.errors.push(cause as DetailedError);
-      }
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn()
+}));
+vi.mock("@release-change/logger", () => ({
+  addErrorToContext: vi.fn(),
+  checkErrorType: vi.fn(),
+  isDetailedError: vi.fn(),
+  setLogger: vi.fn()
+}));
+vi.mock("../src/get-package-manager.js", () => ({ getPackageManager: vi.fn() }));
+vi.mock("../src/get-root-package-manifest.js", () => ({ getRootPackageManifest: vi.fn() }));
+vi.mock("../src/get-root-pnpm-workspace-manifest.js", () => ({
+  getRootPnpmWorkspaceManifest: vi.fn()
+}));
+vi.mock("../src/get-npm-glob-patterns.js", () => ({ getNpmGlobPatterns: vi.fn() }));
+vi.mock("../src/get-pnpm-glob-patterns.js", () => ({ getPnpmGlobPatterns: vi.fn() }));
+vi.mock("../src/get-packages-from-glob-patterns.js", () => ({
+  getPackagesFromGlobPatterns: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+  if (error instanceof Error) {
+    const { cause } = error;
+    if (
+      cause &&
+      typeof cause === "object" &&
+      "title" in cause &&
+      "message" in cause &&
+      "details" in cause
+    ) {
+      context.errors.push(cause as DetailedError);
     }
-  });
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
+  }
 });
 
 it("should throw an error if the package manager is not found or supported", async () => {
@@ -81,7 +76,7 @@ it("should throw an error if the package manager is not found or supported", asy
   );
   vi.mocked(getPackageManager).mockReturnValue(null);
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(getPackages(mockedContextBase)).rejects.toThrowError(
+  await expect(getPackages(mockedContextBase)).rejects.toThrow(
     expect.objectContaining({
       message: expectedError.message,
       cause: expectedError.cause
@@ -106,9 +101,7 @@ it("should throw an error if the package manager is npm and no `package.json` fi
     throw expectedError;
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => getRootPackageManifest(`${mockedCwd}/package.json`)).toThrowError(
-    expectedError.message
-  );
+  expect(() => getRootPackageManifest(`${mockedCwd}/package.json`)).toThrow(expectedError.message);
   await expect(getPackages(mockedContextBase)).rejects.toThrow();
   expect(addErrorToContext).toHaveBeenCalledWith(expectedError, mockedContextBase);
   assert.deepNestedInclude(mockedContextBase.errors, expectedError.cause);

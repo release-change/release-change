@@ -6,7 +6,7 @@ import fs from "node:fs";
 import { getPackageManager } from "@release-change/get-packages";
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+import { assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { preparePublishing } from "../src/index.js";
 import { mockedContext, mockedContextWithNoNpmPublish } from "./fixtures/mocked-context.js";
@@ -14,19 +14,17 @@ import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedNextReleases } from "./fixtures/mocked-next-releases.js";
 import { packageManagers } from "./fixtures/mocked-package-managers.js";
 
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mock("@release-change/get-packages", () => ({ getPackageManager: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+
 beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mock("@release-change/get-packages", () => ({ getPackageManager: vi.fn() }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
   vi.spyOn(fs, "existsSync").mockReturnValue(true);
   vi.spyOn(fs, "existsSync").mockReturnValue(true);
-});
-afterEach(() => {
-  vi.clearAllMocks();
 });
 
 describe.each(mockedNextReleases)("for package $name and version $version", nextRelease => {
@@ -55,7 +53,7 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
         ...mockedContext,
         nextRelease: [nextRelease]
       })
-    ).rejects.toThrowError(expectedError);
+    ).rejects.toThrow(expectedError);
   });
   it("should throw an error if the package manager is not one of those supported", async () => {
     const expectedError = new Error(
@@ -79,7 +77,7 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
         ...mockedContext,
         nextRelease: [nextRelease]
       })
-    ).rejects.toThrowError(expectedError);
+    ).rejects.toThrow(expectedError);
   });
   it("should log a warning if the package cannot be published to NPM because `npmPublish` is set to `false`", async () => {
     vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(packageManifestContent));

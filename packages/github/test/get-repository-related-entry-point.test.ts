@@ -1,17 +1,12 @@
 import { formatDetailedError, parsePathname } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getRepositoryRelatedEntryPoint } from "../src/index.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    parsePathname: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  parsePathname: vi.fn()
+}));
 
 it("should throw an error when the repository URL is malformed", () => {
   const expectedError = new Error(
@@ -28,7 +23,7 @@ it("should throw an error when the repository URL is malformed", () => {
   );
   vi.mocked(parsePathname).mockReturnValue(null);
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => getRepositoryRelatedEntryPoint("https://github.com")).toThrowError(expectedError);
+  expect(() => getRepositoryRelatedEntryPoint("https://github.com")).toThrow(expectedError);
 });
 it("should return the API URL when the repository URL is valid", () => {
   vi.mocked(parsePathname).mockReturnValue({

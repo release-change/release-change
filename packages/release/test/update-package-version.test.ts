@@ -2,7 +2,7 @@ import fs from "node:fs";
 
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { updatePackageVersion } from "../src/update-package-version.js";
 import { mockedContext } from "./fixtures/mocked-context-update.js";
@@ -26,21 +26,19 @@ const mockedPrivatePackageManifest = {
   private: true
 };
 
+vi.mock("node:fs");
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
+vi.mock("@release-change/logger", () => ({
+  setLogger: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+
 beforeEach(() => {
-  vi.mock("node:fs");
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-  vi.mock("@release-change/logger", () => ({
-    setLogger: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
   vi.spyOn(fs, "existsSync").mockReturnValue(true);
   vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(mockedPackageManifest));
-});
-afterEach(() => {
-  vi.clearAllMocks();
 });
 
 describe.each(mockedNextReleases)("for $packageName", ({
@@ -63,7 +61,7 @@ describe.each(mockedNextReleases)("for $packageName", ({
     );
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    expect(() => updatePackageVersion(nextRelease, mockedContextWithNextRelease)).toThrowError(
+    expect(() => updatePackageVersion(nextRelease, mockedContextWithNextRelease)).toThrow(
       expectedError
     );
   });

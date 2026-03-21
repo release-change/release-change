@@ -1,7 +1,7 @@
 import { getRepositoryRelatedEntryPoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+import { assert, describe, expect, it, vi } from "vitest";
 
 import { formatReleaseNotesBody } from "../src/format-release-notes-body.js";
 import { createReleaseNotes } from "../src/index.js";
@@ -49,19 +49,14 @@ const mockedEnv = {
 
 global.fetch = mockedFetch;
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mock("@release-change/github", () => ({ getRepositoryRelatedEntryPoint: vi.fn() }));
-  vi.mock("../src/format-release-notes-body.js", () => ({ formatReleaseNotesBody: vi.fn() }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-  vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
-    "https://api.github.com/repos/user-id/repo-name"
-  );
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mock("@release-change/github", () => ({ getRepositoryRelatedEntryPoint: vi.fn() }));
+vi.mock("../src/format-release-notes-body.js", () => ({ formatReleaseNotesBody: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
+  "https://api.github.com/repos/user-id/repo-name"
+);
 
 it("should throw an error when the request fails", async () => {
   const expectedError = new Error(
@@ -87,7 +82,7 @@ it("should throw an error when the request fails", async () => {
         env: mockedEnv
       }
     )
-  ).rejects.toThrowError(expectedError);
+  ).rejects.toThrow(expectedError);
 });
 it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
   vi.mocked(mockedFetch).mockResolvedValue({
@@ -103,7 +98,7 @@ it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
         env: mockedEnv
       }
     )
-  ).rejects.toThrowError(expectedError);
+  ).rejects.toThrow(expectedError);
   expect(process.exitCode).toBe(response.status);
 });
 describe.each(mockedReleaseNotes)("for $releaseNotes.tagName", async ({

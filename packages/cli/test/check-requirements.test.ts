@@ -3,7 +3,7 @@ import process from "node:process";
 import { setLogger } from "@release-change/logger";
 import { coerce } from "@release-change/semver";
 import { runCommandSync } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 
 import { checkRequirements } from "../src/index.js";
 import { isGitVersionCompatible } from "../src/is-git-version-compatible.js";
@@ -22,42 +22,40 @@ const formerLtsReleases = [
   "16.20.2"
 ];
 
+vi.mock("@release-change/logger", () => ({
+  setLogger: vi.fn(),
+  checkErrorType: vi.fn()
+}));
+vi.mock("@release-change/shared", () => ({
+  runCommandSync: vi.fn(() => ({
+    status: 0,
+    stdout: "git version 2.23.0",
+    stderr: ""
+  })),
+  ROOT_PACKAGE_MANIFEST: {
+    engines: {
+      node: "^20.18.3 || ^22.12.0 || ^24.0.0",
+      npm: ">=10.8.2",
+      pnpm: ">=10.32.1"
+    }
+  },
+  WORKSPACE_NAME: "release-change",
+  WORKSPACE_VERSION: "0.0.0"
+}));
+vi.mock("@release-change/semver", () => ({ coerce: vi.fn() }));
+vi.mock("../src/is-git-version-compatible.js", () => ({
+  isGitVersionCompatible: vi.fn()
+}));
+vi.mock("../src/is-node-version-compatible.js", () => ({
+  isNodeVersionCompatible: vi.fn()
+}));
+vi.mock("../src/cli.js", () => ({
+  cli: vi.fn(() => Promise.resolve(0))
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+
 beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    setLogger: vi.fn(),
-    checkErrorType: vi.fn()
-  }));
-  vi.mock("@release-change/shared", () => ({
-    runCommandSync: vi.fn(() => ({
-      status: 0,
-      stdout: "git version 2.23.0",
-      stderr: ""
-    })),
-    ROOT_PACKAGE_MANIFEST: {
-      engines: {
-        node: "^20.18.3 || ^22.12.0 || ^24.0.0",
-        npm: ">=10.8.2",
-        pnpm: ">=10.32.1"
-      }
-    },
-    WORKSPACE_NAME: "release-change",
-    WORKSPACE_VERSION: "0.0.0"
-  }));
-  vi.mock("@release-change/semver", () => ({ coerce: vi.fn() }));
-  vi.mock("../src/is-git-version-compatible.js", () => ({
-    isGitVersionCompatible: vi.fn()
-  }));
-  vi.mock("../src/is-node-version-compatible.js", () => ({
-    isNodeVersionCompatible: vi.fn()
-  }));
-  vi.mock("../src/cli.js", () => ({
-    cli: vi.fn(() => Promise.resolve(0))
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
   vi.spyOn(process, "version", "get").mockReturnValue("v20.18.3");
-});
-afterEach(() => {
-  vi.clearAllMocks();
 });
 
 it.each(
@@ -72,7 +70,7 @@ it.each(
     throw new Error("process.exit called with 1");
   });
   vi.mocked(isNodeVersionCompatible).mockReturnValue(false);
-  expect(checkRequirements()).rejects.toThrowError("process.exit called with 1");
+  expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Required one of the following Node versions: ${formattedRequiredNodeVersions}. Found ${mockedNodeVersion}.`
   );
@@ -99,7 +97,7 @@ it(`should call \`process.exit(1)\` and display an error message if Git version 
   });
   vi.mocked(isNodeVersionCompatible).mockReturnValue(true);
   vi.mocked(isGitVersionCompatible).mockReturnValue(false);
-  expect(checkRequirements()).rejects.toThrowError("process.exit called with 1");
+  expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Git version ${GIT_MIN_VERSION} required. Found ${mockedVersion}.`
   );

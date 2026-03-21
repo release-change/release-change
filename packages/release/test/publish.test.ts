@@ -49,64 +49,59 @@ const mockedContextInMonorepoWithNextRelease = {
   ]
 };
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    addErrorToContext: vi.fn(),
-    checkErrorType: vi.fn(),
-    isDetailedError: vi.fn(),
-    setLogger: vi.fn()
-  }));
-  vi.mock("@release-change/get-packages", () => ({
-    getPackageDependencies: vi.fn(),
-    getPackageManager: vi.fn()
-  }));
-  vi.mock("@release-change/git", () => ({
-    setBranchName: vi.fn(),
-    switchToNewBranch: vi.fn(),
-    getCurrentCommitId: vi.fn(),
-    createTag: vi.fn(),
-    push: vi.fn(),
-    cancelCommitsSinceRef: vi.fn(),
-    switchToBranch: vi.fn(),
-    deleteBranch: vi.fn(),
-    deleteBranchOnRemoteRepository: vi.fn(),
-    removeTag: vi.fn(),
-    removeTagOnRemoteRepository: vi.fn()
-  }));
-  vi.mock("@release-change/github", () => ({ createPullRequest: vi.fn() }));
-  vi.mock("@release-change/release-notes-generator", () => ({
-    prepareReleaseNotes: vi.fn(),
-    updateChangelogFile: vi.fn(),
-    createReleaseNotes: vi.fn()
-  }));
-  vi.mock("@release-change/npm", () => ({
-    preparePublishing: vi.fn(),
-    publishToRegistry: vi.fn()
-  }));
-  vi.mock("../src/update-package-version.js", () => ({ updatePackageVersion: vi.fn() }));
-  vi.mock("../src/update-package-dependencies-versions.js", () => ({
-    updatePackageDependenciesVersions: vi.fn()
-  }));
-  vi.mock("../src/update-lock-file.js", () => ({ updateLockFile: vi.fn() }));
-  vi.mock("../src/commit-updated-files.js", () => ({ commitUpdatedFiles: vi.fn() }));
-  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
-    if (error instanceof Error) {
-      const { cause } = error;
-      if (
-        cause &&
-        typeof cause === "object" &&
-        "title" in cause &&
-        "message" in cause &&
-        "details" in cause
-      ) {
-        context.errors.push(cause as DetailedError);
-      }
+vi.mock("@release-change/logger", () => ({
+  addErrorToContext: vi.fn(),
+  checkErrorType: vi.fn(),
+  isDetailedError: vi.fn(),
+  setLogger: vi.fn()
+}));
+vi.mock("@release-change/get-packages", () => ({
+  getPackageDependencies: vi.fn(),
+  getPackageManager: vi.fn()
+}));
+vi.mock("@release-change/git", () => ({
+  setBranchName: vi.fn(),
+  switchToNewBranch: vi.fn(),
+  getCurrentCommitId: vi.fn(),
+  createTag: vi.fn(),
+  push: vi.fn(),
+  cancelCommitsSinceRef: vi.fn(),
+  switchToBranch: vi.fn(),
+  deleteBranch: vi.fn(),
+  deleteBranchOnRemoteRepository: vi.fn(),
+  removeTag: vi.fn(),
+  removeTagOnRemoteRepository: vi.fn()
+}));
+vi.mock("@release-change/github", () => ({ createPullRequest: vi.fn() }));
+vi.mock("@release-change/release-notes-generator", () => ({
+  prepareReleaseNotes: vi.fn(),
+  updateChangelogFile: vi.fn(),
+  createReleaseNotes: vi.fn()
+}));
+vi.mock("@release-change/npm", () => ({
+  preparePublishing: vi.fn(),
+  publishToRegistry: vi.fn()
+}));
+vi.mock("../src/update-package-version.js", () => ({ updatePackageVersion: vi.fn() }));
+vi.mock("../src/update-package-dependencies-versions.js", () => ({
+  updatePackageDependenciesVersions: vi.fn()
+}));
+vi.mock("../src/update-lock-file.js", () => ({ updateLockFile: vi.fn() }));
+vi.mock("../src/commit-updated-files.js", () => ({ commitUpdatedFiles: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+  if (error instanceof Error) {
+    const { cause } = error;
+    if (
+      cause &&
+      typeof cause === "object" &&
+      "title" in cause &&
+      "message" in cause &&
+      "details" in cause
+    ) {
+      context.errors.push(cause as DetailedError);
     }
-  });
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
+  }
 });
 
 it("should not call `getPackageManager()` if `context.nextRelease` is undefined", async () => {
@@ -158,7 +153,7 @@ it("should throw an error if the package manager is not found or unsupported", a
   vi.mocked(getPackageManager).mockReturnValue(null);
   vi.mocked(updateLockFile).mockRejectedValue(expectedError);
   vi.mocked(isDetailedError).mockReturnValue(true);
-  await expect(publish(mockedContextWithNextRelease)).rejects.toThrowError(expectedErrorMessage);
+  await expect(publish(mockedContextWithNextRelease)).rejects.toThrow(expectedErrorMessage);
   expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
   assert.deepNestedInclude(mockedContextWithNextRelease.errors, expectedError.cause);
 });
@@ -208,7 +203,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       vi.mocked(updatePackageVersion).mockImplementation(() => {
         throw expectedError;
       });
-      await expect(publish(context)).rejects.toThrowError(expectedErrorMessage);
+      await expect(publish(context)).rejects.toThrow(expectedErrorMessage);
       expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
       assert.deepNestedInclude(context.errors, expectedError.cause);
     });
@@ -228,7 +223,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       vi.mocked(createTag).mockImplementation(() => {
         throw expectedError;
       });
-      await expect(publish(context)).rejects.toThrowError(expectedErrorMessage);
+      await expect(publish(context)).rejects.toThrow(expectedErrorMessage);
       expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
       assert.deepNestedInclude(context.errors, expectedError.cause);
     });
@@ -296,7 +291,7 @@ describe.each(packageManagers)("for %s", packageManager => {
         vi.mocked(prepareReleaseNotes).mockImplementation(() => {
           throw expectedError;
         });
-        await expect(publish(context)).rejects.toThrowError(expectedError);
+        await expect(publish(context)).rejects.toThrow(expectedError);
         expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to publish the release.");
         assert.deepNestedInclude(context.errors, expectedError.cause);
       });
@@ -365,7 +360,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
       vi.mocked(commitUpdatedFiles).mockRejectedValue(mockedError);
       vi.mocked(isDetailedError).mockReturnValue(true);
-      await expect(publish(context)).rejects.toThrowError(mockedError);
+      await expect(publish(context)).rejects.toThrow(mockedError);
       expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
         "original-commit",
         expect.any(String),
@@ -394,7 +389,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       );
       vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
       vi.mocked(commitUpdatedFiles).mockRejectedValue(mockedError);
-      await expect(publish(context)).rejects.toThrowError(mockedError);
+      await expect(publish(context)).rejects.toThrow(mockedError);
       expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
         "original-commit",
         expect.any(String),
@@ -424,7 +419,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       vi.mocked(setBranchName).mockReturnValue(mockedReleaseBranch);
       vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
       vi.mocked(push).mockRejectedValue(mockedError);
-      await expect(publish(context)).rejects.toThrowError(mockedError);
+      await expect(publish(context)).rejects.toThrow(mockedError);
       expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
         "original-commit",
         expect.any(String),
@@ -452,7 +447,7 @@ describe.each(packageManagers)("for %s", packageManager => {
         }
       );
       vi.mocked(createPullRequest).mockRejectedValue(mockedError);
-      await expect(publish(context)).rejects.toThrowError(mockedError);
+      await expect(publish(context)).rejects.toThrow(mockedError);
       expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
         "0123456",
         expect.any(String),
@@ -480,7 +475,7 @@ describe.each(packageManagers)("for %s", packageManager => {
         }
       );
       vi.mocked(createReleaseNotes).mockRejectedValue(mockedError);
-      await expect(publish(context)).rejects.toThrowError(mockedError);
+      await expect(publish(context)).rejects.toThrow(mockedError);
       expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
         "0123456",
         expect.any(String),
@@ -552,7 +547,7 @@ describe.each(packageManagers)("for %s", packageManager => {
         }
       );
       vi.mocked(push).mockRejectedValue(mockedError);
-      await expect(publish(context)).rejects.toThrowError(mockedError);
+      await expect(publish(context)).rejects.toThrow(mockedError);
       expect(removeTag).toHaveBeenCalledTimes(context.nextRelease.length);
       expect(removeTagOnRemoteRepository).toHaveBeenCalledTimes(context.nextRelease.length);
       for (const packageNextRelease of context.nextRelease) {
@@ -587,7 +582,7 @@ describe.each(packageManagers)("for %s", packageManager => {
     });
     it("should handle non-Error exceptions", async () => {
       vi.mocked(push).mockRejectedValue("String error");
-      await expect(publish(context)).rejects.toThrowError("String error");
+      await expect(publish(context)).rejects.toThrow("String error");
     });
     it("should preserve error cause when rethrowing", async () => {
       vi.mocked(push).mockRejectedValue(new Error("Original", { cause: "custom-cause" }));

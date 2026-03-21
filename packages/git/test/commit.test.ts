@@ -1,5 +1,5 @@
 import { formatDetailedError, runCommand } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { commit } from "../src/commit.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
@@ -16,15 +16,10 @@ const mockedCommitMessages = [
   `${mockedCommitDescriptionInMonorepo}\n\n${mockedCommitFooter}`
 ];
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    runCommand: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  runCommand: vi.fn()
+}));
 
 it("should throw an error if the commit message is empty", async () => {
   const expectedError = new Error(
@@ -40,7 +35,7 @@ it("should throw an error if the commit message is empty", async () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(commit("", mockedCwd)).rejects.toThrowError(expectedError);
+  await expect(commit("", mockedCwd)).rejects.toThrow(expectedError);
 });
 it.each(
   mockedCommitMessages

@@ -1,5 +1,5 @@
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
+import { assert, expect, it, vi } from "vitest";
 
 import { parseCommit } from "../src/index.js";
 import {
@@ -15,15 +15,10 @@ import {
 } from "./fixtures/mocked-commits.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
 
 it.each(mockedCommits)("should parse a commit ($type)", ({ commit, expected }) => {
   assert.deepEqual(parseCommit(commit, mockedContext), expected);
@@ -45,7 +40,7 @@ it("should throw an error if the commit has no header", () => {
     }
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => parseCommit("", mockedContext)).toThrowError(expectedError);
+  expect(() => parseCommit("", mockedContext)).toThrow(expectedError);
 });
 it("should throw an error if the commit has no message", () => {
   const expectedError = new Error("Failed to parse commit: No message found.", {
@@ -58,9 +53,9 @@ it("should throw an error if the commit has no message", () => {
     }
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() =>
-    parseCommit(`${commitId}\n${commitAuthor}\n${commitDate}`, mockedContext)
-  ).toThrowError(expectedError);
+  expect(() => parseCommit(`${commitId}\n${commitAuthor}\n${commitDate}`, mockedContext)).toThrow(
+    expectedError
+  );
 });
 it("should throw an error if the commit has no modified files in a monorepo context", () => {
   const expectedError = new Error(
@@ -81,7 +76,7 @@ it("should throw an error if the commit has no modified files in a monorepo cont
       `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}`,
       mockedContextInMonorepo
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it("should not throw an error if the commit has no modified files in a monorepo context, but is a merge commit", () => {
   assert.doesNotThrow(

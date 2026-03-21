@@ -2,7 +2,7 @@ import type { DetailedError } from "@release-change/shared";
 
 import { addErrorToContext, setLogger } from "@release-change/logger";
 import { runCommandSync } from "@release-change/shared";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+import { assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getCommitsSinceRef } from "../src/index.js";
 import { mockedCommits } from "./fixtures/mocked-commits.js";
@@ -37,40 +37,38 @@ const commitsSets = [
   }
 ];
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    addErrorToContext: vi.fn(),
-    setLogger: vi.fn(),
-    checkErrorType: vi.fn()
-  }));
-  vi.mock("@release-change/shared", () => ({
-    agreeInNumber: vi.fn((count, words) => (count === 1 ? words[0] : words[1])),
-    runCommandSync: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
-    if (error instanceof Error) {
-      const { cause } = error;
-      if (
-        cause &&
-        typeof cause === "object" &&
-        "title" in cause &&
-        "message" in cause &&
-        "details" in cause
-      ) {
-        context.errors.push(cause as DetailedError);
-      }
+vi.mock("@release-change/logger", () => ({
+  addErrorToContext: vi.fn(),
+  setLogger: vi.fn(),
+  checkErrorType: vi.fn()
+}));
+vi.mock("@release-change/shared", () => ({
+  agreeInNumber: vi.fn((count, words) => (count === 1 ? words[0] : words[1])),
+  runCommandSync: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+  if (error instanceof Error) {
+    const { cause } = error;
+    if (
+      cause &&
+      typeof cause === "object" &&
+      "title" in cause &&
+      "message" in cause &&
+      "details" in cause
+    ) {
+      context.errors.push(cause as DetailedError);
     }
-  });
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
+  }
+});
+
+beforeEach(() => {
   vi.mocked(runCommandSync).mockReturnValue({
     status: 0,
     stdout: "",
     stderr: ""
   });
-});
-afterEach(() => {
-  vi.clearAllMocks();
 });
 
 it("should log an error message when an error is caught", () => {

@@ -1,20 +1,18 @@
 import fs from "node:fs";
 
 import { getPackageName } from "@release-change/get-packages";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { formatReleaseNotesBody } from "../src/format-release-notes-body.js";
 import { updateChangelogFile } from "../src/index.js";
 import { mockedChangelogFiles } from "./fixtures/mocked-changelog-files.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
 
+vi.mock("@release-change/get-packages", () => ({ getPackageName: vi.fn() }));
+vi.mock("../src/format-release-notes-body", () => ({ formatReleaseNotesBody: vi.fn() }));
+
 beforeEach(() => {
-  vi.mock("@release-change/get-packages", () => ({ getPackageName: vi.fn() }));
-  vi.mock("../src/format-release-notes-body", () => ({ formatReleaseNotesBody: vi.fn() }));
   vi.spyOn(fs, "existsSync").mockReturnValue(true);
-});
-afterEach(() => {
-  vi.clearAllMocks();
 });
 
 describe.each(mockedChangelogFiles)("for $nextRelease.name", ({

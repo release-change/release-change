@@ -1,5 +1,5 @@
 import { runCommandSync } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getCurrentCommitId } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
@@ -11,14 +11,9 @@ const mockedCommandResult = {
 };
 const expectedHash = "0123456789abcdef0123456789abcdef01234567";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    runCommandSync: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  runCommandSync: vi.fn()
+}));
 
 it("should run the `git rev-parse HEAD` command and return the hash", () => {
   const mockedCommand = vi.mocked(runCommandSync).mockReturnValue(mockedCommandResult);

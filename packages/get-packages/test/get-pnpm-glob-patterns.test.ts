@@ -6,7 +6,7 @@ import { pnpmWorkspaceManifestFiles } from "./fixtures/pnpm-workspace-manifest-f
 it("should throw an error when no `packages` field is found in `pnpm-workspace.yaml`", () => {
   const mockedContent = `catalog:
   chalk: ^4.1.2`;
-  expect(() => getPnpmGlobPatterns(mockedContent)).toThrowError(
+  expect(() => getPnpmGlobPatterns(mockedContent)).toThrow(
     expect.objectContaining({
       message:
         "Failed to get the glob patterns: The root `pnpm-workspace.yaml` file must have a `packages` field.",
