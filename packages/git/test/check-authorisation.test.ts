@@ -54,7 +54,7 @@ it("should throw an error when the Git command fails", async () => {
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   await expect(
     checkAuthorisation(mockedRepositoryUrl, mockedContextWithEligibleBranch)
-  ).rejects.toThrowError(expectedError);
+  ).rejects.toThrow(expectedError);
 });
 it("should not catch any errors when the Git command does not fail", async () => {
   vi.mocked(runCommand).mockReturnValue(

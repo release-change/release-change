@@ -7,12 +7,12 @@ import { comparatorIntersectionsInLooseMode } from "../fixtures/comparator-inter
 const invalidComparators = ["invalid", "^invalid", "~invalid"];
 
 it.each(invalidComparators)("should throw an error if %s is invalid", invalidComparator => {
-  expect(() => new Comparator(invalidComparator)).toThrowError(
+  expect(() => new Comparator(invalidComparator)).toThrow(
     `Invalid comparator \`${invalidComparator}\`.`
   );
 });
 it("should throw an error if '>01.02.03' is invalid in strict mode", () => {
-  expect(() => new Comparator(">01.02.03")).toThrowError("Invalid comparator `>01.02.03`.");
+  expect(() => new Comparator(">01.02.03")).toThrow("Invalid comparator `>01.02.03`.");
 });
 test("'>=1.2.3' should include '1.2.4'", () => {
   expect(new Comparator(">=1.2.3").test("1.2.4")).toBe(true);

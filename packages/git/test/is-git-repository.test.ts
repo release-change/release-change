@@ -53,9 +53,7 @@ it("should throw an error if the Git command fails", async () => {
   );
   vi.mocked(runCommand).mockRejectedValue(mockedError);
   process.exitCode = 128;
-  await expect(isGitRepository(mockedContext, mockedLogger)).rejects.toThrowError(
-    "process.exit(128)"
-  );
+  await expect(isGitRepository(mockedContext, mockedLogger)).rejects.toThrow("process.exit(128)");
   expect(mockedLogger.logError).toHaveBeenCalled();
   expect(mockedProcessExit).toHaveBeenCalledWith(128);
   assert.deepNestedInclude(mockedContext.errors, mockedError.cause);

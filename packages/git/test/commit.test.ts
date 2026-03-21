@@ -40,7 +40,7 @@ it("should throw an error if the commit message is empty", async () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(commit("", mockedCwd)).rejects.toThrowError(expectedError);
+  await expect(commit("", mockedCwd)).rejects.toThrow(expectedError);
 });
 it.each(
   mockedCommitMessages

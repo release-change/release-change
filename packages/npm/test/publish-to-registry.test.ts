@@ -64,7 +64,7 @@ describe.each(
       }
     );
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrowError(
+    await expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrow(
       expectedError
     );
   });
@@ -126,9 +126,9 @@ describe.each(
       .mockResolvedValue({ status: 128, stdout: "", stderr: "Some error message." });
     vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(
-      publishToRegistry(packagePublishing, mockedContextWithAuthToken)
-    ).rejects.toThrowError(expectedError);
+    await expect(publishToRegistry(packagePublishing, mockedContextWithAuthToken)).rejects.toThrow(
+      expectedError
+    );
     expect(mockedCommand).toHaveBeenCalledWith(packageManager, args, mockedOptions);
     expect(mockedLogger.logError).toHaveBeenCalledWith(
       `Failed to publish release ${version} of ${packageName} package to the NPM registry.`

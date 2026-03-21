@@ -31,7 +31,7 @@ it("should throw an error if no files are provided", async () => {
     }
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(add([], mockedCwd)).rejects.toThrowError(expectedError);
+  await expect(add([], mockedCwd)).rejects.toThrow(expectedError);
 });
 it.each(mockedFilesArgs)("should run the command with %o", async mockedFilesArg => {
   const mockedCommand = vi

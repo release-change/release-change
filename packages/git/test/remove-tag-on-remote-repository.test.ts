@@ -31,7 +31,7 @@ it("should throw an error if the Git tag is empty", async () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(removeTagOnRemoteRepository("", mockedContext)).rejects.toThrowError(expectedError);
+  await expect(removeTagOnRemoteRepository("", mockedContext)).rejects.toThrow(expectedError);
 });
 describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
   it("should run the `git push --delete` command", async () => {
@@ -64,7 +64,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
       stderr: "Some error message."
     });
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(removeTagOnRemoteRepository(mockedGitTag, mockedContext)).rejects.toThrowError(
+    await expect(removeTagOnRemoteRepository(mockedGitTag, mockedContext)).rejects.toThrow(
       expectedError
     );
     expect(mockedLogger.logError).toHaveBeenCalledWith(

@@ -30,7 +30,7 @@ it("should throw an error if the branch name is empty", async () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(deleteBranchOnRemoteRepository("", mockedContext)).rejects.toThrowError(expectedError);
+  expect(deleteBranchOnRemoteRepository("", mockedContext)).rejects.toThrow(expectedError);
 });
 it("should run the `git push --delete` command", async () => {
   const mockedCommand = vi
@@ -67,9 +67,9 @@ it("should throw an error if the `git push` command is run and fails", async () 
     stderr: "Some error message."
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(
-    deleteBranchOnRemoteRepository(mockedReleaseBranch, mockedContext)
-  ).rejects.toThrowError(expectedError);
+  await expect(deleteBranchOnRemoteRepository(mockedReleaseBranch, mockedContext)).rejects.toThrow(
+    expectedError
+  );
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Failed to remotely delete branch ${mockedReleaseBranch} on origin.`
   );

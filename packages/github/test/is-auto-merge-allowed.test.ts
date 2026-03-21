@@ -37,13 +37,13 @@ it("should throw an error if the entry point is empty", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(isAutoMergeAllowed("", mockedContext)).rejects.toThrowError(
+  expect(isAutoMergeAllowed("", mockedContext)).rejects.toThrow(
     "The entry point must not be empty."
   );
 });
 it("should throw an error when the request fails", () => {
   vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-  expect(isAutoMergeAllowed(mockedUri, mockedContext)).rejects.toThrowError(
+  expect(isAutoMergeAllowed(mockedUri, mockedContext)).rejects.toThrow(
     "Failed to request the URI."
   );
 });
@@ -53,7 +53,7 @@ it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
     json: () => Promise.resolve({ message: response.statusText })
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(isAutoMergeAllowed(mockedUri, mockedContext)).rejects.toThrowError(expectedError);
+  await expect(isAutoMergeAllowed(mockedUri, mockedContext)).rejects.toThrow(expectedError);
   expect(process.exitCode).toBe(response.status);
 });
 it.each(mockedRepo)("$title", async ({ response, expected }) => {

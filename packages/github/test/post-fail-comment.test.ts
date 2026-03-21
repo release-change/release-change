@@ -58,13 +58,13 @@ describe.each(mockedFailComments)("for $type and reference $reference", ({
       }
     );
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(postFailComment(reference, mockedContextWithoutBranch)).rejects.toThrowError(
+    await expect(postFailComment(reference, mockedContextWithoutBranch)).rejects.toThrow(
       "The target branch is not defined."
     );
   });
   it("should throw an error when the request fails", async () => {
     vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-    await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrowError(
+    await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
       "Failed to request the URI."
     );
   });
@@ -74,7 +74,7 @@ describe.each(mockedFailComments)("for $type and reference $reference", ({
       json: () => Promise.resolve({ message: response.statusText })
     });
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrowError(
+    await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
       expectedError
     );
     expect(mockedLogger.logError).toHaveBeenCalledWith(

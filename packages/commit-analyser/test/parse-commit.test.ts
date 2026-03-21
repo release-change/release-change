@@ -45,7 +45,7 @@ it("should throw an error if the commit has no header", () => {
     }
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => parseCommit("", mockedContext)).toThrowError(expectedError);
+  expect(() => parseCommit("", mockedContext)).toThrow(expectedError);
 });
 it("should throw an error if the commit has no message", () => {
   const expectedError = new Error("Failed to parse commit: No message found.", {
@@ -58,9 +58,9 @@ it("should throw an error if the commit has no message", () => {
     }
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() =>
-    parseCommit(`${commitId}\n${commitAuthor}\n${commitDate}`, mockedContext)
-  ).toThrowError(expectedError);
+  expect(() => parseCommit(`${commitId}\n${commitAuthor}\n${commitDate}`, mockedContext)).toThrow(
+    expectedError
+  );
 });
 it("should throw an error if the commit has no modified files in a monorepo context", () => {
   const expectedError = new Error(
@@ -81,7 +81,7 @@ it("should throw an error if the commit has no modified files in a monorepo cont
       `${mockedCommitSample}\n${commitIndent}\n${commitKeyValueFooter}`,
       mockedContextInMonorepo
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it("should not throw an error if the commit has no modified files in a monorepo context, but is a merge commit", () => {
   assert.doesNotThrow(

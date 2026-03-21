@@ -25,7 +25,7 @@ it("should throw an error when the target branch name is not defined", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => setBranchName(undefined, [])).toThrowError(expectedError);
+  expect(() => setBranchName(undefined, [])).toThrow(expectedError);
 });
 it("should throw an error when the target branch name is an empty string", () => {
   const expectedError = new Error(
@@ -41,7 +41,7 @@ it("should throw an error when the target branch name is an empty string", () =>
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => setBranchName("", [])).toThrowError(expectedError);
+  expect(() => setBranchName("", [])).toThrow(expectedError);
 });
 it("should throw an error when there are no next releases", () => {
   const expectedError = new Error(
@@ -57,7 +57,7 @@ it("should throw an error when there are no next releases", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => setBranchName("branch", [])).toThrowError(expectedError);
+  expect(() => setBranchName("branch", [])).toThrow(expectedError);
 });
 it.each(mockedBranchNames)("should set branch name as $expected", ({
   branch,

@@ -29,7 +29,7 @@ it("should throw an error if the release token is not defined", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => getIssueAndPullRequestToken(mockedEnvWithoutIssueAndPullRequestToken)).toThrowError(
+  expect(() => getIssueAndPullRequestToken(mockedEnvWithoutIssueAndPullRequestToken)).toThrow(
     expectedError
   );
 });

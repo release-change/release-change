@@ -57,7 +57,7 @@ it("should throw an error if both target branch and head branch are not defined"
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => createPullRequest("", mockedContextWithoutBranch)).rejects.toThrowError(
+  expect(() => createPullRequest("", mockedContextWithoutBranch)).rejects.toThrow(
     "Both the target branch and the head branch must be defined."
   );
 });
@@ -76,9 +76,9 @@ it("should throw an error if the target branch is not defined", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() =>
-    createPullRequest(mockedHeadBranch, mockedContextWithoutBranch)
-  ).rejects.toThrowError("The target branch is not defined.");
+  expect(() => createPullRequest(mockedHeadBranch, mockedContextWithoutBranch)).rejects.toThrow(
+    "The target branch is not defined."
+  );
 });
 it("should throw an error if the head branch is empty", () => {
   const expectedError = new Error(
@@ -95,7 +95,7 @@ it("should throw an error if the head branch is empty", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => createPullRequest("", mockedContext)).rejects.toThrowError(
+  expect(() => createPullRequest("", mockedContext)).rejects.toThrow(
     "The head branch must not be empty."
   );
 });
@@ -113,7 +113,7 @@ describe.each(
     : mockedContextWithNextRelease;
   it("should throw an error when the request fails", () => {
     vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-    expect(createPullRequest(mockedHeadBranch, context)).rejects.toThrowError(
+    expect(createPullRequest(mockedHeadBranch, context)).rejects.toThrow(
       "Failed to request the URI."
     );
   });
@@ -123,7 +123,7 @@ describe.each(
       json: () => Promise.resolve({ message: response.statusText })
     });
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(createPullRequest(mockedHeadBranch, context)).rejects.toThrowError(expectedError);
+    await expect(createPullRequest(mockedHeadBranch, context)).rejects.toThrow(expectedError);
     expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to create the pull request.");
     expect(process.exitCode).toBe(response.status);
   });

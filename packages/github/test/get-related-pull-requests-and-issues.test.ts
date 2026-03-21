@@ -84,7 +84,7 @@ it.each(mockedFailureFetchesForCommits)("$title", async ({ response, expectedErr
   vi.mocked(getAssociatedPullRequests).mockRejectedValue(error);
   await expect(
     getRelatedPullRequestsAndIssues(mockedCommits, mockedContextWithNextRelease)
-  ).rejects.toThrowError(expectedError);
+  ).rejects.toThrow(expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     "Failed to get related pull requests and issues."
   );

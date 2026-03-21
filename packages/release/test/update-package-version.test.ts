@@ -63,7 +63,7 @@ describe.each(mockedNextReleases)("for $packageName", ({
     );
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    expect(() => updatePackageVersion(nextRelease, mockedContextWithNextRelease)).toThrowError(
+    expect(() => updatePackageVersion(nextRelease, mockedContextWithNextRelease)).toThrow(
       expectedError
     );
   });

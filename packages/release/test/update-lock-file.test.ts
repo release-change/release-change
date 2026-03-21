@@ -43,9 +43,7 @@ describe.each(mockedNextReleases)("for $packageName", ({ packageManifestPath, ne
       .mocked(runCommandSync)
       .mockReturnValue({ status: 0, stdout: "", stderr: "" });
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(updateLockFile(nextRelease, mockedContext, null)).rejects.toThrowError(
-      expectedError
-    );
+    await expect(updateLockFile(nextRelease, mockedContext, null)).rejects.toThrow(expectedError);
     expect(mockedCommand).toHaveBeenCalledWith("git", ["restore", packageManifestPath]);
   });
   it.each(

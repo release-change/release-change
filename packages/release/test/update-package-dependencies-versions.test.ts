@@ -53,7 +53,7 @@ describe.each(
       }
     );
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    expect(() => updatePackageDependenciesVersions(nextRelease, [], mockedContext)).toThrowError(
+    expect(() => updatePackageDependenciesVersions(nextRelease, [], mockedContext)).toThrow(
       expectedError
     );
   });
@@ -77,7 +77,7 @@ describe.each(
         ...mockedContextInMonorepo,
         config: { ...mockedConfig, dependencyUpdateMethod: "pin" }
       })
-    ).toThrowError(expectedError);
+    ).toThrow(expectedError);
   });
   it("should update the package dependencies versions", () => {
     const readFileSpy = vi

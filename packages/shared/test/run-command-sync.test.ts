@@ -23,7 +23,7 @@ it("should throw an error containing the command and args in the cause if the co
     stdout: "",
     stderr: "Stderr"
   }));
-  expect(() => runCommandSync(mockedCommand, mockedArgs)).toThrowError(
+  expect(() => runCommandSync(mockedCommand, mockedArgs)).toThrow(
     new Error("Failed to run the `git` command: The command failed with status 1.", {
       cause: {
         title: "Failed to run the `git` command",

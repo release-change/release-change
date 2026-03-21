@@ -36,7 +36,7 @@ describe.each(mockedNextReleases)("for $packageName", ({ packageName, nextReleas
       }
     );
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    expect(() => createTag(nextRelease, "")).toThrowError(expectedError);
+    expect(() => createTag(nextRelease, "")).toThrow(expectedError);
   });
   it("should log an error message if the `git tag` command is run and fails", () => {
     vi.mocked(runCommandSync).mockReturnValue({

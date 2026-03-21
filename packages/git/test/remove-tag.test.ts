@@ -31,7 +31,7 @@ it("should throw an error if the Git tag is empty", () => {
     }
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => removeTag("", mockedCwd)).toThrowError(expectedError);
+  expect(() => removeTag("", mockedCwd)).toThrow(expectedError);
 });
 describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
   it("should run the `git tag` command", () => {
@@ -64,7 +64,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
       stderr: "Some error message."
     });
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    expect(() => removeTag(mockedGitTag, mockedCwd)).toThrowError(expectedError);
+    expect(() => removeTag(mockedGitTag, mockedCwd)).toThrow(expectedError);
     expect(mockedLogger.logError).toHaveBeenCalledWith(`Failed to remove Git tag ${mockedGitTag}.`);
   });
 });

@@ -87,7 +87,7 @@ it("should throw an error when the request fails", async () => {
         env: mockedEnv
       }
     )
-  ).rejects.toThrowError(expectedError);
+  ).rejects.toThrow(expectedError);
 });
 it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
   vi.mocked(mockedFetch).mockResolvedValue({
@@ -103,7 +103,7 @@ it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
         env: mockedEnv
       }
     )
-  ).rejects.toThrowError(expectedError);
+  ).rejects.toThrow(expectedError);
   expect(process.exitCode).toBe(response.status);
 });
 describe.each(mockedReleaseNotes)("for $releaseNotes.tagName", async ({

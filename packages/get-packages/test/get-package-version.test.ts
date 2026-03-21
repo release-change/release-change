@@ -18,7 +18,7 @@ it("should throw an error if the package manifest file does not have the `versio
   vi.spyOn(fs, "readFileSync").mockReturnValue(
     JSON.stringify(mockedPackageManifestFileWithoutVersion)
   );
-  expect(() => getPackageVersion(mockedPath)).toThrowError(
+  expect(() => getPackageVersion(mockedPath)).toThrow(
     new Error(
       `Failed to get the package version: The \`version\` property was not found for ${mockedPath}.`,
       {

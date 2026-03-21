@@ -41,7 +41,7 @@ it("should throw an error if the target branch is not defined", () => {
         branch: undefined
       }
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it("should throw an error if the target branch is not supported by the configuration", () => {
   const expectedError = new Error(
@@ -71,7 +71,7 @@ it("should throw an error if the target branch is not supported by the configura
         branch: "unknown"
       }
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it("should throw an error if no last release is defined", () => {
   const expectedError = new Error(
@@ -98,7 +98,7 @@ it("should throw an error if no last release is defined", () => {
       [],
       { ...mockedContext, branch: "main" }
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it("should throw an error if the target package has no last release", () => {
   const expectedError = new Error(
@@ -132,7 +132,7 @@ it("should throw an error if the target package has no last release", () => {
         }
       }
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it("should throw an error if no commits have been retrieved", () => {
   const expectedError = new Error(
@@ -173,7 +173,7 @@ it("should throw an error if no commits have been retrieved", () => {
         }
       }
     )
-  ).toThrowError(expectedError);
+  ).toThrow(expectedError);
 });
 it.each(
   mockedPackages

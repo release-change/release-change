@@ -50,7 +50,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
       }
     );
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(commitUpdatedFiles(nextRelease, null, mockedContext)).rejects.toThrowError(
+    await expect(commitUpdatedFiles(nextRelease, null, mockedContext)).rejects.toThrow(
       "The package manager is not found or is not one of those supported (npm or pnpm)."
     );
   });
@@ -80,9 +80,9 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
         stderr: "fatal: path spec '/fake/path' did not match any files"
       });
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      await expect(
-        commitUpdatedFiles(nextRelease, packageManager, mockedContext)
-      ).rejects.toThrowError(expectedError);
+      await expect(commitUpdatedFiles(nextRelease, packageManager, mockedContext)).rejects.toThrow(
+        expectedError
+      );
     });
     it("should throw an error if the `git commit` command fails", async () => {
       const expectedError = new Error(
@@ -105,9 +105,9 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
         stderr: ""
       });
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      await expect(
-        commitUpdatedFiles(nextRelease, packageManager, mockedContext)
-      ).rejects.toThrowError(expectedError);
+      await expect(commitUpdatedFiles(nextRelease, packageManager, mockedContext)).rejects.toThrow(
+        expectedError
+      );
     });
     it("should run the `git add` command with no lock files", async () => {
       const mockedFilesWithoutLockFile = mockedFiles.filter(file => !file.includes("lock"));

@@ -44,7 +44,7 @@ it("should throw an error if the commit ref is empty", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => cancelCommitsSinceRef("", mockedCwd)).toThrowError(expectedError);
+  expect(() => cancelCommitsSinceRef("", mockedCwd)).toThrow(expectedError);
 });
 it("should throw an error if the `git reset --hard` command is run and fails", () => {
   const expectedError = new Error(
@@ -66,7 +66,7 @@ it("should throw an error if the `git reset --hard` command is run and fails", (
     stderr: "Some error message."
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => cancelCommitsSinceRef(mockedCommitRef, mockedCwd)).toThrowError(expectedError);
+  expect(() => cancelCommitsSinceRef(mockedCommitRef, mockedCwd)).toThrow(expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Failed to cancel the commits since ${mockedCommitRef}.`
   );

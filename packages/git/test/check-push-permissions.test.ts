@@ -73,7 +73,7 @@ it("should log an error message when an error is thrown", async () => {
   vi.mocked(checkAuthorisation).mockRejectedValue(mockedError);
   await expect(
     checkPushPermissions(mockedRepositoryUrl, mockedContextWithEligibleBranch)
-  ).rejects.toThrowError("process.exit called with code 1");
+  ).rejects.toThrow("process.exit called with code 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith("Not allowed to push to the Git repository.");
   expect(process.exit).toHaveBeenCalledWith(1);
   assert.deepNestedInclude(mockedContext.errors, mockedError.cause);

@@ -30,7 +30,7 @@ it("should throw an error if the branch name is empty", () => {
     }
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => deleteBranch("", mockedCwd)).toThrowError(expectedError);
+  expect(() => deleteBranch("", mockedCwd)).toThrow(expectedError);
 });
 it("should log an error message if the `git branch` command is run and fails", () => {
   vi.mocked(runCommandSync).mockReturnValue({

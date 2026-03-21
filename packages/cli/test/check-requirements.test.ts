@@ -72,7 +72,7 @@ it.each(
     throw new Error("process.exit called with 1");
   });
   vi.mocked(isNodeVersionCompatible).mockReturnValue(false);
-  expect(checkRequirements()).rejects.toThrowError("process.exit called with 1");
+  expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Required one of the following Node versions: ${formattedRequiredNodeVersions}. Found ${mockedNodeVersion}.`
   );
@@ -99,7 +99,7 @@ it(`should call \`process.exit(1)\` and display an error message if Git version 
   });
   vi.mocked(isNodeVersionCompatible).mockReturnValue(true);
   vi.mocked(isGitVersionCompatible).mockReturnValue(false);
-  expect(checkRequirements()).rejects.toThrowError("process.exit called with 1");
+  expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Git version ${GIT_MIN_VERSION} required. Found ${mockedVersion}.`
   );

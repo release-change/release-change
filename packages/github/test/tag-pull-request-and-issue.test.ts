@@ -51,7 +51,7 @@ it("should throw an error if `nextRelease` is not defined", async () => {
       { number: mockedIssueNumber, isPullRequest: false, gitTags: [] },
       mockedContext
     )
-  ).rejects.toThrowError(expectedError);
+  ).rejects.toThrow(expectedError);
 });
 describe.each(
   mockedPullRequestsAndIssuesToTag
@@ -73,7 +73,7 @@ describe.each(
       json: () => Promise.resolve({ message: response.statusText })
     });
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(tagPullRequestAndIssue(reference, context)).rejects.toThrowError(expectedError);
+    await expect(tagPullRequestAndIssue(reference, context)).rejects.toThrow(expectedError);
     expect(nextRelease.length).toBeGreaterThan(0);
     expect(mockedLogger.logError).toHaveBeenCalledWith(
       `Failed to tag ${type} #${mockedIssueNumber}.`

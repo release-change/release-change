@@ -30,7 +30,7 @@ afterEach(() => {
 
 it("should throw an error when the request fails", async () => {
   vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrowError(
+  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrow(
     "Failed to request the URI."
   );
 });
@@ -40,7 +40,7 @@ it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
     json: () => Promise.resolve({ message: response.statusText })
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrowError(expectedError);
+  await expect(closeIssue(mockedIssueNumber, mockedContext)).rejects.toThrow(expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     `Failed to close issue #${mockedIssueNumber}.`
   );

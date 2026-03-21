@@ -30,7 +30,7 @@ it("should throw an error if the release token is not defined", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => getReleaseToken(mockedEnvWithoutReleaseToken)).toThrowError(expectedError);
+  expect(() => getReleaseToken(mockedEnvWithoutReleaseToken)).toThrow(expectedError);
 });
 it("should return the token if the release token is defined", () => {
   expect(getReleaseToken(mockedEnvWithReleaseToken)).toBe(mockedToken);

@@ -39,7 +39,7 @@ it("should throw an error when the command fails with an error", async () => {
     }, 0);
     return mockedErrorChildProcess;
   });
-  await expect(runCommand(nonExistentCommand, args)).rejects.toThrowError(
+  await expect(runCommand(nonExistentCommand, args)).rejects.toThrow(
     new Error(
       `Failed to run the \`${nonExistentCommand}\` command: The command failed with status 1.`,
       {

@@ -45,9 +45,7 @@ it("should call `process.exit(128)` if this is not a Git repository", async () =
     })
   );
   process.exitCode = 128;
-  await expect(checkRepository(mockedContext, mockedLogger)).rejects.toThrowError(
-    "process.exit(128)"
-  );
+  await expect(checkRepository(mockedContext, mockedLogger)).rejects.toThrow("process.exit(128)");
   expect(mockedLogger.logError).toHaveBeenCalledWith(
     "The current directory is not a Git repository."
   );

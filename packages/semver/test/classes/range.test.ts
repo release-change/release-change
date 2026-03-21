@@ -11,7 +11,7 @@ it.each(invalidRanges)("should throw an error if the range $raw is invalid", ({
   error,
   options
 }) => {
-  expect(() => new Range(raw, options)).toThrowError(error);
+  expect(() => new Range(raw, options)).toThrow(error);
 });
 it.each(
   validRangesInLooseMode

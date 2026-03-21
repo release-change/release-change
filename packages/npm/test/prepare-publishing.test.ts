@@ -55,7 +55,7 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
         ...mockedContext,
         nextRelease: [nextRelease]
       })
-    ).rejects.toThrowError(expectedError);
+    ).rejects.toThrow(expectedError);
   });
   it("should throw an error if the package manager is not one of those supported", async () => {
     const expectedError = new Error(
@@ -79,7 +79,7 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
         ...mockedContext,
         nextRelease: [nextRelease]
       })
-    ).rejects.toThrowError(expectedError);
+    ).rejects.toThrow(expectedError);
   });
   it("should log a warning if the package cannot be published to NPM because `npmPublish` is set to `false`", async () => {
     vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(packageManifestContent));

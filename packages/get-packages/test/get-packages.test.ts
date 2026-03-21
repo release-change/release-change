@@ -81,7 +81,7 @@ it("should throw an error if the package manager is not found or supported", asy
   );
   vi.mocked(getPackageManager).mockReturnValue(null);
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(getPackages(mockedContextBase)).rejects.toThrowError(
+  await expect(getPackages(mockedContextBase)).rejects.toThrow(
     expect.objectContaining({
       message: expectedError.message,
       cause: expectedError.cause
@@ -106,9 +106,7 @@ it("should throw an error if the package manager is npm and no `package.json` fi
     throw expectedError;
   });
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => getRootPackageManifest(`${mockedCwd}/package.json`)).toThrowError(
-    expectedError.message
-  );
+  expect(() => getRootPackageManifest(`${mockedCwd}/package.json`)).toThrow(expectedError.message);
   await expect(getPackages(mockedContextBase)).rejects.toThrow();
   expect(addErrorToContext).toHaveBeenCalledWith(expectedError, mockedContextBase);
   assert.deepNestedInclude(mockedContextBase.errors, expectedError.cause);

@@ -14,7 +14,7 @@ const mockedPackage = {
 
 it("should throw an error when no root package manifest is found", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(false);
-  expect(() => getRootPackageManifest(mockedPackageManifestPath)).toThrowError(
+  expect(() => getRootPackageManifest(mockedPackageManifestPath)).toThrow(
     expect.objectContaining({
       message: "Failed to get the root package manifest (`package.json`): File not found.",
       cause: {

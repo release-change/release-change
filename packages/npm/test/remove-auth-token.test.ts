@@ -36,9 +36,9 @@ it("should throw an error if the `.npmrc` file does not exist", () => {
   );
   vi.mocked(getNpmrcFile).mockReturnValue(null);
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() =>
-    removeAuthToken(mockedCwd, { fileExists: true, authTokenExists: false })
-  ).toThrowError(expectedError);
+  expect(() => removeAuthToken(mockedCwd, { fileExists: true, authTokenExists: false })).toThrow(
+    expectedError
+  );
 });
 it("should remove the `.npmrc` file if it was created for that purpose", () => {
   vi.mocked(getNpmrcFile).mockReturnValue(mockedFileWithToken);

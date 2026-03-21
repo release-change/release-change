@@ -28,7 +28,7 @@ it("should throw an error if the branch name is an empty string", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => switchToBranch("", mockedCwd)).toThrowError(expectedError);
+  expect(() => switchToBranch("", mockedCwd)).toThrow(expectedError);
 });
 it("should run the `git switch` command if the branch name is correctly provided", () => {
   const mockedCommand = vi

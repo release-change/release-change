@@ -198,7 +198,7 @@ afterEach(() => {
 
 it("should throw an error message when the branch is unknown", () => {
   vi.mocked(getAllTags).mockReturnValue(mockedValidGitTags);
-  expect(() => getLatestValidTag({ ...mockedContext, branch: "" })).toThrowError(
+  expect(() => getLatestValidTag({ ...mockedContext, branch: "" })).toThrow(
     new Error("Failed to get the latest valid tag: No branch name found.", {
       cause: {
         title: "Failed to get the latest valid tag",
@@ -212,7 +212,7 @@ it("should throw an error message when the branch is unknown", () => {
 });
 it("should throw an error message when the release type is not found for the branch", () => {
   vi.mocked(getAllTags).mockReturnValue(mockedValidGitTags);
-  expect(() => getLatestValidTag(mockedContextWithInvalidConfig)).toThrowError(
+  expect(() => getLatestValidTag(mockedContextWithInvalidConfig)).toThrow(
     new Error("Failed to get the latest valid tag: No release type found for the branch main.", {
       cause: {
         title: "Failed to get the latest valid tag",

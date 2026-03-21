@@ -28,7 +28,7 @@ it("should throw an error when the repository URL is malformed", () => {
   );
   vi.mocked(parsePathname).mockReturnValue(null);
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => getRepositoryRelatedEntryPoint("https://github.com")).toThrowError(expectedError);
+  expect(() => getRepositoryRelatedEntryPoint("https://github.com")).toThrow(expectedError);
 });
 it("should return the API URL when the repository URL is valid", () => {
   vi.mocked(parsePathname).mockReturnValue({
