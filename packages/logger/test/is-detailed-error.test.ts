@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { isDetailedError } from "../src/is-detailed-error.js";
+import { isDetailedError } from "../src/index.js";
 import { invalidDetailedErrors, validDetailedErrors } from "./fixtures/detailed-errors.js";
 
 it.each(

@@ -2,7 +2,7 @@ import fs from "node:fs";
 
 import { describe, expect, it, vi } from "vitest";
 
-import { getPackageManager } from "../src/get-package-manager.js";
+import { getPackageManager } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 const mockedEnvWithoutNpmConfigUserAgent = {};

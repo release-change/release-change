@@ -1,7 +1,6 @@
 import { afterEach, assert, beforeEach, it, vi } from "vitest";
 
-import { addErrorToContext } from "../src/add-error-to-context.js";
-import { isDetailedError } from "../src/is-detailed-error.js";
+import { addErrorToContext, isDetailedError } from "../src/index.js";
 import { invalidDetailedErrors, validDetailedErrors } from "./fixtures/detailed-errors.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
 

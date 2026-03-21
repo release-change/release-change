@@ -3,8 +3,8 @@ import fs from "node:fs/promises";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 import { browseDirectories } from "../src/browse-directories.js";
-import { getPackageName } from "../src/get-package-name.js";
 import { getPackagesFromGlobPatterns } from "../src/get-packages-from-glob-patterns.js";
+import { getPackageName } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 
 beforeEach(() => {
