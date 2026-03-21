@@ -1,5 +1,18 @@
 # @release-change/commit-analyser
 
+## 0.1.4
+
+### Dependencies updates
+
+- @release-change/config@0.1.3
+- @release-change/get-packages@0.1.3
+- @release-change/logger@0.1.3
+- @release-change/shared@0.1.3
+
+---
+
+**Full changelog:** [`@release-change/commit-analyser@v0.1.3...@release-change/commit-analyser@v0.1.4`](https://github.com/release-change/release-change/compare/@release-change/commit-analyser@v0.1.3...@release-change/commit-analyser@v0.1.4)
+
 ## 0.1.3
 
 ### Patch changes

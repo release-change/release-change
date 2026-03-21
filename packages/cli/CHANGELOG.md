@@ -1,5 +1,23 @@
 # @release-change/cli
 
+## 0.3.1
+
+### Dependencies updates
+
+- @release-change/ci@0.1.3
+- @release-change/commit-analyser@0.1.4
+- @release-change/config@0.1.3
+- @release-change/get-packages@0.1.3
+- @release-change/git@0.2.1
+- @release-change/github@0.1.5
+- @release-change/logger@0.1.3
+- @release-change/release@0.2.1
+- @release-change/shared@0.1.3
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.3.0...@release-change/cli@v0.3.1`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.3.0...@release-change/cli@v0.3.1)
+
 ## 0.3.0
 
 ### Dependencies updates

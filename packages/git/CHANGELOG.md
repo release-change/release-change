@@ -1,5 +1,21 @@
 # @release-change/git
 
+## 0.2.1
+
+### Patch changes
+
+- **shared:** return both stdout and stderr when a command results in a non-zero status ([`943fcee`](https://github.com/release-change/release-change/commit/943fcee4a17cdbf2e59736a32328967b742d9362))
+
+### Dependencies updates
+
+- @release-change/commit-analyser@0.1.4
+- @release-change/logger@0.1.3
+- @release-change/shared@0.1.3
+
+---
+
+**Full changelog:** [`@release-change/git@v0.2.0...@release-change/git@v0.2.1`](https://github.com/release-change/release-change/compare/@release-change/git@v0.2.0...@release-change/git@v0.2.1)
+
 ## 0.2.0
 
 ### Minor changes
