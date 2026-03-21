@@ -55,7 +55,7 @@ export const publishToRegistry = async (
         `Failed to publish release ${version} of ${packageName} package to the NPM registry.`
       );
       throw formatDetailedError({
-        title: `Failed to run the \`${packageManager}\` command`,
+        title: `Failed to run the \`${packageManager} publish\` command`,
         message: `The command failed with exit code ${status}.`,
         details: {
           output: formatOutputFromCommandResult(commandResult),
