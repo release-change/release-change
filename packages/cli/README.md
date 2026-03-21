@@ -36,17 +36,6 @@ To use release-change, you need:
 - a [Node.js](https://nodejs.org) which meets the [version requirements](../../SECURITY.md#supported-nodejs-versions),
 - a package manager which meets the [version requirements](../../SECURITY.md#supported-package-manager-versions).
 
-## Installation
-
-Install package for Node.js:
-```
-pnpm add --save-dev @release-change/cli
-```
-You can also install it using `npm`:
-```
-npm install --save-dev @release-change/cli
-```
-
 ## Usage
 
 Use the following command to run release-change in the CI environment:
