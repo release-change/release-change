@@ -1,7 +1,7 @@
 import type { LoggerContext } from "../src/logger.types.js";
 
 import { WORKSPACE_NAME } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { formatMessage } from "../src/format-message.js";
 import { setPrefix } from "../src/set-prefix.js";
@@ -17,14 +17,9 @@ const messageTypes = [
   { type: "success", message: "Successful message", symbol: "\u2714" }
 ];
 
-beforeEach(() => {
-  vi.mock("../src/set-prefix.js", () => ({
-    setPrefix: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("../src/set-prefix.js", () => ({
+  setPrefix: vi.fn()
+}));
 
 it("should format debug message", () => {
   const mockedMessage = "Debug message";

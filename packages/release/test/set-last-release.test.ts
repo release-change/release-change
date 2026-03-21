@@ -13,40 +13,41 @@ import { mockedGitTags } from "./fixtures/mocked-git-tags.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedPackages } from "./fixtures/mocked-packages.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    addErrorToContext: vi.fn(),
-    checkErrorType: vi.fn(),
-    setLogger: vi.fn()
-  }));
-  vi.mock("@release-change/git", () => ({
-    getAllTags: vi.fn(),
-    getLatestValidTag: vi.fn()
-  }));
-  vi.mock("@release-change/semver", () => ({
-    validate: vi.fn()
-  }));
-  vi.mock("@release-change/get-packages", () => ({
-    getPackageVersion: vi.fn()
-  }));
-  vi.mock("../src/get-version-from-tag.js", () => ({
-    getVersionFromTag: vi.fn()
-  }));
-  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
-    if (error instanceof Error) {
-      const { cause } = error;
-      if (
-        cause &&
-        typeof cause === "object" &&
-        "title" in cause &&
-        "message" in cause &&
-        "details" in cause
-      ) {
-        context.errors.push(cause as DetailedError);
-      }
+vi.mock("@release-change/logger", () => ({
+  addErrorToContext: vi.fn(),
+  checkErrorType: vi.fn(),
+  setLogger: vi.fn()
+}));
+vi.mock("@release-change/git", () => ({
+  getAllTags: vi.fn(),
+  getLatestValidTag: vi.fn()
+}));
+vi.mock("@release-change/semver", () => ({
+  validate: vi.fn()
+}));
+vi.mock("@release-change/get-packages", () => ({
+  getPackageVersion: vi.fn()
+}));
+vi.mock("../src/get-version-from-tag.js", () => ({
+  getVersionFromTag: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+  if (error instanceof Error) {
+    const { cause } = error;
+    if (
+      cause &&
+      typeof cause === "object" &&
+      "title" in cause &&
+      "message" in cause &&
+      "details" in cause
+    ) {
+      context.errors.push(cause as DetailedError);
     }
-  });
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
+  }
+});
+
+beforeEach(() => {
   vi.mocked(validate).mockImplementation(version => version as string);
 });
 afterEach(() => {

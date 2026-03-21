@@ -1,17 +1,12 @@
-import { afterEach, assert, beforeEach, describe, it, vi } from "vitest";
+import { assert, describe, it, vi } from "vitest";
 
 import { configureCiEnvironment } from "../src/index.js";
 import { isCiToolDetected } from "../src/is-ci-tool-detected.js";
 import { mockedEnvs } from "./fixtures/mocked-envs.js";
 
-beforeEach(() => {
-  vi.mock("../src/is-ci-tool-detected.js", () => ({
-    isCiToolDetected: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("../src/is-ci-tool-detected.js", () => ({
+  isCiToolDetected: vi.fn()
+}));
 
 describe.each(mockedEnvs)("for $env", ({ ciEnvironment, env, expectedConfig }) => {
   const { isCi, isPullRequest } = expectedConfig;

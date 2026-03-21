@@ -4,7 +4,7 @@ import fs from "node:fs";
 
 import { add, commit } from "@release-change/git";
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { commitUpdatedFiles } from "../src/commit-updated-files.js";
 import { mockedContext } from "./fixtures/mocked-context-update.js";
@@ -18,21 +18,16 @@ const mockedPackageManagers: [PackageManager, string[]][] = [
   ["npm", ["package.json", "package-lock.json", "CHANGELOG.md"]]
 ];
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-  vi.mock("@release-change/git", () => ({
-    add: vi.fn(),
-    commit: vi.fn(),
-    COMMITTER_NAME: "mocked-committer-name [bot]",
-    COMMITTER_EMAIL: "0+mocked-committer-name-bot@users.noreply.github.com"
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
+vi.mock("@release-change/git", () => ({
+  add: vi.fn(),
+  commit: vi.fn(),
+  COMMITTER_NAME: "mocked-committer-name [bot]",
+  COMMITTER_EMAIL: "0+mocked-committer-name-bot@users.noreply.github.com"
+}));
 
 describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, nextRelease }) => {
   it("should throw an error if the package manager is not found or supported", async () => {

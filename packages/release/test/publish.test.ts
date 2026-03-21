@@ -49,64 +49,59 @@ const mockedContextInMonorepoWithNextRelease = {
   ]
 };
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    addErrorToContext: vi.fn(),
-    checkErrorType: vi.fn(),
-    isDetailedError: vi.fn(),
-    setLogger: vi.fn()
-  }));
-  vi.mock("@release-change/get-packages", () => ({
-    getPackageDependencies: vi.fn(),
-    getPackageManager: vi.fn()
-  }));
-  vi.mock("@release-change/git", () => ({
-    setBranchName: vi.fn(),
-    switchToNewBranch: vi.fn(),
-    getCurrentCommitId: vi.fn(),
-    createTag: vi.fn(),
-    push: vi.fn(),
-    cancelCommitsSinceRef: vi.fn(),
-    switchToBranch: vi.fn(),
-    deleteBranch: vi.fn(),
-    deleteBranchOnRemoteRepository: vi.fn(),
-    removeTag: vi.fn(),
-    removeTagOnRemoteRepository: vi.fn()
-  }));
-  vi.mock("@release-change/github", () => ({ createPullRequest: vi.fn() }));
-  vi.mock("@release-change/release-notes-generator", () => ({
-    prepareReleaseNotes: vi.fn(),
-    updateChangelogFile: vi.fn(),
-    createReleaseNotes: vi.fn()
-  }));
-  vi.mock("@release-change/npm", () => ({
-    preparePublishing: vi.fn(),
-    publishToRegistry: vi.fn()
-  }));
-  vi.mock("../src/update-package-version.js", () => ({ updatePackageVersion: vi.fn() }));
-  vi.mock("../src/update-package-dependencies-versions.js", () => ({
-    updatePackageDependenciesVersions: vi.fn()
-  }));
-  vi.mock("../src/update-lock-file.js", () => ({ updateLockFile: vi.fn() }));
-  vi.mock("../src/commit-updated-files.js", () => ({ commitUpdatedFiles: vi.fn() }));
-  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
-    if (error instanceof Error) {
-      const { cause } = error;
-      if (
-        cause &&
-        typeof cause === "object" &&
-        "title" in cause &&
-        "message" in cause &&
-        "details" in cause
-      ) {
-        context.errors.push(cause as DetailedError);
-      }
+vi.mock("@release-change/logger", () => ({
+  addErrorToContext: vi.fn(),
+  checkErrorType: vi.fn(),
+  isDetailedError: vi.fn(),
+  setLogger: vi.fn()
+}));
+vi.mock("@release-change/get-packages", () => ({
+  getPackageDependencies: vi.fn(),
+  getPackageManager: vi.fn()
+}));
+vi.mock("@release-change/git", () => ({
+  setBranchName: vi.fn(),
+  switchToNewBranch: vi.fn(),
+  getCurrentCommitId: vi.fn(),
+  createTag: vi.fn(),
+  push: vi.fn(),
+  cancelCommitsSinceRef: vi.fn(),
+  switchToBranch: vi.fn(),
+  deleteBranch: vi.fn(),
+  deleteBranchOnRemoteRepository: vi.fn(),
+  removeTag: vi.fn(),
+  removeTagOnRemoteRepository: vi.fn()
+}));
+vi.mock("@release-change/github", () => ({ createPullRequest: vi.fn() }));
+vi.mock("@release-change/release-notes-generator", () => ({
+  prepareReleaseNotes: vi.fn(),
+  updateChangelogFile: vi.fn(),
+  createReleaseNotes: vi.fn()
+}));
+vi.mock("@release-change/npm", () => ({
+  preparePublishing: vi.fn(),
+  publishToRegistry: vi.fn()
+}));
+vi.mock("../src/update-package-version.js", () => ({ updatePackageVersion: vi.fn() }));
+vi.mock("../src/update-package-dependencies-versions.js", () => ({
+  updatePackageDependenciesVersions: vi.fn()
+}));
+vi.mock("../src/update-lock-file.js", () => ({ updateLockFile: vi.fn() }));
+vi.mock("../src/commit-updated-files.js", () => ({ commitUpdatedFiles: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+  if (error instanceof Error) {
+    const { cause } = error;
+    if (
+      cause &&
+      typeof cause === "object" &&
+      "title" in cause &&
+      "message" in cause &&
+      "details" in cause
+    ) {
+      context.errors.push(cause as DetailedError);
     }
-  });
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
+  }
 });
 
 it("should not call `getPackageManager()` if `context.nextRelease` is undefined", async () => {

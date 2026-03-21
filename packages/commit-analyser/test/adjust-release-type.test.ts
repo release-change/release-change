@@ -1,7 +1,7 @@
 import type { ReleaseType } from "@release-change/shared";
 
 import { getPackageDependencies } from "@release-change/get-packages";
-import { afterEach, assert, beforeEach, it, vi } from "vitest";
+import { assert, it, vi } from "vitest";
 
 import { adjustReleaseType } from "../src/adjust-release-type.js";
 import { mockedContextInMonorepo } from "./fixtures/mocked-context.js";
@@ -184,14 +184,9 @@ const packagesSets = [
   }
 ];
 
-beforeEach(() => {
-  vi.mock("@release-change/get-packages", () => ({
-    getPackageDependencies: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/get-packages", () => ({
+  getPackageDependencies: vi.fn()
+}));
 
 it.each(packagesSets)("should adjust the release type for the dependent packages", ({
   packages,

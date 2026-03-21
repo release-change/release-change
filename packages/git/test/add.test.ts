@@ -1,5 +1,5 @@
 import { formatDetailedError, runCommand } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { add } from "../src/add.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
@@ -10,15 +10,10 @@ const mockedFilesArgs = [
   [["package.json", "pnpm-lock.yaml"]]
 ];
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    runCommand: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  runCommand: vi.fn()
+}));
 
 it("should throw an error if no files are provided", async () => {
   const expectedError = new Error("Failed to run the `git add` command: No files to add.", {

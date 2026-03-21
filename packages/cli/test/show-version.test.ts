@@ -1,7 +1,7 @@
 import childProcess from "node:child_process";
 
 import { setLogger } from "@release-change/logger";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { showVersion } from "../src/show-version.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
@@ -11,15 +11,10 @@ import { WORKSPACE_VERSION } from "../src/constants.js";
 const expectedVersion = WORKSPACE_VERSION;
 const cliOptions = ["-v", "--version"];
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    setLogger: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/logger", () => ({
+  setLogger: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it.each(
   cliOptions

@@ -14,7 +14,7 @@ import {
 import { getRelatedPullRequestsAndIssues } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 
 import { run } from "../src/run.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
@@ -41,43 +41,64 @@ const mockedPackages = [
   }
 ];
 
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn(), checkErrorType: vi.fn() }));
+vi.mock("@release-change/ci", () => ({
+  configureCiEnvironment: vi.fn(),
+  isUsableCiEnvironment: vi.fn()
+}));
+vi.mock("@release-change/config", () => ({
+  getConfig: vi.fn(),
+  debugConfig: vi.fn()
+}));
+vi.mock("@release-change/git", () => ({
+  checkRepository: vi.fn(),
+  getBranchName: vi.fn(),
+  checkBranch: vi.fn(),
+  checkPushPermissions: vi.fn(),
+  getCommitsSinceRef: vi.fn(),
+  COMMITTER_NAME: "mocked-committer-name [bot]",
+  COMMITTER_EMAIL: "0+mocked-committer-name-bot@users.noreply.github.com"
+}));
+vi.mock("@release-change/commit-analyser", () => ({ getReleaseType: vi.fn() }));
+vi.mock("@release-change/release", () => ({
+  setLastRelease: vi.fn(),
+  setNextRelease: vi.fn(),
+  publish: vi.fn()
+}));
+vi.mock("@release-change/get-packages", () => ({
+  getPackages: vi.fn(),
+  isMonorepo: vi.fn()
+}));
+vi.mock("@release-change/github", () => ({
+  getRelatedPullRequestsAndIssues: vi.fn(),
+  closeIssue: vi.fn(),
+  postFailComment: vi.fn(),
+  postSuccessComment: vi.fn(),
+  tagPullRequestAndIssue: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(getBranchName).mockReturnValue("main");
+vi.mocked(checkBranch).mockImplementation(() => undefined);
+vi.mocked(checkPushPermissions).mockResolvedValue();
+vi.mocked(getCommitsSinceRef).mockResolvedValue([
+  {
+    isMergeCommit: true,
+    sha: "4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5",
+    message: "feat(release): set last release (#75)",
+    body: [],
+    footer: [],
+    releaseType: "minor"
+  }
+]);
+vi.mocked(setNextRelease).mockImplementation(() => {});
+vi.mocked(getReleaseType).mockReturnValue([
+  { name: "@monorepo/a", releaseType: null },
+  { name: "@monorepo/b", releaseType: null },
+  { name: "", releaseType: null }
+]);
+vi.mocked(getRelatedPullRequestsAndIssues).mockResolvedValue();
+
 beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn(), checkErrorType: vi.fn() }));
-  vi.mock("@release-change/ci", () => ({
-    configureCiEnvironment: vi.fn(),
-    isUsableCiEnvironment: vi.fn()
-  }));
-  vi.mock("@release-change/config", () => ({
-    getConfig: vi.fn(),
-    debugConfig: vi.fn()
-  }));
-  vi.mock("@release-change/git", () => ({
-    checkRepository: vi.fn(),
-    getBranchName: vi.fn(),
-    checkBranch: vi.fn(),
-    checkPushPermissions: vi.fn(),
-    getCommitsSinceRef: vi.fn(),
-    COMMITTER_NAME: "mocked-committer-name [bot]",
-    COMMITTER_EMAIL: "0+mocked-committer-name-bot@users.noreply.github.com"
-  }));
-  vi.mock("@release-change/commit-analyser", () => ({ getReleaseType: vi.fn() }));
-  vi.mock("@release-change/release", () => ({
-    setLastRelease: vi.fn(),
-    setNextRelease: vi.fn(),
-    publish: vi.fn()
-  }));
-  vi.mock("@release-change/get-packages", () => ({
-    getPackages: vi.fn(),
-    isMonorepo: vi.fn()
-  }));
-  vi.mock("@release-change/github", () => ({
-    getRelatedPullRequestsAndIssues: vi.fn(),
-    closeIssue: vi.fn(),
-    postFailComment: vi.fn(),
-    postSuccessComment: vi.fn(),
-    tagPullRequestAndIssue: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
   vi.mocked(getConfig).mockResolvedValue({
     debug: mockedContextBase.config.debug,
     dryRun: false,
@@ -87,30 +108,7 @@ beforeEach(() => {
     repositoryUrl: "https://github.com/user-id/repo-name",
     releaseType: { main: { channel: "default" } }
   });
-  vi.mocked(getBranchName).mockReturnValue("main");
-  vi.mocked(checkBranch).mockImplementation(() => undefined);
-  vi.mocked(checkPushPermissions).mockResolvedValue();
-  vi.mocked(getCommitsSinceRef).mockResolvedValue([
-    {
-      isMergeCommit: true,
-      sha: "4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5",
-      message: "feat(release): set last release (#75)",
-      body: [],
-      footer: [],
-      releaseType: "minor"
-    }
-  ]);
   vi.mocked(setLastRelease).mockImplementation(() => {});
-  vi.mocked(setNextRelease).mockImplementation(() => {});
-  vi.mocked(getReleaseType).mockReturnValue([
-    { name: "@monorepo/a", releaseType: null },
-    { name: "@monorepo/b", releaseType: null },
-    { name: "", releaseType: null }
-  ]);
-  vi.mocked(getRelatedPullRequestsAndIssues).mockResolvedValue();
-});
-afterEach(() => {
-  vi.clearAllMocks();
 });
 
 it("should log the start of the CLI run", async () => {

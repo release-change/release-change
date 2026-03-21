@@ -4,7 +4,7 @@ import fs from "node:fs";
 
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommand } from "@release-change/shared";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, assert, describe, expect, it, vi } from "vitest";
 
 import { getAuthToken } from "../src/get-auth-token.js";
 import { getNpmrcFile } from "../src/get-npmrc-file.js";
@@ -18,23 +18,22 @@ import { mockedPackagePublishingSet } from "./fixtures/mocked-package-publishing
 // biome-ignore lint/suspicious/noTemplateCurlyInString: <literal `${}`>
 const mockedNpmrcFile = "//registry.npmjs.org/:_authToken=${NPM_TOKEN}";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    runCommand: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mock("../src/get-auth-token.js", () => ({ getAuthToken: vi.fn() }));
-  vi.mock("../src/get-npmrc-file.js", () => ({ getNpmrcFile: vi.fn() }));
-  vi.mock("../src/set-auth-token.js", () => ({ setAuthToken: vi.fn() }));
-  vi.mock("../src/remove-auth-token.js", () => ({ removeAuthToken: vi.fn() }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-  vi.spyOn(fs, "existsSync").mockReturnValue(true);
-  vi.mocked(getAuthToken).mockImplementation(() => undefined);
-  vi.spyOn(fs, "writeFileSync").mockImplementation(() => undefined);
-  vi.spyOn(fs, "rmSync").mockImplementation(() => undefined);
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  runCommand: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mock("../src/get-auth-token.js", () => ({ getAuthToken: vi.fn() }));
+vi.mock("../src/get-npmrc-file.js", () => ({ getNpmrcFile: vi.fn() }));
+vi.mock("../src/set-auth-token.js", () => ({ setAuthToken: vi.fn() }));
+vi.mock("../src/remove-auth-token.js", () => ({ removeAuthToken: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(getAuthToken).mockImplementation(() => undefined);
+vi.spyOn(fs, "existsSync").mockReturnValue(true);
+vi.spyOn(fs, "writeFileSync").mockImplementation(() => undefined);
+vi.spyOn(fs, "rmSync").mockImplementation(() => undefined);
+
 afterEach(() => {
   vi.clearAllMocks();
 });

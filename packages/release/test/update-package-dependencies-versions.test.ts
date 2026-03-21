@@ -2,7 +2,7 @@ import fs from "node:fs";
 
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { updatePackageDependenciesVersions } from "../src/update-package-dependencies-versions.js";
 import { mockedConfig } from "./fixtures/mocked-config.js";
@@ -11,20 +11,18 @@ import { mockedContext } from "./fixtures/mocked-context-update.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedNextReleasesWithDependencies } from "./fixtures/mocked-next-releases-with-dependencies-update.js";
 
+vi.mock("node:fs");
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
+vi.mock("@release-change/logger", () => ({
+  setLogger: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+
 beforeEach(() => {
-  vi.mock("node:fs");
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-  vi.mock("@release-change/logger", () => ({
-    setLogger: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
   vi.spyOn(fs, "existsSync").mockReturnValue(true);
-});
-afterEach(() => {
-  vi.clearAllMocks();
 });
 
 describe.each(

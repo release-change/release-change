@@ -1,6 +1,6 @@
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommandSync } from "@release-change/shared";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { createTag } from "../src/index.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
@@ -8,17 +8,12 @@ import { mockedNextReleases } from "./fixtures/mocked-next-releases.js";
 
 const mockedCommitRef = "0123456789abcdef0123456789abcdef01234567";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    runCommandSync: vi.fn()
-  }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  runCommandSync: vi.fn()
+}));
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 describe.each(mockedNextReleases)("for $packageName", ({ packageName, nextRelease }) => {
   const { gitTag } = nextRelease;

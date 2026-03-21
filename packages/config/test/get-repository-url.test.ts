@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getRepositoryUrl } from "../src/get-repository-url.js";
 import { getRootPackage } from "../src/index.js";
@@ -18,15 +18,13 @@ const mockedPackageWithRepositoryAsString = {
 const expectedUrlFromRepositoryAsObject = "https://github.com/user-id/repo-name.git";
 const expectedUrlFromRepositoryAsString = "https://github.com/user-id/repo-name.git";
 
-beforeEach(() => {
-  vi.mock("../src/get-root-package.js", () => ({
-    getRootPackage: vi.fn()
-  }));
-});
+vi.mock("../src/get-root-package.js", () => ({
+  getRootPackage: vi.fn()
+}));
 
-afterEach(() => {
-  vi.clearAllMocks();
-});
+// afterEach(() => {
+//   vi.clearAllMocks();
+// });
 
 it("should return `null` when no package found", () => {
   vi.mocked(getRootPackage).mockReturnValue(null);

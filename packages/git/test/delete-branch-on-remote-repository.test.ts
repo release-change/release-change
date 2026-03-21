@@ -1,20 +1,15 @@
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommand } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { deleteBranchOnRemoteRepository } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedReleaseBranch } from "./fixtures/mocked-release-branch.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it("should throw an error if the branch name is empty", async () => {
   const expectedError = new Error(

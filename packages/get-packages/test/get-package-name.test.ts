@@ -1,7 +1,7 @@
 import fs from "node:fs";
 
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getPackageName } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
@@ -11,12 +11,7 @@ const mockedPackageManifestFileWithoutName = {};
 const mockedPackageManifestFileWithInvalidName = { name: true };
 const mockedPackageManifestFileWithValidName = { name: "@monorepo/a" };
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
 
 it("should return `null` if the package manifest file is not found", () => {
   vi.spyOn(fs, "existsSync").mockReturnValue(false);

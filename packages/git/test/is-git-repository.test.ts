@@ -2,36 +2,31 @@ import type { DetailedError } from "@release-change/shared";
 
 import { addErrorToContext } from "@release-change/logger";
 import { runCommand } from "@release-change/shared";
-import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
+import { assert, expect, it, vi } from "vitest";
 
 import { isGitRepository } from "../src/is-git-repository.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ runCommand: vi.fn() }));
-  vi.mock("@release-change/logger", () => ({
-    addErrorToContext: vi.fn(),
-    checkErrorType: vi.fn()
-  }));
-  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
-    if (error instanceof Error) {
-      const { cause } = error;
-      if (
-        cause &&
-        typeof cause === "object" &&
-        "title" in cause &&
-        "message" in cause &&
-        "details" in cause
-      ) {
-        context.errors.push(cause as DetailedError);
-      }
+vi.mock("@release-change/shared", () => ({ runCommand: vi.fn() }));
+vi.mock("@release-change/logger", () => ({
+  addErrorToContext: vi.fn(),
+  checkErrorType: vi.fn()
+}));
+vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+  if (error instanceof Error) {
+    const { cause } = error;
+    if (
+      cause &&
+      typeof cause === "object" &&
+      "title" in cause &&
+      "message" in cause &&
+      "details" in cause
+    ) {
+      context.errors.push(cause as DetailedError);
     }
-  });
-});
-afterEach(() => {
-  vi.clearAllMocks();
+  }
 });
 
 it("should throw an error if the Git command fails", async () => {

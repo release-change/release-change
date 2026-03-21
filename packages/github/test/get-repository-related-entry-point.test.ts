@@ -1,17 +1,12 @@
 import { formatDetailedError, parsePathname } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getRepositoryRelatedEntryPoint } from "../src/index.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    parsePathname: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  parsePathname: vi.fn()
+}));
 
 it("should throw an error when the repository URL is malformed", () => {
   const expectedError = new Error(

@@ -1,5 +1,5 @@
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getReleaseToken } from "../src/index.js";
 
@@ -9,12 +9,7 @@ const mockedEnvWithReleaseToken = {
 };
 const mockedEnvWithoutReleaseToken = {};
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
 
 it("should throw an error if the release token is not defined", () => {
   const expectedError = new Error(

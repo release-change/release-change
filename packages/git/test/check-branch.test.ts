@@ -1,7 +1,7 @@
 import type { Context, ContextBase } from "@release-change/shared";
 
 import { setLogger } from "@release-change/logger";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { checkBranch } from "../src/index.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
@@ -59,13 +59,8 @@ const mockedContext: Context = {
 const mockedContextWithNonEligibleBranch = { ...mockedContext, branch: "non-eligible-branch" };
 const mockedContextWithMainBranch = { ...mockedContext, branch: "main" };
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it("should return `false` in case of non-zero exit code", () => {
   vi.stubGlobal("process", { exitCode: 1 });

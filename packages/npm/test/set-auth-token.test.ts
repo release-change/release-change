@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getNpmrcFile } from "../src/get-npmrc-file.js";
 import { setAuthToken } from "../src/set-auth-token.js";
@@ -11,14 +11,9 @@ import { mockedPathToNpmrcFile } from "./fixtures/mocked-path-to-npmrc-file.js";
 // biome-ignore lint/suspicious/noTemplateCurlyInString: <literal `${}`>
 const expectedAuthTokenLine = "//registry.npmjs.org/:_authToken=${NPM_TOKEN}";
 
-beforeEach(() => {
-  vi.mock("../src/get-npmrc-file.js", () => ({
-    getNpmrcFile: vi.fn()
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("../src/get-npmrc-file.js", () => ({
+  getNpmrcFile: vi.fn()
+}));
 
 it("should append the `.npmrc` file if it already exists", () => {
   vi.spyOn(fs, "appendFileSync").mockImplementation(() => undefined);

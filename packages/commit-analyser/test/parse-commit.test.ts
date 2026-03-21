@@ -1,5 +1,5 @@
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
+import { assert, expect, it, vi } from "vitest";
 
 import { parseCommit } from "../src/index.js";
 import {
@@ -15,15 +15,10 @@ import {
 } from "./fixtures/mocked-commits.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
 
 it.each(mockedCommits)("should parse a commit ($type)", ({ commit, expected }) => {
   assert.deepEqual(parseCommit(commit, mockedContext), expected);

@@ -1,6 +1,6 @@
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommandSync } from "@release-change/shared";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { removeTag } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
@@ -8,17 +8,12 @@ import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const mockedGitTags = ["v1.0.0", "@monorepo/a@v1.0.0"];
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    runCommandSync: vi.fn()
-  }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  runCommandSync: vi.fn()
+}));
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it("should throw an error if the Git tag is empty", () => {
   const expectedError = new Error("Failed to remove a Git tag: The Git tag must not be empty.", {

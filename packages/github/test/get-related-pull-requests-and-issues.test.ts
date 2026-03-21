@@ -1,7 +1,7 @@
 import type { DetailedError } from "@release-change/shared";
 
 import { addErrorToContext, setLogger } from "@release-change/logger";
-import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
+import { assert, expect, it, vi } from "vitest";
 
 import { getAssociatedPullRequests } from "../src/get-associated-pull-requests.js";
 import { getIssues } from "../src/get-issues.js";
@@ -39,40 +39,36 @@ const mockedAssociatedPullRequests = [
   }
 ];
 
-beforeEach(() => {
-  global.fetch = mockedFetch;
-  vi.mock("@release-change/logger", () => ({
-    addErrorToContext: vi.fn(),
-    checkErrorType: vi.fn(),
-    setLogger: vi.fn()
-  }));
-  vi.mock("@release-change/ci", () => ({ getReleaseToken: vi.fn() }));
-  vi.mock("../src/get-repository-related-entry-point.js", () => ({
-    getRepositoryRelatedEntryPoint: vi.fn()
-  }));
-  vi.mock("../src/get-associated-pull-requests.js", () => ({
-    getAssociatedPullRequests: vi.fn()
-  }));
-  vi.mock("../src/get-issues.js", () => ({ getIssues: vi.fn() }));
-  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
-    if (error instanceof Error) {
-      const { cause } = error;
-      if (
-        cause &&
-        typeof cause === "object" &&
-        "title" in cause &&
-        "message" in cause &&
-        "details" in cause
-      ) {
-        context.errors.push(cause as DetailedError);
-      }
+global.fetch = mockedFetch;
+
+vi.mock("@release-change/logger", () => ({
+  addErrorToContext: vi.fn(),
+  checkErrorType: vi.fn(),
+  setLogger: vi.fn()
+}));
+vi.mock("@release-change/ci", () => ({ getReleaseToken: vi.fn() }));
+vi.mock("../src/get-repository-related-entry-point.js", () => ({
+  getRepositoryRelatedEntryPoint: vi.fn()
+}));
+vi.mock("../src/get-associated-pull-requests.js", () => ({
+  getAssociatedPullRequests: vi.fn()
+}));
+vi.mock("../src/get-issues.js", () => ({ getIssues: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(mockedEntryPoint);
+vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+  if (error instanceof Error) {
+    const { cause } = error;
+    if (
+      cause &&
+      typeof cause === "object" &&
+      "title" in cause &&
+      "message" in cause &&
+      "details" in cause
+    ) {
+      context.errors.push(cause as DetailedError);
     }
-  });
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-  vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(mockedEntryPoint);
-});
-afterEach(() => {
-  vi.clearAllMocks();
+  }
 });
 
 it.each(mockedFailureFetchesForCommits)("$title", async ({ response, expectedError }) => {

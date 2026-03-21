@@ -1,6 +1,6 @@
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { isAutoMergeAllowed } from "../src/is-auto-merge-allowed.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
@@ -12,16 +12,11 @@ import { mockedUri } from "./fixtures/mocked-uri.js";
 
 global.fetch = mockedFetch;
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
-  vi.mock("@release-change/ci", () => ({
-    getIssueAndPullRequestToken: vi.fn()
-  }));
-  vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
+vi.mock("@release-change/ci", () => ({
+  getIssueAndPullRequestToken: vi.fn()
+}));
+vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
 
 it("should throw an error if the entry point is empty", () => {
   const expectedError = new Error(

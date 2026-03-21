@@ -1,6 +1,6 @@
 import type { Config, Context } from "@release-change/shared";
 
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { getAllTags, getLatestValidTag } from "../src/index.js";
 import { mockedRepositoryUrl } from "./fixtures/mocked-repository-url.js";
@@ -186,15 +186,9 @@ const mockedPackages = [
   { name: "@monorepo/c", branch: "alpha", expectedGitTag: null }
 ];
 
-beforeEach(() => {
-  vi.mock("../src/get-all-tags.js", () => ({
-    getAllTags: vi.fn()
-  }));
-});
-
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("../src/get-all-tags.js", () => ({
+  getAllTags: vi.fn()
+}));
 
 it("should throw an error message when the branch is unknown", () => {
   vi.mocked(getAllTags).mockReturnValue(mockedValidGitTags);

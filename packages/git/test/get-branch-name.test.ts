@@ -1,5 +1,5 @@
 import { runCommandSync } from "@release-change/shared";
-import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
+import { afterEach, assert, expect, it, vi } from "vitest";
 
 import { getBranchName } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
@@ -9,11 +9,10 @@ import { mockedLogger } from "./fixtures/mocked-logger.js";
 const gitRevParseCommandArgs = ["rev-parse", "--abbrev-ref", "HEAD"];
 const gitShowCommandArgs = ["show", "-s", "--pretty=%d", "HEAD"];
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    runCommandSync: vi.fn()
-  }));
-});
+vi.mock("@release-change/shared", () => ({
+  runCommandSync: vi.fn()
+}));
+
 afterEach(() => {
   vi.clearAllMocks();
 });

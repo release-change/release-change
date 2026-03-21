@@ -1,6 +1,6 @@
 import { setLogger } from "@release-change/logger";
 import { formatDetailedError, runCommandSync } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { cancelCommitsSinceRef } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
@@ -8,17 +8,12 @@ import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const mockedCommitRef = "0123456789abcdefg";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    runCommandSync: vi.fn()
-  }));
-  vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  runCommandSync: vi.fn()
+}));
+vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it("should run the `git reset --hard` command", () => {
   const mockedCommand = vi

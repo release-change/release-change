@@ -1,16 +1,15 @@
 import { setLogger } from "@release-change/logger";
 import { runCommand } from "@release-change/shared";
-import { afterEach, assert, beforeEach, expect, it, vi } from "vitest";
+import { afterEach, assert, expect, it, vi } from "vitest";
 
 import { checkRepository } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
-beforeEach(() => {
-  vi.spyOn({ setLogger }, "setLogger").mockReturnValue(mockedLogger);
-  vi.mock("@release-change/shared", () => ({ runCommand: vi.fn() }));
-});
+vi.mock("@release-change/shared", () => ({ runCommand: vi.fn() }));
+vi.spyOn({ setLogger }, "setLogger").mockReturnValue(mockedLogger);
+
 afterEach(() => {
   vi.clearAllMocks();
 });

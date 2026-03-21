@@ -1,7 +1,7 @@
 import type { DetailedError, NextRelease } from "@release-change/shared";
 
 import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, assert, describe, expect, it, vi } from "vitest";
 
 import { incrementVersion } from "../src/increment-version.js";
 import { setNextRelease } from "../src/index.js";
@@ -11,31 +11,30 @@ import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedNextReleases } from "./fixtures/mocked-next-releases.js";
 import { mockedNextReleasesInMonorepo } from "./fixtures/mocked-next-releases-in-monorepo.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/logger", () => ({
-    addErrorToContext: vi.fn(),
-    checkErrorType: vi.fn(),
-    setLogger: vi.fn()
-  }));
-  vi.mock("../src/increment-version.js", () => ({
-    incrementVersion: vi.fn()
-  }));
-  vi.mocked(addErrorToContext).mockImplementation((error, context) => {
-    if (error instanceof Error) {
-      const { cause } = error;
-      if (
-        cause &&
-        typeof cause === "object" &&
-        "title" in cause &&
-        "message" in cause &&
-        "details" in cause
-      ) {
-        context.errors.push(cause as DetailedError);
-      }
+vi.mock("@release-change/logger", () => ({
+  addErrorToContext: vi.fn(),
+  checkErrorType: vi.fn(),
+  setLogger: vi.fn()
+}));
+vi.mock("../src/increment-version.js", () => ({
+  incrementVersion: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(addErrorToContext).mockImplementation((error, context) => {
+  if (error instanceof Error) {
+    const { cause } = error;
+    if (
+      cause &&
+      typeof cause === "object" &&
+      "title" in cause &&
+      "message" in cause &&
+      "details" in cause
+    ) {
+      context.errors.push(cause as DetailedError);
     }
-  });
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
+  }
 });
+
 afterEach(() => {
   vi.clearAllMocks();
 });

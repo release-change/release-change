@@ -1,15 +1,10 @@
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, expect, it, vi } from "vitest";
+import { expect, it, vi } from "vitest";
 
 import { setBranchName } from "../src/index.js";
 import { mockedBranchNames } from "./fixtures/mocked-branch-names.js";
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
 
 it("should throw an error when the target branch name is not defined", () => {
   const expectedError = new Error(

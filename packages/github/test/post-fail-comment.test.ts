@@ -1,7 +1,7 @@
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { checkErrorType, setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { getRepositoryRelatedEntryPoint, postFailComment } from "../src/index.js";
 import {
@@ -18,24 +18,19 @@ import { mockedUriForComments } from "./fixtures/mocked-uri.js";
 
 global.fetch = mockedFetch;
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
-  vi.mock("@release-change/logger", () => ({ checkErrorType: vi.fn(), setLogger: vi.fn() }));
-  vi.mock("@release-change/ci", () => ({
-    getIssueAndPullRequestToken: vi.fn()
-  }));
-  vi.mock("../src/get-repository-related-entry-point.js", () => ({
-    getRepositoryRelatedEntryPoint: vi.fn()
-  }));
-  vi.mocked(setLogger).mockReturnValue(mockedLogger);
-  vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
-  vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
-    "https://api.github.com/repos/user-id/repo-name"
-  );
-});
-afterEach(() => {
-  vi.clearAllMocks();
-});
+vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
+vi.mock("@release-change/logger", () => ({ checkErrorType: vi.fn(), setLogger: vi.fn() }));
+vi.mock("@release-change/ci", () => ({
+  getIssueAndPullRequestToken: vi.fn()
+}));
+vi.mock("../src/get-repository-related-entry-point.js", () => ({
+  getRepositoryRelatedEntryPoint: vi.fn()
+}));
+vi.mocked(setLogger).mockReturnValue(mockedLogger);
+vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
+  "https://api.github.com/repos/user-id/repo-name"
+);
+vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
 
 describe.each(mockedFailComments)("for $type and reference $reference", ({
   type,

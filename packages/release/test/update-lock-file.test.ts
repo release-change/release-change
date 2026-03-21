@@ -1,7 +1,7 @@
 import fs from "node:fs";
 
 import { formatDetailedError, runCommand, runCommandSync } from "@release-change/shared";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { updateLockFile } from "../src/update-lock-file.js";
 import { mockedContext } from "./fixtures/mocked-context-update.js";
@@ -12,14 +12,13 @@ const mockedPackageManagerCommands: { command: "npm" | "pnpm"; args: string[] }[
   { command: "npm", args: ["install", "--package-lock-only"] }
 ];
 
-beforeEach(() => {
-  vi.mock("@release-change/shared", () => ({
-    formatDetailedError: vi.fn(),
-    runCommand: vi.fn(),
-    runCommandSync: vi.fn(),
-    WORKSPACE_NAME: "release-change"
-  }));
-});
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  runCommand: vi.fn(),
+  runCommandSync: vi.fn(),
+  WORKSPACE_NAME: "release-change"
+}));
+
 afterEach(() => {
   vi.clearAllMocks();
 });

@@ -1,6 +1,6 @@
 import type { CliOptions, Config, DependencyUpdateMethod } from "@release-change/shared";
 
-import { afterEach, assert, beforeEach, describe, it, vi } from "vitest";
+import { assert, beforeEach, describe, it, vi } from "vitest";
 
 import { getConfigFile } from "../src/get-config-file.js";
 import { getRepositoryUrl } from "../src/get-repository-url.js";
@@ -21,16 +21,14 @@ const dependencyUpdateMethods: DependencyUpdateMethod[] = [
   "tilde-range"
 ];
 
+vi.mock("../src/get-config-file.js", () => ({
+  getConfigFile: vi.fn()
+}));
+vi.mock("../src/get-repository-url.js", () => ({ getRepositoryUrl: vi.fn() }));
+
 beforeEach(() => {
-  vi.mock("../src/get-config-file.js", () => ({
-    getConfigFile: vi.fn()
-  }));
-  vi.mock("../src/get-repository-url.js", () => ({ getRepositoryUrl: vi.fn() }));
   vi.mocked(getRepositoryUrl).mockReturnValue(mockedRepositoryUrl);
   vi.mocked(getConfigFile).mockReturnValue(null);
-});
-afterEach(() => {
-  vi.clearAllMocks();
 });
 
 it("should get config with default options when `config()` is called without arguments", async () => {

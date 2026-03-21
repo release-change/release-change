@@ -1,6 +1,6 @@
 import { spawn } from "node:child_process";
 
-import { afterEach, beforeEach, expect, expectTypeOf, it, vi } from "vitest";
+import { afterEach, expect, expectTypeOf, it, vi } from "vitest";
 
 import { runCommand } from "../src/index.js";
 import { mockedArgs } from "./fixtures/mocked-args.js";
@@ -16,9 +16,8 @@ const nonExistentCommand = "non-existant-command-12345";
 const args = ["some", "args"];
 const mockSpawn = spawn as ReturnType<typeof vi.fn>;
 
-beforeEach(() => {
-  vi.mock("node:child_process", () => ({ spawn: vi.fn() }));
-});
+vi.mock("node:child_process", () => ({ spawn: vi.fn() }));
+
 afterEach(() => {
   vi.clearAllMocks();
 });
