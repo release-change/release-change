@@ -1,5 +1,15 @@
 # @release-change/shared
 
+## 0.1.3
+
+### Patch changes
+
+- **shared:** return both stdout and stderr when a command results in a non-zero status ([`943fcee`](https://github.com/release-change/release-change/commit/943fcee4a17cdbf2e59736a32328967b742d9362))
+
+---
+
+**Full changelog:** [`@release-change/shared@v0.1.2...@release-change/shared@v0.1.3`](https://github.com/release-change/release-change/compare/@release-change/shared@v0.1.2...@release-change/shared@v0.1.3)
+
 ## 0.1.2
 
 ### Patch changes
