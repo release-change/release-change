@@ -1,5 +1,9 @@
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommandSync } from "@release-change/shared";
+import {
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommandSync
+} from "@release-change/shared";
 
 /**
  * Cancels the commits since the commit reference.
@@ -12,7 +16,8 @@ export const cancelCommitsSinceRef = (commitRef: string, cwd: string, debug = fa
   logger.setScope("git");
   if (commitRef) {
     const args = ["reset", "--hard", commitRef];
-    const { status, stdout, stderr } = runCommandSync("git", args, { cwd });
+    const commandResult = runCommandSync("git", args, { cwd });
+    const { status } = commandResult;
     if (debug) {
       logger.setDebugScope("git:cancel-commits-since-ref");
       logger.logDebug(`Command run: git ${args.join(" ")}`);
@@ -23,7 +28,7 @@ export const cancelCommitsSinceRef = (commitRef: string, cwd: string, debug = fa
         title: "Failed to run the `git reset` command",
         message: `The command failed with status ${status}.`,
         details: {
-          output: stderr || stdout || `Command failed with status ${status}.`,
+          output: formatOutputFromCommandResult(commandResult),
           command: `git ${args.join(" ")}`
         }
       });

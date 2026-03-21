@@ -1,7 +1,11 @@
 import type { Context } from "@release-change/shared";
 
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommand } from "@release-change/shared";
+import {
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommand
+} from "@release-change/shared";
 
 /**
  * Removes a Git tag on a remote repository.
@@ -19,7 +23,8 @@ export const removeTagOnRemoteRepository = async (
   logger.setScope("git");
   if (gitTag) {
     const args = ["push", "--delete", remoteName, gitTag];
-    const { status, stdout, stderr } = await runCommand("git", args);
+    const commandResult = await runCommand("git", args);
+    const { status } = commandResult;
     if (debug) {
       logger.setDebugScope("git:remove-tag-on-remote-repository");
       logger.logDebug(`Command run: git ${args.join(" ")}`);
@@ -30,7 +35,7 @@ export const removeTagOnRemoteRepository = async (
         title: "Failed to run the `git push` command",
         message: `The command failed with status ${status}.`,
         details: {
-          output: stderr || stdout || `Command failed with status ${status}.`,
+          output: formatOutputFromCommandResult(commandResult),
           command: `git ${args.join(" ")}`
         }
       });

@@ -1,4 +1,8 @@
-import { formatDetailedError, runCommand } from "@release-change/shared";
+import {
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommand
+} from "@release-change/shared";
 import { expect, it, vi } from "vitest";
 
 import { push } from "../src/push.js";
@@ -8,6 +12,7 @@ const mockedDestinationBranch = "release-change/main/1.0.0";
 
 vi.mock("@release-change/shared", () => ({
   formatDetailedError: vi.fn(),
+  formatOutputFromCommandResult: vi.fn(),
   runCommand: vi.fn()
 }));
 
@@ -30,6 +35,8 @@ it("should throw an error if the branch name is not defined", () => {
   );
 });
 it("should throw an error if the `git push` command fails", () => {
+  const expectedOutput =
+    "status: 1\n\nstdout: \n\nstderr: remote: error: GH013: Repository rule violations found for refs/heads/main.";
   const expectedError = new Error(
     "Failed to run the `git push` command: The command failed with status 1.",
     {
@@ -37,7 +44,7 @@ it("should throw an error if the `git push` command fails", () => {
         title: "Failed to run the `git push` command",
         message: "The command failed with status 1.",
         details: {
-          output: "remote: error: GH013: Repository rule violations found for refs/heads/main.",
+          output: expectedOutput,
           command: "git push origin branch-name"
         }
       }
@@ -48,6 +55,7 @@ it("should throw an error if the `git push` command fails", () => {
     stdout: "",
     stderr: "remote: error: GH013: Repository rule violations found for refs/heads/main."
   });
+  vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   expect(push(mockedContext, { destinationBranch: mockedDestinationBranch })).rejects.toThrow(
     expectedError

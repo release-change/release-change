@@ -1,5 +1,9 @@
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommand } from "@release-change/shared";
+import {
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommand
+} from "@release-change/shared";
 import { expect, it, vi } from "vitest";
 
 import { deleteBranchOnRemoteRepository } from "../src/index.js";
@@ -7,7 +11,11 @@ import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedReleaseBranch } from "./fixtures/mocked-release-branch.js";
 
-vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  formatOutputFromCommandResult: vi.fn(),
+  runCommand: vi.fn()
+}));
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
@@ -43,6 +51,7 @@ it("should run the `git push --delete` command", async () => {
   );
 });
 it("should throw an error if the `git push` command is run and fails", async () => {
+  const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
   const expectedError = new Error(
     "Failed to run the `git push` command: The command failed with status 128.",
     {
@@ -50,7 +59,7 @@ it("should throw an error if the `git push` command is run and fails", async () 
         title: "Failed to run the `git push` command",
         message: "The command failed with status 128.",
         details: {
-          output: "Some error message.",
+          output: expectedOutput,
           command: `git push --delete origin ${mockedReleaseBranch}`
         }
       }
@@ -61,6 +70,7 @@ it("should throw an error if the `git push` command is run and fails", async () 
     stdout: "",
     stderr: "Some error message."
   });
+  vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   await expect(deleteBranchOnRemoteRepository(mockedReleaseBranch, mockedContext)).rejects.toThrow(
     expectedError

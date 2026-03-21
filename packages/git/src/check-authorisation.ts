@@ -1,7 +1,12 @@
 import type { Context } from "@release-change/shared";
 
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError, runCommand } from "@release-change/shared";
+import {
+  deepInspectObject,
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommand
+} from "@release-change/shared";
 
 /**
  * Checks the authorisation to push commits to the remote repository.
@@ -20,19 +25,19 @@ export const checkAuthorisation = async (
     return;
   }
   const args = ["push", "--dry-run", "--no-verify", repositoryUrl, branch];
-  const gitCommandResult = await runCommand("git", args, { cwd });
+  const commandResult = await runCommand("git", args, { cwd });
   if (config.debug) {
     logger.setDebugScope("git:check-authorisation");
-    logger.logDebug(deepInspectObject(gitCommandResult));
+    logger.logDebug(deepInspectObject(commandResult));
   }
-  const { status, stdout, stderr } = gitCommandResult;
+  const { status } = commandResult;
   if (status) {
     process.exitCode = status;
     throw formatDetailedError({
       title: "Failed to run the `git push` command",
       message: `The command failed with status ${status}.`,
       details: {
-        output: stderr || stdout || `Command failed with status ${status}.`,
+        output: formatOutputFromCommandResult(commandResult),
         command: `git ${args.join(" ")}`
       }
     });

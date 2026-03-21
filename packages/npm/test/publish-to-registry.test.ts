@@ -3,7 +3,11 @@ import type { Context } from "@release-change/shared";
 import fs from "node:fs";
 
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommand } from "@release-change/shared";
+import {
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommand
+} from "@release-change/shared";
 import { afterEach, assert, describe, expect, it, vi } from "vitest";
 
 import { getAuthToken } from "../src/get-auth-token.js";
@@ -20,6 +24,7 @@ const mockedNpmrcFile = "//registry.npmjs.org/:_authToken=${NPM_TOKEN}";
 
 vi.mock("@release-change/shared", () => ({
   formatDetailedError: vi.fn(),
+  formatOutputFromCommandResult: vi.fn(),
   runCommand: vi.fn(),
   WORKSPACE_NAME: "release-change"
 }));
@@ -63,9 +68,7 @@ describe.each(
       }
     );
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrow(
-      expectedError
-    );
+    expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrow(expectedError);
   });
   it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` file already exists and sets auth token", async () => {
     vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
@@ -107,14 +110,15 @@ describe.each(
     expect(mockedRemoveAuthToken).toHaveBeenCalled();
   });
   it("should log an error message if the publish command fails", async () => {
+    const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
     const expectedError = new Error(
-      `Failed to run the \`${packageManager}\` command: The command failed with exit code 128.`,
+      `Failed to run the \`${packageManager} publish\` command: The command failed with exit code 128.`,
       {
         cause: {
-          title: `Failed to run the \`${packageManager}\` command`,
+          title: `Failed to run the \`${packageManager} publish\` command`,
           message: "The command failed with exit code 128.",
           details: {
-            output: "Some error message.",
+            output: expectedOutput,
             command: `${packageManager} ${args.join(" ")}`
           }
         }
@@ -124,6 +128,7 @@ describe.each(
       .mocked(runCommand)
       .mockResolvedValue({ status: 128, stdout: "", stderr: "Some error message." });
     vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
+    vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
     await expect(publishToRegistry(packagePublishing, mockedContextWithAuthToken)).rejects.toThrow(
       expectedError

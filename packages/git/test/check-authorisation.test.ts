@@ -1,5 +1,9 @@
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommand } from "@release-change/shared";
+import {
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommand
+} from "@release-change/shared";
 import { expect, it, vi } from "vitest";
 
 import { checkAuthorisation } from "../src/check-authorisation.js";
@@ -15,6 +19,7 @@ vi.mock("@release-change/logger", () => ({
 vi.mock("@release-change/shared", () => ({
   deepInspectObject: vi.fn(),
   formatDetailedError: vi.fn(),
+  formatOutputFromCommandResult: vi.fn(),
   runCommand: vi.fn(),
   WORKSPACE_NAME: "release-change"
 }));
@@ -26,6 +31,7 @@ it("should skip authorisation checking when the branch is not one of those from 
   expect(mockedLogger.logInfo).toHaveBeenCalledWith(expectedSkipLogMessage);
 });
 it("should throw an error when the Git command fails", async () => {
+  const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Error";
   const expectedError = new Error(
     "Failed to run the `git push` command: The command failed with status 128.",
     {
@@ -33,7 +39,7 @@ it("should throw an error when the Git command fails", async () => {
         title: "Failed to run the `git push` command",
         message: "The command failed with status 128.",
         details: {
-          output: "Error",
+          output: expectedOutput,
           command: `git push --dry-run --no-verify ${mockedRepositoryUrl} ${mockedContextWithEligibleBranch.branch}`
         }
       }
@@ -46,10 +52,11 @@ it("should throw an error when the Git command fails", async () => {
       stderr: "Error"
     })
   );
+  vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(
-    checkAuthorisation(mockedRepositoryUrl, mockedContextWithEligibleBranch)
-  ).rejects.toThrow(expectedError);
+  expect(checkAuthorisation(mockedRepositoryUrl, mockedContextWithEligibleBranch)).rejects.toThrow(
+    expectedError
+  );
 });
 it("should not catch any errors when the Git command does not fail", async () => {
   vi.mocked(runCommand).mockReturnValue(
