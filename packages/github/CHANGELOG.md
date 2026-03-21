@@ -1,5 +1,19 @@
 # @release-change/github
 
+## 0.1.5
+
+### Dependencies updates
+
+- @release-change/ci@0.1.3
+- @release-change/config@0.1.3
+- @release-change/commit-analyser@0.1.4
+- @release-change/logger@0.1.3
+- @release-change/shared@0.1.3
+
+---
+
+**Full changelog:** [`@release-change/github@v0.1.4...@release-change/github@v0.1.5`](https://github.com/release-change/release-change/compare/@release-change/github@v0.1.4...@release-change/github@v0.1.5)
+
 ## 0.1.4
 
 ### Patch changes
