@@ -3,7 +3,7 @@ import type { PackageManager } from "@release-change/get-packages";
 import fs from "node:fs";
 
 import { add, commit } from "@release-change/git";
-import { formatDetailedError } from "@release-change/shared";
+import { formatDetailedError, formatOutputFromCommandResult } from "@release-change/shared";
 import { describe, expect, it, vi } from "vitest";
 
 import { commitUpdatedFiles } from "../src/commit-updated-files.js";
@@ -20,6 +20,7 @@ const mockedPackageManagers: [PackageManager, string[]][] = [
 
 vi.mock("@release-change/shared", () => ({
   formatDetailedError: vi.fn(),
+  formatOutputFromCommandResult: vi.fn(),
   WORKSPACE_NAME: "release-change"
 }));
 vi.mock("@release-change/git", () => ({
@@ -45,7 +46,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
       }
     );
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(commitUpdatedFiles(nextRelease, null, mockedContext)).rejects.toThrow(
+    expect(commitUpdatedFiles(nextRelease, null, mockedContext)).rejects.toThrow(
       "The package manager is not found or is not one of those supported (npm or pnpm)."
     );
   });
@@ -56,6 +57,8 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
         : `${mockedContext.cwd}/${packagePath}/${file}`
     );
     it("should throw an error if the `git add` command fails", async () => {
+      const expectedOutput =
+        "status: 128\n\nstdout: \n\nstderr: fatal: path spec '/fake/path' did not match any files";
       const expectedError = new Error(
         "Failed to run the `git add` command: The command failed with status 128.",
         {
@@ -63,7 +66,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
             title: "Failed to run the `git add` command",
             message: "The command failed with status 128.",
             details: {
-              output: "fatal: path spec '/fake/path' did not match any files",
+              output: expectedOutput,
               command: "git add /fake/path"
             }
           }
@@ -74,12 +77,15 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
         stdout: "",
         stderr: "fatal: path spec '/fake/path' did not match any files"
       });
+      vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      await expect(commitUpdatedFiles(nextRelease, packageManager, mockedContext)).rejects.toThrow(
+      expect(commitUpdatedFiles(nextRelease, packageManager, mockedContext)).rejects.toThrow(
         expectedError
       );
     });
     it("should throw an error if the `git commit` command fails", async () => {
+      const expectedOutput =
+        'status: 1\n\nstdout: \n\nstderr: no changes added to commit (use "git add" and/or "git commit -a")';
       const expectedError = new Error(
         "Failed to run the `git commit` command: The command failed with status 1.",
         {
@@ -87,7 +93,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
             title: "Failed to run the `git commit` command",
             message: "The command failed with status 1.",
             details: {
-              output: 'no changes added to commit (use "git add" and/or "git commit -a")',
+              output: expectedOutput,
               command: `git commit -m chore: ${nextRelease.gitTag} [skip ci]\\n\\n${expectedFooter}`
             }
           }
@@ -99,8 +105,9 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
         stdout: 'no changes added to commit (use "git add" and/or "git commit -a")',
         stderr: ""
       });
+      vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      await expect(commitUpdatedFiles(nextRelease, packageManager, mockedContext)).rejects.toThrow(
+      expect(commitUpdatedFiles(nextRelease, packageManager, mockedContext)).rejects.toThrow(
         expectedError
       );
     });

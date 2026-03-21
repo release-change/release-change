@@ -1,5 +1,9 @@
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommand } from "@release-change/shared";
+import {
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommand
+} from "@release-change/shared";
 import { describe, expect, it, vi } from "vitest";
 
 import { removeTagOnRemoteRepository } from "../src/index.js";
@@ -8,7 +12,11 @@ import { mockedLogger } from "./fixtures/mocked-logger.js";
 
 const mockedGitTags = ["v1.0.0", "@monorepo/a@v1.0.0"];
 
-vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  formatOutputFromCommandResult: vi.fn(),
+  runCommand: vi.fn()
+}));
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
@@ -40,6 +48,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
     );
   });
   it("should throw an error if the `git push` command is run and fails", async () => {
+    const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
     const expectedError = new Error(
       "Failed to run the `git push` command: The command failed with status 128.",
       {
@@ -47,7 +56,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
           title: "Failed to run the `git push` command",
           message: "The command failed with status 128.",
           details: {
-            output: "Some error message.",
+            output: expectedOutput,
             command: `git push --delete origin ${mockedGitTag}`
           }
         }
@@ -58,6 +67,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
       stdout: "",
       stderr: "Some error message."
     });
+    vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
     await expect(removeTagOnRemoteRepository(mockedGitTag, mockedContext)).rejects.toThrow(
       expectedError

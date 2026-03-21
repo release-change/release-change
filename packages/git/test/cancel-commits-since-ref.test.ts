@@ -1,5 +1,9 @@
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommandSync } from "@release-change/shared";
+import {
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommandSync
+} from "@release-change/shared";
 import { expect, it, vi } from "vitest";
 
 import { cancelCommitsSinceRef } from "../src/index.js";
@@ -10,6 +14,7 @@ const mockedCommitRef = "0123456789abcdefg";
 
 vi.mock("@release-change/shared", () => ({
   formatDetailedError: vi.fn(),
+  formatOutputFromCommandResult: vi.fn(),
   runCommandSync: vi.fn()
 }));
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
@@ -42,6 +47,7 @@ it("should throw an error if the commit ref is empty", () => {
   expect(() => cancelCommitsSinceRef("", mockedCwd)).toThrow(expectedError);
 });
 it("should throw an error if the `git reset --hard` command is run and fails", () => {
+  const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
   const expectedError = new Error(
     "Failed to run the `git reset` command: The command failed with status 128.",
     {
@@ -49,7 +55,7 @@ it("should throw an error if the `git reset --hard` command is run and fails", (
         title: "Failed to run the `git reset` command",
         message: "The command failed with status 128.",
         details: {
-          output: "Some error message.",
+          output: expectedOutput,
           command: `git reset --hard ${mockedCommitRef}`
         }
       }
@@ -60,6 +66,7 @@ it("should throw an error if the `git reset --hard` command is run and fails", (
     stdout: "",
     stderr: "Some error message."
   });
+  vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   expect(() => cancelCommitsSinceRef(mockedCommitRef, mockedCwd)).toThrow(expectedError);
   expect(mockedLogger.logError).toHaveBeenCalledWith(

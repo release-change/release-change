@@ -1,5 +1,9 @@
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, runCommandSync } from "@release-change/shared";
+import {
+  formatDetailedError,
+  formatOutputFromCommandResult,
+  runCommandSync
+} from "@release-change/shared";
 import { describe, expect, it, vi } from "vitest";
 
 import { removeTag } from "../src/index.js";
@@ -10,6 +14,7 @@ const mockedGitTags = ["v1.0.0", "@monorepo/a@v1.0.0"];
 
 vi.mock("@release-change/shared", () => ({
   formatDetailedError: vi.fn(),
+  formatOutputFromCommandResult: vi.fn(),
   runCommandSync: vi.fn()
 }));
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
@@ -40,6 +45,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
     expect(mockedLogger.logInfo).toHaveBeenCalledWith(`Removed Git tag ${mockedGitTag}.`);
   });
   it("should throw an error if the `git tag` command is run and fails", () => {
+    const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
     const expectedError = new Error(
       "Failed to run the `git tag` command: The command failed with status 128.",
       {
@@ -47,7 +53,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
           title: "Failed to run the `git tag` command",
           message: "The command failed with status 128.",
           details: {
-            output: "Some error message.",
+            output: expectedOutput,
             command: `git tag -d ${mockedGitTag}`
           }
         }
@@ -58,6 +64,7 @@ describe.each(mockedGitTags)("for Git tag %s", mockedGitTag => {
       stdout: "",
       stderr: "Some error message."
     });
+    vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
     expect(() => removeTag(mockedGitTag, mockedCwd)).toThrow(expectedError);
     expect(mockedLogger.logError).toHaveBeenCalledWith(`Failed to remove Git tag ${mockedGitTag}.`);
