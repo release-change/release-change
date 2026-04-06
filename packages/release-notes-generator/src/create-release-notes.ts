@@ -5,7 +5,12 @@ import type { ReleaseNotes } from "./release-notes-generator.types.js";
 import { getReleaseToken } from "@release-change/ci";
 import { getRepositoryRelatedEntryPoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError, GITHUB_API_VERSION } from "@release-change/shared";
+import {
+  deepInspectObject,
+  formatDetailedError,
+  GITHUB_API_ACCEPT_HEADER,
+  GITHUB_API_VERSION
+} from "@release-change/shared";
 
 import { formatReleaseNotesBody } from "./format-release-notes-body.js";
 
@@ -36,7 +41,7 @@ export const createReleaseNotes = async (
   const releaseNotesResponse = await fetch(uri, {
     method: "POST",
     headers: {
-      Accept: "application/vnd.github+json",
+      Accept: GITHUB_API_ACCEPT_HEADER,
       Authorization: `Bearer ${releaseToken}`,
       "Content-Type": "application/json",
       "X-GitHub-Api-Version": GITHUB_API_VERSION

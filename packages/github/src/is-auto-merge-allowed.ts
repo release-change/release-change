@@ -3,7 +3,12 @@ import type { GitHubResponseError } from "./github.types.js";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError, GITHUB_API_VERSION } from "@release-change/shared";
+import {
+  deepInspectObject,
+  formatDetailedError,
+  GITHUB_API_ACCEPT_HEADER,
+  GITHUB_API_VERSION
+} from "@release-change/shared";
 
 export const isAutoMergeAllowed = async (
   repositoryEntryPoint: string,
@@ -18,7 +23,7 @@ export const isAutoMergeAllowed = async (
     const issuePullRequestToken = getIssueAndPullRequestToken(env);
     const repositoryResponse = await fetch(repositoryEntryPoint, {
       headers: {
-        Accept: "application/vnd.github+json",
+        Accept: GITHUB_API_ACCEPT_HEADER,
         Authorization: `Bearer ${issuePullRequestToken}`,
         "Content-Type": "application/json",
         "X-GitHub-Api-Version": GITHUB_API_VERSION

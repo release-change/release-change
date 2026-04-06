@@ -7,6 +7,7 @@ import {
   agreeInNumber,
   deepInspectObject,
   formatDetailedError,
+  GITHUB_API_ACCEPT_HEADER,
   GITHUB_API_VERSION
 } from "@release-change/shared";
 
@@ -42,7 +43,7 @@ export const tagPullRequestAndIssue = async (
     const issueClosingResponse = await fetch(uri, {
       method: "POST",
       headers: {
-        Accept: "application/vnd.github+json",
+        Accept: GITHUB_API_ACCEPT_HEADER,
         Authorization: `Bearer ${issuePullRequestToken}`,
         "Content-Type": "application/json",
         "X-GitHub-Api-Version": GITHUB_API_VERSION

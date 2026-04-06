@@ -1,6 +1,10 @@
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError, GITHUB_API_VERSION } from "@release-change/shared";
+import {
+  formatDetailedError,
+  GITHUB_API_ACCEPT_HEADER,
+  GITHUB_API_VERSION
+} from "@release-change/shared";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createPullRequest, getRepositoryRelatedEntryPoint } from "../src/index.js";
@@ -25,7 +29,8 @@ global.fetch = mockedFetch;
 
 vi.mock("@release-change/shared", () => ({
   formatDetailedError: vi.fn(),
-  GITHUB_API_VERSION: "2026-03-10"
+  GITHUB_API_VERSION: "2026-03-10",
+  GITHUB_API_ACCEPT_HEADER: "application/vnd.github+json"
 }));
 vi.mock("@release-change/logger", () => ({ checkErrorType: vi.fn(), setLogger: vi.fn() }));
 vi.mock("@release-change/ci", () => ({
@@ -142,7 +147,7 @@ describe.each(
     expect(mockedFetch).toHaveBeenCalledWith(mockedUriForPullRequests, {
       method: "POST",
       headers: {
-        Accept: "application/vnd.github+json",
+        Accept: GITHUB_API_ACCEPT_HEADER,
         Authorization: `Bearer ${mockedIssuePRToken}`,
         "Content-Type": "application/json",
         "X-GitHub-Api-Version": GITHUB_API_VERSION

@@ -3,7 +3,12 @@ import type { GitHubResponseError } from "./github.types.js";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError, GITHUB_API_VERSION } from "@release-change/shared";
+import {
+  deepInspectObject,
+  formatDetailedError,
+  GITHUB_API_ACCEPT_HEADER,
+  GITHUB_API_VERSION
+} from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 import { linkifyReleaseInfo } from "./linkify-release-info.js";
@@ -81,7 +86,7 @@ export const postSuccessComment = async (reference: Reference, context: Context)
     const successCommentResponse = await fetch(uri, {
       method: "POST",
       headers: {
-        Accept: "application/vnd.github+json",
+        Accept: GITHUB_API_ACCEPT_HEADER,
         Authorization: `Bearer ${issuePullRequestToken}`,
         "Content-Type": "application/json",
         "X-GitHub-Api-Version": GITHUB_API_VERSION

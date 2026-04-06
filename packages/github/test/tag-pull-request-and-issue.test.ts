@@ -1,6 +1,11 @@
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { agreeInNumber, formatDetailedError, GITHUB_API_VERSION } from "@release-change/shared";
+import {
+  agreeInNumber,
+  formatDetailedError,
+  GITHUB_API_ACCEPT_HEADER,
+  GITHUB_API_VERSION
+} from "@release-change/shared";
 import { describe, expect, it, vi } from "vitest";
 
 import { getRepositoryRelatedEntryPoint, tagPullRequestAndIssue } from "../src/index.js";
@@ -19,7 +24,8 @@ vi.mock("@release-change/shared", () => ({
   agreeInNumber: vi.fn(),
   formatDetailedError: vi.fn(),
   parsePathname: vi.fn(),
-  GITHUB_API_VERSION: "2026-03-10"
+  GITHUB_API_VERSION: "2026-03-10",
+  GITHUB_API_ACCEPT_HEADER: "application/vnd.github+json"
 }));
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
 vi.mock("@release-change/ci", () => ({ getIssueAndPullRequestToken: vi.fn() }));
@@ -107,7 +113,7 @@ describe.each(
     expect(mockedFetch).toHaveBeenCalledWith(mockedUriForLabels, {
       method: "POST",
       headers: {
-        Accept: "application/vnd.github+json",
+        Accept: GITHUB_API_ACCEPT_HEADER,
         Authorization: `Bearer ${mockedIssuePRToken}`,
         "Content-Type": "application/json",
         "X-GitHub-Api-Version": GITHUB_API_VERSION
