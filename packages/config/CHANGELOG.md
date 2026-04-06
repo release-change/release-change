@@ -1,5 +1,16 @@
 # @release-change/config
 
+## 0.2.0
+
+### Dependencies updates
+
+- @release-change/logger@0.2.0
+- @release-change/shared@0.2.0
+
+---
+
+**Full changelog:** [`@release-change/config@v0.1.3...@release-change/config@v0.2.0`](https://github.com/release-change/release-change/compare/@release-change/config@v0.1.3...@release-change/config@v0.2.0)
+
 ## 0.1.3
 
 ### Dependencies updates

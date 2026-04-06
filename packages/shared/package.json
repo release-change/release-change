@@ -1,6 +1,6 @@
 {
   "name": "@release-change/shared",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Some shared functions and types all over release-change",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",

@@ -1,6 +1,6 @@
 {
   "name": "@release-change/ci",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Get environment variables related to the CI",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",

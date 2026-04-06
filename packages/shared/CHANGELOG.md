@@ -1,5 +1,15 @@
 # @release-change/shared
 
+## 0.2.0
+
+### Minor changes
+
+- use new GitHub API version ([`183fa7c`](https://github.com/release-change/release-change/commit/183fa7c5c9f79d8f412ddacd8a9d62c45db74123))
+
+---
+
+**Full changelog:** [`@release-change/shared@v0.1.3...@release-change/shared@v0.2.0`](https://github.com/release-change/release-change/compare/@release-change/shared@v0.1.3...@release-change/shared@v0.2.0)
+
 ## 0.1.3
 
 ### Patch changes

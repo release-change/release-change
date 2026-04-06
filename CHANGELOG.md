@@ -1,5 +1,15 @@
 # release-change
 
+## 0.4.0
+
+### Minor changes
+
+- use new GitHub API version ([`183fa7c`](https://github.com/release-change/release-change/commit/183fa7c5c9f79d8f412ddacd8a9d62c45db74123))
+
+---
+
+**Full changelog:** [`v0.3.1...v0.4.0`](https://github.com/release-change/release-change/compare/v0.3.1...v0.4.0)
+
 ## 0.3.1
 
 ### Patch changes

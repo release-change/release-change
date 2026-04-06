@@ -1,5 +1,27 @@
 # @release-change/release
 
+## 0.3.0
+
+### Minor changes
+
+- use new GitHub API version ([`183fa7c`](https://github.com/release-change/release-change/commit/183fa7c5c9f79d8f412ddacd8a9d62c45db74123))
+
+### Dependencies updates
+
+- @release-change/config@0.2.0
+- @release-change/commit-analyser@0.2.0
+- @release-change/get-packages@0.2.0
+- @release-change/git@0.3.0
+- @release-change/github@0.2.0
+- @release-change/logger@0.2.0
+- @release-change/npm@0.2.0
+- @release-change/release-notes-generator@0.2.0
+- @release-change/shared@0.2.0
+
+---
+
+**Full changelog:** [`@release-change/release@v0.2.1...@release-change/release@v0.3.0`](https://github.com/release-change/release-change/compare/@release-change/release@v0.2.1...@release-change/release@v0.3.0)
+
 ## 0.2.1
 
 ### Patch changes
