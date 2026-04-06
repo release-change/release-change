@@ -1,6 +1,6 @@
 {
   "name": "@release-change/config",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Read and parse the repository configuration",
   "keywords": [],
   "homepage": "https://github.com/release-change/release-change",
