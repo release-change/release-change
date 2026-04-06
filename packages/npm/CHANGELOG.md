@@ -1,5 +1,18 @@
 # @release-change/npm
 
+## 0.2.0
+
+### Dependencies updates
+
+- @release-change/config@0.2.0
+- @release-change/get-packages@0.2.0
+- @release-change/logger@0.2.0
+- @release-change/shared@0.2.0
+
+---
+
+**Full changelog:** [`@release-change/npm@v0.1.3...@release-change/npm@v0.2.0`](https://github.com/release-change/release-change/compare/@release-change/npm@v0.1.3...@release-change/npm@v0.2.0)
+
 ## 0.1.3
 
 ### Patch changes
