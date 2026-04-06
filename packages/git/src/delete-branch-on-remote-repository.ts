@@ -26,7 +26,7 @@ export const deleteBranchOnRemoteRepository = async (
     const commandResult = await runCommand("git", args);
     const { status } = commandResult;
     if (debug) {
-      logger.setDebugScope("git:delete-remote-branch");
+      logger.setDebugScope("git:delete-branch-on-remote-repository");
       logger.logDebug(`Command run: git ${args.join(" ")}`);
     }
     if (status) {

@@ -31,4 +31,4 @@ export { parsePathname } from "./parse-pathname.js";
 export { runCommand } from "./run-command.js";
 export { runCommandSync } from "./run-command-sync.js";
 
-export { WORKSPACE_NAME } from "./constants.js";
+export { GITHUB_API_ACCEPT_HEADER, GITHUB_API_VERSION, WORKSPACE_NAME } from "./constants.js";

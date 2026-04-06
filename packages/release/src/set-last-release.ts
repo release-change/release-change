@@ -58,7 +58,7 @@ export const setLastRelease = (context: Context): void => {
     }
     context.lastRelease = lastRelease;
     if (config.debug) {
-      logger.setDebugScope("cli:release:set-last-release");
+      logger.setDebugScope("release:set-last-release");
       logger.logDebug(deepInspectObject(context.lastRelease));
     }
   } catch (error) {

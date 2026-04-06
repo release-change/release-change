@@ -3,7 +3,13 @@ import type { GitHubResponseError } from "./github.types.js";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { agreeInNumber, deepInspectObject, formatDetailedError } from "@release-change/shared";
+import {
+  agreeInNumber,
+  deepInspectObject,
+  formatDetailedError,
+  GITHUB_API_ACCEPT_HEADER,
+  GITHUB_API_VERSION
+} from "@release-change/shared";
 
 import { findNpmTagFromGitTag } from "./find-npm-tag-from-git-tag.js";
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
@@ -37,10 +43,10 @@ export const tagPullRequestAndIssue = async (
     const issueClosingResponse = await fetch(uri, {
       method: "POST",
       headers: {
-        Accept: "application/vnd.github+json",
+        Accept: GITHUB_API_ACCEPT_HEADER,
         Authorization: `Bearer ${issuePullRequestToken}`,
         "Content-Type": "application/json",
-        "X-GitHub-Api-Version": "2022-11-28"
+        "X-GitHub-Api-Version": GITHUB_API_VERSION
       },
       body: JSON.stringify(requestBody)
     });

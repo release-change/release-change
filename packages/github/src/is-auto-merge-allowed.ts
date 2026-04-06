@@ -3,7 +3,12 @@ import type { GitHubResponseError } from "./github.types.js";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError } from "@release-change/shared";
+import {
+  deepInspectObject,
+  formatDetailedError,
+  GITHUB_API_ACCEPT_HEADER,
+  GITHUB_API_VERSION
+} from "@release-change/shared";
 
 export const isAutoMergeAllowed = async (
   repositoryEntryPoint: string,
@@ -18,16 +23,16 @@ export const isAutoMergeAllowed = async (
     const issuePullRequestToken = getIssueAndPullRequestToken(env);
     const repositoryResponse = await fetch(repositoryEntryPoint, {
       headers: {
-        Accept: "application/vnd.github+json",
+        Accept: GITHUB_API_ACCEPT_HEADER,
         Authorization: `Bearer ${issuePullRequestToken}`,
         "Content-Type": "application/json",
-        "X-GitHub-Api-Version": "2022-11-28"
+        "X-GitHub-Api-Version": GITHUB_API_VERSION
       }
     });
     const { headers, status, statusText } = repositoryResponse;
     const repositoryResponseData = await repositoryResponse.json();
     if (debug) {
-      logger.setDebugScope("github:create-pull-request");
+      logger.setDebugScope("github:is-auto-merge-allowed");
       logger.logDebug(`API entry point: ${repositoryEntryPoint}`);
       logger.logDebug(`Response status: ${status}`);
       logger.logDebug(`Response status text: ${statusText}`);

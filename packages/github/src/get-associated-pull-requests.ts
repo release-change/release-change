@@ -7,7 +7,12 @@ import type {
 
 import { getReleaseToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError } from "@release-change/shared";
+import {
+  deepInspectObject,
+  formatDetailedError,
+  GITHUB_API_ACCEPT_HEADER,
+  GITHUB_API_VERSION
+} from "@release-change/shared";
 
 /**
  * Gets the pull requests associated with a given commit.
@@ -30,9 +35,9 @@ export const getAssociatedPullRequests = async (
   const associatedPullRequest: AssociatedPullRequest[] = [];
   const pullRequestResponse = await fetch(uri, {
     headers: {
-      Accept: "application/vnd.github+json",
+      Accept: GITHUB_API_ACCEPT_HEADER,
       Authorization: `Bearer ${releaseToken}`,
-      "X-GitHub-Api-Version": "2022-11-28"
+      "X-GitHub-Api-Version": GITHUB_API_VERSION
     }
   });
   const { headers, status, statusText } = pullRequestResponse;
