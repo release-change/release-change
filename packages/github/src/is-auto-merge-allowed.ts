@@ -27,7 +27,7 @@ export const isAutoMergeAllowed = async (
     const { headers, status, statusText } = repositoryResponse;
     const repositoryResponseData = await repositoryResponse.json();
     if (debug) {
-      logger.setDebugScope("github:create-pull-request");
+      logger.setDebugScope("github:is-auto-merge-allowed");
       logger.logDebug(`API entry point: ${repositoryEntryPoint}`);
       logger.logDebug(`Response status: ${status}`);
       logger.logDebug(`Response status text: ${statusText}`);
