@@ -12,7 +12,10 @@ import { mockedUri } from "./fixtures/mocked-uri.js";
 
 global.fetch = mockedFetch;
 
-vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  GITHUB_API_VERSION: "2026-03-10"
+}));
 vi.mock("@release-change/ci", () => ({
   getIssueAndPullRequestToken: vi.fn()
 }));

@@ -1,5 +1,6 @@
 import type { AssociatedPullRequest } from "../src/github.types.js";
 
+import { GITHUB_API_VERSION } from "@release-change/shared";
 import { assert, expect, it, vi } from "vitest";
 
 import { getAssociatedPullRequests } from "../src/get-associated-pull-requests.js";
@@ -66,7 +67,7 @@ it("should return the associated pull requests", async () => {
     headers: {
       Accept: "application/vnd.github+json",
       Authorization: `Bearer ${mockedEnv.RELEASE_TOKEN}`,
-      "X-GitHub-Api-Version": "2022-11-28"
+      "X-GitHub-Api-Version": GITHUB_API_VERSION
     }
   });
   assert.deepEqual(result, expected);

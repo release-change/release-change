@@ -3,7 +3,7 @@ import type { GitHubResponseError } from "./github.types.js";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError, GITHUB_API_VERSION } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 import { linkifyReleaseInfo } from "./linkify-release-info.js";
@@ -84,7 +84,7 @@ export const postSuccessComment = async (reference: Reference, context: Context)
         Accept: "application/vnd.github+json",
         Authorization: `Bearer ${issuePullRequestToken}`,
         "Content-Type": "application/json",
-        "X-GitHub-Api-Version": "2022-11-28"
+        "X-GitHub-Api-Version": GITHUB_API_VERSION
       },
       body: JSON.stringify(requestBody)
     });

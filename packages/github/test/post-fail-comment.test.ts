@@ -1,6 +1,6 @@
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { checkErrorType, setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { formatDetailedError, GITHUB_API_VERSION } from "@release-change/shared";
 import { describe, expect, it, vi } from "vitest";
 
 import { getRepositoryRelatedEntryPoint, postFailComment } from "../src/index.js";
@@ -18,7 +18,11 @@ import { mockedUriForComments } from "./fixtures/mocked-uri.js";
 
 global.fetch = mockedFetch;
 
-vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn(), runCommand: vi.fn() }));
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  runCommand: vi.fn(),
+  GITHUB_API_VERSION: "2026-03-10"
+}));
 vi.mock("@release-change/logger", () => ({ checkErrorType: vi.fn(), setLogger: vi.fn() }));
 vi.mock("@release-change/ci", () => ({
   getIssueAndPullRequestToken: vi.fn()
@@ -110,7 +114,7 @@ describe.each(mockedFailComments)("for $type and reference $reference", ({
         Accept: "application/vnd.github+json",
         Authorization: `Bearer ${mockedIssuePRToken}`,
         "Content-Type": "application/json",
-        "X-GitHub-Api-Version": "2022-11-28"
+        "X-GitHub-Api-Version": GITHUB_API_VERSION
       },
       body: JSON.stringify({
         body: expectedBody

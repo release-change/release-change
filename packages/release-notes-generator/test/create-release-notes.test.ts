@@ -1,6 +1,6 @@
 import { getRepositoryRelatedEntryPoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
-import { formatDetailedError } from "@release-change/shared";
+import { formatDetailedError, GITHUB_API_VERSION } from "@release-change/shared";
 import { assert, describe, expect, it, vi } from "vitest";
 
 import { formatReleaseNotesBody } from "../src/format-release-notes-body.js";
@@ -49,7 +49,10 @@ const mockedEnv = {
 
 global.fetch = mockedFetch;
 
-vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
+vi.mock("@release-change/shared", () => ({
+  formatDetailedError: vi.fn(),
+  GITHUB_API_VERSION: "2026-03-10"
+}));
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
 vi.mock("@release-change/github", () => ({ getRepositoryRelatedEntryPoint: vi.fn() }));
 vi.mock("../src/format-release-notes-body.js", () => ({ formatReleaseNotesBody: vi.fn() }));
@@ -132,7 +135,7 @@ describe.each(mockedReleaseNotes)("for $releaseNotes.tagName", async ({
         Accept: "application/vnd.github+json",
         Authorization: `Bearer ${mockedEnv.RELEASE_TOKEN}`,
         "Content-Type": "application/json",
-        "X-GitHub-Api-Version": "2022-11-28"
+        "X-GitHub-Api-Version": GITHUB_API_VERSION
       },
       body: JSON.stringify({
         ...requestBody,

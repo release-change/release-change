@@ -5,7 +5,7 @@ import type { ReleaseNotes } from "./release-notes-generator.types.js";
 import { getReleaseToken } from "@release-change/ci";
 import { getRepositoryRelatedEntryPoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
-import { deepInspectObject, formatDetailedError } from "@release-change/shared";
+import { deepInspectObject, formatDetailedError, GITHUB_API_VERSION } from "@release-change/shared";
 
 import { formatReleaseNotesBody } from "./format-release-notes-body.js";
 
@@ -39,7 +39,7 @@ export const createReleaseNotes = async (
       Accept: "application/vnd.github+json",
       Authorization: `Bearer ${releaseToken}`,
       "Content-Type": "application/json",
-      "X-GitHub-Api-Version": "2022-11-28"
+      "X-GitHub-Api-Version": GITHUB_API_VERSION
     },
     body: JSON.stringify(requestBody)
   });
