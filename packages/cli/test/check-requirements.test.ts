@@ -36,7 +36,7 @@ vi.mock("@release-change/shared", () => ({
     engines: {
       node: "^20.18.3 || ^22.12.0 || ^24.0.0",
       npm: ">=10.8.2",
-      pnpm: ">=10.33.1"
+      pnpm: ">=10.33.2"
     }
   },
   WORKSPACE_NAME: "release-change",
