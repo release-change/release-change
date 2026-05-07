@@ -253,7 +253,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       },
       {
         case: "if the last release is not defined",
-        errorMessage: "Failed to prepare the relase notes: The last release is not defined.",
+        errorMessage: "Failed to prepare the release notes: The last release is not defined.",
         errorCause: {
           title: "Failed to prepare the release notes",
           message: "The last release is not defined.",

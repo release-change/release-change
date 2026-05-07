@@ -167,7 +167,7 @@ export class Range implements SemverRangeData {
    *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than the next pre-minor version (e.g.: `3.4` and `3.4.x` become `<3.5.0-0`);
    *    - a complete version range (major, minor and patch) is replaced by a range less or equal to this version (e.g.: `3.4.5` becomes `<=3.4.5`);
    * - a range consisting of just an `x` is replaced by `*`;
-   * - any prerelease identifiers are kept, even tough the `includePrerelease` option is set to `false` or not declared.
+   * - any prerelease identifiers are kept, even though the `includePrerelease` option is set to `false` or not declared.
    * @param comparator - The range string with a comparator to parse.
    * @param [options] - The options to use (`includePrerelease`: whether to include pre-release versions or not, `loose`: whether to use loose mode or not).
    * @return A string containing the range the appropriate operators if a hyphen is present, the original string otherwise.
@@ -491,7 +491,7 @@ export class Range implements SemverRangeData {
    * The parsing follows the following rules:
    * - for each comparator set, if there are any null sets, the whole set is a null set;
    * - the same comparator is not included more than once;
-   * - if there are more than one comparator, remove any comparators with an empty-string operator.
+   * - if there is more than one comparator, remove any comparators with an empty-string operator.
    * @param range - The range string to parse.
    * @param [options] - The options to use (`includePrerelease`: whether to include pre-release versions or not, `loose`: whether to use loose mode or not).
    * @return An array of comparators.
