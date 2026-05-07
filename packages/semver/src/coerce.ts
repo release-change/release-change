@@ -43,7 +43,7 @@ export const coerce = (
   const match = rtl
     ? [...version.matchAll(includePrerelease ? COERCE_INCLUDING_PRERELEASE_RTL : COERCE_RTL)].pop()
     : version.match(includePrerelease ? COERCE_INCLUDING_PRERELEASE : COERCE);
-  if (!match || !match.groups) return null;
+  if (!match?.groups) return null;
   const { firstIdentifier, restIdentifiers, prerelease, build } = match.groups;
   const identifiersGroups = `${firstIdentifier ?? ""}${restIdentifiers ?? ""}`
     .split(".")

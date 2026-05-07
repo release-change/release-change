@@ -184,7 +184,7 @@ export class Range implements SemverRangeData {
           .split(" - ")
           .map((comparator, index) => {
             const match = comparator.match(loose ? PARTIAL_PATTERN_LOOSE : PARTIAL_PATTERN);
-            if (!match || !match.groups) return `${index ? "<=" : ">="}${comparator}`;
+            if (!match?.groups) return `${index ? "<=" : ">="}${comparator}`;
             if (comparator.match(/^x$/i)) return "*";
             const { major, minor, patch, prerelease } = match.groups;
             const isMinorNumeric = this.isNumeric(minor);
@@ -254,7 +254,7 @@ export class Range implements SemverRangeData {
       .map(comparator => {
         if (comparator.match(new RegExp(`^${TILDE_COMPARATOR_PATTERN}$`))) return "*";
         const match = comparator.match(loose ? TILDE_PATTERN_LOOSE : TILDE_PATTERN);
-        if (!match || !match.groups) return comparator;
+        if (!match?.groups) return comparator;
         const { major, minor, patch, prerelease } = match.groups;
         const isMajorNumeric = this.isNumeric(major);
         const isMinorNumeric = this.isNumeric(minor);
@@ -318,7 +318,7 @@ export class Range implements SemverRangeData {
         if (comparator === "^" || comparator.match(/^\^x/i)) return "*";
         if (comparator === "^0") return "<1.0.0-0";
         const match = comparator.match(loose ? CARET_PATTERN_LOOSE : CARET_PATTERN);
-        if (!match || !match.groups) return comparator;
+        if (!match?.groups) return comparator;
         const { major, minor, patch, prerelease } = match.groups;
         const isMajorNumeric = this.isNumeric(major);
         const isMinorNumeric = this.isNumeric(minor);
@@ -398,7 +398,7 @@ export class Range implements SemverRangeData {
         const match = comparator.match(
           loose ? PARTIAL_COMPARATOR_PATTERN_LOOSE : PARTIAL_COMPARATOR_PATTERN
         );
-        if (!match || !match.groups) return comparator;
+        if (!match?.groups) return comparator;
         const { operator, major, minor, patch, prerelease } = match.groups;
         const isMajorNumeric = this.isNumeric(major);
         const isMinorNumeric = this.isNumeric(minor);
