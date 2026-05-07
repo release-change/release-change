@@ -31,12 +31,12 @@ it.each(validVersions)("should return the object if $raw is parsed", ({
 it.each(validVersions)("should return the object as is if $raw is already in an object", ({
   raw
 }) => {
-  parse(new Semver(raw));
-  expect(Semver).not.toBeCalled;
+  const semver = new Semver(raw);
+  expect(parse(semver)).toBe(semver);
 });
 it.each(
   validVersionsInLooseMode
 )("should return the object as is if $raw is already in an object (loose mode)", ({ raw }) => {
-  parse(new Semver(raw, { loose: true }));
-  expect(Semver).not.toBeCalled;
+  const semver = new Semver(raw, { loose: true });
+  expect(parse(semver)).toBe(semver);
 });
