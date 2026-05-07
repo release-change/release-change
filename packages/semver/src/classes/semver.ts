@@ -37,7 +37,7 @@ export class Semver implements SemverData {
     const match = version
       .trim()
       .match(options?.loose ? VALID_SEMVER_PATTERN_LOOSE : VALID_SEMVER_PATTERN);
-    if (!match || !match.groups) throw new Error(`Invalid version \`${version}\`.`);
+    if (!match?.groups) throw new Error(`Invalid version \`${version}\`.`);
     const { versionCore, major, minor, patch, prerelease, build } = match.groups;
     if (!versionCore) throw new Error("Invalid version core.");
     this.raw = version;
@@ -165,7 +165,7 @@ export class Semver implements SemverData {
       }
       if (prefix) {
         const match = `-${prefix}`.match(PRERELEASE_PATTERN);
-        if (!match || !match.groups || match.groups.prerelease !== prefix) {
+        if (!match?.groups || match.groups.prerelease !== prefix) {
           throw new Error(`Invalid increment argument: the prefix \`${prefix}\` is invalid.`);
         }
       }

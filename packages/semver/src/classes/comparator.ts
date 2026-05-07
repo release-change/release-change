@@ -49,7 +49,7 @@ export class Comparator implements SemverComparatorData {
     if (comparator) {
       const { loose } = options ?? {};
       const match = comparator.match(loose ? COMPARATOR_PATTERN_LOOSE : COMPARATOR_PATTERN);
-      if (!match || !match.groups) throw new Error(`Invalid comparator \`${comparator}\`.`);
+      if (!match?.groups) throw new Error(`Invalid comparator \`${comparator}\`.`);
       const { operator, major, minor, patch, prerelease, build } = match.groups;
       if (!major || !minor || !patch) throw new Error(`Invalid comparator \`${comparator}\`.`);
       const version = `${major}.${minor}.${patch}${prerelease ? `-${prerelease}` : ""}${build ? `+${build}` : ""}`;
