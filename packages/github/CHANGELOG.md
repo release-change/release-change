@@ -1,5 +1,15 @@
 # @release-change/github
 
+## 0.2.1
+
+### Dependencies updates
+
+- @release-change/commit-analyser@0.2.1
+
+---
+
+**Full changelog:** [`@release-change/github@v0.2.0...@release-change/github@v0.2.1`](https://github.com/release-change/release-change/compare/@release-change/github@v0.2.0...@release-change/github@v0.2.1)
+
 ## 0.2.0
 
 ### Minor changes
