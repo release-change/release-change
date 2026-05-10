@@ -77,20 +77,20 @@ Here are examples of the workflow configuration (the file must be saved in the `
         id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
       steps:
         - name: Checkout
-          uses: actions/checkout@v5
+          uses: actions/checkout@v6
           with:
             fetch-depth: 0 # to clone the whole Git history
         - name: Install pnpm
-          uses: pnpm/action-setup@v5
+          uses: pnpm/action-setup@v6
           with:
-            version: 10
+            version: 11
         - name: Setup Node.js
-          uses: actions/setup-node@v5
+          uses: actions/setup-node@v6
           with:
             node-version: "lts/*"
             cache: "pnpm"
         - name: Install dependencies
-          run: pnpm install
+          run: pnpm clean-install
         - name: Release
           env:
             RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
@@ -122,11 +122,11 @@ Here are examples of the workflow configuration (the file must be saved in the `
         id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
       steps:
         - name: Checkout
-          uses: actions/checkout@v5
+          uses: actions/checkout@v6
           with:
             fetch-depth: 0 # to clone the whole Git history
         - name: Setup Node.js
-          uses: actions/setup-node@v5
+          uses: actions/setup-node@v6
           with:
             node-version: "lts/*"
             cache: "npm"
