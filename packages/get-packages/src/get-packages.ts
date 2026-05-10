@@ -34,7 +34,9 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
       if (content) {
         try {
           const globPatterns = getPnpmGlobPatterns(content);
-          packages.push(...(await getPackagesFromGlobPatterns(globPatterns, cwd)));
+          if (globPatterns) {
+            packages.push(...(await getPackagesFromGlobPatterns(globPatterns, cwd)));
+          }
           if (debug) {
             logger.logDebug(`Packages found (including root package): ${packages.length}`);
             logger.logDebug(deepInspectObject(packages));
