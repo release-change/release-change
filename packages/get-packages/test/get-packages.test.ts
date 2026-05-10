@@ -106,28 +106,6 @@ it("should throw an error if the package manager is npm and no `package.json` fi
   expect(addErrorToContext).toHaveBeenCalledWith(expectedError, mockedContextBase);
   assert.deepNestedInclude(mockedContextBase.errors, expectedError.cause);
 });
-it("should throw an error if the package manager is pnpm and the glob patterns do not return anything", async () => {
-  const expectedError = new Error(
-    "Failed to get the glob patterns: The root `pnpm-workspace.yaml` file must have a `packages` field.",
-    {
-      cause: {
-        title: "Failed to get the glob patterns",
-        message: "The root `pnpm-workspace.yaml` file must have a `packages` field.",
-        details: {
-          output: "patterns.include.length: 0"
-        }
-      }
-    }
-  );
-  vi.mocked(getPackageManager).mockReturnValue("pnpm");
-  vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue("no-packages:");
-  vi.mocked(getPnpmGlobPatterns).mockImplementation(() => {
-    throw expectedError;
-  });
-  await expect(getPackages(mockedContextBase)).rejects.toThrow();
-  expect(addErrorToContext).toHaveBeenCalledWith(expectedError, mockedContextBase);
-  assert.deepNestedInclude(mockedContextBase.errors, expectedError.cause);
-});
 it("should return one single package when the package manager is npm and the glob patterns do not return anything", async () => {
   vi.mocked(getPackageManager).mockReturnValue("npm");
   vi.mocked(getRootPackageManifest).mockReturnValue({ name: "my-package", version: "1.0.0" });
@@ -153,6 +131,12 @@ describe.each(npmPackages)("when the package manager is npm", ({ content, patter
 it("should return one single package when the package manager is pnpm and no `pnpm-workspace.yaml` file is found at the root", async () => {
   vi.mocked(getPackageManager).mockReturnValue("pnpm");
   vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(null);
+  assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
+});
+it("should return one single package when the package manager is pnpm and a `pnpm-workspace.yaml` file is found at the root and the glob patterns do not return anything", async () => {
+  vi.mocked(getPackageManager).mockReturnValue("pnpm");
+  vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue("no-packages:");
+  vi.mocked(getPnpmGlobPatterns).mockReturnValue(null);
   assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
 });
 describe.each(pnpmPackages)("when the package manager is pnpm", ({

@@ -3,22 +3,10 @@ import { assert, expect, it } from "vitest";
 import { getPnpmGlobPatterns } from "../src/index.js";
 import { pnpmWorkspaceManifestFiles } from "./fixtures/pnpm-workspace-manifest-files.js";
 
-it("should throw an error when no `packages` field is found in `pnpm-workspace.yaml`", () => {
+it("should return `null` when no `packages` field is found in `pnpm-workspace.yaml`", () => {
   const mockedContent = `catalog:
   chalk: ^4.1.2`;
-  expect(() => getPnpmGlobPatterns(mockedContent)).toThrow(
-    expect.objectContaining({
-      message:
-        "Failed to get the glob patterns: The root `pnpm-workspace.yaml` file must have a `packages` field.",
-      cause: {
-        title: "Failed to get the glob patterns",
-        message: "The root `pnpm-workspace.yaml` file must have a `packages` field.",
-        details: {
-          output: "patterns.include.length: 0"
-        }
-      }
-    })
-  );
+  expect(getPnpmGlobPatterns(mockedContent)).toBe(null);
 });
 it.each(
   pnpmWorkspaceManifestFiles
