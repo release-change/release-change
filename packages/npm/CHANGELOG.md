@@ -1,5 +1,15 @@
 # @release-change/npm
 
+## 0.2.1
+
+### Dependencies updates
+
+- @release-change/get-packages@0.2.1
+
+---
+
+**Full changelog:** [`@release-change/npm@v0.2.0...@release-change/npm@v0.2.1`](https://github.com/release-change/release-change/compare/@release-change/npm@v0.2.0...@release-change/npm@v0.2.1)
+
 ## 0.2.0
 
 ### Dependencies updates

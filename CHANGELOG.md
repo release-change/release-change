@@ -1,5 +1,15 @@
 # release-change
 
+## 0.4.1
+
+### Patch changes
+
+- **get-packages:** stop throwing an error when no `packages` field is found in `pnpm-workspace.yaml` (#655) ([`79f5bad`](https://github.com/release-change/release-change/commit/79f5badfc33dd5dfe8850fa36f45410475654503))
+
+---
+
+**Full changelog:** [`v0.4.0...v0.4.1`](https://github.com/release-change/release-change/compare/v0.4.0...v0.4.1)
+
 ## 0.4.0
 
 ### Minor changes
