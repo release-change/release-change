@@ -35,7 +35,7 @@ vi.mock("@release-change/shared", () => ({
   ROOT_PACKAGE_MANIFEST: {
     engines: {
       node: "^22.12.0 || ^24.0.0",
-      npm: ">=10.8.2",
+      npm: ">=10.9.0",
       pnpm: ">=11.0.9"
     }
   },
