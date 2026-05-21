@@ -14,6 +14,11 @@ import {
 import { findNpmTagFromGitTag } from "./find-npm-tag-from-git-tag.js";
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
 
+/**
+ * Tags the pull request and the issue with the release information.
+ * @param reference - The reference to the pull request or issue.
+ * @param context - The context where the CLI is running.
+ */
 export const tagPullRequestAndIssue = async (
   reference: Reference,
   context: Context

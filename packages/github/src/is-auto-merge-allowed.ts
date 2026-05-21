@@ -10,6 +10,12 @@ import {
   GITHUB_API_VERSION
 } from "@release-change/shared";
 
+/**
+ * Checks if auto-merge is allowed for the repository.
+ * @param repositoryEntryPoint - The entry point URL for the repository.
+ * @param context - The context where the CLI is running.
+ * @return `true` if the auto-merge is allowed, `false` otherwise.
+ */
 export const isAutoMergeAllowed = async (
   repositoryEntryPoint: string,
   context: Context
