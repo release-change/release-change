@@ -14,3 +14,20 @@ export type AssociatedPullRequest = {
   body: string | null;
   reference: Reference;
 };
+type GraphQLErrors = {
+  message: string;
+  locations?: { line: number; column: number }[];
+  path?: string[];
+}[];
+export type RepositoryMergeOptions = {
+  autoMergeAllowed: boolean;
+  mergeCommitAllowed: boolean;
+  rebaseMergeAllowed: boolean;
+  squashMergeAllowed: boolean;
+};
+export type RepositoryMergeInfoQuery = {
+  data?: {
+    repository: RepositoryMergeOptions;
+  };
+  errors?: GraphQLErrors;
+};
