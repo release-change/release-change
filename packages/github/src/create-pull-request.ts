@@ -17,8 +17,9 @@ import { isAutoMergeAllowed } from "./is-auto-merge-allowed.js";
  * Creates a pull request.
  * @param headBranch - The name of the branch to create the pull request from.
  * @param context - The context where the CLI is running.
+ * @return The ID of the newly created pull request as the `node_id` value.
  */
-export const createPullRequest = async (headBranch: string, context: Context): Promise<void> => {
+export const createPullRequest = async (headBranch: string, context: Context): Promise<string> => {
   const {
     env,
     config: { debug, repositoryUrl, isMonorepo },
@@ -59,7 +60,7 @@ ${releasesBody}`;
       body: JSON.stringify(requestBody)
     });
     const { headers, status, statusText } = pullRequestCreationResponse;
-    const pullRequestCreationResponseData = pullRequestCreationResponse.json();
+    const pullRequestCreationResponseData = await pullRequestCreationResponse.json();
     if (debug) {
       logger.setDebugScope("github:create-pull-request");
       logger.logDebug(`API entry point: ${uri}`);
@@ -67,41 +68,41 @@ ${releasesBody}`;
       logger.logDebug(`Response status: ${status}`);
       logger.logDebug(`Response status text: ${statusText}`);
       logger.logDebug(`Response headers: ${deepInspectObject(headers)}`);
-      logger.logDebug(`Response JSON: ${deepInspectObject(await pullRequestCreationResponseData)}`);
+      logger.logDebug(`Response JSON: ${deepInspectObject(pullRequestCreationResponseData)}`);
     }
-    if (status === 201) logger.logSuccess("Created the pull request successfully.");
-    else {
-      const responseError: GitHubResponseError = await pullRequestCreationResponseData;
-      const { message, documentation_url: documentationUrl } = responseError;
-      const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
-      logger.logError("Failed to create the pull request.");
-      process.exitCode = status;
-      throw formatDetailedError({
-        title: "Failed to create the pull request",
-        message: `${message}${documentationReference}`,
-        details: {
-          output: `status: ${status}`,
-          command: `POST ${uri}`
-        }
-      });
+    if (status === 201) {
+      logger.logSuccess("Created the pull request successfully.");
+      return pullRequestCreationResponseData.node_id;
     }
-  } else {
-    process.exitCode = 1;
+    const responseError: GitHubResponseError = await pullRequestCreationResponseData;
+    const { message, documentation_url: documentationUrl } = responseError;
+    const documentationReference = documentationUrl ? ` See ${documentationUrl}.` : "";
+    logger.logError("Failed to create the pull request.");
+    process.exitCode = status;
     throw formatDetailedError({
       title: "Failed to create the pull request",
-      message: branch
-        ? "The head branch must not be empty."
-        : headBranch
-          ? "The target branch is not defined."
-          : "Both the target branch and the head branch must be defined.",
+      message: `${message}${documentationReference}`,
       details: {
-        output: branch
-          ? `branch: ${branch}, headBranch: `
-          : headBranch
-            ? `branch: undefined, headBranch: ${headBranch}`
-            : "branch: undefined, headBranch: ",
-        command: "POST /repos/:owner/:repo/pulls"
+        output: `status: ${status}`,
+        command: `POST ${uri}`
       }
     });
   }
+  process.exitCode = 1;
+  throw formatDetailedError({
+    title: "Failed to create the pull request",
+    message: branch
+      ? "The head branch must not be empty."
+      : headBranch
+        ? "The target branch is not defined."
+        : "Both the target branch and the head branch must be defined.",
+    details: {
+      output: branch
+        ? `branch: ${branch}, headBranch: `
+        : headBranch
+          ? `branch: undefined, headBranch: ${headBranch}`
+          : "branch: undefined, headBranch: ",
+      command: "POST /repos/:owner/:repo/pulls"
+    }
+  });
 };

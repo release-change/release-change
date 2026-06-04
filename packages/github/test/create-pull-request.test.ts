@@ -134,16 +134,17 @@ describe.each(
     expect(process.exitCode).toBe(response.status);
   });
   it("should create a pull request", async () => {
+    const mockedNodeId = "fake_ID";
     const context = isMonorepo
       ? { ...mockedContextInMonorepo, nextRelease }
       : { ...mockedContext, nextRelease };
     vi.mocked(mockedFetch).mockResolvedValue({
       status: 201,
       statusText: "Created",
-      json: () => Promise.resolve({ message: "Created" })
+      json: () => Promise.resolve({ node_id: mockedNodeId })
     });
     vi.mocked(isAutoMergeAllowed).mockResolvedValue(isAutoMerge);
-    await createPullRequest(mockedHeadBranch, context);
+    const returnedId = await createPullRequest(mockedHeadBranch, context);
     expect(mockedFetch).toHaveBeenCalledWith(mockedUriForPullRequests, {
       method: "POST",
       headers: {
@@ -160,5 +161,6 @@ describe.each(
       })
     });
     expect(mockedLogger.logSuccess).toHaveBeenCalledWith("Created the pull request successfully.");
+    expect(returnedId).toBe(mockedNodeId);
   });
 });

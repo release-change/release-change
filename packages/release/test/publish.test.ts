@@ -170,6 +170,7 @@ describe.each(packageManagers)("for %s", packageManager => {
     mockedContextInMonorepoWithNextRelease
   ])("for isMonorepo: $config.isMonorepo", context => {
     const mockedReleaseBranch = "release-change/main/1.2.3";
+    const mockedNodeId = "fake_ID";
 
     beforeEach(() => {
       vi.mocked(getPackageDependencies).mockReturnValue([]);
@@ -186,7 +187,6 @@ describe.each(packageManagers)("for %s", packageManager => {
     afterEach(() => {
       vi.clearAllMocks();
     });
-
     it("should throw an error if the package manifest file is not found", async () => {
       const expectedErrorMessage =
         "Failed to find the package manifest file: Package /fake/path/package.json not found for root package.";
@@ -512,6 +512,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
       vi.mocked(createPullRequest).mockImplementation(async () => {
         operations.push("pullRequest");
+        return mockedNodeId;
       });
       await publish(context);
       expect(operations.lastIndexOf("tag")).toBeLessThan(operations.indexOf("push"));
@@ -573,6 +574,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
       vi.mocked(createPullRequest).mockImplementation(async () => {
         operations.push("pullRequest");
+        return mockedNodeId;
       });
       vi.mocked(createReleaseNotes).mockImplementation(async () => {
         operations.push("releaseNotes");
