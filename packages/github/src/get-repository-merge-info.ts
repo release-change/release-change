@@ -60,7 +60,7 @@ query($owner: String!, $repository: String!) {
     process.exitCode = 1;
     logger.logError("Failed to get the information about the repository merge options.");
     throw formatDetailedError({
-      title: "Failed to get the information about the repository merge options.",
+      title: "Failed to get the information about the repository merge options",
       message: "The GitHub API failed to provide information about the repository merge options.",
       details: {
         output: errors ? `errors: ${JSON.stringify(errors)}` : "{}",
