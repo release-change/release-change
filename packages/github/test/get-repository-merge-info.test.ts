@@ -70,5 +70,28 @@ it.each(mockedRepoMergeInfo)("should return the expected info", async ({ respons
   vi.mocked(mockedFetch).mockResolvedValue({
     json: () => Promise.resolve(response)
   });
+  expect(mockedFetch).toHaveBeenCalledWith("https://api.github.com/graphql", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${mockedIssuePRToken}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      query: `
+query($owner: String!, $repository: String!) {
+  repository(owner: $owner, name: $repository) {
+    autoMergeAllowed
+    mergeCommitAllowed
+    rebaseMergeAllowed
+    squashMergeAllowed
+  }
+}
+`,
+      pathname: {
+        owner: "user-id",
+        repository: "repo-name"
+      }
+    })
+  });
   assert.deepEqual(await getRepositoryMergeInfo(mockedContext), expected);
 });
