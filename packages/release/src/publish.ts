@@ -18,7 +18,12 @@ import {
   switchToBranch,
   switchToNewBranch
 } from "@release-change/git";
-import { createPullRequest } from "@release-change/github";
+import {
+  createPullRequest,
+  enableAutoMerge,
+  GITHUB_GRAPHQL_API_ENDPOINT,
+  getRepositoryMergeInfo
+} from "@release-change/github";
 import {
   addErrorToContext,
   checkErrorType,
@@ -97,7 +102,9 @@ export const publish = async (context: Context): Promise<void> => {
       for (const releaseNotes of releaseNotesSet) {
         await createReleaseNotes(releaseNotes, context);
       }
-      await createPullRequest(newBranch, context);
+      const repositoryMergeOptions = await getRepositoryMergeInfo(context);
+      const pullRequestId = await createPullRequest(newBranch, context);
+      await enableAutoMerge(pullRequestId, repositoryMergeOptions, context);
       for (const packagePublishing of packagePublishingSet) {
         await publishToRegistry(packagePublishing, context);
       }
@@ -120,7 +127,8 @@ export const publish = async (context: Context): Promise<void> => {
           (isCommandGitPush ||
             command.startsWith("git add") ||
             command.startsWith("git commit") ||
-            command.match(/^POST \S+\/(pull|release)s$/));
+            command.match(/^POST \S+\/(pull|release)s$/) ||
+            command.startsWith(`POST ${GITHUB_GRAPHQL_API_ENDPOINT}`));
         if (shouldRollback) {
           cancelCommitsSinceRef(commitRef, cwd, debug);
           if (branch && newBranch && newBranch !== branch) {

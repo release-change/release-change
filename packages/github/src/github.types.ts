@@ -31,3 +31,17 @@ export type RepositoryMergeInfoQuery = {
   };
   errors?: GraphQLErrors;
 };
+export type MergeMethod = "MERGE" | "REBASE" | "SQUASH";
+export type EnableAutoMergeQuery = {
+  data?: {
+    enablePullRequestAutoMerge: {
+      pullRequest: {
+        number: number;
+        autoMergeRequest: {
+          mergeMethod: MergeMethod;
+        };
+      };
+    };
+  };
+  errors?: GraphQLErrors;
+};
