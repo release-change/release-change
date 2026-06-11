@@ -1,5 +1,15 @@
 # @release-change/github
 
+## 0.3.1
+
+### Patch changes
+
+- **github:** do not skip CI on release pull requests ([`eea0cb4`](https://github.com/release-change/release-change/commit/eea0cb4a915c8dc0b1c598111c42e918c9c8655f))
+
+---
+
+**Full changelog:** [`@release-change/github@v0.3.0...@release-change/github@v0.3.1`](https://github.com/release-change/release-change/compare/@release-change/github@v0.3.0...@release-change/github@v0.3.1)
+
 ## 0.3.0
 
 ### Minor changes
