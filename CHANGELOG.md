@@ -1,5 +1,15 @@
 # release-change
 
+## 0.5.1
+
+### Patch changes
+
+- **github:** do not skip CI on release pull requests ([`eea0cb4`](https://github.com/release-change/release-change/commit/eea0cb4a915c8dc0b1c598111c42e918c9c8655f))
+
+---
+
+**Full changelog:** [`v0.5.0...v0.5.1`](https://github.com/release-change/release-change/compare/v0.5.0...v0.5.1)
+
 ## 0.5.0
 
 ### Minor changes
