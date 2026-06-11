@@ -1,5 +1,20 @@
 # @release-change/release
 
+## 0.4.1
+
+### Patch changes
+
+- **github:** do not skip CI on release pull requests ([`eea0cb4`](https://github.com/release-change/release-change/commit/eea0cb4a915c8dc0b1c598111c42e918c9c8655f))
+
+### Dependencies updates
+
+- @release-change/github@0.3.1
+- @release-change/release-notes-generator@0.3.1
+
+---
+
+**Full changelog:** [`@release-change/release@v0.4.0...@release-change/release@v0.4.1`](https://github.com/release-change/release-change/compare/@release-change/release@v0.4.0...@release-change/release@v0.4.1)
+
 ## 0.4.0
 
 ### Minor changes
