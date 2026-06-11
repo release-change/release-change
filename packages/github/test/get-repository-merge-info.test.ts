@@ -87,7 +87,7 @@ query($owner: String!, $repository: String!) {
   }
 }
 `,
-      pathname: {
+      variables: {
         owner: "user-id",
         repository: "repo-name"
       }

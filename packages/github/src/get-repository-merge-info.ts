@@ -1,13 +1,9 @@
+import type { Context } from "@release-change/shared";
 import type { RepositoryMergeInfoQuery, RepositoryMergeOptions } from "./github.types.js";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
-import {
-  type Context,
-  deepInspectObject,
-  formatDetailedError,
-  parsePathname
-} from "@release-change/shared";
+import { deepInspectObject, formatDetailedError, parsePathname } from "@release-change/shared";
 
 import { GITHUB_GRAPHQL_API_ENDPOINT } from "./constants.js";
 
@@ -43,7 +39,7 @@ query($owner: String!, $repository: String!) {
       },
       body: JSON.stringify({
         query,
-        pathname
+        variables: pathname
       })
     });
     const repositoryMergeInfoResponseData: RepositoryMergeInfoQuery =
