@@ -16,7 +16,7 @@ import {
   switchToBranch,
   switchToNewBranch
 } from "@release-change/git";
-import { createPullRequest } from "@release-change/github";
+import { createPullRequest, enableAutoMerge, getRepositoryMergeInfo } from "@release-change/github";
 import { addErrorToContext, isDetailedError, setLogger } from "@release-change/logger";
 import { preparePublishing, publishToRegistry } from "@release-change/npm";
 import {
@@ -72,7 +72,12 @@ vi.mock("@release-change/git", () => ({
   removeTag: vi.fn(),
   removeTagOnRemoteRepository: vi.fn()
 }));
-vi.mock("@release-change/github", () => ({ createPullRequest: vi.fn() }));
+vi.mock("@release-change/github", () => ({
+  enableAutoMerge: vi.fn(),
+  createPullRequest: vi.fn(),
+  getRepositoryMergeInfo: vi.fn(),
+  GITHUB_GRAPHQL_API_ENDPOINT: "https://api.github.com/graphql"
+}));
 vi.mock("@release-change/release-notes-generator", () => ({
   prepareReleaseNotes: vi.fn(),
   updateChangelogFile: vi.fn(),
@@ -112,9 +117,17 @@ it("should not call `push()` if `context.nextRelease` is undefined", async () =>
   await publish(mockedContext);
   expect(push).not.toHaveBeenCalled();
 });
+it("should not call `getRepositoryMergeInfo()` if `context.nextRelease` is undefined", async () => {
+  await publish(mockedContext);
+  expect(getRepositoryMergeInfo).not.toHaveBeenCalled();
+});
 it("should not call `createPullRequest()` if `context.nextRelease` is undefined", async () => {
   await publish(mockedContext);
   expect(createPullRequest).not.toHaveBeenCalled();
+});
+it("should not call `enableAutoMerge()` if `context.nextRelease` is undefined", async () => {
+  await publish(mockedContext);
+  expect(enableAutoMerge).not.toHaveBeenCalled();
 });
 it("should not call any functions allowing to switch to a new branch if `context.nextRelease` is undefined", async () => {
   await publish(mockedContext);
@@ -170,6 +183,7 @@ describe.each(packageManagers)("for %s", packageManager => {
     mockedContextInMonorepoWithNextRelease
   ])("for isMonorepo: $config.isMonorepo", context => {
     const mockedReleaseBranch = "release-change/main/1.2.3";
+    const mockedPullRequestReference = { pullRequestNumber: 123, pullRequestId: "fake_ID" };
 
     beforeEach(() => {
       vi.mocked(getPackageDependencies).mockReturnValue([]);
@@ -177,16 +191,21 @@ describe.each(packageManagers)("for %s", packageManager => {
       vi.mocked(updatePackageVersion).mockImplementation(() => undefined);
       vi.mocked(updateLockFile).mockResolvedValue();
       vi.mocked(updateChangelogFile).mockImplementation(() => undefined);
-      vi.mocked(commitUpdatedFiles).mockResolvedValue();
+      vi.mocked(commitUpdatedFiles).mockResolvedValue("commit message");
       vi.mocked(getCurrentCommitId).mockReturnValue("0123456");
       vi.mocked(createTag).mockImplementation(() => undefined);
       vi.mocked(createReleaseNotes).mockResolvedValue();
       vi.mocked(preparePublishing).mockResolvedValue(null);
+      vi.mocked(getRepositoryMergeInfo).mockResolvedValue({
+        autoMergeAllowed: true,
+        mergeCommitAllowed: true,
+        rebaseMergeAllowed: true,
+        squashMergeAllowed: true
+      });
     });
     afterEach(() => {
       vi.clearAllMocks();
     });
-
     it("should throw an error if the package manifest file is not found", async () => {
       const expectedErrorMessage =
         "Failed to find the package manifest file: Package /fake/path/package.json not found for root package.";
@@ -337,7 +356,9 @@ describe.each(packageManagers)("for %s", packageManager => {
         destinationBranch: mockedBranch,
         includeTags: true
       });
+      expect(getRepositoryMergeInfo).toHaveBeenCalled();
       expect(createPullRequest).toHaveBeenCalled();
+      expect(enableAutoMerge).toHaveBeenCalled();
       expect(createReleaseNotes).toHaveBeenCalled();
       expect(publishToRegistry).toHaveBeenCalled();
     });
@@ -431,6 +452,36 @@ describe.each(packageManagers)("for %s", packageManager => {
       expect(removeTag).toHaveBeenCalled();
       expect(removeTagOnRemoteRepository).toHaveBeenCalled();
     });
+    it("should rollback commits, remove tags and delete release branch when repository merge options request fails", async () => {
+      const { branch, cwd } = context;
+      const mockedError = new Error(
+        "Failed to get the information about the repository merge options: The GitHub API failed to provide information about the repository merge options.",
+        {
+          cause: {
+            title: "Failed to get the information about the repository merge options",
+            message:
+              "The GitHub API failed to provide information about the repository merge options.",
+            details: {
+              output: "{}",
+              command:
+                "POST https://api.github.com/graphql query($owner, $repository) { repository(owner, name) {} }"
+            }
+          }
+        }
+      );
+      vi.mocked(getRepositoryMergeInfo).mockRejectedValue(mockedError);
+      await expect(publish(context)).rejects.toThrow(mockedError);
+      expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
+        "0123456",
+        expect.any(String),
+        expect.any(Boolean)
+      );
+      expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
+      expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
+      expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
+      expect(removeTag).toHaveBeenCalled();
+      expect(removeTagOnRemoteRepository).toHaveBeenCalled();
+    });
     it("should rollback commits, remove tags and delete release branch when pull request creation fails", async () => {
       const { branch, cwd } = context;
       const mockedError = new Error(
@@ -487,7 +538,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       expect(removeTag).toHaveBeenCalled();
       expect(removeTagOnRemoteRepository).toHaveBeenCalled();
     });
-    it("should not rollback when error is not from `git add`, `git commit`, `git push`, pull request creation or release notes creation", async () => {
+    it("should not rollback when error is not from `git add`, `git commit`, `git push`, repository merge options request, pull request creation or release notes creation", async () => {
       vi.mocked(updateLockFile).mockRejectedValue(new Error("Lock file update failed"));
       await expect(publish(context)).rejects.toThrow();
       expect(cancelCommitsSinceRef).not.toHaveBeenCalled();
@@ -512,6 +563,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
       vi.mocked(createPullRequest).mockImplementation(async () => {
         operations.push("pullRequest");
+        return mockedPullRequestReference;
       });
       await publish(context);
       expect(operations.lastIndexOf("tag")).toBeLessThan(operations.indexOf("push"));
@@ -573,6 +625,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
       vi.mocked(createPullRequest).mockImplementation(async () => {
         operations.push("pullRequest");
+        return mockedPullRequestReference;
       });
       vi.mocked(createReleaseNotes).mockImplementation(async () => {
         operations.push("releaseNotes");

@@ -17,12 +17,13 @@ import {
  * @param packageNextRelease - The next release data to use.
  * @param packageManager - The package manager used by the project.
  * @param context - The context where the CLI is running.
+ * @return The commit message.
  */
 export const commitUpdatedFiles = async (
   packageNextRelease: PackageNextRelease,
   packageManager: PackageManager,
   context: Context
-): Promise<void> => {
+): Promise<string> => {
   const { cwd, config } = context;
   const { debug } = config;
   const logger = setLogger(debug);
@@ -74,14 +75,14 @@ export const commitUpdatedFiles = async (
         }
       });
     }
-  } else {
-    process.exitCode = process.exitCode ?? 1;
-    throw formatDetailedError({
-      title: "Failed to commit the updated files",
-      message: "The package manager is not found or is not one of those supported (npm or pnpm).",
-      details: {
-        output: `packageManager: ${packageManager}`
-      }
-    });
+    return commitMessage;
   }
+  process.exitCode = process.exitCode ?? 1;
+  throw formatDetailedError({
+    title: "Failed to commit the updated files",
+    message: "The package manager is not found or is not one of those supported (npm or pnpm).",
+    details: {
+      output: `packageManager: ${packageManager}`
+    }
+  });
 };

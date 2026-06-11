@@ -1,3 +1,4 @@
+import type { PullRequestReference } from "@release-change/github";
 import type { PackagePublishing } from "@release-change/npm";
 import type { ReleaseNotes } from "@release-change/release-notes-generator";
 import type { Context } from "@release-change/shared";
@@ -18,7 +19,12 @@ import {
   switchToBranch,
   switchToNewBranch
 } from "@release-change/git";
-import { createPullRequest } from "@release-change/github";
+import {
+  createPullRequest,
+  enableAutoMerge,
+  GITHUB_GRAPHQL_API_ENDPOINT,
+  getRepositoryMergeInfo
+} from "@release-change/github";
 import {
   addErrorToContext,
   checkErrorType,
@@ -61,6 +67,7 @@ export const publish = async (context: Context): Promise<void> => {
       const releaseNotesSet: ReleaseNotes[] = [];
       newBranch = setBranchName(branch, nextRelease);
       switchToNewBranch(newBranch, cwd);
+      const commits: string[] = [];
       for (const nextReleasePackage of nextRelease) {
         const { pathname } = nextReleasePackage;
         const packageDependencies = getPackageDependencies(
@@ -87,7 +94,7 @@ export const publish = async (context: Context): Promise<void> => {
           );
         await updateLockFile(nextReleasePackage, context, packageManager);
         updateChangelogFile(nextReleasePackage, preparedReleaseNotes.body, cwd);
-        await commitUpdatedFiles(nextReleasePackage, packageManager, context);
+        commits.push(await commitUpdatedFiles(nextReleasePackage, packageManager, context));
         createTag(nextReleasePackage, getCurrentCommitId(cwd), debug);
         newGitTags.push(nextReleasePackage.gitTag);
         const packagePublishing = await preparePublishing(nextReleasePackage, context);
@@ -97,7 +104,12 @@ export const publish = async (context: Context): Promise<void> => {
       for (const releaseNotes of releaseNotesSet) {
         await createReleaseNotes(releaseNotes, context);
       }
-      await createPullRequest(newBranch, context);
+      const repositoryMergeOptions = await getRepositoryMergeInfo(context);
+      const pullRequestReference: PullRequestReference = {
+        ...(await createPullRequest(newBranch, repositoryMergeOptions, context)),
+        commits
+      };
+      await enableAutoMerge(pullRequestReference, repositoryMergeOptions, context);
       for (const packagePublishing of packagePublishingSet) {
         await publishToRegistry(packagePublishing, context);
       }
@@ -120,7 +132,8 @@ export const publish = async (context: Context): Promise<void> => {
           (isCommandGitPush ||
             command.startsWith("git add") ||
             command.startsWith("git commit") ||
-            command.match(/^POST \S+\/(pull|release)s$/));
+            command.match(/^POST \S+\/(pull|release)s$/) ||
+            command.startsWith(`POST ${GITHUB_GRAPHQL_API_ENDPOINT}`));
         if (shouldRollback) {
           cancelCommitsSinceRef(commitRef, cwd, debug);
           if (branch && newBranch && newBranch !== branch) {
