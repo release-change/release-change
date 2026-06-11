@@ -31,6 +31,7 @@ export const enableAutoMerge = async (
     config: { debug, isMonorepo }
   } = context;
   const logger = setLogger(debug);
+  logger.setScope("github");
   const { autoMergeAllowed, mergeCommitAllowed, rebaseMergeAllowed, squashMergeAllowed } =
     mergeOptions;
   if (autoMergeAllowed) {

@@ -18,6 +18,7 @@ export const getRepositoryMergeInfo = async (context: Context): Promise<Reposito
     config: { debug, repositoryUrl }
   } = context;
   const logger = setLogger(debug);
+  logger.setScope("github");
   const { pathname } = new URL(repositoryUrl);
   const pathnameGroups = parsePathname(pathname);
   if (pathnameGroups) {
