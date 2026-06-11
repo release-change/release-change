@@ -58,7 +58,7 @@ export const enableAutoMerge = async (
         let commitBody: string | undefined;
         if (mergeMethod !== "REBASE" && commit) {
           if (isMonorepo) {
-            commitHeadline = "chore: release version packages [skip ci]";
+            commitHeadline = "chore: release version packages";
             const signature = `Co-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
             if (mergeMethod === "SQUASH") {
               commitBody = `${commits

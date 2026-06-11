@@ -94,7 +94,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
             message: "The command failed with status 1.",
             details: {
               output: expectedOutput,
-              command: `git commit -m chore: ${nextRelease.gitTag} [skip ci]\\n\\n${expectedFooter}`
+              command: `git commit -m chore: ${nextRelease.gitTag}\\n\\n${expectedFooter}`
             }
           }
         }
@@ -131,7 +131,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
         .mocked(commit)
         .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       vi.mocked(add).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      const expectedCommit = `chore: ${nextRelease.gitTag} [skip ci]\n\n${expectedFooter}`;
+      const expectedCommit = `chore: ${nextRelease.gitTag}\n\n${expectedFooter}`;
       const resultingCommit = await commitUpdatedFiles(nextRelease, packageManager, mockedContext);
       expect(mockedCommand).toHaveBeenCalledWith(expectedCommit, mockedContext.cwd);
       expect(resultingCommit).toBe(expectedCommit);

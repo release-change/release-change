@@ -25,6 +25,8 @@ It uses the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0
 
 It is meant to be integrated in a CI environment. For each new commit added to one of the release branches (for example: `main`), with `git push`, a pull request merging or a merging from another branch, a CI build is triggered and runs the `release-change` command to make a release if there are codebase changes since the last release which affect the package functionalities.
 
+When a release is made, a release pull request is automatically created. If your repository allows auto-merge, you can use the [release-change-approve bot](https://github.com/apps/release-change-approve) to automatically approve this release pull request.
+
 ## Requirements
 
 To use release-change, you need:

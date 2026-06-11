@@ -57,7 +57,7 @@ export const commitUpdatedFiles = async (
         }
       });
     }
-    const commitMessage = `chore: ${packageNextRelease.gitTag} [skip ci]\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
+    const commitMessage = `chore: ${packageNextRelease.gitTag}\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
     const gitCommitCommandResult = await commit(commitMessage, cwd);
     const { status: gitCommitStatus } = gitCommitCommandResult;
     if (debug) {

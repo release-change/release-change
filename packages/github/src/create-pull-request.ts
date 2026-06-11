@@ -52,7 +52,7 @@ export const createPullRequest = async (
 ${autoMergeBody}
 ${releasesBody}`;
     const requestBody = {
-      title: `chore: release version ${packageNumber} [skip ci]`,
+      title: `chore: release version ${packageNumber}`,
       head: headBranch,
       base: branch,
       body: commentBody

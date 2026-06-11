@@ -5,7 +5,7 @@ const commitSignature =
 const pullRequestReference: PullRequestReference = {
   pullRequestNumber: 123,
   pullRequestId: "fake_ID",
-  commits: [`chore: v1.0.0 [skip ci]\n\n${commitSignature}`]
+  commits: [`chore: v1.0.0\n\n${commitSignature}`]
 };
 export const mockedAutoMergeEnablings = [
   {
@@ -17,7 +17,7 @@ export const mockedAutoMergeEnablings = [
       squashMergeAllowed: false
     },
     expectedMergeMethod: "MERGE",
-    expectedCommitHeadline: "chore: v1.0.0 [skip ci] (#123)",
+    expectedCommitHeadline: "chore: v1.0.0 (#123)",
     expectedCommitBody: commitSignature
   },
   {
@@ -29,7 +29,7 @@ export const mockedAutoMergeEnablings = [
       squashMergeAllowed: false
     },
     expectedMergeMethod: "MERGE",
-    expectedCommitHeadline: "chore: v1.0.0 [skip ci] (#123)",
+    expectedCommitHeadline: "chore: v1.0.0 (#123)",
     expectedCommitBody: commitSignature
   },
   {
@@ -41,7 +41,7 @@ export const mockedAutoMergeEnablings = [
       squashMergeAllowed: true
     },
     expectedMergeMethod: "SQUASH",
-    expectedCommitHeadline: "chore: v1.0.0 [skip ci] (#123)",
+    expectedCommitHeadline: "chore: v1.0.0 (#123)",
     expectedCommitBody: commitSignature
   },
   {
@@ -53,7 +53,7 @@ export const mockedAutoMergeEnablings = [
       squashMergeAllowed: true
     },
     expectedMergeMethod: "SQUASH",
-    expectedCommitHeadline: "chore: v1.0.0 [skip ci] (#123)",
+    expectedCommitHeadline: "chore: v1.0.0 (#123)",
     expectedCommitBody: commitSignature
   },
   {
@@ -77,7 +77,7 @@ export const mockedAutoMergeEnablings = [
       squashMergeAllowed: true
     },
     expectedMergeMethod: "SQUASH",
-    expectedCommitHeadline: "chore: v1.0.0 [skip ci] (#123)",
+    expectedCommitHeadline: "chore: v1.0.0 (#123)",
     expectedCommitBody: commitSignature
   },
   {
@@ -89,7 +89,7 @@ export const mockedAutoMergeEnablings = [
       squashMergeAllowed: true
     },
     expectedMergeMethod: "SQUASH",
-    expectedCommitHeadline: "chore: v1.0.0 [skip ci] (#123)",
+    expectedCommitHeadline: "chore: v1.0.0 (#123)",
     expectedCommitBody: commitSignature
   }
 ];
