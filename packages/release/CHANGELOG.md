@@ -1,5 +1,24 @@
 # @release-change/release
 
+## 0.4.0
+
+### Minor changes
+
+- **github:** enable auto-merge for release pull requests ([`273b6d8`](https://github.com/release-change/release-change/commit/273b6d88591bd4078cddc7639759aa863bc7abd0))
+
+### Patch changes
+
+- **github:** define commit explicitly when enabling auto-merge with merge or squash method ([`9e7f573`](https://github.com/release-change/release-change/commit/9e7f573aa55db23c919d83ed5ed8d7f542a9c462))
+
+### Dependencies updates
+
+- @release-change/github@0.3.0
+- @release-change/release-notes-generator@0.3.0
+
+---
+
+**Full changelog:** [`@release-change/release@v0.3.1...@release-change/release@v0.4.0`](https://github.com/release-change/release-change/compare/@release-change/release@v0.3.1...@release-change/release@v0.4.0)
+
 ## 0.3.1
 
 ### Dependencies updates
