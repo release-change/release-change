@@ -6,8 +6,8 @@ const pullRequestReference: PullRequestReference = {
   pullRequestNumber: 123,
   pullRequestId: "fake_ID",
   commits: [
-    `chore: @monorepo/a/v1.0.0 [skip ci]\n\n${commitSignature}`,
-    `chore: @monorepo/b/v1.2.3 [skip ci]\n\n${commitSignature}`
+    `chore: @monorepo/a/v1.0.0\n\n${commitSignature}`,
+    `chore: @monorepo/b/v1.2.3\n\n${commitSignature}`
   ]
 };
 export const mockedAutoMergeEnablingsInMonorepo = [
@@ -20,7 +20,7 @@ export const mockedAutoMergeEnablingsInMonorepo = [
       squashMergeAllowed: false
     },
     expectedMergeMethod: "MERGE",
-    expectedCommitHeadline: "chore: release version packages [skip ci] (#123)",
+    expectedCommitHeadline: "chore: release version packages (#123)",
     expectedCommitBody: commitSignature
   },
   {
@@ -56,7 +56,7 @@ export const mockedAutoMergeEnablingsInMonorepo = [
       squashMergeAllowed: true
     },
     expectedMergeMethod: "MERGE",
-    expectedCommitHeadline: "chore: release version packages [skip ci] (#123)",
+    expectedCommitHeadline: "chore: release version packages (#123)",
     expectedCommitBody: commitSignature
   },
   {
@@ -92,7 +92,7 @@ export const mockedAutoMergeEnablingsInMonorepo = [
       squashMergeAllowed: true
     },
     expectedMergeMethod: "SQUASH",
-    expectedCommitHeadline: "chore: release version packages [skip ci] (#123)",
-    expectedCommitBody: `- chore: @monorepo/a/v1.0.0 [skip ci]\n- chore: @monorepo/b/v1.2.3 [skip ci]\n\n${commitSignature}`
+    expectedCommitHeadline: "chore: release version packages (#123)",
+    expectedCommitBody: `- chore: @monorepo/a/v1.0.0\n- chore: @monorepo/b/v1.2.3\n\n${commitSignature}`
   }
 ];

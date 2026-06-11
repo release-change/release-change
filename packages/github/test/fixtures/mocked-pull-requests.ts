@@ -3,7 +3,7 @@ export const mockedPullRequests = [
     isMonorepo: false,
     isAutoMerge: false,
     nextRelease: [],
-    expectedTitle: "chore: release version package [skip ci]",
+    expectedTitle: "chore: release version package",
     expectedBody: `This pull request was automatically created.
 
 The auto-merge is disabled. Please merge this pull request manually.
@@ -13,7 +13,7 @@ The auto-merge is disabled. Please merge this pull request manually.
     isMonorepo: false,
     isAutoMerge: true,
     nextRelease: [],
-    expectedTitle: "chore: release version package [skip ci]",
+    expectedTitle: "chore: release version package",
     expectedBody: `This pull request was automatically created.
 
 The auto-merge is enabled.
@@ -30,7 +30,7 @@ The auto-merge is enabled.
         version: "1.2.3"
       }
     ],
-    expectedTitle: "chore: release version package [skip ci]",
+    expectedTitle: "chore: release version package",
     expectedBody: `This pull request was automatically created.
 
 The auto-merge is disabled. Please merge this pull request manually.
@@ -51,7 +51,7 @@ The auto-merge is disabled. Please merge this pull request manually.
         version: "1.2.3"
       }
     ],
-    expectedTitle: "chore: release version package [skip ci]",
+    expectedTitle: "chore: release version package",
     expectedBody: `This pull request was automatically created.
 
 The auto-merge is enabled.
@@ -78,7 +78,7 @@ The auto-merge is enabled.
         version: "1.2.3"
       }
     ],
-    expectedTitle: "chore: release version packages [skip ci]",
+    expectedTitle: "chore: release version packages",
     expectedBody: `This pull request was automatically created.
 
 The auto-merge is disabled. Please merge this pull request manually.
@@ -106,7 +106,7 @@ The auto-merge is disabled. Please merge this pull request manually.
         version: "1.2.3"
       }
     ],
-    expectedTitle: "chore: release version packages [skip ci]",
+    expectedTitle: "chore: release version packages",
     expectedBody: `This pull request was automatically created.
 
 The auto-merge is enabled.
