@@ -1,3 +1,4 @@
+import type { PullRequestReference } from "@release-change/github";
 import type { PackagePublishing } from "@release-change/npm";
 import type { ReleaseNotes } from "@release-change/release-notes-generator";
 import type { Context } from "@release-change/shared";
@@ -66,6 +67,7 @@ export const publish = async (context: Context): Promise<void> => {
       const releaseNotesSet: ReleaseNotes[] = [];
       newBranch = setBranchName(branch, nextRelease);
       switchToNewBranch(newBranch, cwd);
+      const commits: string[] = [];
       for (const nextReleasePackage of nextRelease) {
         const { pathname } = nextReleasePackage;
         const packageDependencies = getPackageDependencies(
@@ -92,7 +94,7 @@ export const publish = async (context: Context): Promise<void> => {
           );
         await updateLockFile(nextReleasePackage, context, packageManager);
         updateChangelogFile(nextReleasePackage, preparedReleaseNotes.body, cwd);
-        await commitUpdatedFiles(nextReleasePackage, packageManager, context);
+        commits.push(await commitUpdatedFiles(nextReleasePackage, packageManager, context));
         createTag(nextReleasePackage, getCurrentCommitId(cwd), debug);
         newGitTags.push(nextReleasePackage.gitTag);
         const packagePublishing = await preparePublishing(nextReleasePackage, context);
@@ -103,8 +105,11 @@ export const publish = async (context: Context): Promise<void> => {
         await createReleaseNotes(releaseNotes, context);
       }
       const repositoryMergeOptions = await getRepositoryMergeInfo(context);
-      const pullRequestId = await createPullRequest(newBranch, context);
-      await enableAutoMerge(pullRequestId, repositoryMergeOptions, context);
+      const pullRequestReference: PullRequestReference = {
+        ...(await createPullRequest(newBranch, repositoryMergeOptions, context)),
+        commits
+      };
+      await enableAutoMerge(pullRequestReference, repositoryMergeOptions, context);
       for (const packagePublishing of packagePublishingSet) {
         await publishToRegistry(packagePublishing, context);
       }

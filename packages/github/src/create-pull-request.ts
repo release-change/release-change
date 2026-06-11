@@ -1,5 +1,9 @@
 import type { Context } from "@release-change/shared";
-import type { GitHubResponseError } from "./github.types.js";
+import type {
+  GitHubResponseError,
+  PullRequestReference,
+  RepositoryMergeOptions
+} from "./github.types.js";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
@@ -11,15 +15,19 @@ import {
 } from "@release-change/shared";
 
 import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
-import { isAutoMergeAllowed } from "./is-auto-merge-allowed.js";
 
 /**
  * Creates a pull request.
  * @param headBranch - The name of the branch to create the pull request from.
+ * @param mergeOptions - The repository merge options.
  * @param context - The context where the CLI is running.
- * @return The ID of the newly created pull request as the `node_id` value.
+ * @return The number and the node ID of the newly created pull request.
  */
-export const createPullRequest = async (headBranch: string, context: Context): Promise<string> => {
+export const createPullRequest = async (
+  headBranch: string,
+  mergeOptions: RepositoryMergeOptions,
+  context: Context
+): Promise<Omit<PullRequestReference, "commits">> => {
   const {
     env,
     config: { debug, repositoryUrl, isMonorepo },
@@ -36,7 +44,7 @@ export const createPullRequest = async (headBranch: string, context: Context): P
     const releasesBody = nextRelease?.length
       ? `\n#### Releases\n\n${nextRelease.map(release => `- ${release.gitTag}`).join("\n")}\n`
       : "";
-    const autoMergeBody = (await isAutoMergeAllowed(repositoryEntryPoint, context))
+    const autoMergeBody = mergeOptions.autoMergeAllowed
       ? "The auto-merge is enabled."
       : "The auto-merge is disabled. Please merge this pull request manually.";
     const commentBody = `This pull request was automatically created.
@@ -72,7 +80,11 @@ ${releasesBody}`;
     }
     if (status === 201) {
       logger.logSuccess("Created the pull request successfully.");
-      return pullRequestCreationResponseData.node_id;
+      const { number, node_id } = pullRequestCreationResponseData;
+      return {
+        pullRequestNumber: number,
+        pullRequestId: node_id
+      };
     }
     const responseError: GitHubResponseError = await pullRequestCreationResponseData;
     const { message, documentation_url: documentationUrl } = responseError;

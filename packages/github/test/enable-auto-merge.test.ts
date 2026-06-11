@@ -10,7 +10,13 @@ import { mockedFetch } from "./fixtures/mocked-fetch.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedIssuePRToken } from "./fixtures/mocked-token.js";
 
-const mockedPullRequestId = "fake_ID";
+const mockedNumber = 123;
+const mockedNodeId = "fake_ID";
+const mockedPullRequestReference = {
+  pullRequestNumber: mockedNumber,
+  pullRequestId: mockedNodeId,
+  commits: ["fake-commit"]
+};
 const mockedMergeOptions = {
   autoMergeAllowed: true,
   mergeCommitAllowed: true,
@@ -28,6 +34,10 @@ vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
 vi.mock("@release-change/ci", () => ({
   getIssueAndPullRequestToken: vi.fn()
 }));
+vi.mock("@release-change/git", () => ({
+  COMMITTER_NAME: "mocked-committer-name [bot]",
+  COMMITTER_EMAIL: "0+mocked-committer-name-bot@users.noreply.github.com"
+}));
 
 beforeEach(() => {
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
@@ -41,7 +51,7 @@ it("should log a warning when the response is an empty object", async () => {
   vi.mocked(mockedFetch).mockResolvedValue({
     json: () => Promise.resolve({})
   });
-  await enableAutoMerge(mockedPullRequestId, mockedMergeOptions, mockedContext);
+  await enableAutoMerge(mockedPullRequestReference, mockedMergeOptions, mockedContext);
   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
     "Failed to enable the auto-merge for the pull request."
   );
@@ -60,7 +70,7 @@ it("should throw an error when the response has errors", async () => {
         ]
       })
   });
-  await enableAutoMerge(mockedPullRequestId, mockedMergeOptions, mockedContext);
+  await enableAutoMerge(mockedPullRequestReference, mockedMergeOptions, mockedContext);
   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
     "Failed to enable the auto-merge for the pull request."
   );
@@ -72,7 +82,7 @@ it("should not fetch the GitHub GraphQL API if the auto-merge is not allowed", a
     rebaseMergeAllowed: true,
     squashMergeAllowed: true
   };
-  await enableAutoMerge(mockedPullRequestId, mergeOptions, mockedContext);
+  await enableAutoMerge(mockedPullRequestReference, mergeOptions, mockedContext);
   expect(mockedFetch).not.toHaveBeenCalled();
 });
 it("should not fetch the GitHub GraphQL API if no merge method is found", async () => {
@@ -82,14 +92,31 @@ it("should not fetch the GitHub GraphQL API if no merge method is found", async 
     rebaseMergeAllowed: false,
     squashMergeAllowed: false
   };
-  await enableAutoMerge(mockedPullRequestId, mergeOptions, mockedContext);
+  await enableAutoMerge(mockedPullRequestReference, mergeOptions, mockedContext);
+  expect(mockedFetch).not.toHaveBeenCalled();
+});
+it("should not fetch the GitHub GraphQL API if no commmits are provided", async () => {
+  const mergeOptions = {
+    autoMergeAllowed: true,
+    mergeCommitAllowed: false,
+    rebaseMergeAllowed: false,
+    squashMergeAllowed: false
+  };
+  await enableAutoMerge(
+    { ...mockedPullRequestReference, commits: [] },
+    mergeOptions,
+    mockedContext
+  );
   expect(mockedFetch).not.toHaveBeenCalled();
 });
 it.each(
   mockedAutoMergeEnablings
 )("should enable the auto-merge with the appropriate method", async ({
+  pullRequestReference,
   mergeOptions,
-  expectedMergeMethod
+  expectedMergeMethod,
+  expectedCommitHeadline,
+  expectedCommitBody
 }) => {
   vi.mocked(mockedFetch).mockResolvedValue({
     json: () =>
@@ -97,7 +124,7 @@ it.each(
         data: {
           enablePullRequestAutoMerge: {
             pullRequest: {
-              number: mockedPullRequestId,
+              number: pullRequestReference.pullRequestNumber,
               autoMergeRequest: {
                 mergeMethod: expectedMergeMethod
               }
@@ -106,7 +133,7 @@ it.each(
         }
       })
   });
-  await enableAutoMerge(mockedPullRequestId, mergeOptions, mockedContext);
+  await enableAutoMerge(pullRequestReference, mergeOptions, mockedContext);
   expect(mockedFetch).toHaveBeenCalledWith(GITHUB_GRAPHQL_API_ENDPOINT, {
     method: "POST",
     headers: {
@@ -117,12 +144,16 @@ it.each(
       query: `
 mutation EnablePullRequestAutoMerge(
   $pullRequestId: ID!,
-  $mergeMethod: PullRequestMergeMethod!
+  $mergeMethod: PullRequestMergeMethod!,
+  $commitHeadline: String,
+  $commitBody: String
 ) {
   enablePullRequestAutoMerge(
     input: {
       pullRequestId: $pullRequestId,
-      mergeMethod: $mergeMethod
+      mergeMethod: $mergeMethod,
+      commitHeadline: $commitHeadline,
+      commitBody: $commitBody
     }
   ) {
     pullRequest {
@@ -135,8 +166,10 @@ mutation EnablePullRequestAutoMerge(
 }
 `,
       variables: {
-        pullRequestId: mockedPullRequestId,
-        mergeMethod: expectedMergeMethod
+        pullRequestId: mockedNodeId,
+        mergeMethod: expectedMergeMethod,
+        commitHeadline: expectedCommitHeadline,
+        commitBody: expectedCommitBody
       }
     })
   });
@@ -147,8 +180,11 @@ mutation EnablePullRequestAutoMerge(
 it.each(
   mockedAutoMergeEnablingsInMonorepo
 )("should enable the auto-merge with the appropriate method in monorepo", async ({
+  pullRequestReference,
   mergeOptions,
-  expectedMergeMethod
+  expectedMergeMethod,
+  expectedCommitHeadline,
+  expectedCommitBody
 }) => {
   vi.mocked(mockedFetch).mockResolvedValue({
     json: () =>
@@ -156,7 +192,7 @@ it.each(
         data: {
           enablePullRequestAutoMerge: {
             pullRequest: {
-              number: mockedPullRequestId,
+              number: pullRequestReference.pullRequestNumber,
               autoMergeRequest: {
                 mergeMethod: expectedMergeMethod
               }
@@ -165,7 +201,7 @@ it.each(
         }
       })
   });
-  await enableAutoMerge(mockedPullRequestId, mergeOptions, mockedContextInMonorepo);
+  await enableAutoMerge(pullRequestReference, mergeOptions, mockedContextInMonorepo);
   expect(mockedFetch).toHaveBeenCalledWith(GITHUB_GRAPHQL_API_ENDPOINT, {
     method: "POST",
     headers: {
@@ -176,12 +212,16 @@ it.each(
       query: `
 mutation EnablePullRequestAutoMerge(
   $pullRequestId: ID!,
-  $mergeMethod: PullRequestMergeMethod!
+  $mergeMethod: PullRequestMergeMethod!,
+  $commitHeadline: String,
+  $commitBody: String
 ) {
   enablePullRequestAutoMerge(
     input: {
       pullRequestId: $pullRequestId,
-      mergeMethod: $mergeMethod
+      mergeMethod: $mergeMethod,
+      commitHeadline: $commitHeadline,
+      commitBody: $commitBody
     }
   ) {
     pullRequest {
@@ -194,8 +234,10 @@ mutation EnablePullRequestAutoMerge(
 }
 `,
       variables: {
-        pullRequestId: mockedPullRequestId,
-        mergeMethod: expectedMergeMethod
+        pullRequestId: mockedNodeId,
+        mergeMethod: expectedMergeMethod,
+        commitHeadline: expectedCommitHeadline,
+        commitBody: expectedCommitBody
       }
     })
   });

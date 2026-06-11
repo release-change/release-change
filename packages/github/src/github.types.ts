@@ -14,6 +14,11 @@ export type AssociatedPullRequest = {
   body: string | null;
   reference: Reference;
 };
+export type PullRequestReference = {
+  pullRequestNumber: number;
+  pullRequestId: string;
+  commits: string[];
+};
 type GraphQLErrors = {
   message: string;
   locations?: { line: number; column: number }[];

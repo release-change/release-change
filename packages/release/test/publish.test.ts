@@ -183,7 +183,7 @@ describe.each(packageManagers)("for %s", packageManager => {
     mockedContextInMonorepoWithNextRelease
   ])("for isMonorepo: $config.isMonorepo", context => {
     const mockedReleaseBranch = "release-change/main/1.2.3";
-    const mockedNodeId = "fake_ID";
+    const mockedPullRequestReference = { pullRequestNumber: 123, pullRequestId: "fake_ID" };
 
     beforeEach(() => {
       vi.mocked(getPackageDependencies).mockReturnValue([]);
@@ -191,7 +191,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       vi.mocked(updatePackageVersion).mockImplementation(() => undefined);
       vi.mocked(updateLockFile).mockResolvedValue();
       vi.mocked(updateChangelogFile).mockImplementation(() => undefined);
-      vi.mocked(commitUpdatedFiles).mockResolvedValue();
+      vi.mocked(commitUpdatedFiles).mockResolvedValue("commit message");
       vi.mocked(getCurrentCommitId).mockReturnValue("0123456");
       vi.mocked(createTag).mockImplementation(() => undefined);
       vi.mocked(createReleaseNotes).mockResolvedValue();
@@ -563,7 +563,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
       vi.mocked(createPullRequest).mockImplementation(async () => {
         operations.push("pullRequest");
-        return mockedNodeId;
+        return mockedPullRequestReference;
       });
       await publish(context);
       expect(operations.lastIndexOf("tag")).toBeLessThan(operations.indexOf("push"));
@@ -625,7 +625,7 @@ describe.each(packageManagers)("for %s", packageManager => {
       });
       vi.mocked(createPullRequest).mockImplementation(async () => {
         operations.push("pullRequest");
-        return mockedNodeId;
+        return mockedPullRequestReference;
       });
       vi.mocked(createReleaseNotes).mockImplementation(async () => {
         operations.push("releaseNotes");

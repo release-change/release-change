@@ -1,4 +1,4 @@
-export type { GitHubResponseError } from "./github.types.js";
+export type { GitHubResponseError, PullRequestReference } from "./github.types.js";
 
 export { closeIssue } from "./close-issue.js";
 export { createPullRequest } from "./create-pull-request.js";
