@@ -1,5 +1,22 @@
 # @release-change/github
 
+## 0.3.0
+
+### Minor changes
+
+- **github:** enable auto-merge for release pull requests ([`273b6d8`](https://github.com/release-change/release-change/commit/273b6d88591bd4078cddc7639759aa863bc7abd0))
+- **github:** implement request for repository merge options ([`dc9528e`](https://github.com/release-change/release-change/commit/dc9528ea20bb8870ca5796a46ce89188f50ea638))
+
+### Patch changes
+
+- **github:** parse repo URL before parsing pathname (#681) ([`3c3c034`](https://github.com/release-change/release-change/commit/3c3c034ae4b1cd3507471a2fabb2bf5ef5a0013c))
+- **github:** fix property name for variables sent to GitHub GraphQL API ([`94445d8`](https://github.com/release-change/release-change/commit/94445d882be1f6675f8ee0544e26082fd9b28b12))
+- **github:** define commit explicitly when enabling auto-merge with merge or squash method ([`9e7f573`](https://github.com/release-change/release-change/commit/9e7f573aa55db23c919d83ed5ed8d7f542a9c462))
+
+---
+
+**Full changelog:** [`@release-change/github@v0.2.1...@release-change/github@v0.3.0`](https://github.com/release-change/release-change/compare/@release-change/github@v0.2.1...@release-change/github@v0.3.0)
+
 ## 0.2.1
 
 ### Dependencies updates
