@@ -18,8 +18,9 @@ export const getRepositoryMergeInfo = async (context: Context): Promise<Reposito
     config: { debug, repositoryUrl }
   } = context;
   const logger = setLogger(debug);
-  const pathname = parsePathname(repositoryUrl);
-  if (pathname) {
+  const { pathname } = new URL(repositoryUrl);
+  const pathnameGroups = parsePathname(pathname);
+  if (pathnameGroups) {
     const issuePullRequestToken = getIssueAndPullRequestToken(env);
     const query = `
 query($owner: String!, $repository: String!) {
@@ -39,7 +40,7 @@ query($owner: String!, $repository: String!) {
       },
       body: JSON.stringify({
         query,
-        variables: pathname
+        variables: pathnameGroups
       })
     });
     const repositoryMergeInfoResponseData: RepositoryMergeInfoQuery =
@@ -48,7 +49,7 @@ query($owner: String!, $repository: String!) {
       logger.setDebugScope("github:get-repository-merge-info");
       logger.logDebug(`API endpoint: ${GITHUB_GRAPHQL_API_ENDPOINT}`);
       logger.logDebug(`GraphQL query: ${deepInspectObject(query)}`);
-      logger.logDebug(`GraphQL variables: ${deepInspectObject(pathname)}`);
+      logger.logDebug(`GraphQL variables: ${deepInspectObject(pathnameGroups)}`);
       logger.logDebug(`Response JSON: ${deepInspectObject(repositoryMergeInfoResponseData)}`);
     }
     const { data, errors } = repositoryMergeInfoResponseData;
@@ -71,7 +72,8 @@ query($owner: String!, $repository: String!) {
     message:
       "The provided repository URL could not be parsed into owner and repository components.",
     details: {
-      output: "null"
+      output: "null",
+      command: `POST ${GITHUB_GRAPHQL_API_ENDPOINT} query($owner, $repository) { repository(owner, name) {} }`
     }
   });
 };
