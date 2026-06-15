@@ -5,7 +5,7 @@ import type {
   RepositoryMergeOptions
 } from "./github.types.js";
 
-import { getReleaseToken } from "@release-change/ci";
+import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
 import {
   deepInspectObject,
@@ -37,7 +37,7 @@ export const createPullRequest = async (
   if (branch && headBranch) {
     const logger = setLogger(debug);
     logger.setScope("github");
-    const releaseToken = getReleaseToken(env);
+    const issuePullRequestToken = getIssueAndPullRequestToken(env);
     const repositoryEndpoint = getRepositoryRelatedEndpoint(repositoryUrl);
     const uri = `${repositoryEndpoint}/pulls`;
     const packageNumber = isMonorepo ? "packages" : "package";
@@ -61,7 +61,7 @@ ${releasesBody}`;
       method: "POST",
       headers: {
         Accept: GITHUB_API_ACCEPT_HEADER,
-        Authorization: `Bearer ${releaseToken}`,
+        Authorization: `Bearer ${issuePullRequestToken}`,
         "Content-Type": "application/json",
         "X-GitHub-Api-Version": GITHUB_API_VERSION
       },

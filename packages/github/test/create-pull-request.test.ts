@@ -1,4 +1,4 @@
-import { getReleaseToken } from "@release-change/ci";
+import { getIssueAndPullRequestToken } from "@release-change/ci";
 import { setLogger } from "@release-change/logger";
 import {
   formatDetailedError,
@@ -19,7 +19,7 @@ import { mockedFailureFetches } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedPullRequests } from "./fixtures/mocked-pull-requests.js";
-import { mockedToken } from "./fixtures/mocked-token.js";
+import { mockedIssuePRToken } from "./fixtures/mocked-token.js";
 import { mockedUri, mockedUriForPullRequests } from "./fixtures/mocked-uri.js";
 
 const mockedMergeOptions = {
@@ -39,13 +39,13 @@ vi.mock("@release-change/shared", () => ({
 }));
 vi.mock("@release-change/logger", () => ({ checkErrorType: vi.fn(), setLogger: vi.fn() }));
 vi.mock("@release-change/ci", () => ({
-  getReleaseToken: vi.fn()
+  getIssueAndPullRequestToken: vi.fn()
 }));
 vi.mock("../src/get-repository-related-endpoint.js", () => ({
   getRepositoryRelatedEndpoint: vi.fn()
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
-vi.mocked(getReleaseToken).mockReturnValue(mockedToken);
+vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
 vi.mocked(getRepositoryRelatedEndpoint).mockReturnValue(mockedUri);
 
 it("should throw an error if both target branch and head branch are not defined", () => {
@@ -155,7 +155,7 @@ describe.each(
       method: "POST",
       headers: {
         Accept: GITHUB_API_ACCEPT_HEADER,
-        Authorization: `Bearer ${mockedToken}`,
+        Authorization: `Bearer ${mockedIssuePRToken}`,
         "Content-Type": "application/json",
         "X-GitHub-Api-Version": GITHUB_API_VERSION
       },
