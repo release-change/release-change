@@ -8,7 +8,7 @@ import {
 } from "@release-change/shared";
 import { describe, expect, it, vi } from "vitest";
 
-import { getRepositoryRelatedEntryPoint, tagPullRequestAndIssue } from "../src/index.js";
+import { getRepositoryRelatedEndpoint, tagPullRequestAndIssue } from "../src/index.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
 import { mockedFailureFetches } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
@@ -30,8 +30,8 @@ vi.mock("@release-change/shared", () => ({
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
 vi.mock("@release-change/ci", () => ({ getIssueAndPullRequestToken: vi.fn() }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
-vi.mock("../src/get-repository-related-entry-point.js", () => ({
-  getRepositoryRelatedEntryPoint: vi.fn()
+vi.mock("../src/get-repository-related-endpoint.js", () => ({
+  getRepositoryRelatedEndpoint: vi.fn()
 }));
 
 it("should throw an error if `nextRelease` is not defined", async () => {
@@ -69,7 +69,7 @@ describe.each(
     : { ...mockedContext, nextRelease };
   it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
     vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
-    vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(mockedUri);
+    vi.mocked(getRepositoryRelatedEndpoint).mockReturnValue(mockedUri);
     vi.mocked(mockedFetch).mockResolvedValue({
       ...response,
       json: () => Promise.resolve({ message: response.statusText })

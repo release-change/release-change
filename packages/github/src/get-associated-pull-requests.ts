@@ -44,7 +44,7 @@ export const getAssociatedPullRequests = async (
   const pullRequestResponseData = pullRequestResponse.json();
   if (debug) {
     logger.setDebugScope("github:get-associated-pull-requests");
-    logger.logDebug(`API entry point: ${uri}`);
+    logger.logDebug(`API endpoint: ${uri}`);
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);
     logger.logDebug(`Response headers: ${deepInspectObject(headers)}`);

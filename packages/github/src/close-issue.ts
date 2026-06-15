@@ -10,7 +10,7 @@ import {
   GITHUB_API_VERSION
 } from "@release-change/shared";
 
-import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import { getRepositoryRelatedEndpoint } from "./get-repository-related-endpoint.js";
 
 /**
  * Closes an issue.
@@ -25,8 +25,8 @@ export const closeIssue = async (number: number, context: Context): Promise<void
   const logger = setLogger(debug);
   logger.setScope("github");
   const issuePullRequestToken = getIssueAndPullRequestToken(env);
-  const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
-  const uri = `${repositoryEntryPoint}/issues/${number}`;
+  const repositoryEndpoint = getRepositoryRelatedEndpoint(repositoryUrl);
+  const uri = `${repositoryEndpoint}/issues/${number}`;
   const requestBody = {
     state: "closed",
     state_reason: "completed"
@@ -45,7 +45,7 @@ export const closeIssue = async (number: number, context: Context): Promise<void
   const issueClosingResponseData = issueClosingResponse.json();
   if (debug) {
     logger.setDebugScope("github:close-issue");
-    logger.logDebug(`API entry point: ${uri}`);
+    logger.logDebug(`API endpoint: ${uri}`);
     logger.logDebug(`Request body: ${deepInspectObject(requestBody)}`);
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);

@@ -1,17 +1,17 @@
 import { formatDetailedError, parsePathname } from "@release-change/shared";
 
 /**
- * Gets the repository-related entry point for REST API calls.
+ * Gets the repository-related endpoint for REST API calls.
  * @param repositoryUrl - The repository URL.
- * @return The entry point to use to call the REST API.
+ * @return The endpoint to use to call the REST API.
  */
-export const getRepositoryRelatedEntryPoint = (repositoryUrl: string): string => {
+export const getRepositoryRelatedEndpoint = (repositoryUrl: string): string => {
   const { pathname } = new URL(repositoryUrl);
   const pathnameGroups = parsePathname(pathname);
   if (!pathnameGroups) {
     process.exitCode = 1;
     throw formatDetailedError({
-      title: "Failed to get the repository-related entry point",
+      title: "Failed to get the repository-related endpoint",
       message: "Malformed repository URL: no owner or repository found",
       details: {
         output: `repositoryUrl: ${repositoryUrl}`

@@ -5,14 +5,14 @@ import { assert, expect, it, vi } from "vitest";
 
 import { getAssociatedPullRequests } from "../src/get-associated-pull-requests.js";
 import { getIssues } from "../src/get-issues.js";
-import { getRelatedPullRequestsAndIssues, getRepositoryRelatedEntryPoint } from "../src/index.js";
+import { getRelatedPullRequestsAndIssues, getRepositoryRelatedEndpoint } from "../src/index.js";
 import { mockedCommits } from "./fixtures/mocked-commits.js";
 import { mockedContextWithNextRelease } from "./fixtures/mocked-context.js";
 import { mockedFailureFetchesForCommits } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
-const mockedEntryPoint = "https://api.github.com/repos/user-id/repo-name";
+const mockedEndpoint = "https://api.github.com/repos/user-id/repo-name";
 const mockedAssociatedPullRequests = [
   {
     title: "Some pull request",
@@ -47,15 +47,15 @@ vi.mock("@release-change/logger", () => ({
   setLogger: vi.fn()
 }));
 vi.mock("@release-change/ci", () => ({ getReleaseToken: vi.fn() }));
-vi.mock("../src/get-repository-related-entry-point.js", () => ({
-  getRepositoryRelatedEntryPoint: vi.fn()
+vi.mock("../src/get-repository-related-endpoint.js", () => ({
+  getRepositoryRelatedEndpoint: vi.fn()
 }));
 vi.mock("../src/get-associated-pull-requests.js", () => ({
   getAssociatedPullRequests: vi.fn()
 }));
 vi.mock("../src/get-issues.js", () => ({ getIssues: vi.fn() }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
-vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(mockedEntryPoint);
+vi.mocked(getRepositoryRelatedEndpoint).mockReturnValue(mockedEndpoint);
 vi.mocked(addErrorToContext).mockImplementation((error, context) => {
   if (error instanceof Error) {
     const { cause } = error;

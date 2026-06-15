@@ -6,7 +6,7 @@ import {
 } from "@release-change/shared";
 import { expect, it, vi } from "vitest";
 
-import { closeIssue, getRepositoryRelatedEntryPoint } from "../src/index.js";
+import { closeIssue, getRepositoryRelatedEndpoint } from "../src/index.js";
 import { mockedContext } from "./fixtures/mocked-context.js";
 import { mockedFailureFetches } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
@@ -23,11 +23,11 @@ vi.mock("@release-change/shared", () => ({
   GITHUB_API_ACCEPT_HEADER: "application/vnd.github+json"
 }));
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-vi.mock("../src/get-repository-related-entry-point.js", () => ({
-  getRepositoryRelatedEntryPoint: vi.fn()
+vi.mock("../src/get-repository-related-endpoint.js", () => ({
+  getRepositoryRelatedEndpoint: vi.fn()
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
-vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
+vi.mocked(getRepositoryRelatedEndpoint).mockReturnValue(
   "https://api.github.com/repos/user-id/repo-name"
 );
 

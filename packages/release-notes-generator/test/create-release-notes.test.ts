@@ -1,4 +1,4 @@
-import { getRepositoryRelatedEntryPoint } from "@release-change/github";
+import { getRepositoryRelatedEndpoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
 import {
   formatDetailedError,
@@ -59,10 +59,10 @@ vi.mock("@release-change/shared", () => ({
   GITHUB_API_ACCEPT_HEADER: "application/vnd.github+json"
 }));
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
-vi.mock("@release-change/github", () => ({ getRepositoryRelatedEntryPoint: vi.fn() }));
+vi.mock("@release-change/github", () => ({ getRepositoryRelatedEndpoint: vi.fn() }));
 vi.mock("../src/format-release-notes-body.js", () => ({ formatReleaseNotesBody: vi.fn() }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
-vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
+vi.mocked(getRepositoryRelatedEndpoint).mockReturnValue(
   "https://api.github.com/repos/user-id/repo-name"
 );
 

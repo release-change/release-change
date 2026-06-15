@@ -7,7 +7,7 @@ import { agreeInNumber, deepInspectObject } from "@release-change/shared";
 
 import { getAssociatedPullRequests } from "./get-associated-pull-requests.js";
 import { getIssues } from "./get-issues.js";
-import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import { getRepositoryRelatedEndpoint } from "./get-repository-related-endpoint.js";
 import { mergeReferencesByNumber } from "./merge-references-by-number.js";
 
 /**
@@ -26,7 +26,7 @@ export const getRelatedPullRequestsAndIssues = async (
   const logger = setLogger(debug);
   logger.setScope("github");
   try {
-    const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
+    const repositoryEndpoint = getRepositoryRelatedEndpoint(repositoryUrl);
     if (commits.length && nextRelease) {
       logger.logInfo("Searching for related pull requests and issues…");
       const references: Reference[] = [];
@@ -41,7 +41,7 @@ export const getRelatedPullRequestsAndIssues = async (
         const pullRequestReferences: Reference[] = [];
         for (const commitWithSha of commitsWithSha) {
           const associatedPullRequests = await getAssociatedPullRequests(
-            `${repositoryEntryPoint}/commits/${commitWithSha.sha}/pulls`,
+            `${repositoryEndpoint}/commits/${commitWithSha.sha}/pulls`,
             getGitTags(commitWithSha, context),
             context
           );
