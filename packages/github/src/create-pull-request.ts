@@ -14,7 +14,7 @@ import {
   GITHUB_API_VERSION
 } from "@release-change/shared";
 
-import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import { getRepositoryRelatedEndpoint } from "./get-repository-related-endpoint.js";
 
 /**
  * Creates a pull request.
@@ -38,8 +38,8 @@ export const createPullRequest = async (
     const logger = setLogger(debug);
     logger.setScope("github");
     const issuePullRequestToken = getIssueAndPullRequestToken(env);
-    const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
-    const uri = `${repositoryEntryPoint}/pulls`;
+    const repositoryEndpoint = getRepositoryRelatedEndpoint(repositoryUrl);
+    const uri = `${repositoryEndpoint}/pulls`;
     const packageNumber = isMonorepo ? "packages" : "package";
     const releasesBody = nextRelease?.length
       ? `\n#### Releases\n\n${nextRelease.map(release => `- ${release.gitTag}`).join("\n")}\n`
@@ -71,7 +71,7 @@ ${releasesBody}`;
     const pullRequestCreationResponseData = await pullRequestCreationResponse.json();
     if (debug) {
       logger.setDebugScope("github:create-pull-request");
-      logger.logDebug(`API entry point: ${uri}`);
+      logger.logDebug(`API endpoint: ${uri}`);
       logger.logDebug(`Request body: ${deepInspectObject(requestBody)}`);
       logger.logDebug(`Response status: ${status}`);
       logger.logDebug(`Response status text: ${statusText}`);

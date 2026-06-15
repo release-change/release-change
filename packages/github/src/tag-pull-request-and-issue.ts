@@ -12,7 +12,7 @@ import {
 } from "@release-change/shared";
 
 import { findNpmTagFromGitTag } from "./find-npm-tag-from-git-tag.js";
-import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import { getRepositoryRelatedEndpoint } from "./get-repository-related-endpoint.js";
 
 /**
  * Tags the pull request and the issue with the release information.
@@ -33,8 +33,8 @@ export const tagPullRequestAndIssue = async (
   logger.setScope("github");
   if (nextRelease) {
     const issuePullRequestToken = getIssueAndPullRequestToken(env);
-    const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
-    const uri = `${repositoryEntryPoint}/issues/${number}/labels`;
+    const repositoryEndpoint = getRepositoryRelatedEndpoint(repositoryUrl);
+    const uri = `${repositoryEndpoint}/issues/${number}/labels`;
     const requestBody = {
       labels: [
         ...new Set(
@@ -59,7 +59,7 @@ export const tagPullRequestAndIssue = async (
     const issueClosingResponseData = issueClosingResponse.json();
     if (debug) {
       logger.setDebugScope("github:tag-pull-request-and-issue");
-      logger.logDebug(`API entry point: ${uri}`);
+      logger.logDebug(`API endpoint: ${uri}`);
       logger.logDebug(`Request body: ${deepInspectObject(requestBody)}`);
       logger.logDebug(`Response status: ${status}`);
       logger.logDebug(`Response status text: ${statusText}`);

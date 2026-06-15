@@ -3,7 +3,7 @@ import type { Context, ReleaseInfoGithub } from "@release-change/shared";
 import type { ReleaseNotes } from "./release-notes-generator.types.js";
 
 import { getReleaseToken } from "@release-change/ci";
-import { getRepositoryRelatedEntryPoint } from "@release-change/github";
+import { getRepositoryRelatedEndpoint } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
 import {
   deepInspectObject,
@@ -29,7 +29,7 @@ export const createReleaseNotes = async (
   const logger = setLogger(debug);
   logger.setScope("release-notes-generator");
   const releaseToken = getReleaseToken(env);
-  const uri = `${getRepositoryRelatedEntryPoint(repositoryUrl)}/releases`;
+  const uri = `${getRepositoryRelatedEndpoint(repositoryUrl)}/releases`;
   const requestBody = {
     tag_name: tagName,
     target_commitish: target,
@@ -53,7 +53,7 @@ export const createReleaseNotes = async (
   if (debug) {
     logger.setDebugScope("release-notes-generator:create-release-notes");
     logger.logDebug(`Release notes: ${deepInspectObject(releaseNotes)}`);
-    logger.logDebug(`API entry point: ${uri}`);
+    logger.logDebug(`API endpoint: ${uri}`);
     logger.logDebug(`Request body: ${deepInspectObject(requestBody)}`);
     logger.logDebug(`Response status: ${status}`);
     logger.logDebug(`Response status text: ${statusText}`);

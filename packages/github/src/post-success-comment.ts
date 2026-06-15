@@ -10,7 +10,7 @@ import {
   GITHUB_API_VERSION
 } from "@release-change/shared";
 
-import { getRepositoryRelatedEntryPoint } from "./get-repository-related-entry-point.js";
+import { getRepositoryRelatedEndpoint } from "./get-repository-related-endpoint.js";
 import { linkifyReleaseInfo } from "./linkify-release-info.js";
 
 /**
@@ -29,9 +29,9 @@ export const postSuccessComment = async (reference: Reference, context: Context)
   logger.setScope("github");
   if (nextRelease) {
     const issuePullRequestToken = getIssueAndPullRequestToken(env);
-    const repositoryEntryPoint = getRepositoryRelatedEntryPoint(repositoryUrl);
+    const repositoryEndpoint = getRepositoryRelatedEndpoint(repositoryUrl);
     const { number, isPullRequest, gitTags } = reference;
-    const uri = `${repositoryEntryPoint}/issues/${number}/comments`;
+    const uri = `${repositoryEndpoint}/issues/${number}/comments`;
     const versions: string[] = [];
     const releaseInfosAvailabilities: string[] = [];
     for (const gitTag of gitTags) {
@@ -98,7 +98,7 @@ export const postSuccessComment = async (reference: Reference, context: Context)
     const successCommentResponseData = successCommentResponse.json();
     if (debug) {
       logger.setDebugScope("github:post-success-comment");
-      logger.logDebug(`API entry point: ${uri}`);
+      logger.logDebug(`API endpoint: ${uri}`);
       logger.logDebug(`Request body: ${deepInspectObject(requestBody)}`);
       logger.logDebug(`Response status: ${status}`);
       logger.logDebug(`Response status text: ${statusText}`);

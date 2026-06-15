@@ -7,7 +7,7 @@ import {
 } from "@release-change/shared";
 import { assert, describe, expect, it, vi } from "vitest";
 
-import { createPullRequest, getRepositoryRelatedEntryPoint } from "../src/index.js";
+import { createPullRequest, getRepositoryRelatedEndpoint } from "../src/index.js";
 import {
   mockedContext,
   mockedContextInMonorepo,
@@ -41,12 +41,12 @@ vi.mock("@release-change/logger", () => ({ checkErrorType: vi.fn(), setLogger: v
 vi.mock("@release-change/ci", () => ({
   getIssueAndPullRequestToken: vi.fn()
 }));
-vi.mock("../src/get-repository-related-entry-point.js", () => ({
-  getRepositoryRelatedEntryPoint: vi.fn()
+vi.mock("../src/get-repository-related-endpoint.js", () => ({
+  getRepositoryRelatedEndpoint: vi.fn()
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
-vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(mockedUri);
+vi.mocked(getRepositoryRelatedEndpoint).mockReturnValue(mockedUri);
 
 it("should throw an error if both target branch and head branch are not defined", () => {
   const expectedError = new Error(

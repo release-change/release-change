@@ -7,7 +7,7 @@ import {
 } from "@release-change/shared";
 import { describe, expect, it, vi } from "vitest";
 
-import { getRepositoryRelatedEntryPoint, postSuccessComment } from "../src/index.js";
+import { getRepositoryRelatedEndpoint, postSuccessComment } from "../src/index.js";
 import {
   mockedContext,
   mockedContextWithNextRelease,
@@ -32,11 +32,11 @@ vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
 vi.mock("@release-change/ci", () => ({
   getIssueAndPullRequestToken: vi.fn()
 }));
-vi.mock("../src/get-repository-related-entry-point.js", () => ({
-  getRepositoryRelatedEntryPoint: vi.fn()
+vi.mock("../src/get-repository-related-endpoint.js", () => ({
+  getRepositoryRelatedEndpoint: vi.fn()
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
-vi.mocked(getRepositoryRelatedEntryPoint).mockReturnValue(
+vi.mocked(getRepositoryRelatedEndpoint).mockReturnValue(
   "https://api.github.com/repos/user-id/repo-name"
 );
 vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
