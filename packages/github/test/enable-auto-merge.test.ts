@@ -158,9 +158,6 @@ mutation EnablePullRequestAutoMerge(
   ) {
     pullRequest {
       number
-      autoMergeRequest {
-        mergeMethod
-      }
     }
   }
 }
@@ -226,9 +223,6 @@ mutation EnablePullRequestAutoMerge(
   ) {
     pullRequest {
       number
-      autoMergeRequest {
-        mergeMethod
-      }
     }
   }
 }

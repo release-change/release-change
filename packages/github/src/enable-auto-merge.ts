@@ -96,9 +96,6 @@ mutation EnablePullRequestAutoMerge(
   ) {
     pullRequest {
       number
-      autoMergeRequest {
-        mergeMethod
-      }
     }
   }
 }
