@@ -56,7 +56,7 @@ it("should log a warning when the response is an empty object", async () => {
     "Failed to enable the auto-merge for the pull request."
   );
 });
-it("should throw an error when the response has errors", async () => {
+it("should log a warning when the response has errors", async () => {
   vi.mocked(mockedFetch).mockResolvedValue({
     json: () =>
       Promise.resolve({
@@ -158,9 +158,6 @@ mutation EnablePullRequestAutoMerge(
   ) {
     pullRequest {
       number
-      autoMergeRequest {
-        mergeMethod
-      }
     }
   }
 }
@@ -226,9 +223,6 @@ mutation EnablePullRequestAutoMerge(
   ) {
     pullRequest {
       number
-      autoMergeRequest {
-        mergeMethod
-      }
     }
   }
 }
