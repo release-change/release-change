@@ -126,8 +126,8 @@ mutation EnablePullRequestAutoMerge(
           logger.logDebug(`GraphQL variables: ${deepInspectObject(variables)}`);
           logger.logDebug(`Response JSON: ${deepInspectObject(enableAutoMergeResponseData)}`);
         }
-        const { data, errors } = enableAutoMergeResponseData;
-        if (data && !errors) {
+        const { data } = enableAutoMergeResponseData;
+        if (data) {
           logger.logInfo(
             `Enabled the auto-merge for the pull request with the ${mergeMethod} method.`
           );
