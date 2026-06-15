@@ -1,5 +1,15 @@
 # @release-change/release-notes-generator
 
+## 0.3.2
+
+### Dependencies updates
+
+- @release-change/github@0.3.2
+
+---
+
+**Full changelog:** [`@release-change/release-notes-generator@v0.3.1...@release-change/release-notes-generator@v0.3.2`](https://github.com/release-change/release-change/compare/@release-change/release-notes-generator@v0.3.1...@release-change/release-notes-generator@v0.3.2)
+
 ## 0.3.1
 
 ### Dependencies updates
