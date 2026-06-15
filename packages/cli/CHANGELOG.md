@@ -1,5 +1,16 @@
 # @release-change/cli
 
+## 0.5.3
+
+### Dependencies updates
+
+- @release-change/github@0.3.3
+- @release-change/release@0.4.3
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.5.2...@release-change/cli@v0.5.3`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.5.2...@release-change/cli@v0.5.3)
+
 ## 0.5.2
 
 ### Dependencies updates
