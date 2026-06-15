@@ -1,5 +1,16 @@
 # @release-change/github
 
+## 0.3.2
+
+### Patch changes
+
+- **github:** only send pull request number in response data ([`21cb0b2`](https://github.com/release-change/release-change/commit/21cb0b228321f7c2683caab5a37543f2fb91be32))
+- **github:** only check if `data` property is provided ([`4d5587d`](https://github.com/release-change/release-change/commit/4d5587d174171e301d43367262aac30aff0fc272))
+
+---
+
+**Full changelog:** [`@release-change/github@v0.3.1...@release-change/github@v0.3.2`](https://github.com/release-change/release-change/compare/@release-change/github@v0.3.1...@release-change/github@v0.3.2)
+
 ## 0.3.1
 
 ### Patch changes
