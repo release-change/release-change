@@ -1,5 +1,15 @@
 # release-change
 
+## 0.5.3
+
+### Patch changes
+
+- **github:** use token provided by `RELEASE_TOKEN` env variable to create pull request ([`28b18ca`](https://github.com/release-change/release-change/commit/28b18ca094d224be2f10d2fba8845118c8372210))
+
+---
+
+**Full changelog:** [`v0.5.2...v0.5.3`](https://github.com/release-change/release-change/compare/v0.5.2...v0.5.3)
+
 ## 0.5.2
 
 ### Patch changes
