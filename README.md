@@ -77,7 +77,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
         id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
       steps:
         - name: Checkout
-          uses: actions/checkout@v6
+          uses: actions/checkout@v7
           with:
             fetch-depth: 0 # to clone the whole Git history
         - name: Install pnpm
@@ -122,7 +122,7 @@ Here are examples of the workflow configuration (the file must be saved in the `
         id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
       steps:
         - name: Checkout
-          uses: actions/checkout@v6
+          uses: actions/checkout@v7
           with:
             fetch-depth: 0 # to clone the whole Git history
         - name: Setup Node.js
