@@ -5,5 +5,37 @@
     "outDir": "dist"
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "bin/**/*", "test/**/*", "node_modules"]
+  "exclude": ["dist", "bin/**/*", "test/**/*", "node_modules"],
+  "references": [
+    {
+      "path": "../shared/tsconfig.json"
+    },
+    {
+      "path": "../logger/tsconfig.json"
+    },
+    {
+      "path": "../semver/tsconfig.json"
+    },
+    {
+      "path": "../config/tsconfig.json"
+    },
+    {
+      "path": "../get-packages/tsconfig.json"
+    },
+    {
+      "path": "../commit-analyser/tsconfig.json"
+    },
+    {
+      "path": "../git/tsconfig.json"
+    },
+    {
+      "path": "../github/tsconfig.json"
+    },
+    {
+      "path": "../npm/tsconfig.json"
+    },
+    {
+      "path": "../release-notes-generator/tsconfig.json"
+    }
+  ]
 }
