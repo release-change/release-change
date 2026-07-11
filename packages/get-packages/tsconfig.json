@@ -5,5 +5,16 @@
     "outDir": "dist"
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "bin/**/*", "test/**/*", "node_modules"]
+  "exclude": ["dist", "bin/**/*", "test/**/*", "node_modules"],
+  "references": [
+    {
+      "path": "../shared/tsconfig.json"
+    },
+    {
+      "path": "../logger/tsconfig.json"
+    },
+    {
+      "path": "../config/tsconfig.json"
+    }
+  ]
 }
