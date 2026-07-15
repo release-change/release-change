@@ -41,90 +41,87 @@ vi.mocked(getRepositoryRelatedEndpoint).mockReturnValue(
 );
 vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
 
-describe.each(mockedFailComments)("for $type and reference $reference", ({
-  type,
-  isMonorepo,
-  reference,
-  errors,
-  expectedBody
-}) => {
-  it("should throw an error if no branch is defined", async () => {
-    const expectedError = new Error(
-      "Failed to post the fail comment: The target branch is not defined.",
-      {
-        cause: {
-          title: "Failed to post the fail comment",
-          message: "The target branch is not defined.",
-          details: {
-            output: "targetBranch: undefined"
+describe.each(mockedFailComments)(
+  "for $type and reference $reference",
+  ({ type, isMonorepo, reference, errors, expectedBody }) => {
+    it("should throw an error if no branch is defined", async () => {
+      const expectedError = new Error(
+        "Failed to post the fail comment: The target branch is not defined.",
+        {
+          cause: {
+            title: "Failed to post the fail comment",
+            message: "The target branch is not defined.",
+            details: {
+              output: "targetBranch: undefined"
+            }
           }
         }
-      }
-    );
-    vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(postFailComment(reference, mockedContextWithoutBranch)).rejects.toThrow(
-      "The target branch is not defined."
-    );
-  });
-  it("should throw an error when the request fails", async () => {
-    vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-    await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
-      "Failed to request the URI."
-    );
-  });
-  it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
-    vi.mocked(mockedFetch).mockResolvedValue({
-      ...response,
-      json: () => Promise.resolve({ message: response.statusText })
+      );
+      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+      await expect(postFailComment(reference, mockedContextWithoutBranch)).rejects.toThrow(
+        "The target branch is not defined."
+      );
     });
-    vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
-      expectedError
-    );
-    expect(mockedLogger.logError).toHaveBeenCalledWith(
-      `Failed to post the fail comment on ${type} #${reference.number}.`
-    );
-    expect(process.exitCode).toBe(response.status);
-  });
-  it("should log a warning message if the URI is not found", async () => {
-    const context = isMonorepo
-      ? { ...mockedContextWithNextReleaseInMonorepo, errors }
-      : { ...mockedContextWithNextRelease, errors };
-    vi.mocked(checkErrorType).mockImplementation(error =>
-      error instanceof Error ? error.message : String(error)
-    );
-    vi.mocked(mockedFetch).mockResolvedValue({
-      status: 404,
-      statusText: "Not Found",
-      json: () => Promise.resolve({ message: "Not Found" })
+    it("should throw an error when the request fails", async () => {
+      vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
+      await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
+        "Failed to request the URI."
+      );
     });
-    await postFailComment(reference, context);
-    expect(mockedLogger.logWarn).toHaveBeenCalledWith(
-      `The resource requested for ${type} #123 has not been found; therefore, the fail comment has not been added.`
-    );
-  });
-  it("should post a fail comment", async () => {
-    const context = isMonorepo
-      ? { ...mockedContextWithNextReleaseInMonorepo, errors }
-      : { ...mockedContextWithNextRelease, errors };
-    vi.mocked(mockedFetch).mockResolvedValue({
-      status: 201,
-      statusText: "Created",
-      json: () => Promise.resolve({ message: "Created" })
+    it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
+      vi.mocked(mockedFetch).mockResolvedValue({
+        ...response,
+        json: () => Promise.resolve({ message: response.statusText })
+      });
+      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+      await expect(postFailComment(reference, mockedContextWithNextRelease)).rejects.toThrow(
+        expectedError
+      );
+      expect(mockedLogger.logError).toHaveBeenCalledWith(
+        `Failed to post the fail comment on ${type} #${reference.number}.`
+      );
+      expect(process.exitCode).toBe(response.status);
     });
-    await postFailComment(reference, context);
-    expect(mockedFetch).toHaveBeenCalledWith(mockedUriForComments, {
-      method: "POST",
-      headers: {
-        Accept: GITHUB_API_ACCEPT_HEADER,
-        Authorization: `Bearer ${mockedIssuePRToken}`,
-        "Content-Type": "application/json",
-        "X-GitHub-Api-Version": GITHUB_API_VERSION
-      },
-      body: JSON.stringify({
-        body: expectedBody
-      })
+    it("should log a warning message if the URI is not found", async () => {
+      const context = isMonorepo
+        ? { ...mockedContextWithNextReleaseInMonorepo, errors }
+        : { ...mockedContextWithNextRelease, errors };
+      vi.mocked(checkErrorType).mockImplementation(error =>
+        error instanceof Error ? error.message : String(error)
+      );
+      vi.mocked(mockedFetch).mockResolvedValue({
+        status: 404,
+        statusText: "Not Found",
+        json: () => Promise.resolve({ message: "Not Found" })
+      });
+      await postFailComment(reference, context);
+      expect(mockedLogger.logWarn).toHaveBeenCalledWith(
+        `The resource requested for ${type} #123 has not been found; therefore, the fail comment has not been added.`
+      );
     });
-    expect(mockedLogger.logInfo).toHaveBeenCalledWith(`Added fail comment on ${type} #123.`);
-  });
-});
+    it("should post a fail comment", async () => {
+      const context = isMonorepo
+        ? { ...mockedContextWithNextReleaseInMonorepo, errors }
+        : { ...mockedContextWithNextRelease, errors };
+      vi.mocked(mockedFetch).mockResolvedValue({
+        status: 201,
+        statusText: "Created",
+        json: () => Promise.resolve({ message: "Created" })
+      });
+      await postFailComment(reference, context);
+      expect(mockedFetch).toHaveBeenCalledWith(mockedUriForComments, {
+        method: "POST",
+        headers: {
+          Accept: GITHUB_API_ACCEPT_HEADER,
+          Authorization: `Bearer ${mockedIssuePRToken}`,
+          "Content-Type": "application/json",
+          "X-GitHub-Api-Version": GITHUB_API_VERSION
+        },
+        body: JSON.stringify({
+          body: expectedBody
+        })
+      });
+      expect(mockedLogger.logInfo).toHaveBeenCalledWith(`Added fail comment on ${type} #123.`);
+    });
+  }
+);

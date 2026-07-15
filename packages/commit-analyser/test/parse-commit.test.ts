@@ -23,12 +23,12 @@ vi.mock("@release-change/shared", () => ({
 it.each(mockedCommits)("should parse a commit ($type)", ({ commit, expected }) => {
   assert.deepEqual(parseCommit(commit, mockedContext), expected);
 });
-it.each(mockedCommitsInMonorepo)("should parse a commit ($type) in a monorepo context", ({
-  commit,
-  expected
-}) => {
-  assert.deepEqual(parseCommit(commit, mockedContextInMonorepo), expected);
-});
+it.each(mockedCommitsInMonorepo)(
+  "should parse a commit ($type) in a monorepo context",
+  ({ commit, expected }) => {
+    assert.deepEqual(parseCommit(commit, mockedContextInMonorepo), expected);
+  }
+);
 it("should throw an error if the commit has no header", () => {
   const expectedError = new Error("Failed to parse commit: No header found.", {
     cause: {

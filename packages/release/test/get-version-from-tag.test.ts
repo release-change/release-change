@@ -16,8 +16,9 @@ it("should throw an error if the version is invalid", () => {
     })
   );
 });
-it.each(
-  mockedVersionsFromGitTag
-)("should return the version $1 from $0 if it is valid", (gitTag, version) => {
-  expect(getVersionFromTag(gitTag)).toBe(version);
-});
+it.each(mockedVersionsFromGitTag)(
+  "should return the version $1 from $0 if it is valid",
+  (gitTag, version) => {
+    expect(getVersionFromTag(gitTag)).toBe(version);
+  }
+);

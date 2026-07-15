@@ -105,71 +105,68 @@ it("should throw an error if the head branch is empty", () => {
     "The head branch must not be empty."
   );
 });
-describe.each(
-  mockedPullRequests
-)("when `nextRelease` is $nextRelease and `isAutoMerge` is $isAutoMerge", async ({
-  isMonorepo,
-  isAutoMerge,
-  nextRelease,
-  expectedTitle,
-  expectedBody
-}) => {
-  const context = isMonorepo
-    ? mockedContextWithNextReleaseInMonorepo
-    : mockedContextWithNextRelease;
-  it("should throw an error when the request fails", () => {
-    vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-    expect(createPullRequest(mockedHeadBranch, mockedMergeOptions, context)).rejects.toThrow(
-      "Failed to request the URI."
-    );
-  });
-  it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
-    vi.mocked(mockedFetch).mockResolvedValue({
-      ...response,
-      json: () => Promise.resolve({ message: response.statusText })
-    });
-    vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    await expect(createPullRequest(mockedHeadBranch, mockedMergeOptions, context)).rejects.toThrow(
-      expectedError
-    );
-    expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to create the pull request.");
-    expect(process.exitCode).toBe(response.status);
-  });
-  it("should create a pull request", async () => {
-    const mockedNumber = 123;
-    const mockedNodeId = "fake_ID";
+describe.each(mockedPullRequests)(
+  "when `nextRelease` is $nextRelease and `isAutoMerge` is $isAutoMerge",
+  async ({ isMonorepo, isAutoMerge, nextRelease, expectedTitle, expectedBody }) => {
     const context = isMonorepo
-      ? { ...mockedContextInMonorepo, nextRelease }
-      : { ...mockedContext, nextRelease };
-    vi.mocked(mockedFetch).mockResolvedValue({
-      status: 201,
-      statusText: "Created",
-      json: () => Promise.resolve({ number: mockedNumber, node_id: mockedNodeId })
+      ? mockedContextWithNextReleaseInMonorepo
+      : mockedContextWithNextRelease;
+    it("should throw an error when the request fails", () => {
+      vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
+      expect(createPullRequest(mockedHeadBranch, mockedMergeOptions, context)).rejects.toThrow(
+        "Failed to request the URI."
+      );
     });
-    const returnedReference = await createPullRequest(
-      mockedHeadBranch,
-      { ...mockedMergeOptions, autoMergeAllowed: isAutoMerge },
-      context
-    );
-    expect(mockedFetch).toHaveBeenCalledWith(mockedUriForPullRequests, {
-      method: "POST",
-      headers: {
-        Accept: GITHUB_API_ACCEPT_HEADER,
-        Authorization: `Bearer ${mockedIssuePRToken}`,
-        "Content-Type": "application/json",
-        "X-GitHub-Api-Version": GITHUB_API_VERSION
-      },
-      body: JSON.stringify({
-        title: expectedTitle,
-        head: mockedHeadBranch,
-        base: context.branch,
-        body: expectedBody
-      })
+    it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
+      vi.mocked(mockedFetch).mockResolvedValue({
+        ...response,
+        json: () => Promise.resolve({ message: response.statusText })
+      });
+      vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+      await expect(
+        createPullRequest(mockedHeadBranch, mockedMergeOptions, context)
+      ).rejects.toThrow(expectedError);
+      expect(mockedLogger.logError).toHaveBeenCalledWith("Failed to create the pull request.");
+      expect(process.exitCode).toBe(response.status);
     });
-    expect(mockedLogger.logSuccess).toHaveBeenCalledWith("Created the pull request successfully.");
-    assert.deepEqual(returnedReference, {
-      pullRequestNumber: mockedNumber,
-      pullRequestId: mockedNodeId
+    it("should create a pull request", async () => {
+      const mockedNumber = 123;
+      const mockedNodeId = "fake_ID";
+      const context = isMonorepo
+        ? { ...mockedContextInMonorepo, nextRelease }
+        : { ...mockedContext, nextRelease };
+      vi.mocked(mockedFetch).mockResolvedValue({
+        status: 201,
+        statusText: "Created",
+        json: () => Promise.resolve({ number: mockedNumber, node_id: mockedNodeId })
+      });
+      const returnedReference = await createPullRequest(
+        mockedHeadBranch,
+        { ...mockedMergeOptions, autoMergeAllowed: isAutoMerge },
+        context
+      );
+      expect(mockedFetch).toHaveBeenCalledWith(mockedUriForPullRequests, {
+        method: "POST",
+        headers: {
+          Accept: GITHUB_API_ACCEPT_HEADER,
+          Authorization: `Bearer ${mockedIssuePRToken}`,
+          "Content-Type": "application/json",
+          "X-GitHub-Api-Version": GITHUB_API_VERSION
+        },
+        body: JSON.stringify({
+          title: expectedTitle,
+          head: mockedHeadBranch,
+          base: context.branch,
+          body: expectedBody
+        })
+      });
+      expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
+        "Created the pull request successfully."
+      );
+      assert.deepEqual(returnedReference, {
+        pullRequestNumber: mockedNumber,
+        pullRequestId: mockedNodeId
+      });
     });
-  });
-});
+  }
+);

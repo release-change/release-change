@@ -9,34 +9,35 @@ import { validVersionsInLooseMode } from "./fixtures/valid-versions-in-loose-mod
 it.each(invalidVersions)("should return `null` if $raw is parsed", ({ raw, options }) => {
   expect(parse(raw, options)).toBe(null);
 });
-it.each(validVersionsInLooseMode)("should return `null` if $raw is parsed in strict mode", ({
-  raw
-}) => {
-  expect(parse(raw)).toBe(null);
-});
-it.each(validVersionsInLooseMode)("should return the object if $raw is parsed in loose mode", ({
-  raw,
-  version,
-  expected
-}) => {
-  assert.deepEqual(parse(raw, { loose: true }), { raw, version, ...expected });
-});
-it.each(validVersions)("should return the object if $raw is parsed", ({
-  raw,
-  version,
-  expected
-}) => {
-  assert.deepEqual(parse(raw), { raw, version, ...expected });
-});
-it.each(validVersions)("should return the object as is if $raw is already in an object", ({
-  raw
-}) => {
-  const semver = new Semver(raw);
-  expect(parse(semver)).toBe(semver);
-});
-it.each(
-  validVersionsInLooseMode
-)("should return the object as is if $raw is already in an object (loose mode)", ({ raw }) => {
-  const semver = new Semver(raw, { loose: true });
-  expect(parse(semver)).toBe(semver);
-});
+it.each(validVersionsInLooseMode)(
+  "should return `null` if $raw is parsed in strict mode",
+  ({ raw }) => {
+    expect(parse(raw)).toBe(null);
+  }
+);
+it.each(validVersionsInLooseMode)(
+  "should return the object if $raw is parsed in loose mode",
+  ({ raw, version, expected }) => {
+    assert.deepEqual(parse(raw, { loose: true }), { raw, version, ...expected });
+  }
+);
+it.each(validVersions)(
+  "should return the object if $raw is parsed",
+  ({ raw, version, expected }) => {
+    assert.deepEqual(parse(raw), { raw, version, ...expected });
+  }
+);
+it.each(validVersions)(
+  "should return the object as is if $raw is already in an object",
+  ({ raw }) => {
+    const semver = new Semver(raw);
+    expect(parse(semver)).toBe(semver);
+  }
+);
+it.each(validVersionsInLooseMode)(
+  "should return the object as is if $raw is already in an object (loose mode)",
+  ({ raw }) => {
+    const semver = new Semver(raw, { loose: true });
+    expect(parse(semver)).toBe(semver);
+  }
+);

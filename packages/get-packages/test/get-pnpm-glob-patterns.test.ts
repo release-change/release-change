@@ -8,11 +8,9 @@ it("should return `null` when no `packages` field is found in `pnpm-workspace.ya
   chalk: ^4.1.2`;
   expect(getPnpmGlobPatterns(mockedContent)).toBe(null);
 });
-it.each(
-  pnpmWorkspaceManifestFiles
-)("should get the including and excluding patterns from `pnpm-workspace.yaml`", ({
-  content,
-  patterns
-}) => {
-  assert.deepEqual(getPnpmGlobPatterns(content), patterns);
-});
+it.each(pnpmWorkspaceManifestFiles)(
+  "should get the including and excluding patterns from `pnpm-workspace.yaml`",
+  ({ content, patterns }) => {
+    assert.deepEqual(getPnpmGlobPatterns(content), patterns);
+  }
+);
