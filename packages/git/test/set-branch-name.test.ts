@@ -54,10 +54,9 @@ it("should throw an error when there are no next releases", () => {
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   expect(() => setBranchName("branch", [])).toThrow(expectedError);
 });
-it.each(mockedBranchNames)("should set branch name as $expected", ({
-  branch,
-  nextRelease,
-  expected
-}) => {
-  expect(setBranchName(branch, nextRelease)).toBe(expected);
-});
+it.each(mockedBranchNames)(
+  "should set branch name as $expected",
+  ({ branch, nextRelease, expected }) => {
+    expect(setBranchName(branch, nextRelease)).toBe(expected);
+  }
+);

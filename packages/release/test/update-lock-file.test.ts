@@ -45,27 +45,26 @@ describe.each(mockedNextReleases)("for $packageName", ({ packageManifestPath, ne
     await expect(updateLockFile(nextRelease, mockedContext, null)).rejects.toThrow(expectedError);
     expect(mockedCommand).toHaveBeenCalledWith("git", ["restore", packageManifestPath]);
   });
-  it.each(
-    mockedPackageManagerCommands
-  )("should not run the $command command if the lock file does not exist", async ({ command }) => {
-    vi.spyOn(fs, "existsSync").mockReturnValue(false);
-    const mockedCommand = vi
-      .mocked(runCommand)
-      .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-    await updateLockFile(nextRelease, mockedContext, command);
-    expect(mockedCommand).not.toHaveBeenCalled();
-  });
-  it.each(
-    mockedPackageManagerCommands
-  )("should run the $command command if the package manager used is $command and the lock file exists", async ({
-    command,
-    args
-  }) => {
-    vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    const mockedCommand = vi
-      .mocked(runCommand)
-      .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-    await updateLockFile(nextRelease, mockedContext, command);
-    expect(mockedCommand).toHaveBeenCalledWith(command, args);
-  });
+  it.each(mockedPackageManagerCommands)(
+    "should not run the $command command if the lock file does not exist",
+    async ({ command }) => {
+      vi.spyOn(fs, "existsSync").mockReturnValue(false);
+      const mockedCommand = vi
+        .mocked(runCommand)
+        .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+      await updateLockFile(nextRelease, mockedContext, command);
+      expect(mockedCommand).not.toHaveBeenCalled();
+    }
+  );
+  it.each(mockedPackageManagerCommands)(
+    "should run the $command command if the package manager used is $command and the lock file exists",
+    async ({ command, args }) => {
+      vi.spyOn(fs, "existsSync").mockReturnValue(true);
+      const mockedCommand = vi
+        .mocked(runCommand)
+        .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+      await updateLockFile(nextRelease, mockedContext, command);
+      expect(mockedCommand).toHaveBeenCalledWith(command, args);
+    }
+  );
 });

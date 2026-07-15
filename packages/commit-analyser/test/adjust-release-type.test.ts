@@ -188,18 +188,16 @@ vi.mock("@release-change/get-packages", () => ({
   getPackageDependencies: vi.fn()
 }));
 
-it.each(packagesSets)("should adjust the release type for the dependent packages", ({
-  packages,
-  internalDependencies,
-  releaseTypesPerPackage,
-  expected
-}) => {
-  vi.mocked(getPackageDependencies).mockImplementation((pathname: string) => {
-    const matchingKey = Object.keys(internalDependencies).find(key => pathname.includes(key));
-    return matchingKey ? (internalDependencies[matchingKey] ?? null) : null;
-  });
-  assert.deepEqual(
-    adjustReleaseType({ ...mockedContextInMonorepo, packages }, releaseTypesPerPackage),
-    expected
-  );
-});
+it.each(packagesSets)(
+  "should adjust the release type for the dependent packages",
+  ({ packages, internalDependencies, releaseTypesPerPackage, expected }) => {
+    vi.mocked(getPackageDependencies).mockImplementation((pathname: string) => {
+      const matchingKey = Object.keys(internalDependencies).find(key => pathname.includes(key));
+      return matchingKey ? (internalDependencies[matchingKey] ?? null) : null;
+    });
+    assert.deepEqual(
+      adjustReleaseType({ ...mockedContextInMonorepo, packages }, releaseTypesPerPackage),
+      expected
+    );
+  }
+);

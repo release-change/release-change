@@ -16,10 +16,11 @@ vi.mock("@release-change/logger", () => ({
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
-it.each(
-  cliOptions
-)(`should display a message saying \`v${expectedVersion}\` when using the \`%s\` command`, cliOption => {
-  vi.spyOn(childProcess, "execSync").mockReturnValue(`npx @release-change/cli ${cliOption}`);
-  showVersion();
-  expect(mockedLogger.logWithoutFormatting).toHaveBeenCalledWith(`v${expectedVersion}`);
-});
+it.each(cliOptions)(
+  `should display a message saying \`v${expectedVersion}\` when using the \`%s\` command`,
+  cliOption => {
+    vi.spyOn(childProcess, "execSync").mockReturnValue(`npx @release-change/cli ${cliOption}`);
+    showVersion();
+    expect(mockedLogger.logWithoutFormatting).toHaveBeenCalledWith(`v${expectedVersion}`);
+  }
+);
