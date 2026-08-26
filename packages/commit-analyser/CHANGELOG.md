@@ -1,5 +1,16 @@
 # @release-change/commit-analyser
 
+## 0.2.2
+
+### Dependencies updates
+
+- @release-change/config@0.2.1
+- @release-change/get-packages@0.2.2
+
+---
+
+**Full changelog:** [`@release-change/commit-analyser@v0.2.1...@release-change/commit-analyser@v0.2.2`](https://github.com/release-change/release-change/compare/@release-change/commit-analyser@v0.2.1...@release-change/commit-analyser@v0.2.2)
+
 ## 0.2.1
 
 ### Dependencies updates
