@@ -2,7 +2,7 @@ import type { CliOptions, Context, ContextBase } from "@release-change/shared";
 
 import { configureCiEnvironment, isUsableCiEnvironment } from "@release-change/ci";
 import { getReleaseType } from "@release-change/commit-analyser";
-import { debugConfig, getConfig } from "@release-change/config";
+import { debugConfig, getConfig, setConfig } from "@release-change/config";
 import { getPackages, isMonorepo } from "@release-change/get-packages";
 import {
   COMMITTER_EMAIL,
@@ -35,8 +35,9 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   const logger = setLogger(contextBase.config.debug);
   logger.setScope("cli");
   logger.logInfo(`Running ${WORKSPACE_NAME} version ${WORKSPACE_VERSION}…`);
-  const packages = await getPackages(contextBase);
-  const config = await getConfig(cliOptions, isMonorepo(packages));
+  const configBase = getConfig(cliOptions);
+  const packages = await getPackages({ ...contextBase, config: { debug: configBase.debug } });
+  const config = setConfig(configBase, isMonorepo(packages));
   const branch = getBranchName(contextBase, logger);
   const ci = configureCiEnvironment(contextBase.env);
   const context: Context = {

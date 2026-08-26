@@ -2,7 +2,7 @@ import type { CliOptions, ContextBase } from "@release-change/shared";
 
 import { configureCiEnvironment, isUsableCiEnvironment } from "@release-change/ci";
 import { getReleaseType } from "@release-change/commit-analyser";
-import { getConfig } from "@release-change/config";
+import { getConfig, setConfig } from "@release-change/config";
 import { getPackages, isMonorepo } from "@release-change/get-packages";
 import {
   checkBranch,
@@ -48,6 +48,7 @@ vi.mock("@release-change/ci", () => ({
 }));
 vi.mock("@release-change/config", () => ({
   getConfig: vi.fn(),
+  setConfig: vi.fn(),
   debugConfig: vi.fn()
 }));
 vi.mock("@release-change/git", () => ({
@@ -99,7 +100,7 @@ vi.mocked(getReleaseType).mockReturnValue([
 vi.mocked(getRelatedPullRequestsAndIssues).mockResolvedValue();
 
 beforeEach(() => {
-  vi.mocked(getConfig).mockResolvedValue({
+  const mockedConfig = {
     debug: mockedContextBase.config.debug,
     dryRun: false,
     branches: ["main"],
@@ -107,7 +108,9 @@ beforeEach(() => {
     remoteName: "origin",
     repositoryUrl: "https://github.com/user-id/repo-name",
     releaseType: { main: { channel: "default" } }
-  });
+  };
+  vi.mocked(getConfig).mockReturnValue(mockedConfig);
+  vi.mocked(setConfig).mockReturnValue(mockedConfig);
   vi.mocked(setLastRelease).mockImplementation(() => {});
 });
 
@@ -156,7 +159,7 @@ it("should not publish if dry-run mode is enabled", async () => {
     config: { ...mockedContextBase.config, dryRun: true },
     nextRelease: {}
   };
-  vi.mocked(getConfig).mockResolvedValue({
+  const mockedConfig = {
     debug: mockedContextBase.config.debug,
     dryRun: true,
     branches: ["main"],
@@ -164,7 +167,9 @@ it("should not publish if dry-run mode is enabled", async () => {
     remoteName: "origin",
     repositoryUrl: "https://github.com/user-id/repo-name",
     releaseType: { main: { channel: "default" } }
-  });
+  };
+  vi.mocked(getConfig).mockReturnValue(mockedConfig);
+  vi.mocked(setConfig).mockReturnValue(mockedConfig);
   vi.mocked(isUsableCiEnvironment).mockReturnValue(true);
   await run(mockedCliOptions, mockContextBaseWithDryRun);
   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
