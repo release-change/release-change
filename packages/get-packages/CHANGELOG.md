@@ -1,5 +1,15 @@
 # @release-change/get-packages
 
+## 0.2.2
+
+### Dependencies updates
+
+- @release-change/config@0.2.1
+
+---
+
+**Full changelog:** [`@release-change/get-packages@v0.2.1...@release-change/get-packages@v0.2.2`](https://github.com/release-change/release-change/compare/@release-change/get-packages@v0.2.1...@release-change/get-packages@v0.2.2)
+
 ## 0.2.1
 
 ### Patch changes
