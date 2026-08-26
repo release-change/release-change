@@ -1,5 +1,15 @@
 # @release-change/config
 
+## 0.2.1
+
+### Patch changes
+
+- **config:** get config before getting packages and set config once packages are resolved (#746) ([`55088cc`](https://github.com/release-change/release-change/commit/55088cc3706ba18cb262e73cf5a3fe366df52317))
+
+---
+
+**Full changelog:** [`@release-change/config@v0.2.0...@release-change/config@v0.2.1`](https://github.com/release-change/release-change/compare/@release-change/config@v0.2.0...@release-change/config@v0.2.1)
+
 ## 0.2.0
 
 ### Dependencies updates
