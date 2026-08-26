@@ -1,5 +1,25 @@
 # @release-change/cli
 
+## 0.5.4
+
+### Patch changes
+
+- **config:** get config before getting packages and set config once packages are resolved (#746) ([`55088cc`](https://github.com/release-change/release-change/commit/55088cc3706ba18cb262e73cf5a3fe366df52317))
+
+### Dependencies updates
+
+- @release-change/ci@0.2.1
+- @release-change/commit-analyser@0.2.2
+- @release-change/config@0.2.1
+- @release-change/get-packages@0.2.2
+- @release-change/git@0.3.2
+- @release-change/github@0.3.4
+- @release-change/release@0.4.4
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.5.3...@release-change/cli@v0.5.4`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.5.3...@release-change/cli@v0.5.4)
+
 ## 0.5.3
 
 ### Dependencies updates
