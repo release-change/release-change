@@ -1,5 +1,15 @@
 # release-change
 
+## 0.5.4
+
+### Patch changes
+
+- **config:** get config before getting packages and set config once packages are resolved (#746) ([`55088cc`](https://github.com/release-change/release-change/commit/55088cc3706ba18cb262e73cf5a3fe366df52317))
+
+---
+
+**Full changelog:** [`v0.5.3...v0.5.4`](https://github.com/release-change/release-change/compare/v0.5.3...v0.5.4)
+
 ## 0.5.3
 
 ### Patch changes
