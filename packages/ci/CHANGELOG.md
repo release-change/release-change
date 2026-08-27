@@ -1,5 +1,23 @@
 # @release-change/ci
 
+## 0.3.0
+
+### Minor changes
+
+- **ci:** make a known app environment a usable environment ([`7761358`](https://github.com/release-change/release-change/commit/77613589786af4a4841df867aef76dd38430a0f7))
+- **ci:** add app tool detection to context ([`0031188`](https://github.com/release-change/release-change/commit/0031188d9947b33fa224a2b87739f5ca02f4b35f))
+- **ci:** implement app tool detection ([`0cd7bd8`](https://github.com/release-change/release-change/commit/0cd7bd8fe9619951f7cfea40847bb4a5c80ec052))
+
+### Dependencies updates
+
+- @release-change/config@0.3.0
+- @release-change/logger@0.3.0
+- @release-change/shared@0.3.0
+
+---
+
+**Full changelog:** [`@release-change/ci@v0.2.1...@release-change/ci@v0.3.0`](https://github.com/release-change/release-change/compare/@release-change/ci@v0.2.1...@release-change/ci@v0.3.0)
+
 ## 0.2.1
 
 ### Dependencies updates
