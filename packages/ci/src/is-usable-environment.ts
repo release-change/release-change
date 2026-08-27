@@ -4,14 +4,15 @@ import { setLogger } from "@release-change/logger";
 import { deepInspectObject } from "@release-change/shared";
 
 /**
- * Checks whether the CI environment is usable for the run to proceed.
+ * Checks whether the environment is usable for the run to proceed.
+ *
  * A usable CI environment does not provide any context when the run is triggered by a pull request.
- * An unknown CI environment does not prevent the run from proceeding but activates the dry-run mode.
+ * An unknown app or CI environment does not prevent the run from proceeding but activates the dry-run mode.
  * @param context - The context where the CLI is running.
- * @return `true` if the CI environment is usable, `false` otherwise.
+ * @return `true` if the environment is usable, `false` otherwise.
  */
-export const isUsableCiEnvironment = (context: Context): boolean => {
-  const { config, ci } = context;
+export const isUsableEnvironment = (context: Context): boolean => {
+  const { config, ci, isAppTool } = context;
   const { isCi, isPullRequest } = ci;
   const logger = setLogger(config.debug);
   logger.setScope("ci");
@@ -25,10 +26,10 @@ export const isUsableCiEnvironment = (context: Context): boolean => {
     );
     return false;
   }
-  if (!isCi) {
+  if (!isAppTool && !isCi) {
     config.dryRun = true;
     logger.logWarn(
-      "This run is not triggered in a known CI environment; therefore, the dry-run mode is enabled."
+      "This run is not triggered in a known app or CI environment; therefore, the dry-run mode is enabled."
     );
   }
   return true;

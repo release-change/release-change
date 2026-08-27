@@ -111,6 +111,7 @@ export interface Context extends ContextBase {
   config: Config;
   branch: string | undefined;
   ci: CiConfig;
+  isAppTool: boolean;
   packages: Package[];
   releaseInfos: ReleaseInfo[];
   lastRelease?: LastRelease;

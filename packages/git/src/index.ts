@@ -18,7 +18,9 @@ export { push } from "./push.js";
 export { removeTag } from "./remove-tag.js";
 export { removeTagOnRemoteRepository } from "./remove-tag-on-remote-repository.js";
 export { setBranchName } from "./set-branch-name.js";
+export { setCommitterEmail } from "./set-committer-email.js";
+export { setCommitterName } from "./set-committer-name.js";
 export { switchToBranch } from "./switch-to-branch.js";
 export { switchToNewBranch } from "./switch-to-new-branch.js";
 
-export { COMMITTER_EMAIL, COMMITTER_NAME, GIT_TAG_PATTERN } from "./constants.js";
+export { GIT_TAG_PATTERN } from "./constants.js";

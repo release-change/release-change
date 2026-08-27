@@ -4,7 +4,7 @@ import type { Context, PackageNextRelease } from "@release-change/shared";
 import fs from "node:fs";
 import path from "node:path";
 
-import { add, COMMITTER_EMAIL, COMMITTER_NAME, commit } from "@release-change/git";
+import { add, commit, setCommitterEmail, setCommitterName } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
 import {
   deepInspectObject,
@@ -24,7 +24,7 @@ export const commitUpdatedFiles = async (
   packageManager: PackageManager,
   context: Context
 ): Promise<string> => {
-  const { cwd, config } = context;
+  const { cwd, config, isAppTool } = context;
   const { debug } = config;
   const logger = setLogger(debug);
   if (packageManager) {
@@ -57,7 +57,7 @@ export const commitUpdatedFiles = async (
         }
       });
     }
-    const commitMessage = `chore: ${packageNextRelease.gitTag}\n\nCo-authored-by: ${COMMITTER_NAME} <${COMMITTER_EMAIL}>`;
+    const commitMessage = `chore: ${packageNextRelease.gitTag}\n\nCo-authored-by: ${setCommitterName(isAppTool)} <${setCommitterEmail(isAppTool)}>`;
     const gitCommitCommandResult = await commit(commitMessage, cwd);
     const { status: gitCommitStatus } = gitCommitCommandResult;
     if (debug) {

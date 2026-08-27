@@ -1,6 +1,6 @@
 import type { CliOptions, ContextBase } from "@release-change/shared";
 
-import { configureCiEnvironment, isUsableCiEnvironment } from "@release-change/ci";
+import { configureCiEnvironment, isUsableEnvironment } from "@release-change/ci";
 import { getReleaseType } from "@release-change/commit-analyser";
 import { getConfig, setConfig } from "@release-change/config";
 import { getPackages, isMonorepo } from "@release-change/get-packages";
@@ -9,7 +9,9 @@ import {
   checkPushPermissions,
   checkRepository,
   getBranchName,
-  getCommitsSinceRef
+  getCommitsSinceRef,
+  setCommitterEmail,
+  setCommitterName
 } from "@release-change/git";
 import { getRelatedPullRequestsAndIssues } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
@@ -43,8 +45,9 @@ const mockedPackages = [
 
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn(), checkErrorType: vi.fn() }));
 vi.mock("@release-change/ci", () => ({
+  isAppToolDetected: vi.fn(),
   configureCiEnvironment: vi.fn(),
-  isUsableCiEnvironment: vi.fn()
+  isUsableEnvironment: vi.fn()
 }));
 vi.mock("@release-change/config", () => ({
   getConfig: vi.fn(),
@@ -52,13 +55,13 @@ vi.mock("@release-change/config", () => ({
   debugConfig: vi.fn()
 }));
 vi.mock("@release-change/git", () => ({
+  setCommitterName: vi.fn(),
+  setCommitterEmail: vi.fn(),
   checkRepository: vi.fn(),
   getBranchName: vi.fn(),
   checkBranch: vi.fn(),
   checkPushPermissions: vi.fn(),
-  getCommitsSinceRef: vi.fn(),
-  COMMITTER_NAME: "mocked-committer-name [bot]",
-  COMMITTER_EMAIL: "0+mocked-committer-name-bot@users.noreply.github.com"
+  getCommitsSinceRef: vi.fn()
 }));
 vi.mock("@release-change/commit-analyser", () => ({ getReleaseType: vi.fn() }));
 vi.mock("@release-change/release", () => ({
@@ -79,6 +82,10 @@ vi.mock("@release-change/github", () => ({
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 vi.mocked(getBranchName).mockReturnValue("main");
+vi.mocked(setCommitterName).mockReturnValue("mocked-committer-name [bot]");
+vi.mocked(setCommitterEmail).mockReturnValue(
+  "0+mocked-committer-name-bot@users.noreply.github.com"
+);
 vi.mocked(checkBranch).mockImplementation(() => undefined);
 vi.mocked(checkPushPermissions).mockResolvedValue();
 vi.mocked(getCommitsSinceRef).mockResolvedValue([
@@ -148,7 +155,7 @@ it("should call `checkRepository`", async () => {
   );
 });
 it("should set last release if CI is usable", async () => {
-  vi.mocked(isUsableCiEnvironment).mockReturnValue(true);
+  vi.mocked(isUsableEnvironment).mockReturnValue(true);
   const mockedSetLastRelease = vi.mocked(setLastRelease).mockImplementation(() => undefined);
   await run(mockedCliOptions, mockedContextBase);
   expect(mockedSetLastRelease).toHaveBeenCalledWith(expect.any(Object));
@@ -170,14 +177,14 @@ it("should not publish if dry-run mode is enabled", async () => {
   };
   vi.mocked(getConfig).mockReturnValue(mockedConfig);
   vi.mocked(setConfig).mockReturnValue(mockedConfig);
-  vi.mocked(isUsableCiEnvironment).mockReturnValue(true);
+  vi.mocked(isUsableEnvironment).mockReturnValue(true);
   await run(mockedCliOptions, mockContextBaseWithDryRun);
   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
     "The dry-run mode is enabled; therefore, the release will not be published."
   );
 });
 it("should publish if dry-run mode is disabled", async () => {
-  vi.mocked(isUsableCiEnvironment).mockReturnValue(true);
+  vi.mocked(isUsableEnvironment).mockReturnValue(true);
   const mockedPublish = vi.mocked(publish).mockResolvedValue();
   const mockContextBaseWithNoDryRun = {
     ...mockedContextBase,

@@ -1,17 +1,17 @@
 import type { CliOptions, Context, ContextBase } from "@release-change/shared";
 
-import { configureCiEnvironment, isUsableCiEnvironment } from "@release-change/ci";
+import { configureCiEnvironment, isAppToolDetected, isUsableEnvironment } from "@release-change/ci";
 import { getReleaseType } from "@release-change/commit-analyser";
 import { debugConfig, getConfig, setConfig } from "@release-change/config";
 import { getPackages, isMonorepo } from "@release-change/get-packages";
 import {
-  COMMITTER_EMAIL,
-  COMMITTER_NAME,
   checkBranch,
   checkPushPermissions,
   checkRepository,
   getBranchName,
-  getCommitsSinceRef
+  getCommitsSinceRef,
+  setCommitterEmail,
+  setCommitterName
 } from "@release-change/git";
 import {
   closeIssue,
@@ -40,21 +40,23 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   const config = setConfig(configBase, isMonorepo(packages));
   const branch = getBranchName(contextBase, logger);
   const ci = configureCiEnvironment(contextBase.env);
+  const isAppTool = isAppToolDetected(contextBase.env, "IS_GITHUB_APP");
   const context: Context = {
     ...contextBase,
     branch,
     config,
     ci,
+    isAppTool,
     packages,
     releaseInfos: []
   };
   await checkRepository(context, logger);
-  if (isUsableCiEnvironment(context)) {
+  if (isUsableEnvironment(context)) {
     Object.assign(context.env, {
-      GIT_AUTHOR_NAME: COMMITTER_NAME,
-      GIT_AUTHOR_EMAIL: COMMITTER_EMAIL,
-      GIT_COMMITTER_NAME: COMMITTER_NAME,
-      GIT_COMMITTER_EMAIL: COMMITTER_EMAIL
+      GIT_AUTHOR_NAME: setCommitterName(isAppTool),
+      GIT_AUTHOR_EMAIL: setCommitterEmail(isAppTool),
+      GIT_COMMITTER_NAME: setCommitterName(isAppTool),
+      GIT_COMMITTER_EMAIL: setCommitterEmail(isAppTool)
     });
     debugConfig(context);
     checkBranch(context);
