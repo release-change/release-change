@@ -1,5 +1,29 @@
 # @release-change/cli
 
+## 0.6.0
+
+### Minor changes
+
+- **ci:** use the right committer name and e-mail ([`1e2ce2d`](https://github.com/release-change/release-change/commit/1e2ce2db23158008530a3b3b45e27744ba77fffb))
+- **ci:** make a known app environment a usable environment ([`7761358`](https://github.com/release-change/release-change/commit/77613589786af4a4841df867aef76dd38430a0f7))
+- **ci:** add app tool detection to context ([`0031188`](https://github.com/release-change/release-change/commit/0031188d9947b33fa224a2b87739f5ca02f4b35f))
+
+### Dependencies updates
+
+- @release-change/ci@0.3.0
+- @release-change/commit-analyser@0.3.0
+- @release-change/config@0.3.0
+- @release-change/get-packages@0.3.0
+- @release-change/git@0.4.0
+- @release-change/github@0.4.0
+- @release-change/logger@0.3.0
+- @release-change/release@0.5.0
+- @release-change/shared@0.3.0
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.5.4...@release-change/cli@v0.6.0`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.5.4...@release-change/cli@v0.6.0)
+
 ## 0.5.4
 
 ### Patch changes
