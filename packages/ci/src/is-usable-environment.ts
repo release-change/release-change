@@ -17,8 +17,9 @@ export const isUsableEnvironment = (context: Context): boolean => {
   const logger = setLogger(config.debug);
   logger.setScope("ci");
   if (config.debug) {
-    logger.setDebugScope("ci:is-usable-ci-environment");
-    logger.logDebug(deepInspectObject(ci));
+    logger.setDebugScope("ci:is-usable-environment");
+    logger.logDebug(`ci: ${deepInspectObject(ci)}`);
+    logger.logDebug(`isAppTool: ${isAppTool}`);
   }
   if (isCi && isPullRequest) {
     logger.logWarn(
