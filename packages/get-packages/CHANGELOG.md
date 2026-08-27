@@ -1,5 +1,17 @@
 # @release-change/get-packages
 
+## 0.3.0
+
+### Dependencies updates
+
+- @release-change/config@0.3.0
+- @release-change/logger@0.3.0
+- @release-change/shared@0.3.0
+
+---
+
+**Full changelog:** [`@release-change/get-packages@v0.2.2...@release-change/get-packages@v0.3.0`](https://github.com/release-change/release-change/compare/@release-change/get-packages@v0.2.2...@release-change/get-packages@v0.3.0)
+
 ## 0.2.2
 
 ### Dependencies updates
