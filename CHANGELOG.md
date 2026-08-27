@@ -1,5 +1,19 @@
 # release-change
 
+## 0.6.0
+
+### Minor changes
+
+- **ci:** use the right committer name and e-mail ([`1e2ce2d`](https://github.com/release-change/release-change/commit/1e2ce2db23158008530a3b3b45e27744ba77fffb))
+- **git:** set committer name and e-mail based on whether a known app environment is enabled or not ([`c9199dd`](https://github.com/release-change/release-change/commit/c9199dd0dadde9750195a8dbc05f838ed27a7713))
+- **ci:** make a known app environment a usable environment ([`7761358`](https://github.com/release-change/release-change/commit/77613589786af4a4841df867aef76dd38430a0f7))
+- **ci:** add app tool detection to context ([`0031188`](https://github.com/release-change/release-change/commit/0031188d9947b33fa224a2b87739f5ca02f4b35f))
+- **ci:** implement app tool detection ([`0cd7bd8`](https://github.com/release-change/release-change/commit/0cd7bd8fe9619951f7cfea40847bb4a5c80ec052))
+
+---
+
+**Full changelog:** [`v0.5.4...v0.6.0`](https://github.com/release-change/release-change/compare/v0.5.4...v0.6.0)
+
 ## 0.5.4
 
 ### Patch changes
