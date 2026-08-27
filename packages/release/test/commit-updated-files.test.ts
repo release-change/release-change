@@ -2,7 +2,7 @@ import type { PackageManager } from "@release-change/get-packages";
 
 import fs from "node:fs";
 
-import { add, commit } from "@release-change/git";
+import { add, commit, setCommitterEmail, setCommitterName } from "@release-change/git";
 import { formatDetailedError, formatOutputFromCommandResult } from "@release-change/shared";
 import { describe, expect, it, vi } from "vitest";
 
@@ -24,11 +24,15 @@ vi.mock("@release-change/shared", () => ({
   WORKSPACE_NAME: "release-change"
 }));
 vi.mock("@release-change/git", () => ({
+  setCommitterName: vi.fn(),
+  setCommitterEmail: vi.fn(),
   add: vi.fn(),
-  commit: vi.fn(),
-  COMMITTER_NAME: "mocked-committer-name [bot]",
-  COMMITTER_EMAIL: "0+mocked-committer-name-bot@users.noreply.github.com"
+  commit: vi.fn()
 }));
+vi.mocked(setCommitterName).mockReturnValue("mocked-committer-name [bot]");
+vi.mocked(setCommitterEmail).mockReturnValue(
+  "0+mocked-committer-name-bot@users.noreply.github.com"
+);
 
 describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, nextRelease }) => {
   it("should throw an error if the package manager is not found or supported", async () => {

@@ -9,7 +9,9 @@ import {
   checkPushPermissions,
   checkRepository,
   getBranchName,
-  getCommitsSinceRef
+  getCommitsSinceRef,
+  setCommitterEmail,
+  setCommitterName
 } from "@release-change/git";
 import { getRelatedPullRequestsAndIssues } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
@@ -53,13 +55,13 @@ vi.mock("@release-change/config", () => ({
   debugConfig: vi.fn()
 }));
 vi.mock("@release-change/git", () => ({
+  setCommitterName: vi.fn(),
+  setCommitterEmail: vi.fn(),
   checkRepository: vi.fn(),
   getBranchName: vi.fn(),
   checkBranch: vi.fn(),
   checkPushPermissions: vi.fn(),
-  getCommitsSinceRef: vi.fn(),
-  COMMITTER_NAME: "mocked-committer-name [bot]",
-  COMMITTER_EMAIL: "0+mocked-committer-name-bot@users.noreply.github.com"
+  getCommitsSinceRef: vi.fn()
 }));
 vi.mock("@release-change/commit-analyser", () => ({ getReleaseType: vi.fn() }));
 vi.mock("@release-change/release", () => ({
@@ -80,6 +82,10 @@ vi.mock("@release-change/github", () => ({
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 vi.mocked(getBranchName).mockReturnValue("main");
+vi.mocked(setCommitterName).mockReturnValue("mocked-committer-name [bot]");
+vi.mocked(setCommitterEmail).mockReturnValue(
+  "0+mocked-committer-name-bot@users.noreply.github.com"
+);
 vi.mocked(checkBranch).mockImplementation(() => undefined);
 vi.mocked(checkPushPermissions).mockResolvedValue();
 vi.mocked(getCommitsSinceRef).mockResolvedValue([

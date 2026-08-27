@@ -1,4 +1,5 @@
 import { getIssueAndPullRequestToken } from "@release-change/ci";
+import { setCommitterEmail, setCommitterName } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
@@ -35,9 +36,13 @@ vi.mock("@release-change/ci", () => ({
   getIssueAndPullRequestToken: vi.fn()
 }));
 vi.mock("@release-change/git", () => ({
-  COMMITTER_NAME: "mocked-committer-name [bot]",
-  COMMITTER_EMAIL: "0+mocked-committer-name-bot@users.noreply.github.com"
+  setCommitterName: vi.fn(),
+  setCommitterEmail: vi.fn()
 }));
+vi.mocked(setCommitterName).mockReturnValue("mocked-committer-name [bot]");
+vi.mocked(setCommitterEmail).mockReturnValue(
+  "0+mocked-committer-name-bot@users.noreply.github.com"
+);
 
 beforeEach(() => {
   vi.mocked(setLogger).mockReturnValue(mockedLogger);
