@@ -50,6 +50,7 @@ const mockedContext: Context = {
     isCi: true,
     isPullRequest: false
   },
+  isAppTool: false,
   packages: [{ name: "", pathname: "." }],
   releaseInfos: [],
   errors: [],

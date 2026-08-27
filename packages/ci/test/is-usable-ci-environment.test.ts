@@ -11,6 +11,7 @@ const expectedDefaultConfig = DEFAULT_CONFIG as unknown as Config;
 const mockedContext = {
   cwd: "/fake/path",
   env: {},
+  isAppTool: false,
   branch: "main",
   packages: [{ name: "", pathname: "." }],
   releaseInfos: [],

@@ -10,6 +10,7 @@ export const mockedContext: Context = {
     isCi: true,
     isPullRequest: false
   },
+  isAppTool: false,
   packages: [
     { name: "", pathname: "." },
     { name: "@monorepo/a", pathname: "packages/a" },

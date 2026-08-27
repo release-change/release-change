@@ -11,6 +11,7 @@ export const mockedContext: Context = {
     isCi: true,
     isPullRequest: false
   },
+  isAppTool: false,
   config: expectedDefaultConfig,
   packages: [{ name: "", pathname: "." }],
   releaseInfos: [],

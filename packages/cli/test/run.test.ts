@@ -43,6 +43,7 @@ const mockedPackages = [
 
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn(), checkErrorType: vi.fn() }));
 vi.mock("@release-change/ci", () => ({
+  isAppToolDetected: vi.fn(),
   configureCiEnvironment: vi.fn(),
   isUsableCiEnvironment: vi.fn()
 }));
