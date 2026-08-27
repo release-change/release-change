@@ -1,5 +1,28 @@
 # @release-change/release
 
+## 0.5.0
+
+### Minor changes
+
+- **ci:** use the right committer name and e-mail ([`1e2ce2d`](https://github.com/release-change/release-change/commit/1e2ce2db23158008530a3b3b45e27744ba77fffb))
+- **ci:** add app tool detection to context ([`0031188`](https://github.com/release-change/release-change/commit/0031188d9947b33fa224a2b87739f5ca02f4b35f))
+
+### Dependencies updates
+
+- @release-change/config@0.3.0
+- @release-change/commit-analyser@0.3.0
+- @release-change/get-packages@0.3.0
+- @release-change/git@0.4.0
+- @release-change/github@0.4.0
+- @release-change/logger@0.3.0
+- @release-change/npm@0.3.0
+- @release-change/release-notes-generator@0.4.0
+- @release-change/shared@0.3.0
+
+---
+
+**Full changelog:** [`@release-change/release@v0.4.4...@release-change/release@v0.5.0`](https://github.com/release-change/release-change/compare/@release-change/release@v0.4.4...@release-change/release@v0.5.0)
+
 ## 0.4.4
 
 ### Dependencies updates
