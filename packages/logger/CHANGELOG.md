@@ -1,5 +1,19 @@
 # @release-change/logger
 
+## 0.3.0
+
+### Minor changes
+
+- **ci:** add app tool detection to context ([`0031188`](https://github.com/release-change/release-change/commit/0031188d9947b33fa224a2b87739f5ca02f4b35f))
+
+### Dependencies updates
+
+- @release-change/shared@0.3.0
+
+---
+
+**Full changelog:** [`@release-change/logger@v0.2.0...@release-change/logger@v0.3.0`](https://github.com/release-change/release-change/compare/@release-change/logger@v0.2.0...@release-change/logger@v0.3.0)
+
 ## 0.2.0
 
 ### Dependencies updates
