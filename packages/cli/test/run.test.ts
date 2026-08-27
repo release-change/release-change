@@ -1,6 +1,6 @@
 import type { CliOptions, ContextBase } from "@release-change/shared";
 
-import { configureCiEnvironment, isUsableCiEnvironment } from "@release-change/ci";
+import { configureCiEnvironment, isUsableEnvironment } from "@release-change/ci";
 import { getReleaseType } from "@release-change/commit-analyser";
 import { getConfig, setConfig } from "@release-change/config";
 import { getPackages, isMonorepo } from "@release-change/get-packages";
@@ -45,7 +45,7 @@ vi.mock("@release-change/logger", () => ({ setLogger: vi.fn(), checkErrorType: v
 vi.mock("@release-change/ci", () => ({
   isAppToolDetected: vi.fn(),
   configureCiEnvironment: vi.fn(),
-  isUsableCiEnvironment: vi.fn()
+  isUsableEnvironment: vi.fn()
 }));
 vi.mock("@release-change/config", () => ({
   getConfig: vi.fn(),
@@ -149,7 +149,7 @@ it("should call `checkRepository`", async () => {
   );
 });
 it("should set last release if CI is usable", async () => {
-  vi.mocked(isUsableCiEnvironment).mockReturnValue(true);
+  vi.mocked(isUsableEnvironment).mockReturnValue(true);
   const mockedSetLastRelease = vi.mocked(setLastRelease).mockImplementation(() => undefined);
   await run(mockedCliOptions, mockedContextBase);
   expect(mockedSetLastRelease).toHaveBeenCalledWith(expect.any(Object));
@@ -171,14 +171,14 @@ it("should not publish if dry-run mode is enabled", async () => {
   };
   vi.mocked(getConfig).mockReturnValue(mockedConfig);
   vi.mocked(setConfig).mockReturnValue(mockedConfig);
-  vi.mocked(isUsableCiEnvironment).mockReturnValue(true);
+  vi.mocked(isUsableEnvironment).mockReturnValue(true);
   await run(mockedCliOptions, mockContextBaseWithDryRun);
   expect(mockedLogger.logWarn).toHaveBeenCalledWith(
     "The dry-run mode is enabled; therefore, the release will not be published."
   );
 });
 it("should publish if dry-run mode is disabled", async () => {
-  vi.mocked(isUsableCiEnvironment).mockReturnValue(true);
+  vi.mocked(isUsableEnvironment).mockReturnValue(true);
   const mockedPublish = vi.mocked(publish).mockResolvedValue();
   const mockContextBaseWithNoDryRun = {
     ...mockedContextBase,
