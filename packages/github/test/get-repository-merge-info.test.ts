@@ -70,6 +70,7 @@ it.each(mockedRepoMergeInfo)("should return the expected info", async ({ respons
   vi.mocked(mockedFetch).mockResolvedValue({
     json: () => Promise.resolve(response)
   });
+  assert.deepEqual(await getRepositoryMergeInfo(mockedContext), expected);
   expect(mockedFetch).toHaveBeenCalledWith("https://api.github.com/graphql", {
     method: "POST",
     headers: {
@@ -93,5 +94,4 @@ query($owner: String!, $repository: String!) {
       }
     })
   });
-  assert.deepEqual(await getRepositoryMergeInfo(mockedContext), expected);
 });
