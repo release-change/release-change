@@ -33,7 +33,7 @@ it("should throw an error if the branch name is empty", async () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(deleteBranchOnRemoteRepository("", mockedContext)).rejects.toThrow(expectedError);
+  await expect(deleteBranchOnRemoteRepository("", mockedContext)).rejects.toThrow(expectedError);
 });
 it("should run the `git push --delete` command", async () => {
   const mockedCommand = vi

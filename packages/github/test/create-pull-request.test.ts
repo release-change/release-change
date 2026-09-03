@@ -48,7 +48,7 @@ vi.mocked(setLogger).mockReturnValue(mockedLogger);
 vi.mocked(getIssueAndPullRequestToken).mockReturnValue(mockedIssuePRToken);
 vi.mocked(getRepositoryRelatedEndpoint).mockReturnValue(mockedUri);
 
-it("should throw an error if both target branch and head branch are not defined", () => {
+it("should throw an error if both target branch and head branch are not defined", async () => {
   const expectedError = new Error(
     "Failed to create the pull request: Both the target branch and the head branch must be defined.",
     {
@@ -63,11 +63,11 @@ it("should throw an error if both target branch and head branch are not defined"
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() =>
+  await expect(() =>
     createPullRequest("", mockedMergeOptions, mockedContextWithoutBranch)
   ).rejects.toThrow("Both the target branch and the head branch must be defined.");
 });
-it("should throw an error if the target branch is not defined", () => {
+it("should throw an error if the target branch is not defined", async () => {
   const expectedError = new Error(
     "Failed to create the pull request: The target branch is not defined.",
     {
@@ -82,11 +82,11 @@ it("should throw an error if the target branch is not defined", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() =>
+  await expect(() =>
     createPullRequest(mockedHeadBranch, mockedMergeOptions, mockedContextWithoutBranch)
   ).rejects.toThrow("The target branch is not defined.");
 });
-it("should throw an error if the head branch is empty", () => {
+it("should throw an error if the head branch is empty", async () => {
   const expectedError = new Error(
     "Failed to create the pull request: The head branch must not be empty.",
     {
@@ -101,7 +101,7 @@ it("should throw an error if the head branch is empty", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(() => createPullRequest("", mockedMergeOptions, mockedContext)).rejects.toThrow(
+  await expect(() => createPullRequest("", mockedMergeOptions, mockedContext)).rejects.toThrow(
     "The head branch must not be empty."
   );
 });
@@ -111,11 +111,11 @@ describe.each(mockedPullRequests)(
     const context = isMonorepo
       ? mockedContextWithNextReleaseInMonorepo
       : mockedContextWithNextRelease;
-    it("should throw an error when the request fails", () => {
+    it("should throw an error when the request fails", async () => {
       vi.mocked(mockedFetch).mockRejectedValue(new Error("Failed to request the URI."));
-      expect(createPullRequest(mockedHeadBranch, mockedMergeOptions, context)).rejects.toThrow(
-        "Failed to request the URI."
-      );
+      await expect(
+        createPullRequest(mockedHeadBranch, mockedMergeOptions, context)
+      ).rejects.toThrow("Failed to request the URI.");
     });
     it.each(mockedFailureFetches)("$title", async ({ response, expectedError }) => {
       vi.mocked(mockedFetch).mockResolvedValue({

@@ -68,7 +68,9 @@ describe.each(mockedPackagePublishingSet)(
         }
       );
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrow(expectedError);
+      await expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrow(
+        expectedError
+      );
     });
     it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` file already exists and sets auth token", async () => {
       vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
