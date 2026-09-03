@@ -50,7 +50,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
       }
     );
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-    expect(commitUpdatedFiles(nextRelease, null, mockedContext)).rejects.toThrow(
+    await expect(commitUpdatedFiles(nextRelease, null, mockedContext)).rejects.toThrow(
       "The package manager is not found or is not one of those supported (npm or pnpm)."
     );
   });
@@ -83,7 +83,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
       });
       vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      expect(commitUpdatedFiles(nextRelease, packageManager, mockedContext)).rejects.toThrow(
+      await expect(commitUpdatedFiles(nextRelease, packageManager, mockedContext)).rejects.toThrow(
         expectedError
       );
     });
@@ -111,7 +111,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
       });
       vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      expect(commitUpdatedFiles(nextRelease, packageManager, mockedContext)).rejects.toThrow(
+      await expect(commitUpdatedFiles(nextRelease, packageManager, mockedContext)).rejects.toThrow(
         expectedError
       );
     });

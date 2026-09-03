@@ -16,7 +16,7 @@ vi.mock("@release-change/shared", () => ({
   runCommand: vi.fn()
 }));
 
-it("should throw an error if the branch name is not defined", () => {
+it("should throw an error if the branch name is not defined", async () => {
   const expectedError = new Error(
     "Failed to run the `git push` command: A branch name must be provided.",
     {
@@ -30,11 +30,11 @@ it("should throw an error if the branch name is not defined", () => {
     }
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(push(mockedContextWithUndefinedBranchName, { destinationBranch: "" })).rejects.toThrow(
-    "A branch name must be provided."
-  );
+  await expect(
+    push(mockedContextWithUndefinedBranchName, { destinationBranch: "" })
+  ).rejects.toThrow("A branch name must be provided.");
 });
-it("should throw an error if the `git push` command fails", () => {
+it("should throw an error if the `git push` command fails", async () => {
   const expectedOutput =
     "status: 1\n\nstdout: \n\nstderr: remote: error: GH013: Repository rule violations found for refs/heads/main.";
   const expectedError = new Error(
@@ -57,7 +57,7 @@ it("should throw an error if the `git push` command fails", () => {
   });
   vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  expect(push(mockedContext, { destinationBranch: mockedDestinationBranch })).rejects.toThrow(
+  await expect(push(mockedContext, { destinationBranch: mockedDestinationBranch })).rejects.toThrow(
     expectedError
   );
 });
