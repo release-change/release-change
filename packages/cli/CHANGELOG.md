@@ -1,5 +1,19 @@
 # @release-change/cli
 
+## 0.6.1
+
+### Dependencies updates
+
+- @release-change/commit-analyser@0.3.1
+- @release-change/get-packages@0.3.1
+- @release-change/git@0.4.1
+- @release-change/github@0.4.1
+- @release-change/release@0.5.1
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.6.0...@release-change/cli@v0.6.1`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.6.0...@release-change/cli@v0.6.1)
+
 ## 0.6.0
 
 ### Minor changes
