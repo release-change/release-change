@@ -1,5 +1,15 @@
 # release-change
 
+## 0.6.1
+
+### Patch changes
+
+- **get-packages:** return `null` if `npm_config_user_agent` does not set a version of npm ([`f6ae104`](https://github.com/release-change/release-change/commit/f6ae104cd1f344178eca71c5a937a66feca18413))
+
+---
+
+**Full changelog:** [`v0.6.0...v0.6.1`](https://github.com/release-change/release-change/compare/v0.6.0...v0.6.1)
+
 ## 0.6.0
 
 ### Minor changes
