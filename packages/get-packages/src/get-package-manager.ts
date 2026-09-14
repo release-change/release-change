@@ -16,7 +16,7 @@ export const getPackageManager = (cwd: string, env: NodeJS.ProcessEnv): PackageM
   if (PNPM_HOME) return "pnpm";
   if (npmConfigUserAgent) {
     if (npmConfigUserAgent.includes("pnpm")) return "pnpm";
-    if (npmConfigUserAgent.includes("npm")) return "npm";
+    if (npmConfigUserAgent.match(/npm\/\d+\.\d+\.\d+/)) return "npm";
     return null;
   }
   return null;

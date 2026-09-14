@@ -15,6 +15,9 @@ const mockedEnvWithNpmVersion = {
 const mockedEnvWithPnpmVersion = {
   npm_config_user_agent: "pnpm/10.10.0 npm/? node/v22.15.0 darwin x64"
 };
+const mockedEnvWithUnknownNpmVersion = {
+  npm_config_user_agent: "npm/? node/v22.15.0 darwin x64"
+};
 
 it("should return `pnpm` if the `pnpm-lock.yaml` file exists", () => {
   vi.spyOn(fs, "existsSync").mockReturnValueOnce(true);
@@ -43,5 +46,8 @@ describe("when no lock files are found", () => {
   });
   it("should return `null` if the `npm_config_user_agent` environment variable is set without any version of `npm` and `pnpm`", () => {
     expect(getPackageManager(mockedCwd, mockedEnvWithTruncatedNpmConfigUserAgent)).toBe(null);
+  });
+  it("should return `null` if the `npm_config_user_agent` environment variable is set with an unknown version of `npm`", () => {
+    expect(getPackageManager(mockedCwd, mockedEnvWithUnknownNpmVersion)).toBe(null);
   });
 });
