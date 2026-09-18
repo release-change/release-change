@@ -1,8 +1,8 @@
 import { expect, test } from "vitest";
 
 import { satisfies } from "../src/index.js";
+import { excludingInvalidRanges } from "./fixtures/excluding-invalid-ranges.js";
 import { excludingRanges } from "./fixtures/excluding-ranges.js";
-import { excludingInvalidRanges } from "./fixtures/excludingInvalidRanges.js";
 import { includingRanges } from "./fixtures/including-ranges.js";
 
 test.each(includingRanges)("%s should include %s", (range, version, options) => {
