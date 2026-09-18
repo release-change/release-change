@@ -1,5 +1,15 @@
 # release-change
 
+## 0.6.2
+
+### Patch changes
+
+- **get-packages:** check the package manager version is compatible with the minimum version required ([`dbc892b`](https://github.com/release-change/release-change/commit/dbc892b819df02868cbe100c19003fc3de0d81d7))
+
+---
+
+**Full changelog:** [`v0.6.1...v0.6.2`](https://github.com/release-change/release-change/compare/v0.6.1...v0.6.2)
+
 ## 0.6.1
 
 ### Patch changes
