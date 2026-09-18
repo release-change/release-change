@@ -4,6 +4,7 @@ import { addErrorToContext, setLogger } from "@release-change/logger";
 import { formatDetailedError } from "@release-change/shared";
 import { assert, describe, expect, it, vi } from "vitest";
 
+import { getPackageManagerVersion } from "../src/get-package-manager-version.js";
 import { getPackagesFromGlobPatterns } from "../src/get-packages-from-glob-patterns.js";
 import {
   getNpmGlobPatterns,
@@ -13,6 +14,7 @@ import {
   getRootPackageManifest,
   getRootPnpmWorkspaceManifest
 } from "../src/index.js";
+import { isPackageManagerVersionCompatible } from "../src/is-package-manager-version-compatible.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { npmPackages } from "./fixtures/npm-packages.js";
@@ -27,6 +29,7 @@ const mockedContextBase = {
 const expectedSinglePackage = [{ name: "", pathname: "." }];
 
 vi.mock("@release-change/shared", () => ({
+  runCommandSync: vi.fn(),
   formatDetailedError: vi.fn()
 }));
 vi.mock("@release-change/logger", () => ({
@@ -36,6 +39,10 @@ vi.mock("@release-change/logger", () => ({
   setLogger: vi.fn()
 }));
 vi.mock("../src/get-package-manager.js", () => ({ getPackageManager: vi.fn() }));
+vi.mock("../src/get-package-manager-version.js", () => ({ getPackageManagerVersion: vi.fn() }));
+vi.mock("../src/is-package-manager-version-compatible.js", () => ({
+  isPackageManagerVersionCompatible: vi.fn()
+}));
 vi.mock("../src/get-root-package-manifest.js", () => ({ getRootPackageManifest: vi.fn() }));
 vi.mock("../src/get-root-pnpm-workspace-manifest.js", () => ({
   getRootPnpmWorkspaceManifest: vi.fn()
@@ -44,6 +51,10 @@ vi.mock("../src/get-npm-glob-patterns.js", () => ({ getNpmGlobPatterns: vi.fn() 
 vi.mock("../src/get-pnpm-glob-patterns.js", () => ({ getPnpmGlobPatterns: vi.fn() }));
 vi.mock("../src/get-packages-from-glob-patterns.js", () => ({
   getPackagesFromGlobPatterns: vi.fn()
+}));
+vi.mock("../src/constants.js", () => ({
+  REQUIRED_NPM_VERSION: "10.9.0",
+  REQUIRED_PNPM_VERSION: "11.1.3"
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 vi.mocked(addErrorToContext).mockImplementation((error, context) => {
@@ -83,6 +94,30 @@ it("should throw an error if the package manager is not found or supported", asy
     })
   );
 });
+it("should throw an error if the package manager is npm with an outdated version", async () => {
+  const expectedError = new Error(
+    "Failed to use the package manager: The package manager version must be 10.9.0 or greater.",
+    {
+      cause: {
+        title: "Failed to use the package manager",
+        message: "The package manager must be 10.9.0 or greater.",
+        details: {
+          output: "npm 10.8.2"
+        }
+      }
+    }
+  );
+  vi.mocked(getPackageManager).mockReturnValue("npm");
+  vi.mocked(getPackageManagerVersion).mockReturnValue("10.8.2");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(false);
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(getPackages(mockedContextBase)).rejects.toThrow(
+    expect.objectContaining({
+      message: expectedError.message,
+      cause: expectedError.cause
+    })
+  );
+});
 it("should throw an error if the package manager is npm and no `package.json` file is found at the root", async () => {
   const expectedError = new Error(
     "Failed to get the root package manifest (`package.json`): File not found.",
@@ -97,6 +132,7 @@ it("should throw an error if the package manager is npm and no `package.json` fi
     }
   );
   vi.mocked(getPackageManager).mockReturnValue("npm");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
   vi.mocked(getRootPackageManifest).mockImplementation(() => {
     throw expectedError;
   });
@@ -108,6 +144,7 @@ it("should throw an error if the package manager is npm and no `package.json` fi
 });
 it("should return one single package when the package manager is npm and the glob patterns do not return anything", async () => {
   vi.mocked(getPackageManager).mockReturnValue("npm");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
   vi.mocked(getRootPackageManifest).mockReturnValue({ name: "my-package", version: "1.0.0" });
   vi.mocked(getNpmGlobPatterns).mockReturnValue(null);
   assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
@@ -115,6 +152,7 @@ it("should return one single package when the package manager is npm and the glo
 describe.each(npmPackages)("when the package manager is npm", ({ content, patterns, packages }) => {
   it("should return one single package when the glob patterns return an empty array of packages", async () => {
     vi.mocked(getPackageManager).mockReturnValue("npm");
+    vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
     vi.mocked(getRootPackageManifest).mockReturnValue(content);
     vi.mocked(getNpmGlobPatterns).mockReturnValue(patterns);
     vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue([]);
@@ -122,19 +160,46 @@ describe.each(npmPackages)("when the package manager is npm", ({ content, patter
   });
   it("should return the correct packages when the glob patterns return packages", async () => {
     vi.mocked(getPackageManager).mockReturnValue("npm");
+    vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
     vi.mocked(getRootPackageManifest).mockReturnValue(content);
     vi.mocked(getNpmGlobPatterns).mockReturnValue(patterns);
     vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue(packages);
     assert.deepEqual(await getPackages(mockedContextBase), [...expectedSinglePackage, ...packages]);
   });
 });
+it("should throw an error if the package manager is pnpm with an outdated version", async () => {
+  const expectedError = new Error(
+    "Failed to use the package manager: The package manager version must be 11.1.3 or greater.",
+    {
+      cause: {
+        title: "Failed to use the package manager",
+        message: "The package manager must be 11.1.3 or greater.",
+        details: {
+          output: "pnpm 11.1.2"
+        }
+      }
+    }
+  );
+  vi.mocked(getPackageManager).mockReturnValue("pnpm");
+  vi.mocked(getPackageManagerVersion).mockReturnValue("11.1.2");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(false);
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(getPackages(mockedContextBase)).rejects.toThrow(
+    expect.objectContaining({
+      message: expectedError.message,
+      cause: expectedError.cause
+    })
+  );
+});
 it("should return one single package when the package manager is pnpm and no `pnpm-workspace.yaml` file is found at the root", async () => {
   vi.mocked(getPackageManager).mockReturnValue("pnpm");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
   vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(null);
   assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
 });
 it("should return one single package when the package manager is pnpm and a `pnpm-workspace.yaml` file is found at the root and the glob patterns do not return anything", async () => {
   vi.mocked(getPackageManager).mockReturnValue("pnpm");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
   vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue("no-packages:");
   vi.mocked(getPnpmGlobPatterns).mockReturnValue(null);
   assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
@@ -143,14 +208,16 @@ describe.each(pnpmPackages)(
   "when the package manager is pnpm",
   ({ content, patterns, packages }) => {
     it("should return one single package when the glob patterns return an empty array of packages", async () => {
-      vi.mocked(getPackageManager).mockReturnValue("npm");
+      vi.mocked(getPackageManager).mockReturnValue("pnpm");
+      vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
       vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(content);
       vi.mocked(getPnpmGlobPatterns).mockReturnValue(patterns);
       vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue([]);
       assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
     });
     it("should return the correct packages when the glob patterns return packages", async () => {
-      vi.mocked(getPackageManager).mockReturnValue("npm");
+      vi.mocked(getPackageManager).mockReturnValue("pnpm");
+      vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
       vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(content);
       vi.mocked(getPnpmGlobPatterns).mockReturnValue(patterns);
       vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue(packages);
