@@ -208,7 +208,7 @@ describe.each(pnpmPackages)(
   "when the package manager is pnpm",
   ({ content, patterns, packages }) => {
     it("should return one single package when the glob patterns return an empty array of packages", async () => {
-      vi.mocked(getPackageManager).mockReturnValue("npm");
+      vi.mocked(getPackageManager).mockReturnValue("pnpm");
       vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
       vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(content);
       vi.mocked(getPnpmGlobPatterns).mockReturnValue(patterns);
@@ -216,7 +216,7 @@ describe.each(pnpmPackages)(
       assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
     });
     it("should return the correct packages when the glob patterns return packages", async () => {
-      vi.mocked(getPackageManager).mockReturnValue("npm");
+      vi.mocked(getPackageManager).mockReturnValue("pnpm");
       vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
       vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(content);
       vi.mocked(getPnpmGlobPatterns).mockReturnValue(patterns);
