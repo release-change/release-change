@@ -10,8 +10,6 @@ import { isGitVersionCompatible } from "../src/is-git-version-compatible.js";
 import { isNodeVersionCompatible } from "../src/is-node-version-compatible.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 
-import { GIT_MIN_VERSION, REQUIRED_NODE_VERSIONS } from "../src/constants.js";
-
 const formerLtsReleases = [
   "4.9.1",
   "6.17.1",
@@ -43,6 +41,10 @@ vi.mock("@release-change/shared", () => ({
   WORKSPACE_VERSION: "0.0.0"
 }));
 vi.mock("@release-change/semver", () => ({ coerce: vi.fn() }));
+vi.mock("../src/constants.js", () => ({
+  GIT_MIN_VERSION: "2.23.0",
+  REQUIRED_NODE_VERSIONS: "^22.12.0 || ^24.0.0"
+}));
 vi.mock("../src/is-git-version-compatible.js", () => ({
   isGitVersionCompatible: vi.fn()
 }));
@@ -61,10 +63,6 @@ beforeEach(() => {
 it.each(formerLtsReleases)(
   "should call `process.exit(1)` and display an error message if Node version %s is not compatible with those required",
   async mockedNodeVersion => {
-    const formattedRequiredNodeVersions = new Intl.ListFormat("en-GB", {
-      style: "long",
-      type: "disjunction"
-    }).format(REQUIRED_NODE_VERSIONS.replaceAll(/\^([.0-9]+)/gi, "$1+").split(" || "));
     vi.spyOn(process, "version", "get").mockReturnValue(mockedNodeVersion);
     vi.spyOn(process, "exit").mockImplementation(() => {
       throw new Error("process.exit called with 1");
@@ -72,11 +70,11 @@ it.each(formerLtsReleases)(
     vi.mocked(isNodeVersionCompatible).mockReturnValue(false);
     await expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
     expect(mockedLogger.logError).toHaveBeenCalledWith(
-      `Required one of the following Node versions: ${formattedRequiredNodeVersions}. Found ${mockedNodeVersion}.`
+      `Required one of the following Node versions: 22.12.0+ or 24.0.0+. Found ${mockedNodeVersion}.`
     );
   }
 );
-it(`should call \`process.exit(1)\` and display an error message if Git version is less than ${GIT_MIN_VERSION}`, async () => {
+it("should call `process.exit(1)` and display an error message if Git version is less than 2.23.0", async () => {
   const mockedGitVersion = "git version 2.30.0";
   const mockedVersion = "2.30.0";
   vi.spyOn(process, "exit").mockImplementation(() => {
@@ -100,7 +98,7 @@ it(`should call \`process.exit(1)\` and display an error message if Git version 
   vi.mocked(isGitVersionCompatible).mockReturnValue(false);
   await expect(checkRequirements()).rejects.toThrow("process.exit called with 1");
   expect(mockedLogger.logError).toHaveBeenCalledWith(
-    `Git version ${GIT_MIN_VERSION} required. Found ${mockedVersion}.`
+    `Git version 2.23.0 required. Found ${mockedVersion}.`
   );
 });
 it("should complete successfully when requirements are met", async () => {
