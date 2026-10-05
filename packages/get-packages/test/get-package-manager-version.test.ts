@@ -38,6 +38,9 @@ describe.each(validPackageManagerVersions)("for %s", validPackageManagerVersion 
         stderr: ""
       });
       expect(getPackageManagerVersion(packageManager, mockedCwd)).toBe(validPackageManagerVersion);
+      expect(runCommandSync).toHaveBeenCalledWith(packageManager, ["--version"], {
+        cwd: mockedCwd
+      });
     }
   );
 });
