@@ -16,8 +16,11 @@ export const getPackageManager = (cwd: string, env: NodeJS.ProcessEnv): PackageM
   if (fs.existsSync(path.join(cwd, "pnpm-lock.yaml"))) return "pnpm";
   if (fs.existsSync(path.join(cwd, "yarn.lock"))) return "yarn";
   if (fs.existsSync(path.join(cwd, "package-lock.json"))) return "npm";
-  const rootPackageManifest = getRootPackageManifest(path.join(cwd, "package.json"));
-  const { packageManager } = rootPackageManifest;
+  const rootPackageManifestPath = path.join(cwd, "package.json");
+  const rootPackageManifest = fs.existsSync(rootPackageManifestPath)
+    ? getRootPackageManifest(rootPackageManifestPath)
+    : null;
+  const { packageManager } = rootPackageManifest ?? {};
   if (packageManager?.startsWith("pnpm")) return "pnpm";
   if (packageManager?.startsWith("yarn")) return "yarn";
   if (packageManager?.startsWith("npm")) return "npm";

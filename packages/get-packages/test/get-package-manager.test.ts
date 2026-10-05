@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getPackageManager, getRootPackageManifest } from "../src/index.js";
 import { mockedCwd } from "./fixtures/mocked-cwd.js";
@@ -46,7 +46,12 @@ it("should return `npm` if the `package-lock.json` file exists", () => {
   expect(getPackageManager(mockedCwd, mockedEnvWithoutNpmConfigUserAgent)).toBe("npm");
 });
 describe("when no lock files are found", () => {
-  vi.spyOn(fs, "existsSync").mockReturnValue(false);
+  beforeEach(() => {
+    vi.spyOn(fs, "existsSync").mockReturnValueOnce(false);
+    vi.spyOn(fs, "existsSync").mockReturnValueOnce(false);
+    vi.spyOn(fs, "existsSync").mockReturnValueOnce(false);
+    vi.spyOn(fs, "existsSync").mockReturnValueOnce(true);
+  });
   it("should return `pnpm` if the `packageManager` property is set in the `package.json` file and says pnpm", () => {
     vi.mocked(getRootPackageManifest).mockReturnValue({
       ...mockedPackageManifest,
