@@ -145,6 +145,12 @@ it("should throw an error if the package manager is npm and no `package.json` fi
   expect(addErrorToContext).toHaveBeenCalledWith(expectedError, mockedContextBase);
   assert.deepNestedInclude(mockedContextBase.errors, expectedError.cause);
 });
+it("should not search for a `pnpm-workspace.yaml` file if the package manager is npm", async () => {
+  vi.mocked(getPackageManager).mockReturnValue("npm");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
+  expect(getRootPnpmWorkspaceManifest).not.toHaveBeenCalled();
+  expect(getPnpmGlobPatterns).not.toHaveBeenCalled();
+});
 it("should return one single package when the package manager is npm and the glob patterns do not return anything", async () => {
   vi.mocked(getPackageManager).mockReturnValue("npm");
   vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
@@ -200,6 +206,12 @@ it("should return one single package when the package manager is pnpm and no `pn
   vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
   vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(null);
   assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
+});
+it("should not browse the `package.json` file if the package manager is pnpm", async () => {
+  vi.mocked(getPackageManager).mockReturnValue("pnpm");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
+  expect(getRootPackageManifest).not.toHaveBeenCalled();
+  expect(getNpmGlobPatterns).not.toHaveBeenCalled();
 });
 it("should return one single package when the package manager is pnpm and a `pnpm-workspace.yaml` file is found at the root and the glob patterns do not return anything", async () => {
   vi.mocked(getPackageManager).mockReturnValue("pnpm");
@@ -280,6 +292,12 @@ it("should throw an error if the package manager is yarn and no `package.json` f
   await expect(getPackages(mockedContextBase)).rejects.toThrow();
   expect(addErrorToContext).toHaveBeenCalledWith(expectedError, mockedContextBase);
   assert.deepNestedInclude(mockedContextBase.errors, expectedError.cause);
+});
+it("should not search for a `pnpm-workspace.yaml` file if the package manager is yarn", async () => {
+  vi.mocked(getPackageManager).mockReturnValue("yarn");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
+  expect(getRootPnpmWorkspaceManifest).not.toHaveBeenCalled();
+  expect(getPnpmGlobPatterns).not.toHaveBeenCalled();
 });
 it("should return one single package when the package manager is yarn and the glob patterns do not return anything", async () => {
   vi.mocked(getPackageManager).mockReturnValue("yarn");
