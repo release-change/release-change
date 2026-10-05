@@ -1,5 +1,21 @@
 # @release-change/config
 
+## 0.4.0
+
+### Minor changes
+
+- **get-packages:** enable package manager detection through `packageManager` property ([`5471002`](https://github.com/release-change/release-change/commit/5471002fd4756a5ed49f34f16d77e06c0e2bc14e))
+- add support for Yarn ([`ecc8232`](https://github.com/release-change/release-change/commit/ecc82324fb0d0d0d737b7031a6cad1540273f363))
+
+### Dependencies updates
+
+- @release-change/logger@0.4.0
+- @release-change/shared@0.4.0
+
+---
+
+**Full changelog:** [`@release-change/config@v0.3.0...@release-change/config@v0.4.0`](https://github.com/release-change/release-change/compare/@release-change/config@v0.3.0...@release-change/config@v0.4.0)
+
 ## 0.3.0
 
 ### Minor changes
