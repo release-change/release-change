@@ -1,17 +1,9 @@
 import type { PackagePublishing } from "../../src/index.js";
 
-const npmArgs = ["publish", "--dry-run", "--access", "public"];
-const npmArgsWithTag = ["publish", "--dry-run", "--access", "public", "--tag", "alpha"];
-const pnpmArgs = ["publish", "--dry-run", "--access", "public", "--no-git-checks"];
-const pnpmArgsWithTag = [
-  "publish",
-  "--dry-run",
-  "--access",
-  "public",
-  "--tag",
-  "alpha",
-  "--no-git-checks"
-];
+const npmArgs = ["publish", "--access", "public"];
+const npmArgsWithTag = ["publish", "--access", "public", "--tag", "alpha"];
+const pnpmArgs = ["publish", "--access", "public", "--no-git-checks"];
+const pnpmArgsWithTag = ["publish", "--access", "public", "--tag", "alpha", "--no-git-checks"];
 const yarnArgs = ["npm", "publish", "--access", "public"];
 const yarnArgsWithTag = ["npm", "publish", "--access", "public", "--tag", "alpha"];
 export const mockedPackagePublishingSet: PackagePublishing[] = [
