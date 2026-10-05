@@ -1,5 +1,15 @@
 # @release-change/shared
 
+## 0.4.0
+
+### Minor changes
+
+- add support for Yarn ([`ecc8232`](https://github.com/release-change/release-change/commit/ecc82324fb0d0d0d737b7031a6cad1540273f363))
+
+---
+
+**Full changelog:** [`@release-change/shared@v0.3.0...@release-change/shared@v0.4.0`](https://github.com/release-change/release-change/compare/@release-change/shared@v0.3.0...@release-change/shared@v0.4.0)
+
 ## 0.3.0
 
 ### Minor changes
