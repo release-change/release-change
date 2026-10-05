@@ -102,7 +102,7 @@ it("should throw an error if the package manager is npm with an outdated version
     {
       cause: {
         title: "Failed to use the package manager",
-        message: "The package manager must be 10.9.0 or greater.",
+        message: "The package manager version must be 10.9.0 or greater.",
         details: {
           output: "npm 10.8.2"
         }
@@ -119,6 +119,7 @@ it("should throw an error if the package manager is npm with an outdated version
       cause: expectedError.cause
     })
   );
+  expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
 });
 it("should throw an error if the package manager is npm and no `package.json` file is found at the root", async () => {
   const expectedError = new Error(
@@ -175,7 +176,7 @@ it("should throw an error if the package manager is pnpm with an outdated versio
     {
       cause: {
         title: "Failed to use the package manager",
-        message: "The package manager must be 11.1.3 or greater.",
+        message: "The package manager version must be 11.1.3 or greater.",
         details: {
           output: "pnpm 11.1.2"
         }
@@ -192,6 +193,7 @@ it("should throw an error if the package manager is pnpm with an outdated versio
       cause: expectedError.cause
     })
   );
+  expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
 });
 it("should return one single package when the package manager is pnpm and no `pnpm-workspace.yaml` file is found at the root", async () => {
   vi.mocked(getPackageManager).mockReturnValue("pnpm");
@@ -236,7 +238,7 @@ it("should throw an error if the package manager is yarn with an outdated versio
     {
       cause: {
         title: "Failed to use the package manager",
-        message: "The package manager must be 4.9.0 or greater.",
+        message: "The package manager version must be 4.9.0 or greater.",
         details: {
           output: "yarn 1.22.22"
         }
@@ -253,6 +255,7 @@ it("should throw an error if the package manager is yarn with an outdated versio
       cause: expectedError.cause
     })
   );
+  expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
 });
 it("should throw an error if the package manager is yarn and no `package.json` file is found at the root", async () => {
   const expectedError = new Error(
