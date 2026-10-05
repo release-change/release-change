@@ -34,7 +34,11 @@ export const commitUpdatedFiles = async (
     const lockFile = path.join(
       cwd,
       pathname,
-      packageManager === "pnpm" ? "pnpm-lock.yaml" : "package-lock.json"
+      packageManager === "pnpm"
+        ? "pnpm-lock.yaml"
+        : packageManager === "yarn"
+          ? "yarn.lock"
+          : "package-lock.json"
     );
     const changelogFile = path.join(cwd, pathname, "CHANGELOG.md");
     const filesToAdd = fs.existsSync(lockFile)
@@ -80,7 +84,8 @@ export const commitUpdatedFiles = async (
   process.exitCode = process.exitCode ?? 1;
   throw formatDetailedError({
     title: "Failed to commit the updated files",
-    message: "The package manager is not found or is not one of those supported (npm or pnpm).",
+    message:
+      "The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
     details: {
       output: `packageManager: ${packageManager}`
     }

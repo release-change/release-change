@@ -57,6 +57,7 @@ export const preparePublishing = async (
             packagePublishing.npmTag = npmTag;
           }
           if (packageManager === "pnpm") args.push("--no-git-checks");
+          if (packageManager === "yarn") args.unshift("npm");
           if (debug) {
             logger.logDebug(`Publishing info prepared for ${packageName} package:`);
             logger.logDebug(deepInspectObject(packagePublishing));
@@ -67,7 +68,7 @@ export const preparePublishing = async (
         throw formatDetailedError({
           title: "Failed to prepare publishing",
           message:
-            "The package manager is not found or is not one of those supported (npm or pnpm).",
+            "The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
           details: {
             output: `packageManager: ${packageManager}`
           }

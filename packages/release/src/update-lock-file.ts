@@ -38,6 +38,15 @@ export const updateLockFile = async (
         logger.logDebug(deepInspectObject(pnpmCommandResult));
       }
     }
+  } else if (packageManager === "yarn") {
+    if (fs.existsSync(path.join(cwd, pathname, "yarn.lock"))) {
+      args.push("install", "--mode=update-lockfile", "--no-immutable");
+      const yarnCommandResult = await runCommand("yarn", args);
+      if (debug) {
+        logger.logDebug(`Command run: yarn ${args.join(" ")}`);
+        logger.logDebug(deepInspectObject(yarnCommandResult));
+      }
+    }
   } else if (packageManager === "npm") {
     if (fs.existsSync(path.join(cwd, pathname, "package-lock.json"))) {
       args.push("install", "--package-lock-only");
@@ -55,7 +64,8 @@ export const updateLockFile = async (
     process.exitCode = 1;
     throw formatDetailedError({
       title: "Failed to update the lock file",
-      message: "The package manager is not found or is not one of those supported (npm or pnpm).",
+      message:
+        "The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
       details: {
         output: `packageManager: ${packageManager}`
       }

@@ -14,7 +14,7 @@ import { getRootPackageManifest } from "./get-root-package-manifest.js";
 import { getRootPnpmWorkspaceManifest } from "./get-root-pnpm-workspace-manifest.js";
 import { isPackageManagerVersionCompatible } from "./is-package-manager-version-compatible.js";
 
-import { REQUIRED_NPM_VERSION, REQUIRED_PNPM_VERSION } from "./constants.js";
+import { REQUIRED_NPM_VERSION, REQUIRED_PNPM_VERSION, REQUIRED_YARN_VERSION } from "./constants.js";
 
 /**
  * Gets the packages within the current working directory.
@@ -73,7 +73,11 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
       }
     }
     const packageVersionRequired = (
-      packageManager === "pnpm" ? REQUIRED_PNPM_VERSION : REQUIRED_NPM_VERSION
+      packageManager === "pnpm"
+        ? REQUIRED_PNPM_VERSION
+        : packageManager === "yarn"
+          ? REQUIRED_YARN_VERSION
+          : REQUIRED_NPM_VERSION
     ).replace(">=", "");
     throw formatDetailedError({
       title: "Failed to use the package manager",
@@ -83,7 +87,7 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
   }
   throw formatDetailedError({
     title: "Failed to get the package manager",
-    message: "The package manager must be either `npm` or `pnpm`.",
+    message: "The package manager must be either `npm`, `pnpm` or `yarn`.",
     details: { output: String(packageManager) }
   });
 };
