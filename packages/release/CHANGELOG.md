@@ -1,5 +1,32 @@
 # @release-change/release
 
+## 0.6.0
+
+### Minor changes
+
+- add support for Yarn ([`ecc8232`](https://github.com/release-change/release-change/commit/ecc82324fb0d0d0d737b7031a6cad1540273f363))
+
+### Patch changes
+
+- use current working directory to run package managers commands ([`c4dbac2`](https://github.com/release-change/release-change/commit/c4dbac2902e24f1adb59b2fcf66afb38a70f12c8))
+
+### Dependencies updates
+
+- @release-change/config@0.4.0
+- @release-change/commit-analyser@0.4.0
+- @release-change/get-packages@0.4.0
+- @release-change/git@0.5.0
+- @release-change/github@0.5.0
+- @release-change/logger@0.4.0
+- @release-change/npm@0.4.0
+- @release-change/release-notes-generator@0.5.0
+- @release-change/semver@0.2.0
+- @release-change/shared@0.4.0
+
+---
+
+**Full changelog:** [`@release-change/release@v0.5.2...@release-change/release@v0.6.0`](https://github.com/release-change/release-change/compare/@release-change/release@v0.5.2...@release-change/release@v0.6.0)
+
 ## 0.5.2
 
 ### Dependencies updates
