@@ -11,16 +11,12 @@ import {
 import { afterEach, assert, describe, expect, it, vi } from "vitest";
 
 import { getAuthToken } from "../src/get-auth-token.js";
-import { getNpmrcFile } from "../src/get-npmrc-file.js";
 import { publishToRegistry } from "../src/index.js";
 import { removeAuthToken } from "../src/remove-auth-token.js";
 import { setAuthToken } from "../src/set-auth-token.js";
 import { mockedContext, mockedContextWithAuthToken } from "./fixtures/mocked-context.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedPackagePublishingSet } from "./fixtures/mocked-package-publishing-set.js";
-
-// biome-ignore lint/suspicious/noTemplateCurlyInString: <literal `${}`>
-const mockedNpmrcFile = "//registry.npmjs.org/:_authToken=${NPM_TOKEN}";
 
 vi.mock("@release-change/shared", () => ({
   formatDetailedError: vi.fn(),
@@ -75,7 +71,6 @@ describe.each(mockedPackagePublishingSet)(
       expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
     });
     it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file already exists and sets auth token", async () => {
-      vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
       vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
       const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
@@ -84,7 +79,6 @@ describe.each(mockedPackagePublishingSet)(
       expect(mockedRemoveAuthToken).not.toHaveBeenCalled();
     });
     it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file does not exist", async () => {
-      vi.mocked(getNpmrcFile).mockReturnValue(null);
       vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
       const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
@@ -99,7 +93,6 @@ describe.each(mockedPackagePublishingSet)(
       expect(mockedRemoveAuthToken).toHaveBeenCalled();
     });
     it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file does not set auth token", async () => {
-      vi.mocked(getNpmrcFile).mockReturnValue(null);
       vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
       const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
@@ -131,7 +124,6 @@ describe.each(mockedPackagePublishingSet)(
       const mockedCommand = vi
         .mocked(runCommand)
         .mockResolvedValue({ status: 128, stdout: "", stderr: "Some error message." });
-      vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
       vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
       await expect(
@@ -148,7 +140,6 @@ describe.each(mockedPackagePublishingSet)(
       const mockedCommand = vi
         .mocked(runCommand)
         .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
       await publishToRegistry(packagePublishing, context);
       expect(mockedCommand).toHaveBeenCalledWith(packageManager, args, mockedOptions);
       expect(mockedLogger.logSuccess).toHaveBeenCalledWith(
