@@ -65,7 +65,7 @@ describe.each(mockedNextReleases)("for $packageName", ({ packageManifestPath, ne
         .mocked(runCommand)
         .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       await updateLockFile(nextRelease, mockedContext, command);
-      expect(mockedCommand).toHaveBeenCalledWith(command, args);
+      expect(mockedCommand).toHaveBeenCalledWith(command, args, { cwd: "/fake/path" });
     }
   );
 });

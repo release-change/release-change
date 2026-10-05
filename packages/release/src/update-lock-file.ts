@@ -32,7 +32,7 @@ export const updateLockFile = async (
   if (packageManager === "pnpm") {
     if (fs.existsSync(path.join(cwd, pathname, "pnpm-lock.yaml"))) {
       args.push("install", "--lockfile-only");
-      const pnpmCommandResult = await runCommand("pnpm", args);
+      const pnpmCommandResult = await runCommand("pnpm", args, { cwd });
       if (debug) {
         logger.logDebug(`Command run: pnpm ${args.join(" ")}`);
         logger.logDebug(deepInspectObject(pnpmCommandResult));
@@ -41,7 +41,7 @@ export const updateLockFile = async (
   } else if (packageManager === "yarn") {
     if (fs.existsSync(path.join(cwd, pathname, "yarn.lock"))) {
       args.push("install", "--mode=update-lockfile", "--no-immutable");
-      const yarnCommandResult = await runCommand("yarn", args);
+      const yarnCommandResult = await runCommand("yarn", args, { cwd });
       if (debug) {
         logger.logDebug(`Command run: yarn ${args.join(" ")}`);
         logger.logDebug(deepInspectObject(yarnCommandResult));
@@ -50,7 +50,7 @@ export const updateLockFile = async (
   } else if (packageManager === "npm") {
     if (fs.existsSync(path.join(cwd, pathname, "package-lock.json"))) {
       args.push("install", "--package-lock-only");
-      const npmCommandResult = await runCommand("npm", args);
+      const npmCommandResult = await runCommand("npm", args, { cwd });
       if (debug) {
         logger.logDebug(`Command run: npm ${args.join(" ")}`);
         logger.logDebug(deepInspectObject(npmCommandResult));

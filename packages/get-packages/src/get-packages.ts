@@ -29,7 +29,7 @@ export const getPackages = async (context: ContextBase): Promise<Package[]> => {
   const packageManager = getPackageManager(cwd, env);
   if (packageManager) {
     const packages: Package[] = [{ name: "", pathname: "." }];
-    const packageManagerVersion = getPackageManagerVersion(packageManager);
+    const packageManagerVersion = getPackageManagerVersion(packageManager, cwd);
     if (debug) {
       logger.setDebugScope("get-packages:get-packages");
       logger.logDebug(`Package manager: ${packageManager} ${packageManagerVersion}`);
