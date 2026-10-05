@@ -68,13 +68,8 @@ describe("when no lock files are found", () => {
     });
     expect(getPackageManager(mockedCwd, mockedEnvWithoutNpmConfigUserAgent)).toBe("npm");
   });
-  it("should return `pnpm` if the `PNPM_HOME` environment variable is set", () => {
-    vi.mocked(getRootPackageManifest).mockReturnValue(mockedPackageManifest);
-    expect(getPackageManager(mockedCwd, { PNPM_HOME: "/Users/username/Library/pnpm" })).toBe(
-      "pnpm"
-    );
-  });
   it("should return `null` if the `npm_config_user_agent` environment variable is not set", () => {
+    vi.mocked(getRootPackageManifest).mockReturnValue(mockedPackageManifest);
     expect(getPackageManager(mockedCwd, mockedEnvWithoutNpmConfigUserAgent)).toBe(null);
   });
   it("should return `npm` if the `npm_config_user_agent` environment variable is set with a version of `npm`", () => {
@@ -91,5 +86,10 @@ describe("when no lock files are found", () => {
   });
   it("should return `null` if the `npm_config_user_agent` environment variable is set with an unknown version of `npm`", () => {
     expect(getPackageManager(mockedCwd, mockedEnvWithUnknownNpmVersion)).toBe(null);
+  });
+  it("should return `pnpm` if the `PNPM_HOME` environment variable is set", () => {
+    expect(getPackageManager(mockedCwd, { PNPM_HOME: "/Users/username/Library/pnpm" })).toBe(
+      "pnpm"
+    );
   });
 });

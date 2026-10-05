@@ -21,12 +21,12 @@ export const getPackageManager = (cwd: string, env: NodeJS.ProcessEnv): PackageM
   if (packageManager?.startsWith("pnpm")) return "pnpm";
   if (packageManager?.startsWith("yarn")) return "yarn";
   if (packageManager?.startsWith("npm")) return "npm";
-  if (PNPM_HOME) return "pnpm";
   if (npmConfigUserAgent) {
     if (npmConfigUserAgent.includes("pnpm")) return "pnpm";
     if (npmConfigUserAgent.includes("yarn")) return "yarn";
     if (npmConfigUserAgent.match(/npm\/\d+\.\d+\.\d+/)) return "npm";
     return null;
   }
+  if (PNPM_HOME) return "pnpm";
   return null;
 };
