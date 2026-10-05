@@ -3,6 +3,8 @@ import type { PackageManager } from "./get-packages.types.js";
 import fs from "node:fs";
 import path from "node:path";
 
+import { getRootPackageManifest } from "./get-root-package-manifest.js";
+
 /**
  * Gets the package manager used.
  * @param cwd - The current working directory.
@@ -14,6 +16,11 @@ export const getPackageManager = (cwd: string, env: NodeJS.ProcessEnv): PackageM
   if (fs.existsSync(path.join(cwd, "pnpm-lock.yaml"))) return "pnpm";
   if (fs.existsSync(path.join(cwd, "yarn.lock"))) return "yarn";
   if (fs.existsSync(path.join(cwd, "package-lock.json"))) return "npm";
+  const rootPackageManifest = getRootPackageManifest(path.join(cwd, "package.json"));
+  const { packageManager } = rootPackageManifest;
+  if (packageManager?.startsWith("pnpm")) return "pnpm";
+  if (packageManager?.startsWith("yarn")) return "yarn";
+  if (packageManager?.startsWith("npm")) return "npm";
   if (PNPM_HOME) return "pnpm";
   if (npmConfigUserAgent) {
     if (npmConfigUserAgent.includes("pnpm")) return "pnpm";
