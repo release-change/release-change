@@ -33,11 +33,11 @@ export const publishToRegistry = async (
   } = context;
   const logger = setLogger(debug);
   logger.setScope("npm");
-  getAuthToken(context);
+  getAuthToken(packageManager, context);
   const { authToken } = context;
   if (authToken) {
     const isAuthTokenNotDefined = !authToken.fileExists || !authToken.authTokenExists;
-    if (isAuthTokenNotDefined) setAuthToken(cwd);
+    if (isAuthTokenNotDefined) setAuthToken(packageManager, cwd);
     const commandResult = await runCommand(packageManager, args, {
       cwd: path.resolve(cwd, pathname),
       env
@@ -55,7 +55,7 @@ export const publishToRegistry = async (
         `Failed to publish release ${version} of ${packageName} package to the NPM registry.`
       );
       throw formatDetailedError({
-        title: `Failed to run the \`${packageManager} publish\` command`,
+        title: `Failed to run the \`${packageManager}${packageManager === "yarn" ? " npm" : ""} publish\` command`,
         message: `The command failed with exit code ${status}.`,
         details: {
           output: formatOutputFromCommandResult(commandResult),
@@ -67,7 +67,7 @@ export const publishToRegistry = async (
     logger.logSuccess(
       `Published release ${version} of ${packageName} package to the NPM registry on ${channel}.`
     );
-    if (isAuthTokenNotDefined) removeAuthToken(cwd, authToken);
+    if (isAuthTokenNotDefined) removeAuthToken(packageManager, cwd, authToken);
     const releaseInfo: ReleaseInfoNpm = {
       type: "npm",
       name: `NPM (${npmTag ? npmTag : "latest"} distribution tag)`,

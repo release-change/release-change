@@ -2,7 +2,7 @@ import type { PackageManager } from "./get-packages.types.js";
 
 import { coerce, satisfies } from "@release-change/semver";
 
-import { REQUIRED_NPM_VERSION, REQUIRED_PNPM_VERSION } from "./constants.js";
+import { REQUIRED_NPM_VERSION, REQUIRED_PNPM_VERSION, REQUIRED_YARN_VERSION } from "./constants.js";
 
 /**
  * Checks if the given package manager version is compatible with the required version.
@@ -21,6 +21,8 @@ export const isPackageManagerVersionCompatible = (
     switch (packageManager) {
       case "pnpm":
         return satisfies(version, REQUIRED_PNPM_VERSION, semverOptions);
+      case "yarn":
+        return satisfies(version, REQUIRED_YARN_VERSION, semverOptions);
       case "npm":
         return satisfies(version, REQUIRED_NPM_VERSION, semverOptions);
       default:

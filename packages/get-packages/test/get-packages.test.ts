@@ -19,6 +19,7 @@ import { mockedCwd } from "./fixtures/mocked-cwd.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { npmPackages } from "./fixtures/npm-packages.js";
 import { pnpmPackages } from "./fixtures/pnpm-packages.js";
+import { yarnPackages } from "./fixtures/yarn-packages.js";
 
 const mockedContextBase = {
   cwd: mockedCwd,
@@ -54,7 +55,8 @@ vi.mock("../src/get-packages-from-glob-patterns.js", () => ({
 }));
 vi.mock("../src/constants.js", () => ({
   REQUIRED_NPM_VERSION: "10.9.0",
-  REQUIRED_PNPM_VERSION: "11.1.3"
+  REQUIRED_PNPM_VERSION: "11.1.3",
+  REQUIRED_YARN_VERSION: "4.9.0"
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 vi.mocked(addErrorToContext).mockImplementation((error, context) => {
@@ -74,11 +76,11 @@ vi.mocked(addErrorToContext).mockImplementation((error, context) => {
 
 it("should throw an error if the package manager is not found or supported", async () => {
   const expectedError = new Error(
-    "Failed to get the package manager: The package manager must be either `npm` or `pnpm`.",
+    "Failed to get the package manager: The package manager must be either `npm`, `pnpm` or `yarn`.",
     {
       cause: {
         title: "Failed to get the package manager",
-        message: "The package manager must be either `npm` or `pnpm`.",
+        message: "The package manager must be either `npm`, `pnpm` or `yarn`.",
         details: {
           output: "null"
         }
@@ -100,7 +102,7 @@ it("should throw an error if the package manager is npm with an outdated version
     {
       cause: {
         title: "Failed to use the package manager",
-        message: "The package manager must be 10.9.0 or greater.",
+        message: "The package manager version must be 10.9.0 or greater.",
         details: {
           output: "npm 10.8.2"
         }
@@ -117,6 +119,7 @@ it("should throw an error if the package manager is npm with an outdated version
       cause: expectedError.cause
     })
   );
+  expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
 });
 it("should throw an error if the package manager is npm and no `package.json` file is found at the root", async () => {
   const expectedError = new Error(
@@ -141,6 +144,12 @@ it("should throw an error if the package manager is npm and no `package.json` fi
   await expect(getPackages(mockedContextBase)).rejects.toThrow();
   expect(addErrorToContext).toHaveBeenCalledWith(expectedError, mockedContextBase);
   assert.deepNestedInclude(mockedContextBase.errors, expectedError.cause);
+});
+it("should not search for a `pnpm-workspace.yaml` file if the package manager is npm", async () => {
+  vi.mocked(getPackageManager).mockReturnValue("npm");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
+  expect(getRootPnpmWorkspaceManifest).not.toHaveBeenCalled();
+  expect(getPnpmGlobPatterns).not.toHaveBeenCalled();
 });
 it("should return one single package when the package manager is npm and the glob patterns do not return anything", async () => {
   vi.mocked(getPackageManager).mockReturnValue("npm");
@@ -173,7 +182,7 @@ it("should throw an error if the package manager is pnpm with an outdated versio
     {
       cause: {
         title: "Failed to use the package manager",
-        message: "The package manager must be 11.1.3 or greater.",
+        message: "The package manager version must be 11.1.3 or greater.",
         details: {
           output: "pnpm 11.1.2"
         }
@@ -190,12 +199,19 @@ it("should throw an error if the package manager is pnpm with an outdated versio
       cause: expectedError.cause
     })
   );
+  expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
 });
 it("should return one single package when the package manager is pnpm and no `pnpm-workspace.yaml` file is found at the root", async () => {
   vi.mocked(getPackageManager).mockReturnValue("pnpm");
   vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
   vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(null);
   assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
+});
+it("should not browse the `package.json` file if the package manager is pnpm", async () => {
+  vi.mocked(getPackageManager).mockReturnValue("pnpm");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
+  expect(getRootPackageManifest).not.toHaveBeenCalled();
+  expect(getNpmGlobPatterns).not.toHaveBeenCalled();
 });
 it("should return one single package when the package manager is pnpm and a `pnpm-workspace.yaml` file is found at the root and the glob patterns do not return anything", async () => {
   vi.mocked(getPackageManager).mockReturnValue("pnpm");
@@ -220,6 +236,92 @@ describe.each(pnpmPackages)(
       vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
       vi.mocked(getRootPnpmWorkspaceManifest).mockReturnValue(content);
       vi.mocked(getPnpmGlobPatterns).mockReturnValue(patterns);
+      vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue(packages);
+      assert.deepEqual(await getPackages(mockedContextBase), [
+        ...expectedSinglePackage,
+        ...packages
+      ]);
+    });
+  }
+);
+it("should throw an error if the package manager is yarn with an outdated version", async () => {
+  const expectedError = new Error(
+    "Failed to use the package manager: The package manager version must be 4.9.0 or greater.",
+    {
+      cause: {
+        title: "Failed to use the package manager",
+        message: "The package manager version must be 4.9.0 or greater.",
+        details: {
+          output: "yarn 1.22.22"
+        }
+      }
+    }
+  );
+  vi.mocked(getPackageManager).mockReturnValue("yarn");
+  vi.mocked(getPackageManagerVersion).mockReturnValue("1.22.22");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(false);
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(getPackages(mockedContextBase)).rejects.toThrow(
+    expect.objectContaining({
+      message: expectedError.message,
+      cause: expectedError.cause
+    })
+  );
+  expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
+});
+it("should throw an error if the package manager is yarn and no `package.json` file is found at the root", async () => {
+  const expectedError = new Error(
+    "Failed to get the root package manifest (`package.json`): File not found.",
+    {
+      cause: {
+        title: "Failed to get the root package manifest (`package.json`)",
+        message: "File not found.",
+        details: {
+          output: `fs.existsSync(${mockedCwd}/package.json): false`
+        }
+      }
+    }
+  );
+  vi.mocked(getPackageManager).mockReturnValue("yarn");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
+  vi.mocked(getRootPackageManifest).mockImplementation(() => {
+    throw expectedError;
+  });
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  expect(() => getRootPackageManifest(`${mockedCwd}/package.json`)).toThrow(expectedError.message);
+  await expect(getPackages(mockedContextBase)).rejects.toThrow();
+  expect(addErrorToContext).toHaveBeenCalledWith(expectedError, mockedContextBase);
+  assert.deepNestedInclude(mockedContextBase.errors, expectedError.cause);
+});
+it("should not search for a `pnpm-workspace.yaml` file if the package manager is yarn", async () => {
+  vi.mocked(getPackageManager).mockReturnValue("yarn");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
+  expect(getRootPnpmWorkspaceManifest).not.toHaveBeenCalled();
+  expect(getPnpmGlobPatterns).not.toHaveBeenCalled();
+});
+it("should return one single package when the package manager is yarn and the glob patterns do not return anything", async () => {
+  vi.mocked(getPackageManager).mockReturnValue("yarn");
+  vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
+  vi.mocked(getRootPackageManifest).mockReturnValue({ name: "my-package", version: "1.0.0" });
+  vi.mocked(getNpmGlobPatterns).mockReturnValue(null);
+  assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
+});
+describe.each(yarnPackages)(
+  "when the package manager is yarn",
+  ({ content, patterns, packages }) => {
+    it("should return one single package when the glob patterns return an empty array of packages", async () => {
+      vi.mocked(getPackageManager).mockReturnValue("yarn");
+      vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
+      vi.mocked(getRootPackageManifest).mockReturnValue(content);
+      vi.mocked(getNpmGlobPatterns).mockReturnValue(patterns);
+      vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue([]);
+      assert.deepEqual(await getPackages(mockedContextBase), expectedSinglePackage);
+    });
+    it("should return the correct packages when the glob patterns return packages", async () => {
+      vi.mocked(getPackageManager).mockReturnValue("yarn");
+      vi.mocked(isPackageManagerVersionCompatible).mockReturnValue(true);
+      vi.mocked(getRootPackageManifest).mockReturnValue(content);
+      vi.mocked(getNpmGlobPatterns).mockReturnValue(patterns);
       vi.mocked(getPackagesFromGlobPatterns).mockResolvedValue(packages);
       assert.deepEqual(await getPackages(mockedContextBase), [
         ...expectedSinglePackage,

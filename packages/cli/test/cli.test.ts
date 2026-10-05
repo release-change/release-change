@@ -12,7 +12,7 @@ vi.mock("../src/run.js", () => ({
   run: vi.fn()
 }));
 
-describe.each(["npm", "pnpm"])("for %s", packageManager => {
+describe.each(["npm", "pnpm", "yarn"])("for %s", packageManager => {
   it.each(cliOptions)("should not call `run()` when `%s` is used", async cliOption => {
     vi.spyOn(process, "argv", "get").mockReturnValue([packageManager, WORKSPACE_NAME, cliOption]);
     await cli();

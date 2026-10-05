@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { getPackageManagerVersion } from "../src/get-package-manager-version.js";
 import { invalidPackageManagerVersions } from "./fixtures/invalid-package-manager-versions.js";
+import { mockedCwd } from "./fixtures/mocked-cwd.js";
 import { packageManagers } from "./fixtures/package-managers.js";
 import { validPackageManagerVersions } from "./fixtures/valid-package-manager-versions.js";
 
@@ -23,7 +24,7 @@ describe.each(invalidPackageManagerVersions)("for %s", invalidPackageManagerVers
         stdout: expectedOutput,
         stderr: ""
       });
-      expect(getPackageManagerVersion(packageManager)).toBe(expectedOutput);
+      expect(getPackageManagerVersion(packageManager, mockedCwd)).toBe(expectedOutput);
     }
   );
 });
@@ -36,7 +37,10 @@ describe.each(validPackageManagerVersions)("for %s", validPackageManagerVersion 
         stdout: validPackageManagerVersion,
         stderr: ""
       });
-      expect(getPackageManagerVersion(packageManager)).toBe(validPackageManagerVersion);
+      expect(getPackageManagerVersion(packageManager, mockedCwd)).toBe(validPackageManagerVersion);
+      expect(runCommandSync).toHaveBeenCalledWith(packageManager, ["--version"], {
+        cwd: mockedCwd
+      });
     }
   );
 });

@@ -10,5 +10,6 @@ export const packageManagers: {
     packageManager: "pnpm",
     args: ["publish", "--access", "public"],
     noGitChecks: "--no-git-checks"
-  }
+  },
+  { packageManager: "yarn", args: ["npm", "publish", "--access", "public"] }
 ];

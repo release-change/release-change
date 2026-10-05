@@ -57,12 +57,12 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
   });
   it("should throw an error if the package manager is not one of those supported", async () => {
     const expectedError = new Error(
-      "Failed to prepare publishing: The package manager is not found or is not one of those supported (npm or pnpm).",
+      "Failed to prepare publishing: The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
       {
         cause: {
           title: "Failed to prepare publishing",
           message:
-            "The package manager is not found or is not one of those supported (npm or pnpm).",
+            "The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
           details: {
             output: "packageManager: null"
           }

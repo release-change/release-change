@@ -15,6 +15,7 @@ const expectedFooter =
   "Co-authored-by: mocked-committer-name [bot] <0+mocked-committer-name-bot@users.noreply.github.com>";
 const mockedPackageManagers: [PackageManager, string[]][] = [
   ["pnpm", ["package.json", "pnpm-lock.yaml", "CHANGELOG.md"]],
+  ["yarn", ["package.json", "yarn.lock", "CHANGELOG.md"]],
   ["npm", ["package.json", "package-lock.json", "CHANGELOG.md"]]
 ];
 
@@ -37,12 +38,12 @@ vi.mocked(setCommitterEmail).mockReturnValue(
 describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, nextRelease }) => {
   it("should throw an error if the package manager is not found or supported", async () => {
     const expectedError = new Error(
-      "Failed to commit the updated files: The package manager is not found or is not one of those supported (npm or pnpm).",
+      "Failed to commit the updated files: The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
       {
         cause: {
           title: "Failed to commit the updated files",
           message:
-            "The package manager is not found or is not one of those supported (npm or pnpm).",
+            "The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
           details: {
             output: "packageManager: null"
           }
@@ -51,7 +52,7 @@ describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, next
     );
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
     await expect(commitUpdatedFiles(nextRelease, null, mockedContext)).rejects.toThrow(
-      "The package manager is not found or is not one of those supported (npm or pnpm)."
+      "The package manager is not found or is not one of those supported (npm, pnpm or yarn)."
     );
   });
   describe.each(mockedPackageManagers)("for %s with %o", async (packageManager, files) => {

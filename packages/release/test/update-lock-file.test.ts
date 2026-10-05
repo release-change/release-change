@@ -7,8 +7,9 @@ import { updateLockFile } from "../src/update-lock-file.js";
 import { mockedContext } from "./fixtures/mocked-context-update.js";
 import { mockedNextReleases } from "./fixtures/mocked-next-releases-update.js";
 
-const mockedPackageManagerCommands: { command: "npm" | "pnpm"; args: string[] }[] = [
+const mockedPackageManagerCommands: { command: "npm" | "pnpm" | "yarn"; args: string[] }[] = [
   { command: "pnpm", args: ["install", "--lockfile-only"] },
+  { command: "yarn", args: ["install", "--mode=update-lockfile", "--no-immutable"] },
   { command: "npm", args: ["install", "--package-lock-only"] }
 ];
 
@@ -26,12 +27,12 @@ afterEach(() => {
 describe.each(mockedNextReleases)("for $packageName", ({ packageManifestPath, nextRelease }) => {
   it("should throw an error and restore the `package.json` file if the package manager is not found or supported", async () => {
     const expectedError = new Error(
-      "Failed to update the lock file: The package manager is not found or is not one of those supported (npm or pnpm).",
+      "Failed to update the lock file: The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
       {
         cause: {
           title: "Failed to update the lock file",
           message:
-            "The package manager is not found or is not one of those supported (npm or pnpm).",
+            "The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
           details: {
             output: "packageManager: null"
           }
@@ -64,7 +65,7 @@ describe.each(mockedNextReleases)("for $packageName", ({ packageManifestPath, ne
         .mocked(runCommand)
         .mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       await updateLockFile(nextRelease, mockedContext, command);
-      expect(mockedCommand).toHaveBeenCalledWith(command, args);
+      expect(mockedCommand).toHaveBeenCalledWith(command, args, { cwd: "/fake/path" });
     }
   );
 });

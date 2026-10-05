@@ -12,4 +12,5 @@ export type PackageManifest = {
   workspaces?: string[];
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
+  packageManager?: string;
 };

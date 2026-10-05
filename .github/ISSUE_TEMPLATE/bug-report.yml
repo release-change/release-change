@@ -45,8 +45,8 @@ body:
   - type: input
     id: package-manager-version
     attributes:
-      label: npm / pnpm version
-      description: The version of npm / pnpm you are using (please check the [versions supported](https://github.com/release-change/release-change/blob/main/SECURITY.md#supported-package-manager-versions)).
+      label: npm / pnpm / yarn version
+      description: The version of npm / pnpm / yarn you are using (please check the [versions supported](https://github.com/release-change/release-change/blob/main/SECURITY.md#supported-package-manager-versions)).
       placeholder: pnpm 11.1.3
     validations:
       required: true

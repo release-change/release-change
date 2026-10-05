@@ -35,7 +35,7 @@ import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-contex
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedReleaseNotes } from "./fixtures/mocked-release-notes.js";
 
-const packageManagers = ["pnpm", "npm"] as const;
+const packageManagers = ["pnpm", "npm", "yarn"] as const;
 const mockedContextWithNextRelease = {
   ...mockedContext,
   nextRelease: [{ name: "", pathname: ".", gitTag: "v1.0.0", version: "1.0.0" }]
@@ -153,11 +153,12 @@ it.each([mockedContext, { ...mockedContext, nextRelease: [] }])(
 );
 it("should throw an error if the package manager is not found or unsupported", async () => {
   const expectedErrorMessage =
-    "Failed to find the package manager: The package manager is not found or is not one of those supported (npm or pnpm).";
+    "Failed to find the package manager: The package manager is not found or is not one of those supported (npm, pnpm or yarn).";
   const expectedError = new Error(expectedErrorMessage, {
     cause: {
       title: "Failed to find the package manager.",
-      message: "The package manager is not found or is not one of those supported (npm or pnpm).",
+      message:
+        "The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
       details: {
         output: "packageManager: null"
       }
@@ -337,7 +338,9 @@ describe.each(packageManagers)("for %s", packageManager => {
         const args =
           packageManager === "pnpm"
             ? ["publish", "--access", "public", "--not-git-checks"]
-            : ["publish", "--access", "public"];
+            : packageManager === "yarn"
+              ? ["npm", "publish", "--access", "public"]
+              : ["publish", "--access", "public"];
         vi.mocked(setBranchName).mockReturnValue(mockedBranch);
         vi.mocked(getPackageDependencies).mockReturnValue([]);
         vi.mocked(prepareReleaseNotes).mockReturnValue(mockedReleaseNotes);

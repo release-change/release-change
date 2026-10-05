@@ -32,16 +32,25 @@ export const updateLockFile = async (
   if (packageManager === "pnpm") {
     if (fs.existsSync(path.join(cwd, pathname, "pnpm-lock.yaml"))) {
       args.push("install", "--lockfile-only");
-      const pnpmCommandResult = await runCommand("pnpm", args);
+      const pnpmCommandResult = await runCommand("pnpm", args, { cwd });
       if (debug) {
         logger.logDebug(`Command run: pnpm ${args.join(" ")}`);
         logger.logDebug(deepInspectObject(pnpmCommandResult));
       }
     }
+  } else if (packageManager === "yarn") {
+    if (fs.existsSync(path.join(cwd, pathname, "yarn.lock"))) {
+      args.push("install", "--mode=update-lockfile", "--no-immutable");
+      const yarnCommandResult = await runCommand("yarn", args, { cwd });
+      if (debug) {
+        logger.logDebug(`Command run: yarn ${args.join(" ")}`);
+        logger.logDebug(deepInspectObject(yarnCommandResult));
+      }
+    }
   } else if (packageManager === "npm") {
     if (fs.existsSync(path.join(cwd, pathname, "package-lock.json"))) {
       args.push("install", "--package-lock-only");
-      const npmCommandResult = await runCommand("npm", args);
+      const npmCommandResult = await runCommand("npm", args, { cwd });
       if (debug) {
         logger.logDebug(`Command run: npm ${args.join(" ")}`);
         logger.logDebug(deepInspectObject(npmCommandResult));
@@ -55,7 +64,8 @@ export const updateLockFile = async (
     process.exitCode = 1;
     throw formatDetailedError({
       title: "Failed to update the lock file",
-      message: "The package manager is not found or is not one of those supported (npm or pnpm).",
+      message:
+        "The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
       details: {
         output: `packageManager: ${packageManager}`
       }

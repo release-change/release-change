@@ -11,5 +11,9 @@ export const incompatiblePackageManagerVersions: {
   {
     packageManager: "pnpm",
     versions: ["11.0.0-rc.1", "11.1.2"]
+  },
+  {
+    packageManager: "yarn",
+    versions: ["1.22.22", "3.0.0", "4.8.1", "4.9.0-rc.1"]
   }
 ];
