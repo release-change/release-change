@@ -1,5 +1,29 @@
 # @release-change/get-packages
 
+## 0.4.0
+
+### Minor changes
+
+- **get-packages:** enable package manager detection through `packageManager` property ([`5471002`](https://github.com/release-change/release-change/commit/5471002fd4756a5ed49f34f16d77e06c0e2bc14e))
+- add support for Yarn ([`ecc8232`](https://github.com/release-change/release-change/commit/ecc82324fb0d0d0d737b7031a6cad1540273f363))
+
+### Patch changes
+
+- **get-packages:** do not throw error if `package.json` not found ([`45f7961`](https://github.com/release-change/release-change/commit/45f7961e52f0c03fa919b33174bda5d010e3ab0a))
+- **get-packages:** detect package manager through user agent before detecting `PNPM_HOME` ([`c2cd2fa`](https://github.com/release-change/release-change/commit/c2cd2fa609331b2762ed55c762ab518815ec9090))
+- use current working directory to run package managers commands ([`c4dbac2`](https://github.com/release-change/release-change/commit/c4dbac2902e24f1adb59b2fcf66afb38a70f12c8))
+
+### Dependencies updates
+
+- @release-change/config@0.4.0
+- @release-change/logger@0.4.0
+- @release-change/semver@0.2.0
+- @release-change/shared@0.4.0
+
+---
+
+**Full changelog:** [`@release-change/get-packages@v0.3.2...@release-change/get-packages@v0.4.0`](https://github.com/release-change/release-change/compare/@release-change/get-packages@v0.3.2...@release-change/get-packages@v0.4.0)
+
 ## 0.3.2
 
 ### Patch changes
