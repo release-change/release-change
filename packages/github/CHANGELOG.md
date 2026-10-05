@@ -1,5 +1,24 @@
 # @release-change/github
 
+## 0.5.0
+
+### Minor changes
+
+- add support for Yarn ([`ecc8232`](https://github.com/release-change/release-change/commit/ecc82324fb0d0d0d737b7031a6cad1540273f363))
+
+### Dependencies updates
+
+- @release-change/ci@0.4.0
+- @release-change/config@0.4.0
+- @release-change/commit-analyser@0.4.0
+- @release-change/git@0.5.0
+- @release-change/logger@0.4.0
+- @release-change/shared@0.4.0
+
+---
+
+**Full changelog:** [`@release-change/github@v0.4.2...@release-change/github@v0.5.0`](https://github.com/release-change/release-change/compare/@release-change/github@v0.4.2...@release-change/github@v0.5.0)
+
 ## 0.4.2
 
 ### Dependencies updates
