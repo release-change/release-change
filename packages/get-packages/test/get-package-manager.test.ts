@@ -97,4 +97,20 @@ describe("when no lock files are found", () => {
       "pnpm"
     );
   });
+  it("should give priority to the `npm_config_user_agent` environment variable over `PNPM_HOME`", () => {
+    vi.mocked(getRootPackageManifest).mockReturnValue(mockedPackageManifest);
+    expect(
+      getPackageManager(mockedCwd, {
+        ...mockedEnvWithYarnVersion,
+        PNPM_HOME: "/Users/username/Library/pnpm"
+      })
+    ).toBe("yarn");
+  });
+  it("should give priority to the `packageManager` property over the `npm_config_user_agent` environment variable", () => {
+    vi.mocked(getRootPackageManifest).mockReturnValue({
+      ...mockedPackageManifest,
+      packageManager: "yarn@4.9.0"
+    });
+    expect(getPackageManager(mockedCwd, mockedEnvWithPnpmVersion)).toBe("yarn");
+  });
 });
