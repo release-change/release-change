@@ -54,6 +54,7 @@ describe.each(mockedPackagePublishingSet)(
       cwd: mockedCwd,
       env: mockedContext.env
     };
+    const commandName = `${packageManager}${packageManager === "yarn" ? " npm" : ""} publish`;
     it("should throw an error if the auth token is not defined", async () => {
       const expectedError = new Error(
         "Failed to publish to the NPM registry: The auth token context could not be loaded.",
@@ -72,7 +73,7 @@ describe.each(mockedPackagePublishingSet)(
         expectedError
       );
     });
-    it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` file already exists and sets auth token", async () => {
+    it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file already exists and sets auth token", async () => {
       vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
       vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
@@ -81,7 +82,7 @@ describe.each(mockedPackagePublishingSet)(
       expect(mockedSetAuthToken).not.toHaveBeenCalled();
       expect(mockedRemoveAuthToken).not.toHaveBeenCalled();
     });
-    it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` file does not exist", async () => {
+    it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file does not exist", async () => {
       vi.mocked(getNpmrcFile).mockReturnValue(null);
       vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
@@ -96,7 +97,7 @@ describe.each(mockedPackagePublishingSet)(
       expect(mockedSetAuthToken).toHaveBeenCalled();
       expect(mockedRemoveAuthToken).toHaveBeenCalled();
     });
-    it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` file does not set auth token", async () => {
+    it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file does not set auth token", async () => {
       vi.mocked(getNpmrcFile).mockReturnValue(null);
       vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
       const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
@@ -114,10 +115,10 @@ describe.each(mockedPackagePublishingSet)(
     it("should log an error message if the publish command fails", async () => {
       const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
       const expectedError = new Error(
-        `Failed to run the \`${packageManager} publish\` command: The command failed with exit code 128.`,
+        `Failed to run the \`${commandName}\` command: The command failed with exit code 128.`,
         {
           cause: {
-            title: `Failed to run the \`${packageManager} publish\` command`,
+            title: `Failed to run the \`${commandName}\` command`,
             message: "The command failed with exit code 128.",
             details: {
               output: expectedOutput,
@@ -140,7 +141,7 @@ describe.each(mockedPackagePublishingSet)(
         `Failed to publish release ${version} of ${packageName} package to the NPM registry.`
       );
     });
-    it(`should run the \`${packageManager} publish\` command with the appropriate flags`, async () => {
+    it(`should run the \`${commandName}\` command with the appropriate flags`, async () => {
       const context: Context = mockedContextWithAuthToken;
       const mockedCommand = vi
         .mocked(runCommand)

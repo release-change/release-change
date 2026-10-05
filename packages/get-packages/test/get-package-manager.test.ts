@@ -15,6 +15,9 @@ const mockedEnvWithNpmVersion = {
 const mockedEnvWithPnpmVersion = {
   npm_config_user_agent: "pnpm/10.10.0 npm/? node/v22.15.0 darwin x64"
 };
+const mockedEnvWithYarnVersion = {
+  npm_config_user_agent: "yarn/4.18.1 npm/? node/v22.15.0 darwin x64"
+};
 const mockedEnvWithUnknownNpmVersion = {
   npm_config_user_agent: "npm/? node/v22.15.0 darwin x64"
 };
@@ -23,7 +26,13 @@ it("should return `pnpm` if the `pnpm-lock.yaml` file exists", () => {
   vi.spyOn(fs, "existsSync").mockReturnValueOnce(true);
   expect(getPackageManager(mockedCwd, mockedEnvWithoutNpmConfigUserAgent)).toBe("pnpm");
 });
+it("should return `yarn` if the `yarn.lock` file exists", () => {
+  vi.spyOn(fs, "existsSync").mockReturnValueOnce(false);
+  vi.spyOn(fs, "existsSync").mockReturnValueOnce(true);
+  expect(getPackageManager(mockedCwd, mockedEnvWithoutNpmConfigUserAgent)).toBe("yarn");
+});
 it("should return `npm` if the `package-lock.json` file exists", () => {
+  vi.spyOn(fs, "existsSync").mockReturnValueOnce(false);
   vi.spyOn(fs, "existsSync").mockReturnValueOnce(false);
   vi.spyOn(fs, "existsSync").mockReturnValueOnce(true);
   expect(getPackageManager(mockedCwd, mockedEnvWithoutNpmConfigUserAgent)).toBe("npm");
@@ -44,7 +53,10 @@ describe("when no lock files are found", () => {
   it("should return `pnpm` if the `npm_config_user_agent` environment variable is set with a version of `pnpm`", () => {
     expect(getPackageManager(mockedCwd, mockedEnvWithPnpmVersion)).toBe("pnpm");
   });
-  it("should return `null` if the `npm_config_user_agent` environment variable is set without any version of `npm` and `pnpm`", () => {
+  it("should return `yarn` if the `npm_config_user_agent` environment variable is set with a version of `yarn`", () => {
+    expect(getPackageManager(mockedCwd, mockedEnvWithYarnVersion)).toBe("yarn");
+  });
+  it("should return `null` if the `npm_config_user_agent` environment variable is set without any version of `npm`, `pnpm` and `yarn`", () => {
     expect(getPackageManager(mockedCwd, mockedEnvWithTruncatedNpmConfigUserAgent)).toBe(null);
   });
   it("should return `null` if the `npm_config_user_agent` environment variable is set with an unknown version of `npm`", () => {

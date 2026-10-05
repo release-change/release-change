@@ -1,3 +1,3 @@
 import type { PackageManager } from "../../src/index.js";
 
-export const packageManagers: NonNullable<PackageManager>[] = ["npm", "pnpm"];
+export const packageManagers: NonNullable<PackageManager>[] = ["npm", "pnpm", "yarn"];

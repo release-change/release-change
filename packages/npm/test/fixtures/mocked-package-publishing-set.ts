@@ -12,6 +12,8 @@ const pnpmArgsWithTag = [
   "alpha",
   "--no-git-checks"
 ];
+const yarnArgs = ["npm", "publish", "--access", "public"];
+const yarnArgsWithTag = ["npm", "publish", "--access", "public", "--tag", "alpha"];
 export const mockedPackagePublishingSet: PackagePublishing[] = [
   {
     name: "",
@@ -30,6 +32,14 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
     args: pnpmArgs
   },
   {
+    name: "",
+    packageManifestName: "foo",
+    pathname: ".",
+    version: "1.0.0",
+    packageManager: "yarn",
+    args: yarnArgs
+  },
+  {
     name: "@monorepo/a",
     packageManifestName: "@monorepo/a",
     pathname: "packages/a",
@@ -46,9 +56,16 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
     args: pnpmArgs
   },
   {
+    name: "@monorepo/a",
+    packageManifestName: "@monorepo/a",
+    pathname: "packages/a",
+    version: "1.0.0",
+    packageManager: "yarn",
+    args: yarnArgs
+  },
+  {
     name: "",
     packageManifestName: "foo",
-
     pathname: ".",
     version: "1.0.0-alpha.1",
     packageManager: "npm",
@@ -57,11 +74,18 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
   {
     name: "",
     packageManifestName: "foo",
-
     pathname: ".",
     version: "1.0.0-alpha.1",
     packageManager: "pnpm",
     args: pnpmArgsWithTag
+  },
+  {
+    name: "",
+    packageManifestName: "foo",
+    pathname: ".",
+    version: "1.0.0-alpha.1",
+    packageManager: "yarn",
+    args: yarnArgsWithTag
   },
   {
     name: "@monorepo/a",
@@ -78,5 +102,13 @@ export const mockedPackagePublishingSet: PackagePublishing[] = [
     version: "1.0.0-alpha.1",
     packageManager: "pnpm",
     args: pnpmArgsWithTag
+  },
+  {
+    name: "@monorepo/a",
+    packageManifestName: "@monorepo/a",
+    pathname: "packages/a",
+    version: "1.0.0-alpha.1",
+    packageManager: "yarn",
+    args: yarnArgsWithTag
   }
 ];
