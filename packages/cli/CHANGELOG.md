@@ -1,5 +1,28 @@
 # @release-change/cli
 
+## 0.7.0
+
+### Minor changes
+
+- add support for Yarn ([`ecc8232`](https://github.com/release-change/release-change/commit/ecc82324fb0d0d0d737b7031a6cad1540273f363))
+
+### Dependencies updates
+
+- @release-change/ci@0.4.0
+- @release-change/commit-analyser@0.4.0
+- @release-change/config@0.4.0
+- @release-change/get-packages@0.4.0
+- @release-change/git@0.5.0
+- @release-change/github@0.5.0
+- @release-change/logger@0.4.0
+- @release-change/release@0.6.0
+- @release-change/semver@0.2.0
+- @release-change/shared@0.4.0
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.6.2...@release-change/cli@v0.7.0`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.6.2...@release-change/cli@v0.7.0)
+
 ## 0.6.2
 
 ### Dependencies updates
