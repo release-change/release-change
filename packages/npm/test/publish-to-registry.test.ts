@@ -72,6 +72,7 @@ describe.each(mockedPackagePublishingSet)(
       await expect(publishToRegistry(packagePublishing, mockedContext)).rejects.toThrow(
         expectedError
       );
+      expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
     });
     it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file already exists and sets auth token", async () => {
       vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFile);
@@ -137,6 +138,7 @@ describe.each(mockedPackagePublishingSet)(
         publishToRegistry(packagePublishing, mockedContextWithAuthToken)
       ).rejects.toThrow(expectedError);
       expect(mockedCommand).toHaveBeenCalledWith(packageManager, args, mockedOptions);
+      expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
       expect(mockedLogger.logError).toHaveBeenCalledWith(
         `Failed to publish release ${version} of ${packageName} package to the NPM registry.`
       );
