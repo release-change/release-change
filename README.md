@@ -42,6 +42,10 @@ Use the following command to run release-change in the CI environment:
 ```
 pnpx @release-change/cli
 ```
+If you are using `yarn`:
+```
+yarn dlx @release-change/cli
+```
 If you are using `npm`:
 ```
 npx @release-change/cli
@@ -98,6 +102,62 @@ Here are examples of the workflow configuration (the file must be saved in the `
             NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
             NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
           run: pnpx @release-change/cli
+  ```
+- using `yarn`:
+  ```yaml
+  name: Release
+  
+  on:
+    push:
+      branches:
+        - main
+  
+  permissions:
+    contents: read # for checkout
+  
+  jobs:
+    release:
+      name: Release
+      runs-on: ubuntu-latest
+      permissions:
+        contents: write # to be able to publish a GitHub release
+        issues: write # to be able to comment on issues
+        pull-requests: write # to be able to comment on pull requests
+        id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v7
+          with:
+            fetch-depth: 0 # to clone the whole Git history
+        - name: Setup Node.js
+          uses: actions/setup-node@v6
+          with:
+            node-version: "lts/*"
+        - name: Enable Corepack
+          shell: bash
+          run: |
+            npm install -g corepack
+            corepack enable
+        - name: Get Yarn cache directory
+          id: yarn-cache-dir
+          shell: bash
+          run: echo "dir=$(yarn config get cacheFolder)" >> "$GITHUB_OUTPUT"
+        - name: Get Yarn cache dependencies
+          uses: actions/cache@v6
+          with:
+            path: ${{ steps.yarn-cache-dir.outputs.dir }}
+            key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            restore-keys: |
+              ${{ runner.os }}-yarn-
+        - name: Install dependencies
+          run: yarn install --immutable
+        - name: Release
+          env:
+            RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+            ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
+            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+            YARN_NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
+          run: yarn dlx @release-change/cli
   ```
 - using `npm`:
   ```yaml
