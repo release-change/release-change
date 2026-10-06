@@ -1,5 +1,15 @@
 # @release-change/release-notes-generator
 
+## 0.5.1
+
+### Patch changes
+
+- **release-notes-generator:** set links to dependencies versions listed in dependencies updates (#788) ([`dffa8e1`](https://github.com/release-change/release-change/commit/dffa8e1ac68a3449c6c500b2cd1768c7a8774319))
+
+---
+
+**Full changelog:** [`@release-change/release-notes-generator@v0.5.0...@release-change/release-notes-generator@v0.5.1`](https://github.com/release-change/release-change/compare/@release-change/release-notes-generator@v0.5.0...@release-change/release-notes-generator@v0.5.1)
+
 ## 0.5.0
 
 ### Minor changes
