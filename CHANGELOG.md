@@ -1,5 +1,15 @@
 # release-change
 
+## 0.7.1
+
+### Patch changes
+
+- **release-notes-generator:** set links to dependencies versions listed in dependencies updates (#788) ([`dffa8e1`](https://github.com/release-change/release-change/commit/dffa8e1ac68a3449c6c500b2cd1768c7a8774319))
+
+---
+
+**Full changelog:** [`v0.7.0...v0.7.1`](https://github.com/release-change/release-change/compare/v0.7.0...v0.7.1)
+
 ## 0.7.0
 
 ### Minor changes
