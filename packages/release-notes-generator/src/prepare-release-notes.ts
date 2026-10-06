@@ -77,7 +77,8 @@ export const prepareReleaseNotes = (
                   packageItem => packageItem.name === packageDependency
                 );
                 if (packageNextRelease) {
-                  const updateItem = `${packageNextRelease.name}@${packageNextRelease.version}`;
+                  const { name, pathname, gitTag, version } = packageNextRelease;
+                  const updateItem = `[${name}@${version}](${repositoryUrl.replace(".git", "")}/tree/${gitTag}/${pathname})`;
                   dependenciesUpdates.push(updateItem);
                 }
               }
