@@ -2797,7 +2797,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0"]
+        dependencies: [
+          "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+        ]
       }
     }
   },
@@ -2875,7 +2877,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0"],
+        dependencies: [
+          "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v2.0.0`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v2.0.0)"
       }
@@ -2955,7 +2959,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0"],
+        dependencies: [
+          "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0-alpha.1...@monorepo/a@v2.0.0`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0-alpha.1...@monorepo/a@v2.0.0)"
       }
@@ -3035,7 +3041,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0"],
+        dependencies: [
+          "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0-beta.1...@monorepo/a@v2.0.0`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0-beta.1...@monorepo/a@v2.0.0)"
       }
@@ -3115,7 +3123,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0"],
+        dependencies: [
+          "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0-rc.1...@monorepo/a@v2.0.0`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0-rc.1...@monorepo/a@v2.0.0)"
       }
@@ -3187,7 +3197,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0"]
+        dependencies: [
+          "[@monorepo/c@1.1.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0/packages/c)"
+        ]
       }
     }
   },
@@ -3259,7 +3271,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0"],
+        dependencies: [
+          "[@monorepo/c@1.1.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v1.3.0`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v1.3.0)"
       }
@@ -3333,7 +3347,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0"],
+        dependencies: [
+          "[@monorepo/c@1.1.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0-alpha.1...@monorepo/a@v1.2.0`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0-alpha.1...@monorepo/a@v1.2.0)"
       }
@@ -3407,7 +3423,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0"],
+        dependencies: [
+          "[@monorepo/c@1.1.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0-beta.1...@monorepo/a@v1.2.0`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0-beta.1...@monorepo/a@v1.2.0)"
       }
@@ -3481,7 +3499,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0"],
+        dependencies: [
+          "[@monorepo/c@1.1.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0-rc.1...@monorepo/a@v1.2.0`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0-rc.1...@monorepo/a@v1.2.0)"
       }
@@ -3547,7 +3567,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1"]
+        dependencies: [
+          "[@monorepo/c@1.0.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1/packages/c)"
+        ]
       }
     }
   },
@@ -3613,7 +3635,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v1.2.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v1.2.1)"
       }
@@ -3691,7 +3715,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0-alpha.1"]
+        dependencies: [
+          "[@monorepo/c@1.0.0-alpha.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0-alpha.1/packages/c)"
+        ]
       }
     }
   },
@@ -3769,7 +3795,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0-alpha.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.0-alpha.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0-alpha.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v2.0.0-alpha.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v2.0.0-alpha.1)"
       }
@@ -3841,7 +3869,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0-alpha.1"]
+        dependencies: [
+          "[@monorepo/c@1.1.0-alpha.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0-alpha.1/packages/c)"
+        ]
       }
     }
   },
@@ -3913,7 +3943,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0-alpha.1"],
+        dependencies: [
+          "[@monorepo/c@1.1.0-alpha.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0-alpha.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v1.3.0-alpha.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v1.3.0-alpha.1)"
       }
@@ -3979,7 +4011,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1-alpha.1"]
+        dependencies: [
+          "[@monorepo/c@1.0.1-alpha.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1-alpha.1/packages/c)"
+        ]
       }
     }
   },
@@ -4045,7 +4079,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1-alpha.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.1-alpha.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1-alpha.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v1.2.1-alpha.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v1.2.1-alpha.1)"
       }
@@ -4123,7 +4159,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0-beta.1"]
+        dependencies: [
+          "[@monorepo/c@1.0.0-beta.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0-beta.1/packages/c)"
+        ]
       }
     }
   },
@@ -4201,7 +4239,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0-beta.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.0-beta.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0-beta.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v2.0.0-beta.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v2.0.0-beta.1)"
       }
@@ -4281,7 +4321,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0-beta.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.0-beta.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0-beta.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v2.0.0-alpha.1...@monorepo/a@v2.0.0-beta.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v2.0.0-alpha.1...@monorepo/a@v2.0.0-beta.1)"
       }
@@ -4353,7 +4395,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0-beta.1"]
+        dependencies: [
+          "[@monorepo/c@1.1.0-beta.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0-beta.1/packages/c)"
+        ]
       }
     }
   },
@@ -4425,7 +4469,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0-beta.1"],
+        dependencies: [
+          "[@monorepo/c@1.1.0-beta.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0-beta.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v1.3.0-beta.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v1.3.0-beta.1)"
       }
@@ -4499,7 +4545,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0-beta.1"],
+        dependencies: [
+          "[@monorepo/c@1.1.0-beta.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0-beta.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.3.0-alpha.1...@monorepo/a@v1.3.0-beta.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.3.0-alpha.1...@monorepo/a@v1.3.0-beta.1)"
       }
@@ -4565,7 +4613,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1-beta.1"]
+        dependencies: [
+          "[@monorepo/c@1.0.1-beta.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1-beta.1/packages/c)"
+        ]
       }
     }
   },
@@ -4631,7 +4681,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1-beta.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.1-beta.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1-beta.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v1.2.1-beta.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v1.2.1-beta.1)"
       }
@@ -4699,7 +4751,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1-beta.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.1-beta.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1-beta.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.1-alpha.1...@monorepo/a@v1.2.1-beta.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.1-alpha.1...@monorepo/a@v1.2.1-beta.1)"
       }
@@ -4777,7 +4831,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0-rc.1"]
+        dependencies: [
+          "[@monorepo/c@1.0.0-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0-rc.1/packages/c)"
+        ]
       }
     }
   },
@@ -4855,7 +4911,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0-rc.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.0-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0-rc.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v2.0.0-rc.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v2.0.0-rc.1)"
       }
@@ -4935,7 +4993,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0-rc.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.0-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0-rc.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v2.0.0-alpha.1...@monorepo/a@v2.0.0-rc.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v2.0.0-alpha.1...@monorepo/a@v2.0.0-rc.1)"
       }
@@ -5015,7 +5075,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.0-rc.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.0-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0-rc.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v2.0.0-beta.1...@monorepo/a@v2.0.0-rc.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v2.0.0-beta.1...@monorepo/a@v2.0.0-rc.1)"
       }
@@ -5087,7 +5149,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0-rc.1"]
+        dependencies: [
+          "[@monorepo/c@1.1.0-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0-rc.1/packages/c)"
+        ]
       }
     }
   },
@@ -5159,7 +5223,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0-rc.1"],
+        dependencies: [
+          "[@monorepo/c@1.1.0-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0-rc.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v1.3.0-rc.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v1.3.0-rc.1)"
       }
@@ -5233,7 +5299,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0-rc.1"],
+        dependencies: [
+          "[@monorepo/c@1.1.0-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0-rc.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.3.0-alpha.1...@monorepo/a@v1.3.0-rc.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.3.0-alpha.1...@monorepo/a@v1.3.0-rc.1)"
       }
@@ -5307,7 +5375,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.1.0-rc.1"],
+        dependencies: [
+          "[@monorepo/c@1.1.0-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.1.0-rc.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.3.0-beta.1...@monorepo/a@v1.3.0-rc.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.3.0-beta.1...@monorepo/a@v1.3.0-rc.1)"
       }
@@ -5373,7 +5443,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1-rc.1"]
+        dependencies: [
+          "[@monorepo/c@1.0.1-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1-rc.1/packages/c)"
+        ]
       }
     }
   },
@@ -5439,7 +5511,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1-rc.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.1-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1-rc.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.0...@monorepo/a@v1.2.1-rc.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.0...@monorepo/a@v1.2.1-rc.1)"
       }
@@ -5507,7 +5581,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1-rc.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.1-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1-rc.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.1-alpha.1...@monorepo/a@v1.2.1-rc.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.1-alpha.1...@monorepo/a@v1.2.1-rc.1)"
       }
@@ -5575,7 +5651,9 @@ export const mockedPackagesInMonorepo = [
         patch: [
           "**release:** add exit code in case the pathname is not found ([`4013e0f`](https://github.com/user-id/repo-name/commit/4013e0fe6eb7f5a0b9cb81f0967e89fdbe1088f5))"
         ],
-        dependencies: ["@monorepo/c@1.0.1-rc.1"],
+        dependencies: [
+          "[@monorepo/c@1.0.1-rc.1](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.1-rc.1/packages/c)"
+        ],
         changelog:
           "**Full changelog:** [`@monorepo/a@v1.2.1-beta.1...@monorepo/a@v1.2.1-rc.1`](https://github.com/user-id/repo-name/compare/@monorepo/a@v1.2.1-beta.1...@monorepo/a@v1.2.1-rc.1)"
       }

@@ -47,7 +47,9 @@ export const mockedReleaseNotesBodies = [
       patch: [
         "**release:** add exit code in case the pathname is not found ([`cfd9eed`](https://github.com/user-id/repo-name/commit/cfd9eed163fb42c64ffcd9c163e4462553cec335))"
       ],
-      dependencies: ["@monorepo/c@1.0.0"]
+      dependencies: [
+        "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+      ]
     },
     formattedBody: `## Major changes
 
@@ -63,7 +65,7 @@ export const mockedReleaseNotesBodies = [
 
 ## Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 `,
     formattedBodyForChangelog: `### Major changes
 
@@ -79,7 +81,7 @@ export const mockedReleaseNotesBodies = [
 
 ### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 `
   },
   {
@@ -140,7 +142,9 @@ export const mockedReleaseNotesBodies = [
       patch: [
         "**release:** add exit code in case the pathname is not found ([`cfd9eed`](https://github.com/user-id/repo-name/commit/cfd9eed163fb42c64ffcd9c163e4462553cec335))"
       ],
-      dependencies: ["@monorepo/c@1.0.0"],
+      dependencies: [
+        "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+      ],
       changelog:
         "**Full changelog:** [`@monorepo/a@v1.2.3...@monorepo/a@v2.0.0`](https://github.com/user-id/repo-name/compare/%40monorepo%2Fa%40v1.2.3...%40monorepo%2Fa%40v2.0.0)"
     },
@@ -158,7 +162,7 @@ export const mockedReleaseNotesBodies = [
 
 ## Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 
 ---
 
@@ -178,7 +182,7 @@ export const mockedReleaseNotesBodies = [
 
 ### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 
 ---
 
@@ -219,7 +223,9 @@ export const mockedReleaseNotesBodies = [
       patch: [
         "**release:** add exit code in case the pathname is not found ([`cfd9eed`](https://github.com/user-id/repo-name/commit/cfd9eed163fb42c64ffcd9c163e4462553cec335))"
       ],
-      dependencies: ["@monorepo/c@1.0.0"]
+      dependencies: [
+        "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+      ]
     },
     formattedBody: `## Minor changes
 
@@ -231,7 +237,7 @@ export const mockedReleaseNotesBodies = [
 
 ## Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 `,
     formattedBodyForChangelog: `### Minor changes
 
@@ -243,7 +249,7 @@ export const mockedReleaseNotesBodies = [
 
 ### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 `
   },
   {
@@ -290,7 +296,9 @@ export const mockedReleaseNotesBodies = [
       patch: [
         "**release:** add exit code in case the pathname is not found ([`cfd9eed`](https://github.com/user-id/repo-name/commit/cfd9eed163fb42c64ffcd9c163e4462553cec335))"
       ],
-      dependencies: ["@monorepo/c@1.0.0"],
+      dependencies: [
+        "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+      ],
       changelog:
         "**Full changelog:** [`@monorepo/a@v1.2.3...@monorepo/a@v2.0.0`](https://github.com/user-id/repo-name/compare/%40monorepo%2Fa%40v1.2.3...%40monorepo%2Fa%40v2.0.0)"
     },
@@ -304,7 +312,7 @@ export const mockedReleaseNotesBodies = [
 
 ## Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 
 ---
 
@@ -320,7 +328,7 @@ export const mockedReleaseNotesBodies = [
 
 ### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 
 ---
 
@@ -347,7 +355,9 @@ export const mockedReleaseNotesBodies = [
       patch: [
         "**release:** add exit code in case the pathname is not found ([`cfd9eed`](https://github.com/user-id/repo-name/commit/cfd9eed163fb42c64ffcd9c163e4462553cec335))"
       ],
-      dependencies: ["@monorepo/c@1.0.0"]
+      dependencies: [
+        "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+      ]
     },
     formattedBody: `## Patch changes
 
@@ -355,7 +365,7 @@ export const mockedReleaseNotesBodies = [
 
 ## Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 `,
     formattedBodyForChangelog: `### Patch changes
 
@@ -363,7 +373,7 @@ export const mockedReleaseNotesBodies = [
 
 ### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 `
   },
   {
@@ -396,7 +406,9 @@ export const mockedReleaseNotesBodies = [
       patch: [
         "**release:** add exit code in case the pathname is not found ([`cfd9eed`](https://github.com/user-id/repo-name/commit/cfd9eed163fb42c64ffcd9c163e4462553cec335))"
       ],
-      dependencies: ["@monorepo/c@1.0.0"],
+      dependencies: [
+        "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+      ],
       changelog:
         "**Full changelog:** [`@monorepo/a@v1.2.3...@monorepo/a@v2.0.0`](https://github.com/user-id/repo-name/compare/%40monorepo%2Fa%40v1.2.3...%40monorepo%2Fa%40v2.0.0)"
     },
@@ -406,7 +418,7 @@ export const mockedReleaseNotesBodies = [
 
 ## Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 
 ---
 
@@ -418,7 +430,7 @@ export const mockedReleaseNotesBodies = [
 
 ### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 
 ---
 
@@ -432,15 +444,17 @@ export const mockedReleaseNotesBodies = [
   },
   {
     body: {
-      dependencies: ["@monorepo/c@1.0.0"]
+      dependencies: [
+        "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+      ]
     },
     formattedBody: `## Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 `,
     formattedBodyForChangelog: `### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 `
   },
   {
@@ -453,13 +467,15 @@ export const mockedReleaseNotesBodies = [
   },
   {
     body: {
-      dependencies: ["@monorepo/c@1.0.0"],
+      dependencies: [
+        "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+      ],
       changelog:
         "**Full changelog:** [`@monorepo/a@v1.2.3...@monorepo/a@v2.0.0`](https://github.com/user-id/repo-name/compare/%40monorepo%2Fa%40v1.2.3...%40monorepo%2Fa%40v2.0.0)"
     },
     formattedBody: `## Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 
 ---
 
@@ -467,7 +483,7 @@ export const mockedReleaseNotesBodies = [
 `,
     formattedBodyForChangelog: `### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 
 ---
 

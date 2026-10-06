@@ -130,7 +130,9 @@ export const mockedChangelogFiles = [
       patch: [
         "**release:** add exit code in case the pathname is not found ([`cfd9eed`](https://github.com/user-id/repo-name/commit/cfd9eed163fb42c64ffcd9c163e4462553cec335))"
       ],
-      dependencies: ["@monorepo/c@1.0.0"],
+      dependencies: [
+        "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+      ],
       changelog:
         "**Full changelog:** [`@monorepo/a@v0.1.0...@monorepo/a@v1.0.0`](https://github.com/user-id/repo-name/compare/%40monorepo%2Fa%40v0.1.0...%40monorepo%2Fa%40v1.0.0)"
     },
@@ -144,7 +146,9 @@ export const mockedChangelogFiles = [
       patch: [
         "**release:** add exit code in case the pathname is not found ([`cfd9eed`](https://github.com/user-id/repo-name/commit/cfd9eed163fb42c64ffcd9c163e4462553cec335))"
       ],
-      dependencies: ["@monorepo/c@1.0.0"]
+      dependencies: [
+        "[@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)"
+      ]
     },
     formattedReleaseNotesBody: `### Major changes
 
@@ -160,7 +164,7 @@ export const mockedChangelogFiles = [
 
 ### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 
 ---
 
@@ -180,7 +184,7 @@ export const mockedChangelogFiles = [
 
 ### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 `,
     existingChangelogFile: `# @monorepo/a
 
@@ -208,7 +212,7 @@ export const mockedChangelogFiles = [
 
 ### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 `,
     expectedUpdatedChangelogFile: `# @monorepo/a
 
@@ -228,7 +232,7 @@ export const mockedChangelogFiles = [
 
 ### Dependencies updates
 
-- @monorepo/c@1.0.0
+- [@monorepo/c@1.0.0](https://github.com/user-id/repo-name/tree/@monorepo/c@v1.0.0/packages/c)
 
 ---
 
