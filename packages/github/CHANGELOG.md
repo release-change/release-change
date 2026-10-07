@@ -1,5 +1,15 @@
 # @release-change/github
 
+## 0.5.1
+
+### Patch changes
+
+- **github:** fix regexp ([`2ee0371`](https://github.com/release-change/release-change/commit/2ee03718c8eeec8cfdb1fb04caca63a3ce54bf2a))
+
+---
+
+**Full changelog:** [`@release-change/github@v0.5.0...@release-change/github@v0.5.1`](https://github.com/release-change/release-change/compare/@release-change/github@v0.5.0...@release-change/github@v0.5.1)
+
 ## 0.5.0
 
 ### Minor changes
