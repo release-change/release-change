@@ -6,6 +6,9 @@ const commitBody = ["Some text.", "Another text."];
 const commitKeyValueFooter = "Footer-key: value";
 const commitReferencesFooter = "Refs: #456, #789";
 const commitSha = "0123456789abcdef";
+const mockedCommitterName = "mocked-committer-name [bot]";
+const mockedCommitterEmail = "0+mocked-committer-name-bot@users.noreply.github.com";
+const mockedCoAuthorFooter = `Co-authored-by: ${mockedCommitterName} <${mockedCommitterEmail}>`;
 const mockedCommitSample: Commit = {
   isMergeCommit: false,
   sha: commitSha,
@@ -151,4 +154,38 @@ export const mockedCommits = [
   mockedMergeCommitSampleWithBodyWithReferencesFooter,
   mockedMergeCommitSampleWithBothFooters,
   mockedMergeCommitSampleWithBodyWithBothFooters
+];
+export const mockedReleaseCommits: Commit[] = [
+  {
+    isMergeCommit: false,
+    sha: commitSha,
+    message: "chore: v1.0.0",
+    body: [],
+    footer: [mockedCoAuthorFooter],
+    releaseType: null
+  },
+  {
+    isMergeCommit: false,
+    sha: commitSha,
+    message: "chore: @monorepo/a@v1.0.0",
+    body: [],
+    footer: [mockedCoAuthorFooter],
+    releaseType: null
+  },
+  {
+    isMergeCommit: true,
+    sha: commitSha,
+    message: "chore: release version package (#123)",
+    body: [],
+    footer: [mockedCoAuthorFooter],
+    releaseType: null
+  },
+  {
+    isMergeCommit: true,
+    sha: commitSha,
+    message: "chore: release version packages (#123)",
+    body: [],
+    footer: [mockedCoAuthorFooter],
+    releaseType: null
+  }
 ];
