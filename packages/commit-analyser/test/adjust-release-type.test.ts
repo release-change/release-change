@@ -27,6 +27,14 @@ const mockedPackages = [
 const mockedInternalDependencies = {
   "packages/c": ["@monorepo/a", "@monorepo/b"]
 } as Record<string, string[]>;
+const mockedInternalDependenciesWithDepth = {
+  "packages/b": ["@monorepo/a"],
+  "packages/c": ["@monorepo/b"]
+} as Record<string, string[]>;
+const mockedInternalDependenciesWithCycle = {
+  "packages/a": ["@monorepo/b"],
+  "packages/b": ["@monorepo/a"]
+} as Record<string, string[]>;
 const packagesSets = [
   {
     packages: mockedPackages,
@@ -183,12 +191,326 @@ const packagesSets = [
     ])
   }
 ];
+const packagesSetsWithDeepDependencies = [
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["major", "patch", null])],
+      ["@monorepo/b", new Set(["minor", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["major", "minor", "patch", null])],
+      ["@monorepo/a", new Set(["major", "patch", null])],
+      ["@monorepo/b", new Set(["major", "minor", "patch", null])],
+      ["@monorepo/c", new Set(["major", "minor", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["minor", "patch", null])],
+      ["@monorepo/b", new Set(["patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["minor", "patch", null])],
+      ["@monorepo/a", new Set(["minor", "patch", null])],
+      ["@monorepo/b", new Set(["minor", "patch", null])],
+      ["@monorepo/c", new Set(["minor", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["patch", null])],
+      ["@monorepo/b", new Set([null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["patch", null])],
+      ["@monorepo/a", new Set(["patch", null])],
+      ["@monorepo/b", new Set(["patch", null])],
+      ["@monorepo/c", new Set(["patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set([null])],
+      ["@monorepo/b", new Set([null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set([null])],
+      ["@monorepo/a", new Set([null])],
+      ["@monorepo/b", new Set([null])],
+      ["@monorepo/c", new Set([null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["major", "patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["major", "patch", null])],
+      ["@monorepo/a", new Set(["major", "patch", null])],
+      ["@monorepo/b", new Set(["major", "patch", null])],
+      ["@monorepo/c", new Set(["major", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["minor", "patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["minor", "patch", null])],
+      ["@monorepo/a", new Set(["minor", "patch", null])],
+      ["@monorepo/b", new Set(["minor", "patch", null])],
+      ["@monorepo/c", new Set(["minor", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["patch", null])],
+      ["@monorepo/a", new Set(["patch", null])],
+      ["@monorepo/b", new Set(["patch", null])],
+      ["@monorepo/c", new Set(["patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([["@monorepo/a", new Set([null])]]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set([null])],
+      ["@monorepo/a", new Set([null])],
+      ["@monorepo/b", new Set([null])],
+      ["@monorepo/c", new Set([null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["major", "patch", null])],
+      ["@monorepo/c", new Set([null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["major", "patch", null])],
+      ["@monorepo/a", new Set(["major", "patch", null])],
+      ["@monorepo/b", new Set(["major", "patch", null])],
+      ["@monorepo/c", new Set(["major", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["minor", "patch", null])],
+      ["@monorepo/c", new Set([null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["minor", "patch", null])],
+      ["@monorepo/a", new Set(["minor", "patch", null])],
+      ["@monorepo/b", new Set(["minor", "patch", null])],
+      ["@monorepo/c", new Set(["minor", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["patch", null])],
+      ["@monorepo/c", new Set([null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["patch", null])],
+      ["@monorepo/a", new Set(["patch", null])],
+      ["@monorepo/b", new Set(["patch", null])],
+      ["@monorepo/c", new Set(["patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithDepth,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set([null])],
+      ["@monorepo/c", new Set([null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set([null])],
+      ["@monorepo/a", new Set([null])],
+      ["@monorepo/b", new Set([null])],
+      ["@monorepo/c", new Set([null])]
+    ])
+  }
+];
+const packagesSetsWithCycleDependencies = [
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["major", "patch", null])],
+      ["@monorepo/b", new Set(["minor", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["major", "minor", "patch", null])],
+      ["@monorepo/a", new Set(["major", "minor", "patch", null])],
+      ["@monorepo/b", new Set(["major", "minor", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["minor", "patch", null])],
+      ["@monorepo/b", new Set(["patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["minor", "patch", null])],
+      ["@monorepo/a", new Set(["minor", "patch", null])],
+      ["@monorepo/b", new Set(["minor", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["patch", null])],
+      ["@monorepo/b", new Set([null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["patch", null])],
+      ["@monorepo/a", new Set(["patch", null])],
+      ["@monorepo/b", new Set(["patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set([null])],
+      ["@monorepo/b", new Set([null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set([null])],
+      ["@monorepo/a", new Set([null])],
+      ["@monorepo/b", new Set([null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["major", "patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["major", "patch", null])],
+      ["@monorepo/a", new Set(["major", "patch", null])],
+      ["@monorepo/b", new Set(["major", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["minor", "patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["minor", "patch", null])],
+      ["@monorepo/a", new Set(["minor", "patch", null])],
+      ["@monorepo/b", new Set(["minor", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/a", new Set(["patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["patch", null])],
+      ["@monorepo/a", new Set(["patch", null])],
+      ["@monorepo/b", new Set(["patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([["@monorepo/a", new Set([null])]]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set([null])],
+      ["@monorepo/a", new Set([null])],
+      ["@monorepo/b", new Set([null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/b", new Set(["major", "patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["major", "patch", null])],
+      ["@monorepo/a", new Set(["major", "patch", null])],
+      ["@monorepo/b", new Set(["major", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/b", new Set(["minor", "patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["minor", "patch", null])],
+      ["@monorepo/a", new Set(["minor", "patch", null])],
+      ["@monorepo/b", new Set(["minor", "patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([
+      ["@monorepo/b", new Set(["patch", null])]
+    ]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set(["patch", null])],
+      ["@monorepo/a", new Set(["patch", null])],
+      ["@monorepo/b", new Set(["patch", null])]
+    ])
+  },
+  {
+    packages: mockedPackages,
+    internalDependencies: mockedInternalDependenciesWithCycle,
+    releaseTypesPerPackage: new Map<string, Set<ReleaseType>>([["@monorepo/b", new Set([null])]]),
+    expected: new Map<string, Set<ReleaseType>>([
+      ["", new Set([null])],
+      ["@monorepo/a", new Set([null])],
+      ["@monorepo/b", new Set([null])]
+    ])
+  }
+];
 
 vi.mock("@release-change/get-packages", () => ({
   getPackageDependencies: vi.fn()
 }));
 
-it.each(packagesSets)(
+it.each([
+  ...packagesSets,
+  ...packagesSetsWithDeepDependencies,
+  ...packagesSetsWithCycleDependencies
+])(
   "should adjust the release type for the dependent packages",
   ({ packages, internalDependencies, releaseTypesPerPackage, expected }) => {
     vi.mocked(getPackageDependencies).mockImplementation((pathname: string) => {
