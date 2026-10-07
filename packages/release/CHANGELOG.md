@@ -1,5 +1,16 @@
 # @release-change/release
 
+## 0.6.2
+
+### Dependencies updates
+
+- [@release-change/github@0.5.1](https://github.com/release-change/release-change/tree/@release-change/github@v0.5.1/packages/github)
+- [@release-change/release-notes-generator@0.5.2](https://github.com/release-change/release-change/tree/@release-change/release-notes-generator@v0.5.2/packages/release-notes-generator)
+
+---
+
+**Full changelog:** [`@release-change/release@v0.6.1...@release-change/release@v0.6.2`](https://github.com/release-change/release-change/compare/@release-change/release@v0.6.1...@release-change/release@v0.6.2)
+
 ## 0.6.1
 
 ### Patch changes
