@@ -6,7 +6,7 @@ import { assert, expect, it, vi } from "vitest";
 import { getAssociatedPullRequests } from "../src/get-associated-pull-requests.js";
 import { getIssues } from "../src/get-issues.js";
 import { getRelatedPullRequestsAndIssues, getRepositoryRelatedEndpoint } from "../src/index.js";
-import { mockedCommits } from "./fixtures/mocked-commits.js";
+import { mockedCommits, mockedReleaseCommits } from "./fixtures/mocked-commits.js";
 import { mockedContextWithNextRelease } from "./fixtures/mocked-context.js";
 import { mockedFailureFetchesForCommits } from "./fixtures/mocked-failure-fetches.js";
 import { mockedFetch } from "./fixtures/mocked-fetch.js";
@@ -89,6 +89,13 @@ it.each(mockedFailureFetchesForCommits)("$title", async ({ response, expectedErr
 });
 it("should complete context with references to no pull requests and issues if no commits are provided", async () => {
   await getRelatedPullRequestsAndIssues([], mockedContextWithNextRelease);
+  assert.deepEqual(mockedContextWithNextRelease.references, []);
+  expect(mockedLogger.logInfo).toHaveBeenCalledWith("No pull requests nor issues found.");
+});
+it("should complete context with references to no pull requests and issues if the commits provided are release commits", async () => {
+  vi.mocked(getIssues).mockReturnValue([]);
+  await getRelatedPullRequestsAndIssues(mockedReleaseCommits, mockedContextWithNextRelease);
+  expect(getAssociatedPullRequests).not.toHaveBeenCalled();
   assert.deepEqual(mockedContextWithNextRelease.references, []);
   expect(mockedLogger.logInfo).toHaveBeenCalledWith("No pull requests nor issues found.");
 });
