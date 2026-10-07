@@ -1,5 +1,15 @@
 # release-change
 
+## 0.7.2
+
+### Patch changes
+
+- **github:** fix regexp ([`2ee0371`](https://github.com/release-change/release-change/commit/2ee03718c8eeec8cfdb1fb04caca63a3ce54bf2a))
+
+---
+
+**Full changelog:** [`v0.7.1...v0.7.2`](https://github.com/release-change/release-change/compare/v0.7.1...v0.7.2)
+
 ## 0.7.1
 
 ### Patch changes
