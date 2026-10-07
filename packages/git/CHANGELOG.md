@@ -1,5 +1,15 @@
 # @release-change/git
 
+## 0.5.1
+
+### Dependencies updates
+
+- [@release-change/commit-analyser@0.4.1](https://github.com/release-change/release-change/tree/@release-change/commit-analyser@v0.4.1/packages/commit-analyser)
+
+---
+
+**Full changelog:** [`@release-change/git@v0.5.0...@release-change/git@v0.5.1`](https://github.com/release-change/release-change/compare/@release-change/git@v0.5.0...@release-change/git@v0.5.1)
+
 ## 0.5.0
 
 ### Minor changes
