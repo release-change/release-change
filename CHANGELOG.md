@@ -1,5 +1,15 @@
 # release-change
 
+## 0.7.3
+
+### Patch changes
+
+- **commit-analyser:** propagate release types deeper between packages and their internal dependents ([`ef7bbdf`](https://github.com/release-change/release-change/commit/ef7bbdf692a56d1f985b2a7e59d824459117ec34))
+
+---
+
+**Full changelog:** [`v0.7.2...v0.7.3`](https://github.com/release-change/release-change/compare/v0.7.2...v0.7.3)
+
 ## 0.7.2
 
 ### Patch changes
