@@ -43,9 +43,9 @@ A version is described by the [Semantic Versioning 2.0.0 specification](https://
 
 ### Ranges
 
-A *version range* is a set of *comparators* which specify versions satisfying the range.
+A _version range_ is a set of _comparators_ which specify versions satisfying the range.
 
-A *comparator* is composed of an *operator* and a *version*. The set of primitive *operators* is:
+A _comparator_ is composed of an _operator_ and a _version_. The set of primitive _operators_ is:
 - `<`: less than,
 - `<=`: less than or equal to,
 - `>`: greater than,
@@ -54,7 +54,7 @@ A *comparator* is composed of an *operator* and a *version*. The set of primitiv
 
 For example, the comparator `>=1.2.7` would match the versions `1.2.7`, `1.2.8`, `2.5.3` and `1.3.9`, but not the versions `1.2.6` or `1.1.0`. The comparator `>1` is equivalent to `>=2.0.0` and would match the versions `2.0.0` and `3.1.0`, but not the versions `1.0.1` or `1.1.0`.
 
-Whitespace can join comparators to form a *comparator set*, which is satisfied by the **intersection*- of all the comparators it includes.
+Whitespace can join comparators to form a _comparator set_, which is satisfied by the **intersection** of all the comparators it includes.
 
 A range is composed of one or more comparator sets, joined by `||` (logical or). A version matches a range if and only if the version satisfies every comparator in at least one of the logical-or-separated comparator sets.
 
@@ -66,13 +66,13 @@ The range `1.2.7 || >=1.2.9 <2.0.0` would match the versions `1.2.7`, `1.2.9` an
 
 If a version has a pre-release tag (for example, `1.2.3-alpha.3`), then it will only be allowed to satisfy comparator sets if at least one comparator with the same `[major, minor, patch]` tuple also has a pre-release tag.
 
-For example, the range `>1.2.3-alpha.3` would be allowed to match the version `1.2.3-alpha.7`, but it would *not* be satisfied by `3.4.5-alpha.9`, even though `3.4.5-alpha.9` is technically “greater than” `1.2.3-alpha.3` according to the Semantic Versioning sort rules. The version range only accepts pre-release tags on the `1.2.3` version. Version `3.4.5` *would* satisfy the range because it does not have a pre-release flag and `3.4.5` is greater than `1.2.3-alpha.7`.
+For example, the range `>1.2.3-alpha.3` would be allowed to match the version `1.2.3-alpha.7`, but it would _not_ be satisfied by `3.4.5-alpha.9`, even though `3.4.5-alpha.9` is technically “greater than” `1.2.3-alpha.3` according to the Semantic Versioning sort rules. The version range only accepts pre-release tags on the `1.2.3` version. Version `3.4.5` _would_ satisfy the range because it does not have a pre-release flag and `3.4.5` is greater than `1.2.3-alpha.7`.
 
 The purpose of this behaviour is twofold.
 
 First, pre-release versions frequently are updated very quickly and contain many breaking changes that are (by the author’s design) not fit for public consumption yet. Therefore, by default, they are excluded from range-matching semantics.
 
-Second, a user who has opted into using a pre-release version has indicated the intent to use *that specific* set of `alpha`/`beta`/`rc` versions. By including a pre-release tag in the range, the user is indicating being aware of the risk. However, it is still not appropriate to assume that they have opted into taking a similar risk on the *next* set of pre-release versions.
+Second, a user who has opted into using a pre-release version has indicated the intent to use _that specific_ set of `alpha`/`beta`/`rc` versions. By including a pre-release tag in the range, the user is indicating being aware of the risk. However, it is still not appropriate to assume that they have opted into taking a similar risk on the _next_ set of pre-release versions.
 
 Note that this behaviour can be suppressed (treating all pre-release versions as though they were normal versions, for range matching) by setting the `includePrerelease` flag on the `options` object to any [functions](#functions) doing range matching.
 
@@ -142,14 +142,14 @@ Examples:
 
 ##### Caret ranges (`^1.2.3`, `^0.2.5` and `^0.0.4`)
 
-Allows changes which do not modify the left-most non-zero element in the `[major, minor, patch]` tuple. In other words, this allows patch and minor updates for versions `1.0.0` and above, patch updates for versions `0.X >=0.1.0` and *no- updates for versions `0.0.X`.
+Allows changes which do not modify the left-most non-zero element in the `[major, minor, patch]` tuple. In other words, this allows patch and minor updates for versions `1.0.0` and above, patch updates for versions `0.X >=0.1.0` and _no_ updates for versions `0.0.X`.
 
 Examples:
 - `^1.2.3` (is equivalent to `>=1.2.3 <2.0.0-0`),
 - `^0.2.3` (is equivalent to `>=0.2.3 <0.3.0-0`),
 - `^0.0.3` (is equivalent to `>=0.0.3 <0.0.4-0`),
 - `^1.2.3-beta.2` (is equivalent to `>=1.2.3-beta.2 <2.0.0-0`: note that pre-releases in the `1.2.3` version will be allowed if they are greater than or equal to `beta.2`; so, `1.2.3-beta.4` would be allowed, but `1.2.4-beta.2` would not because it is a pre-release of a different `[major, minor, patch]` tuple),
-- `^0.0.3-beta` (is equivalent to `>=0.0.3-beta <0.0.4-0`: note that pre-releases in the `0.0.3` version *only* will be allowed if they are greater than or equal to `beta`; so, `0.0.3-pr.2` would be allowed).
+- `^0.0.3-beta` (is equivalent to `>=0.0.3-beta <0.0.4-0`: note that pre-releases in the `0.0.3` version _only_ will be allowed if they are greater than or equal to `beta`; so, `0.0.3-pr.2` would be allowed).
 
 When parsing caret ranges, a missing `patch` value desugars to the number `0`, but will allow flexibility within that value, even though the major and minor versions are both `0`:
 - `^1.2.x` (is equivalent to `>=1.2.0 <2.0.0-0`),
@@ -216,7 +216,7 @@ Strict-mode comparators and ranges will be strict about the semantic versioning 
 - `simplifyRange(versions, range)`: returns a simplified range matching the same items in the `versions` list as the range specified, which is useful when generating ranges by joining together multiple versions with `||` programmatically (note that it does not guarantee that it would match the same versions in all cases, only for the set of versions provided);
 - `isRangeSubset(subRange, superRange)`: returns `true` if the `subRange` range is entirely contained by the `superRange` range, `false` otherwise.
 
-Note that, since ranges may be non-contiguous, a version might not be greater than a range, less than a range *or* satisfy a range. For example, the range `1.2 <1.2.9 || >2.0.0` would have a hole from `1.2.9` until `2.0.0`, so version `1.2.10` would not be greater than the range (because `2.0.1` satisfies, which is higher) nor less than the range (since `1.2.8` satisfies, which is lower) and it also does not satisfy the range.
+Note that, since ranges may be non-contiguous, a version might not be greater than a range, less than a range _or_ satisfy a range. For example, the range `1.2 <1.2.9 || >2.0.0` would have a hole from `1.2.9` until `2.0.0`, so version `1.2.10` would not be greater than the range (because `2.0.1` satisfies, which is higher) nor less than the range (since `1.2.8` satisfies, which is lower) and it also does not satisfy the range.
 
 If you want to know whether a version satisfies a range or not, use the `satisfies` function.
 

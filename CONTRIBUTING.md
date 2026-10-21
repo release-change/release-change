@@ -43,18 +43,18 @@ Make sure:
 ### Development workflow
 
 #### Steps
+
 1. [Go to the repository](https://github.com/release-change/release-change) and fork it using your own GitHub account,
-2. clone your repository:
+2.  clone your repository:
 
         git clone git@github.com:YOUR_USERNAME/release-change.git
-3. go to the root of the repository and run:
+3.  go to the root of the repository and run:
 
         cd release-change
         pnpm install
-4. run TypeScript and the test suites in watch mode:
+4.  run TypeScript and the test suites in watch mode:
 
         pnpm dev
-
 Awesome! You are now able to contribute to release-change.
 
 #### Available commands
