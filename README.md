@@ -17,7 +17,7 @@ release-change uses the commit messages to determine the type of change in the c
 It uses the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. The following table shows which release type is got from which commit message when `release-change` runs:
 
 | Commit message                                                                                              | Release type                                                                                          |
-|-------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | `fix: prevent racing of requests`                                                                           | Patch (fix release)                                                                                   |
 | `feat(lang): add Polish language`                                                                           | Minor (feature release)                                                                               |
 | `chore!: drop support for Node 6`                                                                           | Major (breaking release)                                                                              |
@@ -59,148 +59,144 @@ release-change requires access to the project repository. The Git authentication
 
 Here are examples of the workflow configuration (the file must be saved in the `.github/workflows/` directory and make sure the option “Allow GitHub Actions to create and approve pull requests” is enabled in your repository settings):
 - using `pnpm`:
-  ```yaml
-  name: Release
-  
-  on:
-    push:
-      branches:
-        - main
-  
-  permissions:
-    contents: read # for checkout
-  
-  jobs:
-    release:
-      name: Release
-      runs-on: ubuntu-latest
-      permissions:
-        contents: write # to be able to publish a GitHub release
-        issues: write # to be able to comment on issues
-        pull-requests: write # to be able to comment on pull requests
-        id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v7
-          with:
-            fetch-depth: 0 # to clone the whole Git history
-        - name: Install pnpm
-          uses: pnpm/action-setup@v6
-          with:
-            version: 11
-        - name: Setup Node.js
-          uses: actions/setup-node@v6
-          with:
-            node-version: "lts/*"
-            cache: "pnpm"
-        - name: Install dependencies
-          run: pnpm clean-install
-        - name: Release
-          env:
-            RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-            ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
-            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-            NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
-          run: pnpx @release-change/cli
-  ```
-- using `yarn`:
-  ```yaml
-  name: Release
-  
-  on:
-    push:
-      branches:
-        - main
-  
-  permissions:
-    contents: read # for checkout
-  
-  jobs:
-    release:
-      name: Release
-      runs-on: ubuntu-latest
-      permissions:
-        contents: write # to be able to publish a GitHub release
-        issues: write # to be able to comment on issues
-        pull-requests: write # to be able to comment on pull requests
-        id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v7
-          with:
-            fetch-depth: 0 # to clone the whole Git history
-        - name: Setup Node.js
-          uses: actions/setup-node@v6
-          with:
-            node-version: "lts/*"
-        - name: Enable Corepack
-          shell: bash
-          run: |
-            npm install -g corepack
-            corepack enable
-        - name: Get Yarn cache directory
-          id: yarn-cache-dir
-          shell: bash
-          run: echo "dir=$(yarn config get cacheFolder)" >> "$GITHUB_OUTPUT"
-        - name: Get Yarn cache dependencies
-          uses: actions/cache@v6
-          with:
-            path: ${{ steps.yarn-cache-dir.outputs.dir }}
-            key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-            restore-keys: |
-              ${{ runner.os }}-yarn-
-        - name: Install dependencies
-          run: yarn install --immutable
-        - name: Release
-          env:
-            RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-            ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
-            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-            YARN_NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
-          run: yarn dlx @release-change/cli
-  ```
-- using `npm`:
-  ```yaml
-  name: Release
-  
-  on:
-    push:
-      branches:
-        - main
-  
-  permissions:
-    contents: read # for checkout
-  
-  jobs:
-    release:
-      name: Release
-      runs-on: ubuntu-latest
-      permissions:
-        contents: write # to be able to publish a GitHub release
-        issues: write # to be able to comment on issues
-        pull-requests: write # to be able to comment on pull requests
-        id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v7
-          with:
-            fetch-depth: 0 # to clone the whole Git history
-        - name: Setup Node.js
-          uses: actions/setup-node@v6
-          with:
-            node-version: "lts/*"
-            cache: "npm"
-        - name: Install dependencies
-          run: npm clean-install
-        - name: Release
-          env:
-            RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-            ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
-            NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-            NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
-          run: npx @release-change/cli
-  ```
 
+      name: Release
+
+      on:
+        push:
+          branches:
+            - main
+
+      permissions:
+        contents: read # for checkout
+
+      jobs:
+        release:
+          name: Release
+          runs-on: ubuntu-latest
+          permissions:
+            contents: write # to be able to publish a GitHub release
+            issues: write # to be able to comment on issues
+            pull-requests: write # to be able to comment on pull requests
+            id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
+          steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+              with:
+                fetch-depth: 0 # to clone the whole Git history
+            - name: Install pnpm
+              uses: pnpm/action-setup@v6
+              with:
+                version: 11
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                node-version: "lts/*"
+                cache: "pnpm"
+            - name: Install dependencies
+              run: pnpm clean-install
+            - name: Release
+              env:
+                RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+                ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
+                NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
+              run: pnpx @release-change/cli
+- using `yarn`:
+
+      name: Release
+
+      on:
+        push:
+          branches:
+            - main
+
+      permissions:
+        contents: read # for checkout
+
+      jobs:
+        release:
+          name: Release
+          runs-on: ubuntu-latest
+          permissions:
+            contents: write # to be able to publish a GitHub release
+            issues: write # to be able to comment on issues
+            pull-requests: write # to be able to comment on pull requests
+            id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
+          steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+              with:
+                fetch-depth: 0 # to clone the whole Git history
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                node-version: "lts/*"
+            - name: Enable Corepack
+              shell: bash
+              run: |
+                npm install -g corepack
+                corepack enable
+            - name: Get Yarn cache directory
+              id: yarn-cache-dir
+              shell: bash
+              run: echo "dir=$(yarn config get cacheFolder)" >> "$GITHUB_OUTPUT"
+            - name: Get Yarn cache dependencies
+              uses: actions/cache@v6
+              with:
+                path: ${{ steps.yarn-cache-dir.outputs.dir }}
+                key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                restore-keys: |
+                  ${{ runner.os }}-yarn-
+            - name: Install dependencies
+              run: yarn install --immutable
+            - name: Release
+              env:
+                RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+                ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
+                NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                YARN_NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
+              run: yarn dlx @release-change/cli
+- using `npm`:
+
+      name: Release
+
+      on:
+        push:
+          branches:
+            - main
+
+      permissions:
+        contents: read # for checkout
+
+      jobs:
+        release:
+          name: Release
+          runs-on: ubuntu-latest
+          permissions:
+            contents: write # to be able to publish a GitHub release
+            issues: write # to be able to comment on issues
+            pull-requests: write # to be able to comment on pull requests
+            id-token: write # to enable use of OpenID Connect to publish to NPM with provenance
+          steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+              with:
+                fetch-depth: 0 # to clone the whole Git history
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                node-version: "lts/*"
+                cache: "npm"
+            - name: Install dependencies
+              run: npm clean-install
+            - name: Release
+              env:
+                RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+                ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
+                NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+                NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
+              run: npx @release-change/cli
 ### Configuration
 
 #### Configuration file
@@ -211,16 +207,13 @@ Alternatively, some options can be set via CLI arguments.
 
 The following examples are the same:
 - via `release-change.config.json` file:
-  ```json
-  {
-    "branches": ["main", "next"]
-  }
-  ```
-- via CLI arguments:
-  ```
-  release-change --branches main next
-  ```
 
+      {
+        "branches": ["main", "next"]
+      }
+- via CLI arguments:
+
+      release-change --branches main next
 #### Options
 
 ##### branches
@@ -266,7 +259,7 @@ The goal of the dry-run mode is to get a preview of the pending release. The dry
 ##### releaseType
 
 Type: `object`  
-Default:  
+Default:
 ```
 {
   alpha: {
