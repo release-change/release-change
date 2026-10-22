@@ -1,5 +1,15 @@
 # @release-change/release
 
+## 0.6.4
+
+### Patch changes
+
+- **release:** use `--ignore-scripts` option when updating lock file with npm (#808) ([`271a165`](https://github.com/release-change/release-change/commit/271a16590ffbef3fa99411e6647a157e856fb75a))
+
+---
+
+**Full changelog:** [`@release-change/release@v0.6.3...@release-change/release@v0.6.4`](https://github.com/release-change/release-change/compare/@release-change/release@v0.6.3...@release-change/release@v0.6.4)
+
 ## 0.6.3
 
 ### Dependencies updates
