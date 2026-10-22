@@ -10,7 +10,7 @@ import { mockedNextReleases } from "./fixtures/mocked-next-releases-update.js";
 const mockedPackageManagerCommands: { command: "npm" | "pnpm" | "yarn"; args: string[] }[] = [
   { command: "pnpm", args: ["install", "--lockfile-only"] },
   { command: "yarn", args: ["install", "--mode=update-lockfile", "--no-immutable"] },
-  { command: "npm", args: ["install", "--package-lock-only"] }
+  { command: "npm", args: ["install", "--package-lock-only", "--ignore-scripts"] }
 ];
 
 vi.mock("@release-change/shared", () => ({

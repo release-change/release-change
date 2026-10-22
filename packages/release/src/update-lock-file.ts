@@ -49,7 +49,7 @@ export const updateLockFile = async (
     }
   } else if (packageManager === "npm") {
     if (fs.existsSync(path.join(cwd, pathname, "package-lock.json"))) {
-      args.push("install", "--package-lock-only");
+      args.push("install", "--package-lock-only", "--ignore-scripts");
       const npmCommandResult = await runCommand("npm", args, { cwd });
       if (debug) {
         logger.logDebug(`Command run: npm ${args.join(" ")}`);
