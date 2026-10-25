@@ -1,5 +1,15 @@
 # @release-change/cli
 
+## 0.7.4
+
+### Dependencies updates
+
+- [@release-change/release@0.6.5](https://github.com/release-change/release-change/tree/@release-change/release@v0.6.5/packages/release)
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.7.3...@release-change/cli@v0.7.4`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.7.3...@release-change/cli@v0.7.4)
+
 ## 0.7.3
 
 ### Dependencies updates
