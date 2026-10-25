@@ -26,8 +26,9 @@ beforeEach(() => {
 });
 
 describe.each(mockedNextReleasesWithDependencies)(
-  "for $packageName (update method: $dependencyUpdateMethod)",
+  "for $packageName (package manager: $packageManager, update method: $dependencyUpdateMethod)",
   ({
+    packageManager,
     packageName,
     packageManifestPath,
     nextRelease,
@@ -51,9 +52,9 @@ describe.each(mockedNextReleasesWithDependencies)(
         }
       );
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-      expect(() => updatePackageDependenciesVersions(nextRelease, [], mockedContext)).toThrow(
-        expectedError
-      );
+      expect(() =>
+        updatePackageDependenciesVersions(nextRelease, [], mockedContext, packageManager)
+      ).toThrow(expectedError);
     });
     it("should throw an error if the package manifest is not found", () => {
       const expectedError = new Error(
@@ -71,20 +72,30 @@ describe.each(mockedNextReleasesWithDependencies)(
       vi.spyOn(fs, "existsSync").mockReturnValue(false);
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
       expect(() =>
-        updatePackageDependenciesVersions(nextRelease, [], {
-          ...mockedContextInMonorepo,
-          config: { ...mockedConfig, dependencyUpdateMethod: "pin" }
-        })
+        updatePackageDependenciesVersions(
+          nextRelease,
+          [],
+          {
+            ...mockedContextInMonorepo,
+            config: { ...mockedConfig, dependencyUpdateMethod: "pin" }
+          },
+          packageManager
+        )
       ).toThrow(expectedError);
     });
     it("should update the package dependencies versions", () => {
       const readFileSpy = vi
         .spyOn(fs, "readFileSync")
         .mockReturnValue(JSON.stringify(packageManifest));
-      updatePackageDependenciesVersions(nextRelease, dependencies, {
-        ...mockedContextInMonorepo,
-        config: { ...mockedConfig, dependencyUpdateMethod }
-      });
+      updatePackageDependenciesVersions(
+        nextRelease,
+        dependencies,
+        {
+          ...mockedContextInMonorepo,
+          config: { ...mockedConfig, dependencyUpdateMethod }
+        },
+        packageManager
+      );
       expect(readFileSpy).toHaveBeenCalledWith(packageManifestPath, "utf-8");
       for (const dependency of dependencies) {
         const { name } = dependency;

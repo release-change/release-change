@@ -1,4 +1,5 @@
 import type { PackageManifest } from "@release-change/config";
+import type { PackageManager } from "@release-change/get-packages";
 import type { Context, PackageNextRelease } from "@release-change/shared";
 
 import fs from "node:fs";
@@ -12,11 +13,13 @@ import { formatDetailedError } from "@release-change/shared";
  * @param packageNextRelease - The next release data to use.
  * @param packageDependencies - The package internal dependencies to update.
  * @param context - The context where the CLI is running.
+ * @param packageManager - The package manager to use.
  */
 export const updatePackageDependenciesVersions = (
   packageNextRelease: PackageNextRelease,
   packageDependencies: PackageNextRelease[],
-  context: Context
+  context: Context,
+  packageManager: PackageManager
 ): void => {
   const { name, pathname } = packageNextRelease;
   const {
@@ -42,9 +45,10 @@ export const updatePackageDependenciesVersions = (
               : undefined;
         if (dependencyType && packageManifest[dependencyType]) {
           if (dependencyUpdateMethod === "workspace") {
-            packageManifest[dependencyType][name] = "workspace:*";
+            const range = packageManager === "npm" ? "*" : "workspace:*";
+            packageManifest[dependencyType][name] = range;
             logger.logInfo(
-              `Package version updated to workspace:* for package dependency ${name} in ${packageName}.`
+              `Package version updated to ${range} for package dependency ${name} in ${packageName}.`
             );
           } else {
             const range =
