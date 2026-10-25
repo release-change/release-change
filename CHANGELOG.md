@@ -1,5 +1,15 @@
 # release-change
 
+## 0.7.5
+
+### Patch changes
+
+- **release:** use `*` instead of `workspace:*` when package manager is npm ([`34bc34e`](https://github.com/release-change/release-change/commit/34bc34eb52cce99cc92e8fa524a8ba61aa26053a))
+
+---
+
+**Full changelog:** [`v0.7.4...v0.7.5`](https://github.com/release-change/release-change/compare/v0.7.4...v0.7.5)
+
 ## 0.7.4
 
 ### Patch changes
