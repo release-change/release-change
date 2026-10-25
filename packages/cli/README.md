@@ -302,7 +302,7 @@ This optional option sets a string telling how dependencies in each `package.jso
 - `"pin"`: the dependencies will be updated using their exact new version (e.g.: `"@my-monorepo/my-package": "1.2.3"`);
 - `"caret-range"`: the dependencies will be updated using their new version within a caret range (e.g.: `"@my-monorepo/my-package": "^1.2.3"`);
 - `"tilde-range"`: the dependencies will be updated using their new version within a tilde range (e.g.: `"@my-monorepo/my-package": "~1.2.3"`);
-- `"workspace"`: the dependencies will be updated using the `workspace` keyword (e.g.: `"@my-monorepo/my-package": "workspace:*"`).
+- `"workspace"`: the dependencies will be updated using the `workspace:` protocol and the `*` range or only the `*` range if using `npm` (e.g.: `"@my-monorepo/my-package": "workspace:*"`).
 
 If the repository is not a monorepo, the option is ignored.
 
