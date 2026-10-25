@@ -90,7 +90,8 @@ export const publish = async (context: Context): Promise<void> => {
           updatePackageDependenciesVersions(
             nextReleasePackage,
             packageDependenciesToUpdate,
-            context
+            context,
+            packageManager
           );
         await updateLockFile(nextReleasePackage, context, packageManager);
         updateChangelogFile(nextReleasePackage, preparedReleaseNotes.body, cwd);
