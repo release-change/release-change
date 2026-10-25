@@ -12,6 +12,8 @@ import {
   formatOutputFromCommandResult
 } from "@release-change/shared";
 
+import { getLockFilePath } from "./get-lock-file-path.js";
+
 /**
  * Commits the updated files.
  * @param packageNextRelease - The next release data to use.
@@ -31,15 +33,7 @@ export const commitUpdatedFiles = async (
     if (debug) logger.setDebugScope("release:commit-updated-files");
     const { pathname } = packageNextRelease;
     const packageManifestFile = path.join(cwd, pathname, "package.json");
-    const lockFile = path.join(
-      cwd,
-      pathname,
-      packageManager === "pnpm"
-        ? "pnpm-lock.yaml"
-        : packageManager === "yarn"
-          ? "yarn.lock"
-          : "package-lock.json"
-    );
+    const lockFile = getLockFilePath(cwd, pathname, packageManager);
     const changelogFile = path.join(cwd, pathname, "CHANGELOG.md");
     const filesToAdd = fs.existsSync(lockFile)
       ? [packageManifestFile, lockFile, changelogFile]

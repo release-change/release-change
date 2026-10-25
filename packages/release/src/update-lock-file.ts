@@ -12,6 +12,10 @@ import {
   runCommandSync
 } from "@release-change/shared";
 
+import { getLockFilePath } from "./get-lock-file-path.js";
+
+import { ARGS } from "./constants.js";
+
 /**
  * Updates the lock file.
  * @param packageNextRelease - The next release data to use.
@@ -27,38 +31,19 @@ export const updateLockFile = async (
   const { debug } = config;
   const { pathname } = packageNextRelease;
   const logger = setLogger(debug);
-  const args: string[] = [];
   if (debug) logger.setDebugScope("release:update-lock-file");
-  if (packageManager === "pnpm") {
-    if (fs.existsSync(path.join(cwd, pathname, "pnpm-lock.yaml"))) {
-      args.push("install", "--lockfile-only");
-      const pnpmCommandResult = await runCommand("pnpm", args, { cwd });
+  if (packageManager && Object.hasOwn(ARGS, packageManager)) {
+    const lockFile = getLockFilePath(cwd, pathname, packageManager);
+    const args = ARGS[packageManager];
+    if (fs.existsSync(lockFile)) {
+      const commandResult = await runCommand(packageManager, args, { cwd });
       if (debug) {
-        logger.logDebug(`Command run: pnpm ${args.join(" ")}`);
-        logger.logDebug(deepInspectObject(pnpmCommandResult));
-      }
-    }
-  } else if (packageManager === "yarn") {
-    if (fs.existsSync(path.join(cwd, pathname, "yarn.lock"))) {
-      args.push("install", "--mode=update-lockfile", "--no-immutable");
-      const yarnCommandResult = await runCommand("yarn", args, { cwd });
-      if (debug) {
-        logger.logDebug(`Command run: yarn ${args.join(" ")}`);
-        logger.logDebug(deepInspectObject(yarnCommandResult));
-      }
-    }
-  } else if (packageManager === "npm") {
-    if (fs.existsSync(path.join(cwd, pathname, "package-lock.json"))) {
-      args.push("install", "--package-lock-only", "--ignore-scripts");
-      const npmCommandResult = await runCommand("npm", args, { cwd });
-      if (debug) {
-        logger.logDebug(`Command run: npm ${args.join(" ")}`);
-        logger.logDebug(deepInspectObject(npmCommandResult));
+        logger.logDebug(`Command run: ${packageManager} ${args.join(" ")}`);
+        logger.logDebug(deepInspectObject(commandResult));
       }
     }
   } else {
-    const { pathname } = packageNextRelease;
-    args.push("restore", path.join(cwd, pathname, "package.json"));
+    const args = ["restore", path.join(cwd, pathname, "package.json")];
     runCommandSync("git", args);
     if (debug) logger.logDebug(`Command run: git ${args.join(" ")}`);
     process.exitCode = 1;
