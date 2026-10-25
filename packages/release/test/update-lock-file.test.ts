@@ -1,3 +1,5 @@
+import type { PackageManager } from "@release-change/get-packages";
+
 import fs from "node:fs";
 
 import { formatDetailedError, runCommand, runCommandSync } from "@release-change/shared";
@@ -25,7 +27,7 @@ afterEach(() => {
 });
 
 describe.each(mockedNextReleases)("for $packageName", ({ packageManifestPath, nextRelease }) => {
-  it("should throw an error and restore the `package.json` file if the package manager is not found or supported", async () => {
+  it("should throw an error and restore the `package.json` file if the package manager is not found", async () => {
     const expectedError = new Error(
       "Failed to update the lock file: The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
       {
@@ -44,6 +46,29 @@ describe.each(mockedNextReleases)("for $packageName", ({ packageManifestPath, ne
       .mockReturnValue({ status: 0, stdout: "", stderr: "" });
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
     await expect(updateLockFile(nextRelease, mockedContext, null)).rejects.toThrow(expectedError);
+    expect(mockedCommand).toHaveBeenCalledWith("git", ["restore", packageManifestPath]);
+  });
+  it("should throw an error and restore the `package.json` file if the package manager is not supported", async () => {
+    const expectedError = new Error(
+      "Failed to update the lock file: The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
+      {
+        cause: {
+          title: "Failed to update the lock file",
+          message:
+            "The package manager is not found or is not one of those supported (npm, pnpm or yarn).",
+          details: {
+            output: "packageManager: non-existing"
+          }
+        }
+      }
+    );
+    const mockedCommand = vi
+      .mocked(runCommandSync)
+      .mockReturnValue({ status: 0, stdout: "", stderr: "" });
+    vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+    await expect(
+      updateLockFile(nextRelease, mockedContext, "non-existing" as PackageManager)
+    ).rejects.toThrow(expectedError);
     expect(mockedCommand).toHaveBeenCalledWith("git", ["restore", packageManifestPath]);
   });
   it.each(mockedPackageManagerCommands)(
