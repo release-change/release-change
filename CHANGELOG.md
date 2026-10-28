@@ -1,5 +1,15 @@
 # release-change
 
+## 0.8.0
+
+### Minor changes
+
+- **node:** add support for Node 26 (#818) ([`30f4554`](https://github.com/release-change/release-change/commit/30f45544ee613f4fee866c43ce00a00414bbc99a))
+
+---
+
+**Full changelog:** [`v0.7.5...v0.8.0`](https://github.com/release-change/release-change/compare/v0.7.5...v0.8.0)
+
 ## 0.7.5
 
 ### Patch changes
