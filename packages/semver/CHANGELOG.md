@@ -1,5 +1,15 @@
 # @release-change/semver
 
+## 0.3.0
+
+### Minor changes
+
+- **node:** add support for Node 26 (#818) ([`30f4554`](https://github.com/release-change/release-change/commit/30f45544ee613f4fee866c43ce00a00414bbc99a))
+
+---
+
+**Full changelog:** [`@release-change/semver@v0.2.0...@release-change/semver@v0.3.0`](https://github.com/release-change/release-change/compare/@release-change/semver@v0.2.0...@release-change/semver@v0.3.0)
+
 ## 0.2.0
 
 ### Minor changes
