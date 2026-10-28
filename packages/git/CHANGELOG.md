@@ -1,5 +1,22 @@
 # @release-change/git
 
+## 0.6.0
+
+### Minor changes
+
+- **node:** add support for Node 26 (#818) ([`30f4554`](https://github.com/release-change/release-change/commit/30f45544ee613f4fee866c43ce00a00414bbc99a))
+
+### Dependencies updates
+
+- [@release-change/commit-analyser@0.5.0](https://github.com/release-change/release-change/tree/@release-change/commit-analyser@v0.5.0/packages/commit-analyser)
+- [@release-change/logger@0.5.0](https://github.com/release-change/release-change/tree/@release-change/logger@v0.5.0/packages/logger)
+- [@release-change/semver@0.3.0](https://github.com/release-change/release-change/tree/@release-change/semver@v0.3.0/packages/semver)
+- [@release-change/shared@0.5.0](https://github.com/release-change/release-change/tree/@release-change/shared@v0.5.0/packages/shared)
+
+---
+
+**Full changelog:** [`@release-change/git@v0.5.1...@release-change/git@v0.6.0`](https://github.com/release-change/release-change/compare/@release-change/git@v0.5.1...@release-change/git@v0.6.0)
+
 ## 0.5.1
 
 ### Dependencies updates
