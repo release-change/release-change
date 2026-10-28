@@ -1,5 +1,15 @@
 # @release-change/shared
 
+## 0.5.0
+
+### Minor changes
+
+- **node:** add support for Node 26 (#818) ([`30f4554`](https://github.com/release-change/release-change/commit/30f45544ee613f4fee866c43ce00a00414bbc99a))
+
+---
+
+**Full changelog:** [`@release-change/shared@v0.4.0...@release-change/shared@v0.5.0`](https://github.com/release-change/release-change/compare/@release-change/shared@v0.4.0...@release-change/shared@v0.5.0)
+
 ## 0.4.0
 
 ### Minor changes
