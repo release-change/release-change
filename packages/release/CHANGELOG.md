@@ -1,5 +1,28 @@
 # @release-change/release
 
+## 0.7.0
+
+### Minor changes
+
+- **node:** add support for Node 26 (#818) ([`30f4554`](https://github.com/release-change/release-change/commit/30f45544ee613f4fee866c43ce00a00414bbc99a))
+
+### Dependencies updates
+
+- [@release-change/config@0.5.0](https://github.com/release-change/release-change/tree/@release-change/config@v0.5.0/packages/config)
+- [@release-change/commit-analyser@0.5.0](https://github.com/release-change/release-change/tree/@release-change/commit-analyser@v0.5.0/packages/commit-analyser)
+- [@release-change/get-packages@0.5.0](https://github.com/release-change/release-change/tree/@release-change/get-packages@v0.5.0/packages/get-packages)
+- [@release-change/git@0.6.0](https://github.com/release-change/release-change/tree/@release-change/git@v0.6.0/packages/git)
+- [@release-change/github@0.6.0](https://github.com/release-change/release-change/tree/@release-change/github@v0.6.0/packages/github)
+- [@release-change/logger@0.5.0](https://github.com/release-change/release-change/tree/@release-change/logger@v0.5.0/packages/logger)
+- [@release-change/npm@0.5.0](https://github.com/release-change/release-change/tree/@release-change/npm@v0.5.0/packages/npm)
+- [@release-change/release-notes-generator@0.6.0](https://github.com/release-change/release-change/tree/@release-change/release-notes-generator@v0.6.0/packages/release-notes-generator)
+- [@release-change/semver@0.3.0](https://github.com/release-change/release-change/tree/@release-change/semver@v0.3.0/packages/semver)
+- [@release-change/shared@0.5.0](https://github.com/release-change/release-change/tree/@release-change/shared@v0.5.0/packages/shared)
+
+---
+
+**Full changelog:** [`@release-change/release@v0.6.5...@release-change/release@v0.7.0`](https://github.com/release-change/release-change/compare/@release-change/release@v0.6.5...@release-change/release@v0.7.0)
+
 ## 0.6.5
 
 ### Patch changes
