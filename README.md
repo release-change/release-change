@@ -30,6 +30,7 @@ When a release is made, a release pull request is automatically created. If your
 ## Requirements
 
 To use release-change, you need:
+
 - to host your code in a GitHub repository,
 - to use GitHub Actions,
 - Git 2.23.0+,
@@ -39,14 +40,17 @@ To use release-change, you need:
 ## Usage
 
 Use the following command to run release-change in the CI environment:
+
 ```
 pnpx @release-change/cli
 ```
 If you are using `yarn`:
+
 ```
 yarn dlx @release-change/cli
 ```
 If you are using `npm`:
+
 ```
 npx @release-change/cli
 ```
@@ -58,6 +62,7 @@ npx @release-change/cli
 release-change requires access to the project repository. The Git authentication is set with the `RELEASE_TOKEN` environment variable, which is a [GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 Here are examples of the workflow configuration (the file must be saved in the `.github/workflows/` directory and make sure the option “Allow GitHub Actions to create and approve pull requests” is enabled in your repository settings):
+
 - using `pnpm`:
 
       name: Release
@@ -206,6 +211,7 @@ release-change’s options can be set via a `release-change.config.json` file, w
 Alternatively, some options can be set via CLI arguments.
 
 The following examples are the same:
+
 - via `release-change.config.json` file:
 
       {
@@ -260,6 +266,7 @@ The goal of the dry-run mode is to get a preview of the pending release. The dry
 
 Type: `object`  
 Default:
+
 ```
 {
   alpha: {
@@ -287,6 +294,7 @@ Default:
 ```
 
 Sets an object whose properties are the names of the branches on which the releases should happen. Each branch property is an object with the following properties (all of them are optional):
+
 - `channel`: the distribution tag associated with the releases when publishing to NPM, which will use the default distribution tag (`"latest"`) if the value is `"default"`, the value provided otherwise;
 - `prerelease`: `true` if the release should be treated like a pre-release (e.g.: for unstable versions), `false` otherwise;
 - `prereleaseIdentifier`: the identifier to use when tagging a pre-release version (for example, `"beta"` if the pre-release should be tagged as something like `2.0.0-beta.1`).
@@ -297,6 +305,7 @@ Type: `string` or `null`
 Default: `"pin"` if it is a monorepo, `null` otherwise
 
 This optional option sets a string telling how dependencies in each `package.json` file of the monorepo should be updated as far as the monorepo packages are concerned. Its value can be one of the following:
+
 - `"pin"`: the dependencies will be updated using their exact new version (e.g.: `"@my-monorepo/my-package": "1.2.3"`);
 - `"caret-range"`: the dependencies will be updated using their new version within a caret range (e.g.: `"@my-monorepo/my-package": "^1.2.3"`);
 - `"tilde-range"`: the dependencies will be updated using their new version within a tilde range (e.g.: `"@my-monorepo/my-package": "~1.2.3"`);
