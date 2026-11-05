@@ -13,10 +13,12 @@ The semantic versioning parser used by release-change
 ## Installation
 
 Install package for Node.js:
+
 ```
 pnpm add --save-dev @release-change/semver
 ```
 You can also install it using `npm`:
+
 ```
 npm install --save-dev @release-change/semver
 ```
@@ -46,6 +48,7 @@ A version is described by the [Semantic Versioning 2.0.0 specification](https://
 A _version range_ is a set of _comparators_ which specify versions satisfying the range.
 
 A _comparator_ is composed of an _operator_ and a _version_. The set of primitive _operators_ is:
+
 - `<`: less than,
 - `<=`: less than or equal to,
 - `>`: greater than,
@@ -112,17 +115,20 @@ Specifies an inclusive set. Example: `1.2.3 - 2.3.4` (is equivalent to `>=1.2.3 
 If a partial version is provided as the first version in the inclusive range, then the missing pieces are replaced with zeroes: `1.2 - 2.3.4` is equivalent to `>=1.2.0 <=2.3.4`.
 
 If a partial version is provided as the second version in the inclusive range, then all versions that start with the supplied parts of the tuple are accepted, but nothing that would be greater than the provided tuple parts:
+
 - `1.2.3 - 2.3` is equivalent to `>=1.2.3 <2.4.0-0`,
 - `1.2.3 - 2` is equivalent to `>=1.2.3 <3.0.0-0`.
 
 ##### X-ranges (`1.2.x`, `1.X`, `1.2.*` and `*`)
 
 Any of `X`, `x` or `*` may be used to “stand in” for one of the numeric values in the `[major, minor, patch]` tuple:
+
 - `*` (is equivalent to `>=0.0.0`: any non-pre-release version satisfies, unless `includePrerelease` is specified, in which case any version at all satisfies),
 - `1.x` (is equivalent to `>=1.0.0 <2.0.0-0`: matching a major version),
 - `1.2.x` (is equivalent to `>=1.2.0 <1.3.0-0`: matching major and minor versions).
 
 A partial version range is treated as an X-range, so the special character is actually optional:
+
 - `""` (empty string, which is equivalent to `*`, which is equivalent to `>=0.0.0`),
 - `1` (is equivalent to `1.x.x`, which is equivalent to `>=1.0.0 <2.0.0-0`),
 - `1.2` (is equivalent to `1.2.x`, which is equivalent to `>=1.2.0 <1.3.0-0`).
@@ -132,6 +138,7 @@ A partial version range is treated as an X-range, so the special character is ac
 Allows patch-level changes if a minor version is specified on the comparator, minor-level changes otherwise.
 
 Examples:
+
 - `~1.2.3` (is equivalent to `>=1.2.3 <1.(2+1).0`, which is equivalent to `>=1.2.3 <1.3.0-0`),
 - `~1.2` (is equivalent to `>=1.2.0 <1.(2+1).0`, which is equivalent to `>=1.2.0 <1.3.0-0`, which is the same as `1.2.x`),
 - `~1` (is equivalent to `>=1.0.0 <(1+1).0.0`, which is equivalent to `>=1.0.0 <2.0.0-0`, which is the same as `1.x`),
@@ -145,6 +152,7 @@ Examples:
 Allows changes which do not modify the left-most non-zero element in the `[major, minor, patch]` tuple. In other words, this allows patch and minor updates for versions `1.0.0` and above, patch updates for versions `0.X >=0.1.0` and _no_ updates for versions `0.0.X`.
 
 Examples:
+
 - `^1.2.3` (is equivalent to `>=1.2.3 <2.0.0-0`),
 - `^0.2.3` (is equivalent to `>=0.2.3 <0.3.0-0`),
 - `^0.0.3` (is equivalent to `>=0.0.3 <0.0.4-0`),
@@ -152,17 +160,20 @@ Examples:
 - `^0.0.3-beta` (is equivalent to `>=0.0.3-beta <0.0.4-0`: note that pre-releases in the `0.0.3` version _only_ will be allowed if they are greater than or equal to `beta`; so, `0.0.3-pr.2` would be allowed).
 
 When parsing caret ranges, a missing `patch` value desugars to the number `0`, but will allow flexibility within that value, even though the major and minor versions are both `0`:
+
 - `^1.2.x` (is equivalent to `>=1.2.0 <2.0.0-0`),
 - `^0.0.x` (is equivalent to `>=0.0.0 <0.1.0-0`),
 - `^0.0` (is equivalent to `>=0.0.0 <0.1.0-0`).
 
 A missing `minor` and `patch` values will desugar to zero, but also allow flexibility within those values, even though the major version is zero:
+
 - `^1.x` (is equivalent to `>=1.0.0 <2.0.0-0`),
 - `^0.x` (is equivalent to `>=0.0.0 <1.0.0-0`).
 
 ### Functions
 
 All functions take a final `options` object argument. All options in this object are `false` by default. The options supported are:
+
 - `loose`: be more forgiving about not-quite-valid semantic versioning strings (any resulting output will always be 100% strictly compliant, of course);
 - `includePrerelease`: set to suppress the [default behaviour](#pre-release-tags) of excluding pre-release tagged versions from ranges (unless they are explicitly opted into).
 
@@ -237,6 +248,7 @@ If the `options.includePrerelease` flag is set, then the `coerce` result will co
 This will return a cleaned and trimmed semantic version. If the provided version is not valid, `null` will be returned. This does not work for ranges.
 
 Examples:
+
 - `clean(" = v 2.1.5foo"); // null`,
 - `clean(" = v 2.1.5foo', { loose: true }); // '2.1.5-foo'`,
 - `clean(" = v 2.1.5-foo"); // null`,
