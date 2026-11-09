@@ -1,5 +1,25 @@
 # @release-change/npm
 
+## 0.5.1
+
+### Patch changes
+
+- **npm:** check if `NPM_TOKEN` is provided ([`3c9e111`](https://github.com/release-change/release-change/commit/3c9e11165874098000c380efbd0adf324826ae71))
+- **npm:** use the value of `NPM_TOKEN` directly in `pnpm config set` command ([`9357326`](https://github.com/release-change/release-change/commit/9357326536921b6c3ab78ecc656aafaf923ccd9f))
+- support Yarn from 4.10.3 ([`e3da27a`](https://github.com/release-change/release-change/commit/e3da27ac62f7708dbdea061d971a01c1d5d91716))
+- **npm:** write token to user config when package manager is pnpm ([`f64df7f`](https://github.com/release-change/release-change/commit/f64df7f46b4f80a71fb474b4b6b7df80707239d9))
+
+### Dependencies updates
+
+- [@release-change/config@0.5.1](https://github.com/release-change/release-change/tree/@release-change/config@v0.5.1/packages/config)
+- [@release-change/get-packages@0.5.1](https://github.com/release-change/release-change/tree/@release-change/get-packages@v0.5.1/packages/get-packages)
+- [@release-change/logger@0.5.1](https://github.com/release-change/release-change/tree/@release-change/logger@v0.5.1/packages/logger)
+- [@release-change/shared@0.5.1](https://github.com/release-change/release-change/tree/@release-change/shared@v0.5.1/packages/shared)
+
+---
+
+**Full changelog:** [`@release-change/npm@v0.5.0...@release-change/npm@v0.5.1`](https://github.com/release-change/release-change/compare/@release-change/npm@v0.5.0...@release-change/npm@v0.5.1)
+
 ## 0.5.0
 
 ### Minor changes
