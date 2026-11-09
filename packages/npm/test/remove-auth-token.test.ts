@@ -12,7 +12,6 @@ import { mockedPathToNpmrcFile } from "./fixtures/mocked-path-to-npmrc-file.js";
 import { mockedPathToYarnrcFile } from "./fixtures/mocked-path-to-yarnrc-file.js";
 import { mockedYarnrcFilesWithToken } from "./fixtures/mocked-yarnrc-files-with-token.js";
 import { mockedYarnrcFilesWithoutToken } from "./fixtures/mocked-yarnrc-files-without-token.js";
-import { packageManagersNotYarn } from "./fixtures/package-managers.js";
 
 vi.mock("@release-change/shared", () => ({ formatDetailedError: vi.fn() }));
 vi.mock("../src/get-yarnrc-file.js", () => ({
@@ -26,6 +25,12 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
+it("should not try to get the `.npmrc` file nor the `.yarnrc.yml` file if the package manager is `pnpm`", () => {
+  vi.spyOn(fs, "rmSync").mockImplementation(() => undefined);
+  removeAuthToken("pnpm", mockedCwd, { fileExists: false, authTokenExists: false });
+  expect(getNpmrcFile).not.toHaveBeenCalled();
+  expect(getYarnrcFile).not.toHaveBeenCalled();
+});
 describe("for `yarn`", () => {
   it("should not try to get the `.npmrc` file", () => {
     vi.spyOn(fs, "rmSync").mockImplementation(() => undefined);
@@ -88,10 +93,10 @@ describe("for `yarn`", () => {
     }
   );
 });
-describe.each(packageManagersNotYarn)("for `$0`", packageManager => {
+describe("for `npm`", () => {
   it("should not try to get the `.yarnrc.yml` file", () => {
     vi.spyOn(fs, "rmSync").mockImplementation(() => undefined);
-    removeAuthToken(packageManager, mockedCwd, { fileExists: false, authTokenExists: false });
+    removeAuthToken("npm", mockedCwd, { fileExists: false, authTokenExists: false });
     expect(getYarnrcFile).not.toHaveBeenCalled();
   });
   it("should throw an error if the `.npmrc` file does not exist", () => {
@@ -110,20 +115,20 @@ describe.each(packageManagersNotYarn)("for `$0`", packageManager => {
     vi.mocked(getNpmrcFile).mockReturnValue(null);
     vi.mocked(formatDetailedError).mockReturnValue(expectedError);
     expect(() =>
-      removeAuthToken(packageManager, mockedCwd, { fileExists: true, authTokenExists: false })
+      removeAuthToken("npm", mockedCwd, { fileExists: true, authTokenExists: false })
     ).toThrow(expectedError);
   });
   it("should remove the `.npmrc` file if it was created for that purpose", () => {
     vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFileWithToken);
     vi.spyOn(fs, "rmSync").mockImplementation(() => undefined);
-    removeAuthToken(packageManager, mockedCwd, { fileExists: false, authTokenExists: false });
+    removeAuthToken("npm", mockedCwd, { fileExists: false, authTokenExists: false });
     expect(fs.rmSync).toHaveBeenCalledWith(mockedPathToNpmrcFile);
   });
   it("should remove only the line with auth token in the `.npmrc` file if the file already existed, but did not set any auth token", () => {
     vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFileWithToken);
     vi.spyOn(fs, "rmSync").mockImplementation(() => undefined);
     vi.spyOn(fs, "writeFileSync").mockImplementation(() => undefined);
-    removeAuthToken(packageManager, mockedCwd, { fileExists: true, authTokenExists: false });
+    removeAuthToken("npm", mockedCwd, { fileExists: true, authTokenExists: false });
     expect(fs.rmSync).not.toHaveBeenCalled();
     expect(fs.writeFileSync).toHaveBeenCalledWith(
       mockedPathToNpmrcFile,
@@ -134,7 +139,7 @@ describe.each(packageManagersNotYarn)("for `$0`", packageManager => {
     vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFileWithToken);
     vi.spyOn(fs, "rmSync").mockImplementation(() => undefined);
     vi.spyOn(fs, "writeFileSync").mockImplementation(() => undefined);
-    removeAuthToken(packageManager, mockedCwd, { fileExists: true, authTokenExists: true });
+    removeAuthToken("npm", mockedCwd, { fileExists: true, authTokenExists: true });
     expect(fs.rmSync).not.toHaveBeenCalled();
     expect(fs.writeFileSync).not.toHaveBeenCalled();
   });

@@ -13,6 +13,8 @@ import { NPM_AUTH_TOKEN_URL, YARNRC_NPM_AUTH_TOKEN } from "./constants.js";
 
 /**
  * Removes auth token from the `.npmrc` or `.yarnrc.yml` file, either removing the file itself if created for this purpose or removing the line containing the token otherwise, provided the token was not already set when parsing the `.npmrc` file.
+ *
+ * This does not apply to pnpm, which does not expand environment variables in a repository `.npmrc` file any longer.
  * @param packageManager - The package manager to use.
  * @param cwd - The current working directory.
  * @param authToken - The context where the auth token was set: whether the `.npmrc` or `.yarnrc.yml` already existed or not, whether the auth token was already set when parsing the `.npmrc` or `.yarnrc.yml` file or not.
@@ -22,6 +24,7 @@ export const removeAuthToken = (
   cwd: string,
   authToken: AuthToken
 ): void => {
+  if (packageManager === "pnpm") return;
   const { fileExists, authTokenExists } = authToken;
   const pathToFile = path.join(cwd, packageManager === "yarn" ? ".yarnrc.yml" : ".npmrc");
   if (fileExists) {
@@ -35,7 +38,7 @@ export const removeAuthToken = (
           .filter(line =>
             packageManager === "yarn"
               ? !line.startsWith(YARNRC_NPM_AUTH_TOKEN)
-              : !line.trim().startsWith(NPM_AUTH_TOKEN_URL)
+              : !line.trim().startsWith(`${NPM_AUTH_TOKEN_URL}=`)
           )
           .join("\n")
       );
