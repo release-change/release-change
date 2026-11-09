@@ -1,5 +1,19 @@
 # release-change
 
+## 0.8.1
+
+### Patch changes
+
+- **git:** remove any dot or slash at end of set branch name (#830) ([`b7641f5`](https://github.com/release-change/release-change/commit/b7641f53f56beee2869c7f73c15caa18b11f47a1))
+- **npm:** check if `NPM_TOKEN` is provided ([`3c9e111`](https://github.com/release-change/release-change/commit/3c9e11165874098000c380efbd0adf324826ae71))
+- **npm:** use the value of `NPM_TOKEN` directly in `pnpm config set` command ([`9357326`](https://github.com/release-change/release-change/commit/9357326536921b6c3ab78ecc656aafaf923ccd9f))
+- support Yarn from 4.10.3 ([`e3da27a`](https://github.com/release-change/release-change/commit/e3da27ac62f7708dbdea061d971a01c1d5d91716))
+- **npm:** write token to user config when package manager is pnpm ([`f64df7f`](https://github.com/release-change/release-change/commit/f64df7f46b4f80a71fb474b4b6b7df80707239d9))
+
+---
+
+**Full changelog:** [`v0.8.0...v0.8.1`](https://github.com/release-change/release-change/compare/v0.8.0...v0.8.1)
+
 ## 0.8.0
 
 ### Minor changes
