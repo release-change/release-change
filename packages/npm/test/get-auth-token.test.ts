@@ -10,7 +10,7 @@ import { mockedNpmrcFileWithToken } from "./fixtures/mocked-npmrc-file-with-toke
 import { mockedNpmrcFileWithoutToken } from "./fixtures/mocked-npmrc-file-without-token.js";
 import { mockedYarnrcFilesWithToken } from "./fixtures/mocked-yarnrc-files-with-token.js";
 import { mockedYarnrcFilesWithoutToken } from "./fixtures/mocked-yarnrc-files-without-token.js";
-import { packageManagers, packageManagersNotYarn } from "./fixtures/package-managers.js";
+import { packageManagersNotPnpm } from "./fixtures/package-managers.js";
 
 vi.mock("../src/get-yarnrc-file.js", () => ({
   getYarnrcFile: vi.fn()
@@ -19,7 +19,26 @@ vi.mock("../src/get-npmrc-file.js", () => ({
   getNpmrcFile: vi.fn()
 }));
 
-it.each(packageManagers)(
+it("should not try to get the `.npmrc` file nor the `.yarnrc.yml` file if the package manager is `pnpm`", () => {
+  vi.mocked(getYarnrcFile).mockReturnValue(null);
+  vi.mocked(getNpmrcFile).mockReturnValue(null);
+  getAuthToken("pnpm", mockedContext);
+  expect(getYarnrcFile).not.toHaveBeenCalled();
+  expect(getNpmrcFile).not.toHaveBeenCalled();
+  assert.deepEqual(mockedContext, {
+    ...mockedContext,
+    authToken: { fileExists: false, authTokenExists: false }
+  });
+});
+it("should not try to get the `.yarnrc.yml` file if the package manager is `npm`", () => {
+  getAuthToken("npm", mockedContext);
+  expect(getYarnrcFile).not.toHaveBeenCalled();
+});
+it("should not try to get the `.npmrc` file if the package manager is `yarn`", () => {
+  getAuthToken("yarn", mockedContext);
+  expect(getNpmrcFile).not.toHaveBeenCalled();
+});
+it.each(packageManagersNotPnpm)(
   "should fill the context with `authToken: { fileExists: false, authTokenExists: false }` if both the `.yarnrc.yml` and `.npmrc` files do not exist",
   packageManager => {
     const expectedContext: Context = {
@@ -32,17 +51,6 @@ it.each(packageManagers)(
     assert.deepEqual(mockedContext, expectedContext);
   }
 );
-it.each(packageManagersNotYarn)(
-  "should not try to get the `.yarnrc.yml` file if the package manager is `$0`",
-  packageManager => {
-    getAuthToken(packageManager, mockedContext);
-    expect(getYarnrcFile).not.toHaveBeenCalled();
-  }
-);
-it("should not try to get the `.npmrc` file if the package manager is `yarn`", () => {
-  getAuthToken("yarn", mockedContext);
-  expect(getNpmrcFile).not.toHaveBeenCalled();
-});
 describe("for `yarn`", () => {
   it("should fill the context with `authToken: { fileExists: false, authTokenExists: false }` if the `.yarnrc.yml` file does not exist", () => {
     const expectedContext: Context = {
@@ -78,14 +86,14 @@ describe("for `yarn`", () => {
     }
   );
 });
-describe.each(packageManagersNotYarn)("for `$0`", packageManager => {
+describe("for `npm`", () => {
   it("should fill the context with `authToken: { fileExists: false, authTokenExists: false }` if the `.npmrc` file does not exist", () => {
     const expectedContext: Context = {
       ...mockedContext,
       authToken: { fileExists: false, authTokenExists: false }
     };
     vi.mocked(getNpmrcFile).mockReturnValue(null);
-    getAuthToken(packageManager, mockedContext);
+    getAuthToken("npm", mockedContext);
     assert.deepEqual(mockedContext, expectedContext);
   });
   it("should fill the context with `authToken: { fileExists: true, authTokenExists: false }` if the `.npmrc` file exists and does not declare any auth token", () => {
@@ -94,7 +102,7 @@ describe.each(packageManagersNotYarn)("for `$0`", packageManager => {
       authToken: { fileExists: true, authTokenExists: false }
     };
     vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFileWithoutToken);
-    getAuthToken(packageManager, mockedContext);
+    getAuthToken("npm", mockedContext);
     assert.deepEqual(mockedContext, expectedContext);
   });
   it("should fill the context with `authToken: { fileExists: true, authTokenExists: true }` if the `.npmrc` file exists and declares an auth token", () => {
@@ -103,7 +111,7 @@ describe.each(packageManagersNotYarn)("for `$0`", packageManager => {
       authToken: { fileExists: true, authTokenExists: true }
     };
     vi.mocked(getNpmrcFile).mockReturnValue(mockedNpmrcFileWithToken);
-    getAuthToken(packageManager, mockedContext);
+    getAuthToken("npm", mockedContext);
     assert.deepEqual(mockedContext, expectedContext);
   });
 });

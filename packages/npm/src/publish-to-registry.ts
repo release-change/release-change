@@ -15,6 +15,8 @@ import { getAuthToken } from "./get-auth-token.js";
 import { removeAuthToken } from "./remove-auth-token.js";
 import { setAuthToken } from "./set-auth-token.js";
 
+import { NPM_AUTH_TOKEN_URL } from "./constants.js";
+
 /**
  * Publishes the package to the NPM registry.
  * @param packagePublishing - The package publishing data to use.
@@ -33,11 +35,38 @@ export const publishToRegistry = async (
   } = context;
   const logger = setLogger(debug);
   logger.setScope("npm");
+  if (debug) logger.setDebugScope("npm:publish-to-registry");
   getAuthToken(packageManager, context);
   const { authToken } = context;
   if (authToken) {
     const isAuthTokenNotDefined = !authToken.fileExists || !authToken.authTokenExists;
-    if (isAuthTokenNotDefined) setAuthToken(packageManager, cwd);
+    if (packageManager === "pnpm") {
+      const stringifiedArgs = `config set "${NPM_AUTH_TOKEN_URL}" "$NPM_TOKEN"`;
+      const commandResult = await runCommand(
+        "pnpm",
+        ["config", "set", NPM_AUTH_TOKEN_URL, "$NPM_TOKEN"],
+        {
+          cwd: path.resolve(cwd, pathname),
+          env
+        }
+      );
+      const { status } = commandResult;
+      if (debug) {
+        logger.logDebug(`Command run: pnpm ${stringifiedArgs}`);
+        logger.logDebug(deepInspectObject(commandResult));
+      }
+      if (status) {
+        logger.logError("Failed to configure pnpm with the NPM token.");
+        throw formatDetailedError({
+          title: "Failed to run the `pnpm config set` command",
+          message: `The command failed with exit code ${status}.`,
+          details: {
+            output: formatOutputFromCommandResult(commandResult),
+            command: `pnpm ${stringifiedArgs}`
+          }
+        });
+      }
+    } else if (isAuthTokenNotDefined) setAuthToken(packageManager, cwd);
     const commandResult = await runCommand(packageManager, args, {
       cwd: path.resolve(cwd, pathname),
       env
@@ -45,7 +74,6 @@ export const publishToRegistry = async (
     const { status } = commandResult;
     const packageName = name || "root";
     if (debug) {
-      logger.setDebugScope("npm:publish-to-registry");
       logger.logDebug(`Auth token: ${deepInspectObject(authToken)}`);
       logger.logDebug(`Command run: ${packageManager} ${args.join(" ")}`);
       logger.logDebug(deepInspectObject(commandResult));
@@ -67,7 +95,9 @@ export const publishToRegistry = async (
     logger.logSuccess(
       `Published release ${version} of ${packageName} package to the NPM registry on ${channel}.`
     );
-    if (isAuthTokenNotDefined) removeAuthToken(packageManager, cwd, authToken);
+    if (packageManager !== "pnpm" && isAuthTokenNotDefined) {
+      removeAuthToken(packageManager, cwd, authToken);
+    }
     const releaseInfo: ReleaseInfoNpm = {
       type: "npm",
       name: `NPM (${npmTag ? npmTag : "latest"} distribution tag)`,

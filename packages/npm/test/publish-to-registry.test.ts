@@ -70,42 +70,112 @@ describe.each(mockedPackagePublishingSet)(
       );
       expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
     });
-    it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file already exists and sets auth token", async () => {
-      vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
-      const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
-      await publishToRegistry(packagePublishing, mockedContextWithAuthToken);
-      expect(mockedSetAuthToken).not.toHaveBeenCalled();
-      expect(mockedRemoveAuthToken).not.toHaveBeenCalled();
-    });
-    it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file does not exist", async () => {
-      vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
-      const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
-      await publishToRegistry(packagePublishing, {
-        ...mockedContext,
-        authToken: {
-          fileExists: false,
-          authTokenExists: false
-        }
+    if (packageManager === "pnpm") {
+      it("should not call `setAuthToken()` nor `removeAuthToken()` when the package manager is `pnpm`", async () => {
+        vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+        const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
+        const mockedRemoveAuthToken = vi
+          .mocked(removeAuthToken)
+          .mockImplementation(() => undefined);
+        await publishToRegistry(packagePublishing, mockedContextWithAuthToken);
+        expect(mockedSetAuthToken).not.toHaveBeenCalled();
+        expect(mockedRemoveAuthToken).not.toHaveBeenCalled();
       });
-      expect(mockedSetAuthToken).toHaveBeenCalled();
-      expect(mockedRemoveAuthToken).toHaveBeenCalled();
-    });
-    it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file does not set auth token", async () => {
-      vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
-      const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
-      const mockedRemoveAuthToken = vi.mocked(removeAuthToken).mockImplementation(() => undefined);
-      await publishToRegistry(packagePublishing, {
-        ...mockedContext,
-        authToken: {
-          fileExists: true,
-          authTokenExists: false
-        }
+      it("should log an error message if the `pnpm config set` command fails", async () => {
+        const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
+        const expectedError = new Error(
+          "Failed to run the `pnpm config set` command: The command failed with exit code 128.",
+          {
+            cause: {
+              title: "Failed to run the `pnpm config set` command",
+              message: "The command failed with exit code 128.",
+              details: {
+                output: expectedOutput,
+                command: `pnpm config set "//registry.npmjs.org/:_authToken" "$NPM_TOKEN"`
+              }
+            }
+          }
+        );
+        const mockedCommand = vi
+          .mocked(runCommand)
+          .mockResolvedValue({ status: 128, stdout: "", stderr: "Some error message." });
+        vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
+        vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+        await expect(
+          publishToRegistry(packagePublishing, mockedContextWithAuthToken)
+        ).rejects.toThrow(expectedError);
+        expect(mockedCommand).toHaveBeenCalledWith(
+          "pnpm",
+          ["config", "set", "//registry.npmjs.org/:_authToken", "$NPM_TOKEN"],
+          mockedOptions
+        );
+        expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
+        expect(mockedLogger.logError).toHaveBeenCalledWith(
+          "Failed to configure pnpm with the NPM token."
+        );
       });
-      expect(mockedSetAuthToken).toHaveBeenCalled();
-      expect(mockedRemoveAuthToken).toHaveBeenCalled();
-    });
+      it("should run `pnpm config set` when the package manager is `pnpm`", async () => {
+        vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+        await publishToRegistry(packagePublishing, mockedContextWithAuthToken);
+        expect(runCommand).toHaveBeenCalledWith(
+          "pnpm",
+          ["config", "set", "//registry.npmjs.org/:_authToken", "$NPM_TOKEN"],
+          mockedOptions
+        );
+      });
+    } else {
+      it("should not run `pnpm config set` when the package manager is not `pnpm`", async () => {
+        vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+        await publishToRegistry(packagePublishing, mockedContextWithAuthToken);
+        expect(runCommand).not.toHaveBeenCalledWith(
+          "pnpm",
+          ["config", "set", "//registry.npmjs.org/:_authToken", "$NPM_TOKEN"],
+          mockedOptions
+        );
+      });
+      it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file already exists and sets auth token", async () => {
+        vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+        const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
+        const mockedRemoveAuthToken = vi
+          .mocked(removeAuthToken)
+          .mockImplementation(() => undefined);
+        await publishToRegistry(packagePublishing, mockedContextWithAuthToken);
+        expect(mockedSetAuthToken).not.toHaveBeenCalled();
+        expect(mockedRemoveAuthToken).not.toHaveBeenCalled();
+      });
+      it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file does not exist", async () => {
+        vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+        const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
+        const mockedRemoveAuthToken = vi
+          .mocked(removeAuthToken)
+          .mockImplementation(() => undefined);
+        await publishToRegistry(packagePublishing, {
+          ...mockedContext,
+          authToken: {
+            fileExists: false,
+            authTokenExists: false
+          }
+        });
+        expect(mockedSetAuthToken).toHaveBeenCalled();
+        expect(mockedRemoveAuthToken).toHaveBeenCalled();
+      });
+      it("should call `setAuthToken()` and `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file does not set auth token", async () => {
+        vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+        const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);
+        const mockedRemoveAuthToken = vi
+          .mocked(removeAuthToken)
+          .mockImplementation(() => undefined);
+        await publishToRegistry(packagePublishing, {
+          ...mockedContext,
+          authToken: {
+            fileExists: true,
+            authTokenExists: false
+          }
+        });
+        expect(mockedSetAuthToken).toHaveBeenCalled();
+        expect(mockedRemoveAuthToken).toHaveBeenCalled();
+      });
+    }
     it("should log an error message if the publish command fails", async () => {
       const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
       const expectedError = new Error(
@@ -121,9 +191,15 @@ describe.each(mockedPackagePublishingSet)(
           }
         }
       );
-      const mockedCommand = vi
-        .mocked(runCommand)
-        .mockResolvedValue({ status: 128, stdout: "", stderr: "Some error message." });
+      const mockedCommand = vi.mocked(runCommand);
+      if (packageManager === "pnpm") {
+        mockedCommand.mockResolvedValueOnce({ status: 0, stdout: "", stderr: "" });
+      }
+      mockedCommand.mockResolvedValueOnce({
+        status: 128,
+        stdout: "",
+        stderr: "Some error message."
+      });
       vi.mocked(formatOutputFromCommandResult).mockReturnValue(expectedOutput);
       vi.mocked(formatDetailedError).mockReturnValue(expectedError);
       await expect(

@@ -8,6 +8,8 @@ import { NPM_AUTH_TOKEN_URL, YARNRC_NPM_AUTH_TOKEN } from "./constants.js";
 
 /**
  * Gets auth token if it already exists.
+ *
+ * This does not apply to pnpm, which does not expand environment variables in a repository `.npmrc` file any longer.
  * @param packageManager - The package manager to use.
  * @param context - The context where the CLI is running.
  */
@@ -17,7 +19,7 @@ export const getAuthToken = (
 ): void => {
   const { cwd } = context;
   const yarnrcFile = packageManager === "yarn" ? getYarnrcFile(cwd) : null;
-  const npmrcFile = packageManager === "yarn" ? null : getNpmrcFile(cwd);
+  const npmrcFile = packageManager === "npm" ? getNpmrcFile(cwd) : null;
   if (yarnrcFile) {
     const lines = yarnrcFile.split("\n");
     const authTokenExists = lines.some(line => line.trim().startsWith(YARNRC_NPM_AUTH_TOKEN));
@@ -27,7 +29,7 @@ export const getAuthToken = (
     };
   } else if (npmrcFile) {
     const lines = npmrcFile.split("\n");
-    const authTokenExists = lines.some(line => line.trim().startsWith(`${NPM_AUTH_TOKEN_URL}`));
+    const authTokenExists = lines.some(line => line.trim().startsWith(`${NPM_AUTH_TOKEN_URL}=`));
     context.authToken = {
       fileExists: true,
       authTokenExists
