@@ -81,6 +81,22 @@ describe.each(mockedPackagePublishingSet)(
         expect(mockedSetAuthToken).not.toHaveBeenCalled();
         expect(mockedRemoveAuthToken).not.toHaveBeenCalled();
       });
+      it.each([{}, { NPM_TOKEN: "" }])(
+        "should not run `pnpm config set` when no NPM token is provided",
+        async env => {
+          vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+          await publishToRegistry(packagePublishing, { ...mockedContextWithAuthToken, env });
+          expect(runCommand).not.toHaveBeenCalledWith(
+            "pnpm",
+            expect.arrayContaining(["config", "set"]),
+            mockedOptions
+          );
+          expect(runCommand).toHaveBeenCalledTimes(1);
+          expect(mockedLogger.logInfo).toHaveBeenCalledWith(
+            "No NPM token provided (`NPM_TOKEN` is missing or empty); relying on OIDC trusted publishing."
+          );
+        }
+      );
       it("should log an error message if the `pnpm config set` command fails", async () => {
         const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
         const expectedError = new Error(
@@ -133,6 +149,22 @@ describe.each(mockedPackagePublishingSet)(
           mockedOptions
         );
       });
+      it.each([{}, { NPM_TOKEN: "" }])(
+        "should not call `setAuthToken()` nor `removeAuthToken()` when no NPM token is provided",
+        async env => {
+          vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
+          await publishToRegistry(packagePublishing, {
+            ...mockedContext,
+            env,
+            authToken: { fileExists: false, authTokenExists: false }
+          });
+          expect(setAuthToken).not.toHaveBeenCalled();
+          expect(removeAuthToken).not.toHaveBeenCalled();
+          expect(mockedLogger.logInfo).toHaveBeenCalledWith(
+            "No NPM token provided (`NPM_TOKEN` is missing or empty); relying on OIDC trusted publishing."
+          );
+        }
+      );
       it("should not call `setAuthToken()` nor `removeAuthToken()` when the `.npmrc` or `.yarnrc.yml` file already exists and sets auth token", async () => {
         vi.mocked(runCommand).mockResolvedValue({ status: 0, stdout: "", stderr: "" });
         const mockedSetAuthToken = vi.mocked(setAuthToken).mockImplementation(() => undefined);

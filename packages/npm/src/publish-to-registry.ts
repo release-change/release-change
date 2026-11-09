@@ -39,12 +39,19 @@ export const publishToRegistry = async (
   getAuthToken(packageManager, context);
   const { authToken } = context;
   if (authToken) {
+    const npmToken = env.NPM_TOKEN?.trim();
     const isAuthTokenNotDefined = !authToken.fileExists || !authToken.authTokenExists;
-    if (packageManager === "pnpm") {
+    const shouldSetAuthToken = npmToken && isAuthTokenNotDefined;
+    if (!npmToken) {
+      logger.logInfo(
+        "No NPM token provided (`NPM_TOKEN` is missing or empty); relying on OIDC trusted publishing."
+      );
+    }
+    if (packageManager === "pnpm" && npmToken) {
       const stringifiedArgs = `config set "${NPM_AUTH_TOKEN_URL}" "$NPM_TOKEN"`;
       const commandResult = await runCommand(
         "pnpm",
-        ["config", "set", NPM_AUTH_TOKEN_URL, env.NPM_TOKEN ?? ""],
+        ["config", "set", NPM_AUTH_TOKEN_URL, npmToken],
         {
           cwd: path.resolve(cwd, pathname),
           env
@@ -66,7 +73,7 @@ export const publishToRegistry = async (
           }
         });
       }
-    } else if (isAuthTokenNotDefined) setAuthToken(packageManager, cwd);
+    } else if (shouldSetAuthToken) setAuthToken(packageManager, cwd);
     const commandResult = await runCommand(packageManager, args, {
       cwd: path.resolve(cwd, pathname),
       env
@@ -95,7 +102,7 @@ export const publishToRegistry = async (
     logger.logSuccess(
       `Published release ${version} of ${packageName} package to the NPM registry on ${channel}.`
     );
-    if (packageManager !== "pnpm" && isAuthTokenNotDefined) {
+    if (packageManager !== "pnpm" && shouldSetAuthToken) {
       removeAuthToken(packageManager, cwd, authToken);
     }
     const releaseInfo: ReleaseInfoNpm = {
