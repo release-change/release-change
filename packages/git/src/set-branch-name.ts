@@ -23,10 +23,9 @@ export const setBranchName = (branch: string | undefined, nextRelease: NextRelea
             .replace(/[@|/]/g, "-")
         )
         .join("_");
-      return `${HEAD_BRANCH_PREFIX}/${branch}/${headBranchBody}`.slice(
-        0,
-        HEAD_BRANCH_MAX_CHARACTERS
-      );
+      return `${HEAD_BRANCH_PREFIX}/${branch}/${headBranchBody}`
+        .slice(0, HEAD_BRANCH_MAX_CHARACTERS)
+        .replace(/([./])$/, "");
     }
     throw formatDetailedError({
       title: "Failed to set the branch name",
