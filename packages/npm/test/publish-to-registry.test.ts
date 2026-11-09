@@ -106,7 +106,7 @@ describe.each(mockedPackagePublishingSet)(
         ).rejects.toThrow(expectedError);
         expect(mockedCommand).toHaveBeenCalledWith(
           "pnpm",
-          ["config", "set", "//registry.npmjs.org/:_authToken", "$NPM_TOKEN"],
+          ["config", "set", "//registry.npmjs.org/:_authToken", "token"],
           mockedOptions
         );
         expect(formatDetailedError).toHaveBeenCalledWith(expectedError.cause);
@@ -119,7 +119,7 @@ describe.each(mockedPackagePublishingSet)(
         await publishToRegistry(packagePublishing, mockedContextWithAuthToken);
         expect(runCommand).toHaveBeenCalledWith(
           "pnpm",
-          ["config", "set", "//registry.npmjs.org/:_authToken", "$NPM_TOKEN"],
+          ["config", "set", "//registry.npmjs.org/:_authToken", "token"],
           mockedOptions
         );
       });

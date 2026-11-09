@@ -44,7 +44,7 @@ export const publishToRegistry = async (
       const stringifiedArgs = `config set "${NPM_AUTH_TOKEN_URL}" "$NPM_TOKEN"`;
       const commandResult = await runCommand(
         "pnpm",
-        ["config", "set", NPM_AUTH_TOKEN_URL, "$NPM_TOKEN"],
+        ["config", "set", NPM_AUTH_TOKEN_URL, env.NPM_TOKEN ?? ""],
         {
           cwd: path.resolve(cwd, pathname),
           env
