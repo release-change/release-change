@@ -1,5 +1,24 @@
 # @release-change/github
 
+## 0.6.1
+
+### Patch changes
+
+- support Yarn from 4.10.3 ([`e3da27a`](https://github.com/release-change/release-change/commit/e3da27ac62f7708dbdea061d971a01c1d5d91716))
+
+### Dependencies updates
+
+- [@release-change/ci@0.5.1](https://github.com/release-change/release-change/tree/@release-change/ci@v0.5.1/packages/ci)
+- [@release-change/config@0.5.1](https://github.com/release-change/release-change/tree/@release-change/config@v0.5.1/packages/config)
+- [@release-change/commit-analyser@0.5.1](https://github.com/release-change/release-change/tree/@release-change/commit-analyser@v0.5.1/packages/commit-analyser)
+- [@release-change/git@0.6.1](https://github.com/release-change/release-change/tree/@release-change/git@v0.6.1/packages/git)
+- [@release-change/logger@0.5.1](https://github.com/release-change/release-change/tree/@release-change/logger@v0.5.1/packages/logger)
+- [@release-change/shared@0.5.1](https://github.com/release-change/release-change/tree/@release-change/shared@v0.5.1/packages/shared)
+
+---
+
+**Full changelog:** [`@release-change/github@v0.6.0...@release-change/github@v0.6.1`](https://github.com/release-change/release-change/compare/@release-change/github@v0.6.0...@release-change/github@v0.6.1)
+
 ## 0.6.0
 
 ### Minor changes
