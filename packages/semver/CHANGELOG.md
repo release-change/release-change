@@ -1,5 +1,15 @@
 # @release-change/semver
 
+## 0.3.1
+
+### Patch changes
+
+- support Yarn from 4.10.3 ([`e3da27a`](https://github.com/release-change/release-change/commit/e3da27ac62f7708dbdea061d971a01c1d5d91716))
+
+---
+
+**Full changelog:** [`@release-change/semver@v0.3.0...@release-change/semver@v0.3.1`](https://github.com/release-change/release-change/compare/@release-change/semver@v0.3.0...@release-change/semver@v0.3.1)
+
 ## 0.3.0
 
 ### Minor changes
