@@ -1,5 +1,23 @@
 # @release-change/git
 
+## 0.6.1
+
+### Patch changes
+
+- **git:** remove any dot or slash at end of set branch name (#830) ([`b7641f5`](https://github.com/release-change/release-change/commit/b7641f53f56beee2869c7f73c15caa18b11f47a1))
+- support Yarn from 4.10.3 ([`e3da27a`](https://github.com/release-change/release-change/commit/e3da27ac62f7708dbdea061d971a01c1d5d91716))
+
+### Dependencies updates
+
+- [@release-change/commit-analyser@0.5.1](https://github.com/release-change/release-change/tree/@release-change/commit-analyser@v0.5.1/packages/commit-analyser)
+- [@release-change/logger@0.5.1](https://github.com/release-change/release-change/tree/@release-change/logger@v0.5.1/packages/logger)
+- [@release-change/semver@0.3.1](https://github.com/release-change/release-change/tree/@release-change/semver@v0.3.1/packages/semver)
+- [@release-change/shared@0.5.1](https://github.com/release-change/release-change/tree/@release-change/shared@v0.5.1/packages/shared)
+
+---
+
+**Full changelog:** [`@release-change/git@v0.6.0...@release-change/git@v0.6.1`](https://github.com/release-change/release-change/compare/@release-change/git@v0.6.0...@release-change/git@v0.6.1)
+
 ## 0.6.0
 
 ### Minor changes
