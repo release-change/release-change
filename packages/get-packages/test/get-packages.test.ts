@@ -56,7 +56,7 @@ vi.mock("../src/get-packages-from-glob-patterns.js", () => ({
 vi.mock("../src/constants.js", () => ({
   REQUIRED_NPM_VERSION: "10.9.0",
   REQUIRED_PNPM_VERSION: "11.1.3",
-  REQUIRED_YARN_VERSION: "4.9.0"
+  REQUIRED_YARN_VERSION: "4.10.3"
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 vi.mocked(addErrorToContext).mockImplementation((error, context) => {
@@ -246,11 +246,11 @@ describe.each(pnpmPackages)(
 );
 it("should throw an error if the package manager is yarn with an outdated version", async () => {
   const expectedError = new Error(
-    "Failed to use the package manager: The package manager version must be 4.9.0 or greater.",
+    "Failed to use the package manager: The package manager version must be 4.10.3 or greater.",
     {
       cause: {
         title: "Failed to use the package manager",
-        message: "The package manager version must be 4.9.0 or greater.",
+        message: "The package manager version must be 4.10.3 or greater.",
         details: {
           output: "yarn 1.22.22"
         }

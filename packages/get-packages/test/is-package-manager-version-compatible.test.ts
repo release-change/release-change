@@ -9,7 +9,7 @@ import { packageManagers } from "./fixtures/package-managers.js";
 vi.mock("../src/constants.js", () => ({
   REQUIRED_NPM_VERSION: ">=10.9.0",
   REQUIRED_PNPM_VERSION: ">=11.1.3",
-  REQUIRED_YARN_VERSION: ">=4.9.0"
+  REQUIRED_YARN_VERSION: ">=4.10.3"
 }));
 
 describe.each(invalidPackageManagerVersions)("for %s", invalidPackageManagerVersion => {

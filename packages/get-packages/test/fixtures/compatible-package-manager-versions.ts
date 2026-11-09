@@ -14,6 +14,6 @@ export const compatiblePackageManagerVersions: {
   },
   {
     packageManager: "yarn",
-    versions: ["4.9.0", "4.18.1"]
+    versions: ["4.10.3", "4.18.1"]
   }
 ];

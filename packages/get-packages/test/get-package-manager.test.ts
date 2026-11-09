@@ -62,7 +62,7 @@ describe("when no lock files are found", () => {
   it("should return `yarn` if the `packageManager` property is set in the `package.json` file and says yarn", () => {
     vi.mocked(getRootPackageManifest).mockReturnValue({
       ...mockedPackageManifest,
-      packageManager: "yarn@4.9.0"
+      packageManager: "yarn@4.10.3"
     });
     expect(getPackageManager(mockedCwd, mockedEnvWithoutNpmConfigUserAgent)).toBe("yarn");
   });
@@ -109,7 +109,7 @@ describe("when no lock files are found", () => {
   it("should give priority to the `packageManager` property over the `npm_config_user_agent` environment variable", () => {
     vi.mocked(getRootPackageManifest).mockReturnValue({
       ...mockedPackageManifest,
-      packageManager: "yarn@4.9.0"
+      packageManager: "yarn@4.10.3"
     });
     expect(getPackageManager(mockedCwd, mockedEnvWithPnpmVersion)).toBe("yarn");
   });
