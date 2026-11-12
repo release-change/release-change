@@ -43,16 +43,10 @@
     "lineWidth": 100
   },
   "linter": {
-    "enabled": true,
     "rules": {
       "correctness": {
         "noUnusedImports": "error",
-        "noUnusedVariables": {
-          "level": "error",
-          "options": {
-            "ignoreRestSiblings": true
-          }
-        }
+        "noUnusedVariables": "error"
       },
       "style": {
         "noParameterAssign": "error",
@@ -64,7 +58,13 @@
         "noUnusedTemplateLiteral": "error",
         "useNumberNamespace": "error",
         "noInferrableTypes": "error",
-        "noUselessElse": "error"
+        "noUselessElse": "error",
+        "useImportType": {
+          "level": "warn",
+          "options": {
+            "style": "separatedType"
+          }
+        }
       }
     }
   },
@@ -72,12 +72,6 @@
     "formatter": {
       "arrowParentheses": "asNeeded",
       "trailingCommas": "none"
-    }
-  },
-  "json": {
-    "parser": {
-      "allowComments": false,
-      "allowTrailingCommas": false
     }
   }
 }

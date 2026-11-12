@@ -1,6 +1,7 @@
+import type { Logger } from "@release-change/logger";
 import type { ContextBase } from "@release-change/shared";
 
-import { addErrorToContext, checkErrorType, type Logger } from "@release-change/logger";
+import { addErrorToContext, checkErrorType } from "@release-change/logger";
 import { runCommandSync } from "@release-change/shared";
 
 /**
