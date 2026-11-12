@@ -67,10 +67,5 @@
       "arrowParentheses": "asNeeded",
       "trailingCommas": "none"
     }
-  },
-  "json": {
-    "parser": {
-      "allowTrailingCommas": false
-    }
   }
 }
