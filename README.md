@@ -89,15 +89,11 @@ Here are examples of the workflow configuration (the file must be saved in the `
               uses: actions/checkout@v7
               with:
                 fetch-depth: 0 # to clone the whole Git history
-            - name: Install pnpm
-              uses: pnpm/action-setup@v6
+            - name: Install pnpm and setup Node.js
+              uses: pnpm/setup@v3
               with:
                 version: 11
-            - name: Setup Node.js
-              uses: actions/setup-node@v6
-              with:
-                node-version: "lts/*"
-                cache: "pnpm"
+                runtime: node@lts
             - name: Install dependencies
               run: pnpm clean-install
             - name: Release
