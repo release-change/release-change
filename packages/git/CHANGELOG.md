@@ -1,5 +1,16 @@
 # @release-change/git
 
+## 0.6.2
+
+### Dependencies updates
+
+- [@release-change/commit-analyser@0.5.2](https://github.com/release-change/release-change/tree/@release-change/commit-analyser@v0.5.2/packages/commit-analyser)
+- [@release-change/semver@0.3.2](https://github.com/release-change/release-change/tree/@release-change/semver@v0.3.2/packages/semver)
+
+---
+
+**Full changelog:** [`@release-change/git@v0.6.1...@release-change/git@v0.6.2`](https://github.com/release-change/release-change/compare/@release-change/git@v0.6.1...@release-change/git@v0.6.2)
+
 ## 0.6.1
 
 ### Patch changes
