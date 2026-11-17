@@ -3,7 +3,7 @@
  */
 const DIGITS_PATTERN = /\d+/;
 const NUMERIC_IDENTIFIER_PATTERN = /0|[1-9]\d*/;
-const ALPHANUMERIC_IDENTIFIER_PATTERN = /[0-9a-zA-Z-]+/;
+const ALPHANUMERIC_IDENTIFIER_PATTERN = /\d*[a-zA-Z-][0-9a-zA-Z-]*/;
 const V_IDENTIFIER_PATTERN = /[v=\s]*/;
 const BUILD_IDENTIFIER_PATTERN = new RegExp(
   `(?:${ALPHANUMERIC_IDENTIFIER_PATTERN.source}|${DIGITS_PATTERN.source})`

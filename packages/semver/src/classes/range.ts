@@ -166,7 +166,7 @@ export class Range implements SemverRangeData {
    *    - a single major-version range, whether completed by an `x` or not, is replaced by a range less than the next pre-major version (e.g.: `3`, `3.x` and `3.x.x` become `<4.0.0-0`);
    *    - a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range less than the next pre-minor version (e.g.: `3.4` and `3.4.x` become `<3.5.0-0`);
    *    - a complete version range (major, minor and patch) is replaced by a range less or equal to this version (e.g.: `3.4.5` becomes `<=3.4.5`);
-   * - a range consisting of just an `x` is replaced by `*`;
+   * - a range consisting of just an `x`, an `X` or a `*` is replaced by `*`;
    * - any prerelease identifiers are kept, even though the `includePrerelease` option is set to `false` or not declared.
    * @param comparator - The range string with a comparator to parse.
    * @param [options] - The options to use (`includePrerelease`: whether to include pre-release versions or not, `loose`: whether to use loose mode or not).
@@ -185,8 +185,8 @@ export class Range implements SemverRangeData {
           .map((comparator, index) => {
             const match = comparator.match(loose ? PARTIAL_PATTERN_LOOSE : PARTIAL_PATTERN);
             if (!match?.groups) return `${index ? "<=" : ">="}${comparator}`;
-            if (comparator.match(/^x$/i)) return "*";
             const { major, minor, patch, prerelease } = match.groups;
+            if (!this.isNumeric(major)) return "*";
             const isMinorNumeric = this.isNumeric(minor);
             const isPatchNumeric = this.isNumeric(patch);
             const operator = index
@@ -229,6 +229,7 @@ export class Range implements SemverRangeData {
    *
    * The replacement follows the following rules:
    * - a range consisting of just a tilde, whether followed by a right arrow or not, is replaced by `*`;
+   * - a tilde followed by a wildcard major (`x`, `X` or `*`) is replaced by `*`;
    * - a tilde followed by a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, and less than the next pre-major version;
    * - a tilde followed by a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-minor version;
    * - a tilde followed by a complete version range (major, minor and patch) is replaced by a range greater than or equal to this version and less than the next pre-minor version;
@@ -252,16 +253,16 @@ export class Range implements SemverRangeData {
       .trim()
       .split(" ")
       .map(comparator => {
-        if (comparator.match(new RegExp(`^${TILDE_COMPARATOR_PATTERN}$`))) return "*";
+        if (comparator.match(new RegExp(`^${TILDE_COMPARATOR_PATTERN.source}$`))) return "*";
         const match = comparator.match(loose ? TILDE_PATTERN_LOOSE : TILDE_PATTERN);
         if (!match?.groups) return comparator;
         const { major, minor, patch, prerelease } = match.groups;
         const isMajorNumeric = this.isNumeric(major);
+        if (!isMajorNumeric) return "*";
         const isMinorNumeric = this.isNumeric(minor);
         const isPatchNumeric = this.isNumeric(patch);
         const completeVersion = comparator.replace(TILDE_COMPARATOR_PATTERN, "");
         if (
-          isMajorNumeric &&
           isMinorNumeric &&
           isPatchNumeric &&
           !this.isValidCompleteVersion(completeVersion, Boolean(loose))
@@ -287,21 +288,26 @@ export class Range implements SemverRangeData {
    *
    * The replacement follows the following rules:
    * - a range consisting of just a caret is replaced by `*`;
-   * - a range consisting of a caret followed by an `x` is replaced by `*`;
+   * - a range consisting of a caret followed by a wildcard major (`x`, `X` or `*`) is replaced by `*`;
    * - a caret followed by a single major-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with minor and patch at `0`, and less than the next pre-major version;
    * - a caret followed by a major-and-minor-version range, whether completed by an `x` or not, is replaced by a range greater than or equal to this version, with patch at `0`, and less than the next pre-major version;
    * - a caret followed by a complete version range (major, minor and patch) is replaced by a range greater than or equal to this version and less than the next pre-major version;
    * - a caret followed by a single zero-version range is replaced by a range less than the next pre-major version;
-   * - a caret followed by a zero-version range with minor at `0` is replaced by a range greater than or equal to this version and less than the next pre-patch version;
+   * - a caret followed by a zero-version range with a missing or wildcard minor is replaced by a range greater than or equal to `0.0.0` and less than the next pre-major version;
+   * - a caret followed by a zero-version range with minor at `0` and a missing or wildcard patch is replaced by a range greater than or equal to `0.0.0` and less than the next pre-minor version;
+   * - a caret followed by a complete zero-version range with minor at `0` is replaced by a range greater than or equal to this version and less than the next pre-patch version;
    * - a caret followed by a complete zero-version range is replaced by a range greater than or equal to this version and less than the next pre-minor version;
    * - any prerelease identifiers are kept, even though the `includePrerelease` option is set to `false` or not declared.
    * @example
+   * `^*`, `^x` and `^X` become `*`,
    * `^2`, `^2.x` and `^2.x.x` become `>=2.0.0 <3.0.0-0`,
    * `^2.0` and `^2.0.x` become `>=2.0.0 <3.0.0-0`,
    * `^1.2` and `^1.2.x` become `>=1.2.0 <2.0.0-0`,
    * `^1.2.3` becomes `>=1.2.3 <2.0.0-0`,
    * `^1.2.0` becomes `>=1.2.0 <2.0.0-0`,
    * `^0` becomes `<1.0.0-0"`,
+   * `^0.x` and `^0.x.x` become `>=0.0.0 <1.0.0-0`,
+   * `^0.0` and `^0.0.x` become `>=0.0.0 <0.1.0-0`,
    * `^0.0.1` becomes `>=0.0.1 <0.0.2-0`,
    * `^0.1.0` becomes `>=0.1.0 <0.2.0-0`,
    * `^1.2.3-beta.4` becomes `>=1.2.3-beta.4 <2.0.0-0`.
@@ -315,31 +321,34 @@ export class Range implements SemverRangeData {
       .trim()
       .split(" ")
       .map(comparator => {
-        if (comparator === "^" || comparator.match(/^\^x/i)) return "*";
+        if (comparator === "^") return "*";
         if (comparator === "^0") return "<1.0.0-0";
         const match = comparator.match(loose ? CARET_PATTERN_LOOSE : CARET_PATTERN);
         if (!match?.groups) return comparator;
         const { major, minor, patch, prerelease } = match.groups;
         const isMajorNumeric = this.isNumeric(major);
+        if (!isMajorNumeric) return "*";
         const isMinorNumeric = this.isNumeric(minor);
         const isPatchNumeric = this.isNumeric(patch);
         const completeVersion = comparator.replace(CARET_COMPARATOR_PATTERN, "");
         if (
-          isMajorNumeric &&
           isMinorNumeric &&
           isPatchNumeric &&
           !this.isValidCompleteVersion(completeVersion, Boolean(loose))
         ) {
           throw new Error(`Invalid range \`${comparator}\`.`);
         }
-        const lowMajor = Number(major) || 0;
-        const lowMinor = Number(minor) || 0;
-        const lowPatch = Number(patch) || 0;
+        const lowMajor = Number(major);
+        const lowMinor = isMinorNumeric ? Number(minor) : 0;
+        const lowPatch = isMinorNumeric && isPatchNumeric ? Number(patch) : 0;
         const lowPrerelease = prerelease ? `-${prerelease}` : "";
-        const highMajor = lowMajor ? lowMajor + 1 : 0;
-        const highMinor = lowMajor ? 0 : lowMinor ? lowMinor + 1 : 0;
-        const highPatch = lowMajor ? 0 : lowMinor ? 0 : lowPatch + 1;
-        return `>=${lowMajor}.${lowMinor}.${lowPatch}${lowPrerelease} <${highMajor}.${highMinor}.${highPatch}-0`;
+        const highVersion =
+          !isMinorNumeric || lowMajor
+            ? `${lowMajor + 1}.0.0`
+            : !isPatchNumeric || lowMinor
+              ? `0.${lowMinor + 1}.0`
+              : `0.0.${lowPatch + 1}`;
+        return `>=${lowMajor}.${lowMinor}.${lowPatch}${lowPrerelease} <${highVersion}-0`;
       })
       .join(" ");
   }
