@@ -125,5 +125,15 @@ export const includingRanges: [
   ["=0.7.x", "0.7.0-asdf", { includePrerelease: true }],
   [">=0.7.x", "0.7.0-asdf", { includePrerelease: true }],
   ["<=0.7.x", "0.7.0-asdf", { includePrerelease: true }],
-  [">=1.0.0 <=1.1.0", "1.1.0-pre", { includePrerelease: true }]
+  [">=1.0.0 <=1.1.0", "1.1.0-pre", { includePrerelease: true }],
+  ["^0.x", "0.2.0"],
+  ["^0.0", "0.0.2"],
+  ["^0.0.x", "0.0.2"],
+  ["^*", "1.2.3"],
+  ["~*", "1.2.3"],
+  ["~x", "1.2.3"],
+  ["~>*", "1.2.3"],
+  ["~>x", "1.2.3"],
+  ["1.x - *", "1.2.3"],
+  ["1 - *", "1.2.3"]
 ];

@@ -130,5 +130,18 @@ export const validRanges = [
   {
     raw: "1.x.x-alpha+build || 2.x.x+build",
     expected: { range: ">=1.0.0 <2.0.0-0||>=2.0.0 <3.0.0-0" }
-  }
+  },
+  { raw: "^0.x", expected: { range: ">=0.0.0 <1.0.0-0" } },
+  { raw: "^0.x.x", expected: { range: ">=0.0.0 <1.0.0-0" } },
+  { raw: "^0.0", expected: { range: ">=0.0.0 <0.1.0-0" } },
+  { raw: "^0.0.x", expected: { range: ">=0.0.0 <0.1.0-0" } },
+  { raw: "^*", expected: { range: "*" } },
+  { raw: "^X", expected: { range: "*" } },
+  { raw: "~", expected: { range: "*" } },
+  { raw: "~*", expected: { range: "*" } },
+  { raw: "~x", expected: { range: "*" } },
+  { raw: "~>*", expected: { range: "*" } },
+  { raw: "~>x", expected: { range: "*" } },
+  { raw: "1.x - *", expected: { range: ">=1.0.0" } },
+  { raw: "1 - *", expected: { range: ">=1.0.0" } }
 ];

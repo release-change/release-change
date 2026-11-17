@@ -22,5 +22,7 @@ export const invalidVersions = [
     options: { loose: true }
   },
   { raw: "xyz", error: "Invalid version `xyz`." },
-  { raw: "xyz", error: "Invalid version `xyz`.", options: { loose: true } }
+  { raw: "xyz", error: "Invalid version `xyz`.", options: { loose: true } },
+  { raw: "1.2.3-01", error: "Invalid version `1.2.3-01`." },
+  { raw: "1.2.3-alpha.01", error: "Invalid version `1.2.3-alpha.01`." }
 ];
