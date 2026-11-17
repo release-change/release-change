@@ -1,5 +1,15 @@
 # @release-change/semver
 
+## 0.3.2
+
+### Patch changes
+
+- **semver:** handle wildcards and omitted parts in ranges and reject leading zeros in prerelease IDs (#839) ([`6bafc98`](https://github.com/release-change/release-change/commit/6bafc9809f6e14699fa2eabbc28a4dbf5ceb4fa7))
+
+---
+
+**Full changelog:** [`@release-change/semver@v0.3.1...@release-change/semver@v0.3.2`](https://github.com/release-change/release-change/compare/@release-change/semver@v0.3.1...@release-change/semver@v0.3.2)
+
 ## 0.3.1
 
 ### Patch changes

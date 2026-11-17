@@ -1,6 +1,6 @@
 {
   "name": "@release-change/semver",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "The semantic versioning parser used by release-change",
   "keywords": [
     "semantic",
