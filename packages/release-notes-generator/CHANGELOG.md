@@ -1,5 +1,17 @@
 # @release-change/release-notes-generator
 
+## 0.6.2
+
+### Dependencies updates
+
+- [@release-change/commit-analyser@0.5.2](https://github.com/release-change/release-change/tree/@release-change/commit-analyser@v0.5.2/packages/commit-analyser)
+- [@release-change/get-packages@0.5.2](https://github.com/release-change/release-change/tree/@release-change/get-packages@v0.5.2/packages/get-packages)
+- [@release-change/github@0.6.2](https://github.com/release-change/release-change/tree/@release-change/github@v0.6.2/packages/github)
+
+---
+
+**Full changelog:** [`@release-change/release-notes-generator@v0.6.1...@release-change/release-notes-generator@v0.6.2`](https://github.com/release-change/release-change/compare/@release-change/release-notes-generator@v0.6.1...@release-change/release-notes-generator@v0.6.2)
+
 ## 0.6.1
 
 ### Patch changes
