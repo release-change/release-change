@@ -1,5 +1,21 @@
 # @release-change/release
 
+## 0.7.2
+
+### Dependencies updates
+
+- [@release-change/commit-analyser@0.5.2](https://github.com/release-change/release-change/tree/@release-change/commit-analyser@v0.5.2/packages/commit-analyser)
+- [@release-change/get-packages@0.5.2](https://github.com/release-change/release-change/tree/@release-change/get-packages@v0.5.2/packages/get-packages)
+- [@release-change/git@0.6.2](https://github.com/release-change/release-change/tree/@release-change/git@v0.6.2/packages/git)
+- [@release-change/github@0.6.2](https://github.com/release-change/release-change/tree/@release-change/github@v0.6.2/packages/github)
+- [@release-change/npm@0.5.2](https://github.com/release-change/release-change/tree/@release-change/npm@v0.5.2/packages/npm)
+- [@release-change/release-notes-generator@0.6.2](https://github.com/release-change/release-change/tree/@release-change/release-notes-generator@v0.6.2/packages/release-notes-generator)
+- [@release-change/semver@0.3.2](https://github.com/release-change/release-change/tree/@release-change/semver@v0.3.2/packages/semver)
+
+---
+
+**Full changelog:** [`@release-change/release@v0.7.1...@release-change/release@v0.7.2`](https://github.com/release-change/release-change/compare/@release-change/release@v0.7.1...@release-change/release@v0.7.2)
+
 ## 0.7.1
 
 ### Patch changes
