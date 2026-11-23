@@ -1,5 +1,15 @@
 # @release-change/ci
 
+## 0.5.2
+
+### Dependencies updates
+
+- [@release-change/config@0.5.2](https://github.com/release-change/release-change/tree/@release-change/config@v0.5.2/packages/config)
+
+---
+
+**Full changelog:** [`@release-change/ci@v0.5.1...@release-change/ci@v0.5.2`](https://github.com/release-change/release-change/compare/@release-change/ci@v0.5.1...@release-change/ci@v0.5.2)
+
 ## 0.5.1
 
 ### Patch changes
