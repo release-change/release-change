@@ -1,5 +1,21 @@
 # @release-change/cli
 
+## 0.8.3
+
+### Dependencies updates
+
+- [@release-change/ci@0.5.2](https://github.com/release-change/release-change/tree/@release-change/ci@v0.5.2/packages/ci)
+- [@release-change/commit-analyser@0.5.3](https://github.com/release-change/release-change/tree/@release-change/commit-analyser@v0.5.3/packages/commit-analyser)
+- [@release-change/config@0.5.2](https://github.com/release-change/release-change/tree/@release-change/config@v0.5.2/packages/config)
+- [@release-change/get-packages@0.5.3](https://github.com/release-change/release-change/tree/@release-change/get-packages@v0.5.3/packages/get-packages)
+- [@release-change/git@0.6.3](https://github.com/release-change/release-change/tree/@release-change/git@v0.6.3/packages/git)
+- [@release-change/github@0.6.3](https://github.com/release-change/release-change/tree/@release-change/github@v0.6.3/packages/github)
+- [@release-change/release@0.7.3](https://github.com/release-change/release-change/tree/@release-change/release@v0.7.3/packages/release)
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.8.2...@release-change/cli@v0.8.3`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.8.2...@release-change/cli@v0.8.3)
+
 ## 0.8.2
 
 ### Dependencies updates
