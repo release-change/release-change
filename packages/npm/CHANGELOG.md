@@ -1,5 +1,20 @@
 # @release-change/npm
 
+## 0.5.3
+
+### Patch changes
+
+- **npm:** use `--provenance` flag ([`356ac1d`](https://github.com/release-change/release-change/commit/356ac1d3951188fa778714ee76d79806bdc374ca))
+
+### Dependencies updates
+
+- [@release-change/config@0.5.2](https://github.com/release-change/release-change/tree/@release-change/config@v0.5.2/packages/config)
+- [@release-change/get-packages@0.5.3](https://github.com/release-change/release-change/tree/@release-change/get-packages@v0.5.3/packages/get-packages)
+
+---
+
+**Full changelog:** [`@release-change/npm@v0.5.2...@release-change/npm@v0.5.3`](https://github.com/release-change/release-change/compare/@release-change/npm@v0.5.2...@release-change/npm@v0.5.3)
+
 ## 0.5.2
 
 ### Dependencies updates
