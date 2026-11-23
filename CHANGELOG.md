@@ -1,5 +1,15 @@
 # release-change
 
+## 0.8.3
+
+### Patch changes
+
+- **npm:** use `--provenance` flag ([`356ac1d`](https://github.com/release-change/release-change/commit/356ac1d3951188fa778714ee76d79806bdc374ca))
+
+---
+
+**Full changelog:** [`v0.8.2...v0.8.3`](https://github.com/release-change/release-change/compare/v0.8.2...v0.8.3)
+
 ## 0.8.2
 
 ### Patch changes
