@@ -9,6 +9,8 @@ import { getPackageManager } from "@release-change/get-packages";
 import { setLogger } from "@release-change/logger";
 import { deepInspectObject, formatDetailedError } from "@release-change/shared";
 
+import { isProvenanceAllowed } from "./is-provenance-allowed.js";
+
 /**
  * Prepares the package publishing to the NPM registry if the package is not private.
  * @param packageNextRelease - The next release data to use.
@@ -58,6 +60,7 @@ export const preparePublishing = async (
           }
           if (packageManager === "pnpm") args.push("--no-git-checks");
           if (packageManager === "yarn") args.unshift("npm");
+          if (isProvenanceAllowed(packageManifest)) args.push("--provenance");
           if (debug) {
             logger.logDebug(`Publishing info prepared for ${packageName} package:`);
             logger.logDebug(deepInspectObject(packagePublishing));

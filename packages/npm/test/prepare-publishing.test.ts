@@ -9,6 +9,7 @@ import { formatDetailedError } from "@release-change/shared";
 import { assert, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { preparePublishing } from "../src/index.js";
+import { isProvenanceAllowed } from "../src/is-provenance-allowed.js";
 import { mockedContext, mockedContextWithNoNpmPublish } from "./fixtures/mocked-context.js";
 import { mockedLogger } from "./fixtures/mocked-logger.js";
 import { mockedNextReleases } from "./fixtures/mocked-next-releases.js";
@@ -20,6 +21,7 @@ vi.mock("@release-change/shared", () => ({
 }));
 vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
 vi.mock("@release-change/get-packages", () => ({ getPackageManager: vi.fn() }));
+vi.mock("../src/is-provenance-allowed.js", () => ({ isProvenanceAllowed: vi.fn() }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 beforeEach(() => {
@@ -109,27 +111,37 @@ describe.each(mockedNextReleases)("for package $name and version $version", next
         : npmTag
           ? [...args, "--tag", npmTag]
           : args;
-      it("should prepare the publishing with the expected values", async () => {
-        const context: Context = {
-          ...mockedContext,
-          nextRelease: [nextRelease],
-          authToken: {
-            fileExists: true,
-            authTokenExists: true
-          }
-        };
-        const expectedPackagePublishing: PackagePublishing = {
-          name: name,
-          packageManifestName: packageManifestContent.name,
-          pathname,
-          version,
-          packageManager,
-          args: expectedArgs
-        };
-        if (npmTag) expectedPackagePublishing.npmTag = npmTag;
+      const context: Context = {
+        ...mockedContext,
+        nextRelease: [nextRelease],
+        authToken: {
+          fileExists: true,
+          authTokenExists: true
+        }
+      };
+      const expectedPackagePublishing: PackagePublishing = {
+        name: name,
+        packageManifestName: packageManifestContent.name,
+        pathname,
+        version,
+        packageManager,
+        args: expectedArgs
+      };
+      if (npmTag) expectedPackagePublishing.npmTag = npmTag;
+      beforeEach(() => {
         vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(packageManifestContent));
         vi.mocked(getPackageManager).mockReturnValue(packageManager);
+      });
+      it("should prepare the publishing with the expected values (without provenance)", async () => {
+        vi.mocked(isProvenanceAllowed).mockReturnValue(false);
         assert.deepEqual(await preparePublishing(nextRelease, context), expectedPackagePublishing);
+      });
+      it("should prepare the publishing with the expected values (with provenance)", async () => {
+        vi.mocked(isProvenanceAllowed).mockReturnValue(true);
+        assert.deepEqual(await preparePublishing(nextRelease, context), {
+          ...expectedPackagePublishing,
+          args: [...expectedArgs, "--provenance"]
+        });
       });
     }
   );

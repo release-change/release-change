@@ -41,7 +41,7 @@ export const publishToRegistry = async (
   if (authToken) {
     const npmToken = env.NPM_TOKEN?.trim();
     const isAuthTokenNotDefined = !authToken.fileExists || !authToken.authTokenExists;
-    const shouldSetAuthToken = npmToken && isAuthTokenNotDefined;
+    const shouldSetAuthToken = Boolean(npmToken) && isAuthTokenNotDefined;
     if (!npmToken) {
       logger.logInfo(
         "No NPM token provided (`NPM_TOKEN` is missing or empty); relying on OIDC trusted publishing."
