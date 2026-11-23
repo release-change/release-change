@@ -1,5 +1,15 @@
 # @release-change/git
 
+## 0.6.3
+
+### Dependencies updates
+
+- [@release-change/commit-analyser@0.5.3](https://github.com/release-change/release-change/tree/@release-change/commit-analyser@v0.5.3/packages/commit-analyser)
+
+---
+
+**Full changelog:** [`@release-change/git@v0.6.2...@release-change/git@v0.6.3`](https://github.com/release-change/release-change/compare/@release-change/git@v0.6.2...@release-change/git@v0.6.3)
+
 ## 0.6.2
 
 ### Dependencies updates
