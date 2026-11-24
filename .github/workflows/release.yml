@@ -53,6 +53,7 @@ jobs:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
       - name: Release
         env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
           RELEASE_TOKEN: ${{ steps.app-token.outputs.token }}
           ISSUE_PR_TOKEN: ${{ steps.app-token.outputs.token }}
         run: node ./packages/cli/bin/index.js --debug
