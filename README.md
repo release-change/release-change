@@ -39,29 +39,17 @@ To use release-change, you need:
 
 ## Usage
 
-Use the following command to run release-change in the CI environment:
+### Without integrating with CI
 
-```
-pnpx @release-change/cli
-```
-If you are using `yarn`:
+If you do not publish to NPM and do not wish to use the CI environment, you can use the [release-change bot](https://github.com/apps/release-change).
 
-```
-yarn dlx @release-change/cli
-```
-If you are using `npm`:
+### Integrating with CI
 
-```
-npx @release-change/cli
-```
+The easiest way is to use the [release-change GitHub action](https://github.com/release-change/action).
 
-## Documentation
+Here are examples of the workflow configuration (the file must be saved in the `.github/workflows/` directory and make sure [the option “Allow GitHub Actions to create and approve pull requests”](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#preventing-github-actions-from-creating-or-approving-pull-requests) is enabled in your repository settings).
 
-### CI configuration
-
-release-change requires access to the project repository. The Git authentication is set with the `RELEASE_TOKEN` environment variable, which is a [GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
-
-Here are examples of the workflow configuration (the file must be saved in the `.github/workflows/` directory and make sure the option “Allow GitHub Actions to create and approve pull requests” is enabled in your repository settings):
+#### With trusted publishing
 
 - using `pnpm`:
 
@@ -96,13 +84,8 @@ Here are examples of the workflow configuration (the file must be saved in the `
                 runtime: node@lts
             - name: Install dependencies
               run: pnpm clean-install
-            - name: Release
-              env:
-                RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-                ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
-                NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-                NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
-              run: pnpx @release-change/cli
+            - name: Release and publish to NPM
+              uses: release-change/action@v0
 - using `yarn`:
 
       name: Release
@@ -151,13 +134,8 @@ Here are examples of the workflow configuration (the file must be saved in the `
                   ${{ runner.os }}-yarn-
             - name: Install dependencies
               run: yarn install --immutable
-            - name: Release
-              env:
-                RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-                ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
-                NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-                YARN_NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
-              run: yarn dlx @release-change/cli
+            - name: Release and publish to NPM
+              uses: release-change/action@v0
 - using `npm`:
 
       name: Release
@@ -191,13 +169,143 @@ Here are examples of the workflow configuration (the file must be saved in the `
                 cache: "npm"
             - name: Install dependencies
               run: npm clean-install
-            - name: Release
-              env:
-                RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-                ISSUE_PR_TOKEN: ${{ secrets.GITHUB_TOKEN }} # to be able to comment on issues and pull requests, close issues and tag pull requests using the GitHub Actions bot
-                NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-                NPM_CONFIG_PROVENANCE: true # to be able to publish to NPM with provenance
-              run: npx @release-change/cli
+            - name: Release and publish to NPM
+              uses: release-change/action@v0
+#### Without trusted publishing
+
+- using `pnpm`:
+
+      name: Release
+
+      on:
+        push:
+          branches:
+            - main
+
+      permissions:
+        contents: read # for checkout
+
+      jobs:
+        release:
+          name: Release
+          runs-on: ubuntu-latest
+          permissions:
+            contents: write # to be able to publish a GitHub release
+            issues: write # to be able to comment on issues
+            pull-requests: write # to be able to comment on pull requests
+          steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+              with:
+                fetch-depth: 0 # to clone the whole Git history
+            - name: Install pnpm and setup Node.js
+              uses: pnpm/setup@v3
+              with:
+                version: 11
+                runtime: node@lts
+            - name: Install dependencies
+              run: pnpm clean-install
+            - name: Release and publish to NPM
+              uses: release-change/action@v0
+              with:
+                npm-token: ${{ secrets.NPM_TOKEN }}
+- using `yarn`:
+
+      name: Release
+
+      on:
+        push:
+          branches:
+            - main
+
+      permissions:
+        contents: read # for checkout
+
+      jobs:
+        release:
+          name: Release
+          runs-on: ubuntu-latest
+          permissions:
+            contents: write # to be able to publish a GitHub release
+            issues: write # to be able to comment on issues
+            pull-requests: write # to be able to comment on pull requests
+          steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+              with:
+                fetch-depth: 0 # to clone the whole Git history
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                node-version: "lts/*"
+            - name: Enable Corepack
+              shell: bash
+              run: |
+                npm install -g corepack
+                corepack enable
+            - name: Get Yarn cache directory
+              id: yarn-cache-dir
+              shell: bash
+              run: echo "dir=$(yarn config get cacheFolder)" >> "$GITHUB_OUTPUT"
+            - name: Get Yarn cache dependencies
+              uses: actions/cache@v6
+              with:
+                path: ${{ steps.yarn-cache-dir.outputs.dir }}
+                key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+                restore-keys: |
+                  ${{ runner.os }}-yarn-
+            - name: Install dependencies
+              run: yarn install --immutable
+            - name: Release and publish to NPM
+              uses: release-change/action@v0
+              with:
+                npm-token: ${{ secrets.NPM_TOKEN }}
+- using `npm`:
+
+      name: Release
+
+      on:
+        push:
+          branches:
+            - main
+
+      permissions:
+        contents: read # for checkout
+
+      jobs:
+        release:
+          name: Release
+          runs-on: ubuntu-latest
+          permissions:
+            contents: write # to be able to publish a GitHub release
+            issues: write # to be able to comment on issues
+            pull-requests: write # to be able to comment on pull requests
+          steps:
+            - name: Checkout
+              uses: actions/checkout@v7
+              with:
+                fetch-depth: 0 # to clone the whole Git history
+            - name: Setup Node.js
+              uses: actions/setup-node@v6
+              with:
+                node-version: "lts/*"
+                cache: "npm"
+            - name: Install dependencies
+              run: npm clean-install
+            - name: Release and publish to NPM
+              uses: release-change/action@v0
+              with:
+                npm-token: ${{ secrets.NPM_TOKEN }}
+## Documentation
+
+### CI configuration
+
+release-change requires access to the project repository. The Git authentication is set with the `RELEASE_TOKEN` environment variable, which is a [GitHub personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens), a [GitHub App token](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/generating-an-installation-access-token-for-a-github-app) or the [GitHub-provided token](https://docs.github.com/en/actions/concepts/security/github_token).
+
+The `ISSUE_PR_TOKEN` environment variable is used to authenticate with the GitHub API to comment on issues and pull requests, close issues and tag pull requests. It is a GitHub personal access token, a GitHub App token or the GitHub-provided token.
+
+If you publish to NPM and did not, or cannot, set trusted publishing, you will need to have an [NPM token](https://docs.npmjs.com/creating-and-viewing-access-tokens) which can publish the packages in the repository concerned by the CI configuration, and you will need to [add it as a secret on your repository](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets) with the name `NPM_TOKEN`.
+
 ### Configuration
 
 #### Configuration file
