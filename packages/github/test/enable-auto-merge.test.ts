@@ -1,9 +1,13 @@
 import { getIssueAndPullRequestToken } from "@release-change/ci";
-import { setCommitterEmail, setCommitterName } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
-import { enableAutoMerge, GITHUB_GRAPHQL_API_ENDPOINT } from "../src/index.js";
+import {
+  enableAutoMerge,
+  GITHUB_GRAPHQL_API_ENDPOINT,
+  setCommitterEmail,
+  setCommitterName
+} from "../src/index.js";
 import { mockedAutoMergeEnablings } from "./fixtures/mocked-auto-merge-enablings.js";
 import { mockedAutoMergeEnablingsInMonorepo } from "./fixtures/mocked-auto-merge-enablings-in-monorepo.js";
 import { mockedContext, mockedContextInMonorepo } from "./fixtures/mocked-context.js";
@@ -35,13 +39,15 @@ vi.mock("@release-change/logger", () => ({ setLogger: vi.fn() }));
 vi.mock("@release-change/ci", () => ({
   getIssueAndPullRequestToken: vi.fn()
 }));
-vi.mock("@release-change/git", () => ({
-  setCommitterName: vi.fn(),
+vi.mock("../src/set-committer-name.js", () => ({
+  setCommitterName: vi.fn()
+}));
+vi.mock("../src/set-committer-email.js", () => ({
   setCommitterEmail: vi.fn()
 }));
-vi.mocked(setCommitterName).mockReturnValue("mocked-committer-name [bot]");
-vi.mocked(setCommitterEmail).mockReturnValue(
-  "0+mocked-committer-name-bot@users.noreply.github.com"
+vi.mocked(setCommitterName).mockResolvedValue("mocked-committer-name[bot]");
+vi.mocked(setCommitterEmail).mockResolvedValue(
+  "0+mocked-committer-name[bot]@users.noreply.github.com"
 );
 
 beforeEach(() => {

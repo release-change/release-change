@@ -1,7 +1,7 @@
 import type { PullRequestReference } from "../../src/index.js";
 
 const commitSignature =
-  "Co-authored-by: mocked-committer-name [bot] <0+mocked-committer-name-bot@users.noreply.github.com>";
+  "Co-authored-by: mocked-committer-name[bot] <0+mocked-committer-name[bot]@users.noreply.github.com>";
 const pullRequestReference: PullRequestReference = {
   pullRequestNumber: 123,
   pullRequestId: "fake_ID",
