@@ -8,6 +8,8 @@ export { getRepositoryMergeInfo } from "./get-repository-merge-info.js";
 export { getRepositoryRelatedEndpoint } from "./get-repository-related-endpoint.js";
 export { postFailComment } from "./post-fail-comment.js";
 export { postSuccessComment } from "./post-success-comment.js";
+export { setCommitterEmail } from "./set-committer-email.js";
+export { setCommitterName } from "./set-committer-name.js";
 export { tagPullRequestAndIssue } from "./tag-pull-request-and-issue.js";
 
 export { GITHUB_GRAPHQL_API_ENDPOINT } from "./constants.js";

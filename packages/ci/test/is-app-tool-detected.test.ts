@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 
-import { isAppToolDetected } from "../src/is-app-tool-detected.js";
+import { isAppToolDetected } from "../src/index.js";
 
 const mockedEnvWithUnknownCiEnvironment = {};
 const mockedEnvWithGitHubActions = {

@@ -7,9 +7,10 @@ import type {
 } from "./github.types.js";
 
 import { getIssueAndPullRequestToken } from "@release-change/ci";
-import { setCommitterEmail, setCommitterName } from "@release-change/git";
 import { setLogger } from "@release-change/logger";
 import { deepInspectObject } from "@release-change/shared";
+
+import { setCommitterEmail, setCommitterName } from "./index.js";
 
 import { GITHUB_GRAPHQL_API_ENDPOINT } from "./constants.js";
 
@@ -28,8 +29,7 @@ export const enableAutoMerge = async (
 ): Promise<void> => {
   const {
     env,
-    config: { debug, isMonorepo },
-    isAppTool
+    config: { debug, isMonorepo }
   } = context;
   const logger = setLogger(debug);
   logger.setScope("github");
@@ -61,7 +61,7 @@ export const enableAutoMerge = async (
         if (mergeMethod !== "REBASE" && commit) {
           if (isMonorepo) {
             commitHeadline = "chore: release version packages";
-            const signature = `Co-authored-by: ${setCommitterName(isAppTool)} <${setCommitterEmail(isAppTool)}>`;
+            const signature = `Co-authored-by: ${await setCommitterName(env)} <${await setCommitterEmail(env)}>`;
             if (mergeMethod === "SQUASH") {
               commitBody = `${commits
                 .map(commit => {

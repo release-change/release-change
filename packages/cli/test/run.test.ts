@@ -9,11 +9,9 @@ import {
   checkPushPermissions,
   checkRepository,
   getBranchName,
-  getCommitsSinceRef,
-  setCommitterEmail,
-  setCommitterName
+  getCommitsSinceRef
 } from "@release-change/git";
-import { getRelatedPullRequestsAndIssues } from "@release-change/github";
+import { getRelatedPullRequestsAndIssues, setCommitterName } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
 import { beforeEach, expect, it, vi } from "vitest";
@@ -55,8 +53,6 @@ vi.mock("@release-change/config", () => ({
   debugConfig: vi.fn()
 }));
 vi.mock("@release-change/git", () => ({
-  setCommitterName: vi.fn(),
-  setCommitterEmail: vi.fn(),
   checkRepository: vi.fn(),
   getBranchName: vi.fn(),
   checkBranch: vi.fn(),
@@ -74,6 +70,7 @@ vi.mock("@release-change/get-packages", () => ({
   isMonorepo: vi.fn()
 }));
 vi.mock("@release-change/github", () => ({
+  setCommitterName: vi.fn(),
   getRelatedPullRequestsAndIssues: vi.fn(),
   closeIssue: vi.fn(),
   postFailComment: vi.fn(),
@@ -82,10 +79,7 @@ vi.mock("@release-change/github", () => ({
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 vi.mocked(getBranchName).mockReturnValue("main");
-vi.mocked(setCommitterName).mockReturnValue("mocked-committer-name [bot]");
-vi.mocked(setCommitterEmail).mockReturnValue(
-  "0+mocked-committer-name-bot@users.noreply.github.com"
-);
+vi.mocked(setCommitterName).mockResolvedValue("mocked-committer-name[bot]");
 vi.mocked(checkBranch).mockImplementation(() => undefined);
 vi.mocked(checkPushPermissions).mockResolvedValue();
 vi.mocked(getCommitsSinceRef).mockResolvedValue([
@@ -152,6 +146,15 @@ it("should call `checkRepository`", async () => {
       errors: mockedContextBase.errors
     }),
     mockedLogger
+  );
+});
+it("should set committer name if CI is usable", async () => {
+  vi.mocked(isUsableEnvironment).mockReturnValue(true);
+  await run(mockedCliOptions, mockedContextBase);
+  expect(mockedContextBase).toEqual(
+    expect.objectContaining({
+      env: expect.objectContaining({ RELEASE_CHANGE_USER: "mocked-committer-name[bot]" })
+    })
   );
 });
 it("should set last release if CI is usable", async () => {

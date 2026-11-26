@@ -4,6 +4,10 @@ export type GitHubResponseError = {
   message: string;
   documentation_url?: string;
 };
+export type GitHubUser = {
+  login: string;
+  id: number;
+};
 export type PullRequestAssociatedWithCommit = {
   number: number;
   title: string;

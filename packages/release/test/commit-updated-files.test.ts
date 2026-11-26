@@ -2,7 +2,8 @@ import type { PackageManager } from "@release-change/get-packages";
 
 import fs from "node:fs";
 
-import { add, commit, setCommitterEmail, setCommitterName } from "@release-change/git";
+import { add, commit } from "@release-change/git";
+import { setCommitterEmail, setCommitterName } from "@release-change/github";
 import { formatDetailedError, formatOutputFromCommandResult } from "@release-change/shared";
 import { describe, expect, it, vi } from "vitest";
 
@@ -12,7 +13,7 @@ import { mockedNextReleases } from "./fixtures/mocked-next-releases-update.js";
 
 const expectedVersion = "v1.0.0";
 const expectedFooter =
-  "Co-authored-by: mocked-committer-name [bot] <0+mocked-committer-name-bot@users.noreply.github.com>";
+  "Co-authored-by: mocked-committer-name[bot] <0+mocked-committer-name[bot]@users.noreply.github.com>";
 const mockedPackageManagers: [PackageManager, string[]][] = [
   ["pnpm", ["package.json", "pnpm-lock.yaml", "CHANGELOG.md"]],
   ["yarn", ["package.json", "yarn.lock", "CHANGELOG.md"]],
@@ -25,14 +26,16 @@ vi.mock("@release-change/shared", () => ({
   WORKSPACE_NAME: "release-change"
 }));
 vi.mock("@release-change/git", () => ({
-  setCommitterName: vi.fn(),
-  setCommitterEmail: vi.fn(),
   add: vi.fn(),
   commit: vi.fn()
 }));
-vi.mocked(setCommitterName).mockReturnValue("mocked-committer-name [bot]");
-vi.mocked(setCommitterEmail).mockReturnValue(
-  "0+mocked-committer-name-bot@users.noreply.github.com"
+vi.mock("@release-change/github", () => ({
+  setCommitterName: vi.fn(),
+  setCommitterEmail: vi.fn()
+}));
+vi.mocked(setCommitterName).mockResolvedValue("mocked-committer-name[bot]");
+vi.mocked(setCommitterEmail).mockResolvedValue(
+  "0+mocked-committer-name[bot]@users.noreply.github.com"
 );
 
 describe.each(mockedNextReleases)("for $packageName", async ({ packagePath, nextRelease }) => {

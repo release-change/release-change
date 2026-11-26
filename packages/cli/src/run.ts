@@ -9,15 +9,14 @@ import {
   checkPushPermissions,
   checkRepository,
   getBranchName,
-  getCommitsSinceRef,
-  setCommitterEmail,
-  setCommitterName
+  getCommitsSinceRef
 } from "@release-change/git";
 import {
   closeIssue,
   getRelatedPullRequestsAndIssues,
   postFailComment,
   postSuccessComment,
+  setCommitterName,
   tagPullRequestAndIssue
 } from "@release-change/github";
 import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
@@ -53,10 +52,7 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   await checkRepository(context, logger);
   if (isUsableEnvironment(context)) {
     Object.assign(context.env, {
-      GIT_AUTHOR_NAME: setCommitterName(isAppTool),
-      GIT_AUTHOR_EMAIL: setCommitterEmail(isAppTool),
-      GIT_COMMITTER_NAME: setCommitterName(isAppTool),
-      GIT_COMMITTER_EMAIL: setCommitterEmail(isAppTool)
+      RELEASE_CHANGE_USER: await setCommitterName(context.env)
     });
     debugConfig(context);
     checkBranch(context);
