@@ -16,6 +16,7 @@ import {
   getRelatedPullRequestsAndIssues,
   postFailComment,
   postSuccessComment,
+  setCommitterName,
   tagPullRequestAndIssue
 } from "@release-change/github";
 import { addErrorToContext, checkErrorType, setLogger } from "@release-change/logger";
@@ -50,6 +51,9 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   };
   await checkRepository(context, logger);
   if (isUsableEnvironment(context)) {
+    Object.assign(context.env, {
+      RELEASE_CHANGE_USER: await setCommitterName(context.env)
+    });
     debugConfig(context);
     checkBranch(context);
     await checkPushPermissions(context.config.repositoryUrl, context);

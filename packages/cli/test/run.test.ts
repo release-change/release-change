@@ -11,7 +11,7 @@ import {
   getBranchName,
   getCommitsSinceRef
 } from "@release-change/git";
-import { getRelatedPullRequestsAndIssues } from "@release-change/github";
+import { getRelatedPullRequestsAndIssues, setCommitterName } from "@release-change/github";
 import { setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
 import { beforeEach, expect, it, vi } from "vitest";
@@ -79,6 +79,7 @@ vi.mock("@release-change/github", () => ({
 }));
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 vi.mocked(getBranchName).mockReturnValue("main");
+vi.mocked(setCommitterName).mockResolvedValue("mocked-committer-name[bot]");
 vi.mocked(checkBranch).mockImplementation(() => undefined);
 vi.mocked(checkPushPermissions).mockResolvedValue();
 vi.mocked(getCommitsSinceRef).mockResolvedValue([
@@ -145,6 +146,15 @@ it("should call `checkRepository`", async () => {
       errors: mockedContextBase.errors
     }),
     mockedLogger
+  );
+});
+it("should set committer name if CI is usable", async () => {
+  vi.mocked(isUsableEnvironment).mockReturnValue(true);
+  await run(mockedCliOptions, mockedContextBase);
+  expect(mockedContextBase).toEqual(
+    expect.objectContaining({
+      env: expect.objectContaining({ RELEASE_CHANGE_USER: "mocked-committer-name[bot]" })
+    })
   );
 });
 it("should set last release if CI is usable", async () => {
