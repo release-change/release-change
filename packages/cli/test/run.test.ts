@@ -11,7 +11,11 @@ import {
   getBranchName,
   getCommitsSinceRef
 } from "@release-change/git";
-import { getRelatedPullRequestsAndIssues, setCommitterName } from "@release-change/github";
+import {
+  getRelatedPullRequestsAndIssues,
+  setCommitterEmail,
+  setCommitterName
+} from "@release-change/github";
 import { setLogger } from "@release-change/logger";
 import { publish, setLastRelease, setNextRelease } from "@release-change/release";
 import { beforeEach, expect, it, vi } from "vitest";
@@ -71,6 +75,7 @@ vi.mock("@release-change/get-packages", () => ({
 }));
 vi.mock("@release-change/github", () => ({
   setCommitterName: vi.fn(),
+  setCommitterEmail: vi.fn(),
   getRelatedPullRequestsAndIssues: vi.fn(),
   closeIssue: vi.fn(),
   postFailComment: vi.fn(),
@@ -80,6 +85,9 @@ vi.mock("@release-change/github", () => ({
 vi.mocked(setLogger).mockReturnValue(mockedLogger);
 vi.mocked(getBranchName).mockReturnValue("main");
 vi.mocked(setCommitterName).mockResolvedValue("mocked-committer-name[bot]");
+vi.mocked(setCommitterEmail).mockResolvedValue(
+  "0+mocked-committer-name[bot]@users.noreply.github.com"
+);
 vi.mocked(checkBranch).mockImplementation(() => undefined);
 vi.mocked(checkPushPermissions).mockResolvedValue();
 vi.mocked(getCommitsSinceRef).mockResolvedValue([

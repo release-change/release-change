@@ -16,6 +16,7 @@ import {
   getRelatedPullRequestsAndIssues,
   postFailComment,
   postSuccessComment,
+  setCommitterEmail,
   setCommitterName,
   tagPullRequestAndIssue
 } from "@release-change/github";
@@ -52,6 +53,10 @@ export const run = async (cliOptions: CliOptions, contextBase: ContextBase): Pro
   await checkRepository(context, logger);
   if (isUsableEnvironment(context)) {
     Object.assign(context.env, {
+      GIT_AUTHOR_NAME: await setCommitterName(context.env),
+      GIT_AUTHOR_EMAIL: await setCommitterEmail(context.env),
+      GIT_COMMITTER_NAME: await setCommitterName(context.env),
+      GIT_COMMITTER_EMAIL: await setCommitterEmail(context.env),
       RELEASE_CHANGE_USER: await setCommitterName(context.env)
     });
     debugConfig(context);
