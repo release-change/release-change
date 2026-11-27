@@ -1,5 +1,15 @@
 # @release-change/release-notes-generator
 
+## 0.7.0
+
+### Dependencies updates
+
+- [@release-change/github@0.7.0](https://github.com/release-change/release-change/tree/@release-change/github@v0.7.0/packages/github)
+
+---
+
+**Full changelog:** [`@release-change/release-notes-generator@v0.6.3...@release-change/release-notes-generator@v0.7.0`](https://github.com/release-change/release-change/compare/@release-change/release-notes-generator@v0.6.3...@release-change/release-notes-generator@v0.7.0)
+
 ## 0.6.3
 
 ### Dependencies updates
