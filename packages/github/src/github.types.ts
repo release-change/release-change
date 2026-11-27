@@ -4,6 +4,20 @@ export type GitHubResponseError = {
   message: string;
   documentation_url?: string;
 };
+type GraphQLErrors = {
+  message: string;
+  locations?: { line: number; column: number }[];
+  path?: string[];
+}[];
+export type GitHubUserQuery = {
+  data: {
+    viewer: {
+      login: string;
+      databaseId: number;
+    };
+  };
+  errors?: GraphQLErrors;
+};
 export type GitHubUser = {
   login: string;
   id: number;
@@ -23,11 +37,6 @@ export type PullRequestReference = {
   pullRequestId: string;
   commits: string[];
 };
-type GraphQLErrors = {
-  message: string;
-  locations?: { line: number; column: number }[];
-  path?: string[];
-}[];
 export type RepositoryMergeOptions = {
   autoMergeAllowed: boolean;
   mergeCommitAllowed: boolean;
