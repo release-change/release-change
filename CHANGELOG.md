@@ -1,5 +1,22 @@
 # release-change
 
+## 0.9.0
+
+### Minor changes
+
+- **cli:** add `RELEASE_CHANGE_USER` to environment variables ([`0e3caa1`](https://github.com/release-change/release-change/commit/0e3caa1002db86b6a4bd4b38138bcb11b0178bb2))
+- **cli:** remove `GIT_AUTHOR_*` and `GIT_COMMITTER_*` reassignments ([`de45847`](https://github.com/release-change/release-change/commit/de4584751575377064f6ebaa703bc8cf58b4acda))
+- **github:** use GitHub user as committer ([`23bc997`](https://github.com/release-change/release-change/commit/23bc997fc337db8aacc4e60706ccc42da995ccd2))
+- **github:** get user from token provided by `RELEASE_TOKEN` ([`461d33f`](https://github.com/release-change/release-change/commit/461d33f6b2f306fd63ba872e46248a68f843a8b3))
+
+### Patch changes
+
+- **github:** use GraphQL API to get user ([`165818b`](https://github.com/release-change/release-change/commit/165818bb5a70b4f51bfe33d034c54f17bff4bded))
+
+---
+
+**Full changelog:** [`v0.8.3...v0.9.0`](https://github.com/release-change/release-change/compare/v0.8.3...v0.9.0)
+
 ## 0.8.3
 
 ### Patch changes
