@@ -1,5 +1,22 @@
 # @release-change/cli
 
+## 0.9.0
+
+### Minor changes
+
+- **cli:** add `RELEASE_CHANGE_USER` to environment variables ([`0e3caa1`](https://github.com/release-change/release-change/commit/0e3caa1002db86b6a4bd4b38138bcb11b0178bb2))
+- **cli:** remove `GIT_AUTHOR_*` and `GIT_COMMITTER_*` reassignments ([`de45847`](https://github.com/release-change/release-change/commit/de4584751575377064f6ebaa703bc8cf58b4acda))
+
+### Dependencies updates
+
+- [@release-change/git@0.7.0](https://github.com/release-change/release-change/tree/@release-change/git@v0.7.0/packages/git)
+- [@release-change/github@0.7.0](https://github.com/release-change/release-change/tree/@release-change/github@v0.7.0/packages/github)
+- [@release-change/release@0.8.0](https://github.com/release-change/release-change/tree/@release-change/release@v0.8.0/packages/release)
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.8.3...@release-change/cli@v0.9.0`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.8.3...@release-change/cli@v0.9.0)
+
 ## 0.8.3
 
 ### Dependencies updates
