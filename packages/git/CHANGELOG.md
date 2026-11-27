@@ -1,5 +1,20 @@
 # @release-change/git
 
+## 0.7.0
+
+### Minor changes
+
+- **github:** use GitHub user as committer ([`23bc997`](https://github.com/release-change/release-change/commit/23bc997fc337db8aacc4e60706ccc42da995ccd2))
+- **github:** get user from token provided by `RELEASE_TOKEN` ([`461d33f`](https://github.com/release-change/release-change/commit/461d33f6b2f306fd63ba872e46248a68f843a8b3))
+
+### Patch changes
+
+- **github:** use GraphQL API to get user ([`165818b`](https://github.com/release-change/release-change/commit/165818bb5a70b4f51bfe33d034c54f17bff4bded))
+
+---
+
+**Full changelog:** [`@release-change/git@v0.6.3...@release-change/git@v0.7.0`](https://github.com/release-change/release-change/compare/@release-change/git@v0.6.3...@release-change/git@v0.7.0)
+
 ## 0.6.3
 
 ### Dependencies updates
