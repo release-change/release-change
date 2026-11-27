@@ -1,5 +1,21 @@
 # @release-change/release
 
+## 0.8.0
+
+### Minor changes
+
+- **github:** use GitHub user as committer ([`23bc997`](https://github.com/release-change/release-change/commit/23bc997fc337db8aacc4e60706ccc42da995ccd2))
+
+### Dependencies updates
+
+- [@release-change/git@0.7.0](https://github.com/release-change/release-change/tree/@release-change/git@v0.7.0/packages/git)
+- [@release-change/github@0.7.0](https://github.com/release-change/release-change/tree/@release-change/github@v0.7.0/packages/github)
+- [@release-change/release-notes-generator@0.7.0](https://github.com/release-change/release-change/tree/@release-change/release-notes-generator@v0.7.0/packages/release-notes-generator)
+
+---
+
+**Full changelog:** [`@release-change/release@v0.7.3...@release-change/release@v0.8.0`](https://github.com/release-change/release-change/compare/@release-change/release@v0.7.3...@release-change/release@v0.8.0)
+
 ## 0.7.3
 
 ### Dependencies updates
