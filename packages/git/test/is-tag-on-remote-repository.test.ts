@@ -36,54 +36,18 @@ it("should throw an error if the Git tag name is empty", async () => {
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   await expect(isTagOnRemoteRepository("", mockedContext)).rejects.toThrow(expectedError);
 });
-it("should throw an error if the remote name starts with `-`", async () => {
-  const expectedError = new Error(
-    "Failed to check a Git tag on remote repository: The remote name must not start with `-`.",
-    {
-      cause: {
-        title: "Failed to check a Git tag on remote repository",
-        message: "The remote name must not start with `-`.",
-        details: {
-          output: "remoteName: --upload-pack"
-        }
-      }
-    }
-  );
-  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(isTagOnRemoteRepository("--upload-pack", mockedContext)).rejects.toThrow(
-    expectedError
-  );
-});
-it("should throw an error if the Git tag name starts with `-`", async () => {
-  const expectedError = new Error(
-    "Failed to check a Git tag on remote repository: The Git tag name must not start with `-`.",
-    {
-      cause: {
-        title: "Failed to check a Git tag on remote repository",
-        message: "The Git tag name must not start with `-`.",
-        details: {
-          output: "gitTag: --upload-pack"
-        }
-      }
-    }
-  );
-  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(isTagOnRemoteRepository("--upload-pack", mockedContext)).rejects.toThrow(
-    expectedError
-  );
-});
 describe.each(mockedGitTags)("for %s", mockedGitTag => {
-  it("should throw an error if the `git ls-remote --tags` command is run and fails", async () => {
+  it("should throw an error if the `git ls-remote` command is run and fails", async () => {
     const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
     const expectedError = new Error(
-      "Failed to run the `git ls-remote --tags` command: The command failed with status 128.",
+      "Failed to run the `git ls-remote` command: The command failed with status 128.",
       {
         cause: {
-          title: "Failed to run the `git ls-remote --tags` command",
+          title: "Failed to run the `git ls-remote` command",
           message: "The command failed with status 128.",
           details: {
             output: expectedOutput,
-            command: `git ls-remote --tags --exit-code origin ${mockedGitTag}`
+            command: `git ls-remote --exit-code -- origin refs/tags/${mockedGitTag}`
           }
         }
       }
@@ -105,13 +69,13 @@ describe.each(mockedGitTags)("for %s", mockedGitTag => {
   it("should return `true` if the Git tag exists on remote repository", async () => {
     const mockedCommand = vi.mocked(runCommand).mockResolvedValue({
       status: 0,
-      stdout: `abcdef123456 refs/heads/${mockedGitTag}`,
+      stdout: `abcdef123456 refs/tags/${mockedGitTag}`,
       stderr: ""
     });
     await isTagOnRemoteRepository(mockedGitTag, mockedContext);
     expect(mockedCommand).toHaveBeenCalledWith(
       "git",
-      ["ls-remote", "--tags", "--exit-code", "origin", mockedGitTag],
+      ["ls-remote", "--exit-code", "--", "origin", `refs/tags/${mockedGitTag}`],
       { cwd: mockedContext.cwd }
     );
     expect(mockedLogger.logInfo).toHaveBeenCalledWith(
@@ -125,7 +89,7 @@ describe.each(mockedGitTags)("for %s", mockedGitTag => {
     await isTagOnRemoteRepository(mockedGitTag, mockedContext);
     expect(mockedCommand).toHaveBeenCalledWith(
       "git",
-      ["ls-remote", "--tags", "--exit-code", "origin", mockedGitTag],
+      ["ls-remote", "--exit-code", "--", "origin", `refs/tags/${mockedGitTag}`],
       { cwd: mockedContext.cwd }
     );
     expect(mockedLogger.logInfo).toHaveBeenCalledWith(

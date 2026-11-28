@@ -20,21 +20,8 @@ export const isBranchOnRemoteRepository = async (
   const logger = setLogger(debug);
   logger.setScope("git");
   if (branch) {
-    if (remoteName.startsWith("-")) {
-      throw formatDetailedError({
-        title: "Failed to check a branch on remote repository",
-        message: "The remote name must not start with `-`.",
-        details: { output: `remoteName: ${remoteName}` }
-      });
-    }
-    if (branch.startsWith("-")) {
-      throw formatDetailedError({
-        title: "Failed to check a branch on remote repository",
-        message: "The branch name must not start with `-`.",
-        details: { output: `branch: ${branch}` }
-      });
-    }
-    const args = ["ls-remote", "--branches", "--exit-code", remoteName, branch];
+    const refsPrefix = "refs/heads/";
+    const args = ["ls-remote", "--exit-code", "--", remoteName, `${refsPrefix}${branch}`];
     const commandResult = await runCommand("git", args, { cwd });
     const { status } = commandResult;
     if (debug) {
@@ -48,9 +35,9 @@ export const isBranchOnRemoteRepository = async (
       }
       logger.logError(`Failed to check remote branch ${branch} on ${remoteName}.`);
       throw formatDetailedError({
-        title: "Failed to run the `git ls-remote --branches` command",
+        title: "Failed to run the `git ls-remote` command",
         message: `The command failed with status ${status}.`,
-        details: { output: `git ls-remote --branches --exit-code ${remoteName} ${branch}` }
+        details: { output: `git ls-remote --exit-code -- ${remoteName} ${refsPrefix}${branch}` }
       });
     }
     logger.logInfo(`Branch ${branch} found on remote repository.`);

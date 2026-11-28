@@ -35,53 +35,17 @@ it("should throw an error if the branch name is empty", async () => {
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   await expect(isBranchOnRemoteRepository("", mockedContext)).rejects.toThrow(expectedError);
 });
-it("should throw an error if the remote name starts with `-`", async () => {
-  const expectedError = new Error(
-    "Failed to check a branch on remote repository: The remote name must not start with `-`.",
-    {
-      cause: {
-        title: "Failed to check a branch on remote repository",
-        message: "The remote name must not start with `-`.",
-        details: {
-          output: "remoteName: --upload-pack"
-        }
-      }
-    }
-  );
-  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(isBranchOnRemoteRepository("--upload-pack", mockedContext)).rejects.toThrow(
-    expectedError
-  );
-});
-it("should throw an error if the branch name starts with `-`", async () => {
-  const expectedError = new Error(
-    "Failed to check a branch on remote repository: The branch name must not start with `-`.",
-    {
-      cause: {
-        title: "Failed to check a branch on remote repository",
-        message: "The branch name must not start with `-`.",
-        details: {
-          output: "branch: --upload-pack"
-        }
-      }
-    }
-  );
-  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
-  await expect(isBranchOnRemoteRepository("--upload-pack", mockedContext)).rejects.toThrow(
-    expectedError
-  );
-});
-it("should throw an error if the `git ls-remote --branches` command is run and fails", async () => {
+it("should throw an error if the `git ls-remote` command is run and fails", async () => {
   const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";
   const expectedError = new Error(
-    "Failed to run the `git ls-remote --branches` command: The command failed with status 128.",
+    "Failed to run the `git ls-remote` command: The command failed with status 128.",
     {
       cause: {
-        title: "Failed to run the `git ls-remote --branches` command",
+        title: "Failed to run the `git ls-remote` command",
         message: "The command failed with status 128.",
         details: {
           output: expectedOutput,
-          command: `git ls-remote --branches --exit-code origin ${mockedReleaseBranch}`
+          command: `git ls-remote --exit-code -- origin refs/heads/${mockedReleaseBranch}`
         }
       }
     }
@@ -109,7 +73,7 @@ it("should return `true` if the branch exists on remote repository", async () =>
   await isBranchOnRemoteRepository(mockedReleaseBranch, mockedContext);
   expect(mockedCommand).toHaveBeenCalledWith(
     "git",
-    ["ls-remote", "--branches", "--exit-code", "origin", mockedReleaseBranch],
+    ["ls-remote", "--exit-code", "--", "origin", `refs/heads/${mockedReleaseBranch}`],
     { cwd: mockedContext.cwd }
   );
   expect(mockedLogger.logInfo).toHaveBeenCalledWith(
@@ -123,7 +87,7 @@ it("should return `false` if the branch exists on remote repository", async () =
   await isBranchOnRemoteRepository(mockedReleaseBranch, mockedContext);
   expect(mockedCommand).toHaveBeenCalledWith(
     "git",
-    ["ls-remote", "--branches", "--exit-code", "origin", mockedReleaseBranch],
+    ["ls-remote", "--exit-code", "--", "origin", `refs/heads/${mockedReleaseBranch}`],
     { cwd: mockedContext.cwd }
   );
   expect(mockedLogger.logInfo).toHaveBeenCalledWith(
