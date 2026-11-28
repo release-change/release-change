@@ -1,5 +1,17 @@
 # @release-change/cli
 
+## 0.9.1
+
+### Dependencies updates
+
+- [@release-change/git@0.7.1](https://github.com/release-change/release-change/tree/@release-change/git@v0.7.1/packages/git)
+- [@release-change/github@0.7.1](https://github.com/release-change/release-change/tree/@release-change/github@v0.7.1/packages/github)
+- [@release-change/release@0.8.1](https://github.com/release-change/release-change/tree/@release-change/release@v0.8.1/packages/release)
+
+---
+
+**Full changelog:** [`@release-change/cli@v0.9.0...@release-change/cli@v0.9.1`](https://github.com/release-change/release-change/compare/@release-change/cli@v0.9.0...@release-change/cli@v0.9.1)
+
 ## 0.9.0
 
 ### Minor changes
