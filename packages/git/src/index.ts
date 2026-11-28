@@ -14,6 +14,8 @@ export { getCurrentCommitId } from "./get-current-commit-id.js";
 export { getLatestValidTag } from "./get-latest-valid-tag.js";
 export { getRemoteName } from "./get-remote-name.js";
 export { getTrackedRepositories } from "./get-tracked-repositories.js";
+export { isBranchOnRemoteRepository } from "./is-branch-on-remote-repository.js";
+export { isTagOnRemoteRepository } from "./is-tag-on-remote-repository.js";
 export { push } from "./push.js";
 export { removeTag } from "./remove-tag.js";
 export { removeTagOnRemoteRepository } from "./remove-tag-on-remote-repository.js";
