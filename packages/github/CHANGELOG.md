@@ -1,5 +1,15 @@
 # @release-change/github
 
+## 0.7.1
+
+### Dependencies updates
+
+- [@release-change/git@0.7.1](https://github.com/release-change/release-change/tree/@release-change/git@v0.7.1/packages/git)
+
+---
+
+**Full changelog:** [`@release-change/github@v0.7.0...@release-change/github@v0.7.1`](https://github.com/release-change/release-change/compare/@release-change/github@v0.7.0...@release-change/github@v0.7.1)
+
 ## 0.7.0
 
 ### Minor changes
