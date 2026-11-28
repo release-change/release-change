@@ -12,6 +12,8 @@ import {
   deleteBranch,
   deleteBranchOnRemoteRepository,
   getCurrentCommitId,
+  isBranchOnRemoteRepository,
+  isTagOnRemoteRepository,
   push,
   removeTag,
   removeTagOnRemoteRepository,
@@ -140,11 +142,31 @@ export const publish = async (context: Context): Promise<void> => {
           if (branch && newBranch && newBranch !== branch) {
             switchToBranch(branch, cwd);
             deleteBranch(newBranch, cwd, debug);
-            await deleteBranchOnRemoteRepository(newBranch, context);
+            try {
+              if (await isBranchOnRemoteRepository(newBranch, context)) {
+                await deleteBranchOnRemoteRepository(newBranch, context);
+              }
+            } catch (rollbackError) {
+              logger.logError(
+                `Failed to delete the remote branch ${newBranch} during the rollback.`
+              );
+              logger.logError(checkErrorType(rollbackError));
+              addErrorToContext(rollbackError, context);
+            }
           }
           for (const newGitTag of newGitTags) {
             removeTag(newGitTag, cwd, debug);
-            await removeTagOnRemoteRepository(newGitTag, context);
+            try {
+              if (await isTagOnRemoteRepository(newGitTag, context)) {
+                await removeTagOnRemoteRepository(newGitTag, context);
+              }
+            } catch (rollbackError) {
+              logger.logError(
+                `Failed to delete the remote Git tag ${newGitTag} during the rollback.`
+              );
+              logger.logError(checkErrorType(rollbackError));
+              addErrorToContext(rollbackError, context);
+            }
           }
         }
       }

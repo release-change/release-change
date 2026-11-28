@@ -9,6 +9,8 @@ import {
   deleteBranch,
   deleteBranchOnRemoteRepository,
   getCurrentCommitId,
+  isBranchOnRemoteRepository,
+  isTagOnRemoteRepository,
   push,
   removeTag,
   removeTagOnRemoteRepository,
@@ -68,8 +70,10 @@ vi.mock("@release-change/git", () => ({
   cancelCommitsSinceRef: vi.fn(),
   switchToBranch: vi.fn(),
   deleteBranch: vi.fn(),
+  isBranchOnRemoteRepository: vi.fn(),
   deleteBranchOnRemoteRepository: vi.fn(),
   removeTag: vi.fn(),
+  isTagOnRemoteRepository: vi.fn(),
   removeTagOnRemoteRepository: vi.fn()
 }));
 vi.mock("@release-change/github", () => ({
@@ -202,6 +206,8 @@ describe.each(packageManagers)("for %s", packageManager => {
           rebaseMergeAllowed: true,
           squashMergeAllowed: true
         });
+        vi.mocked(isBranchOnRemoteRepository).mockResolvedValue(true);
+        vi.mocked(isTagOnRemoteRepository).mockResolvedValue(true);
       });
       afterEach(() => {
         vi.clearAllMocks();
@@ -383,6 +389,8 @@ describe.each(packageManagers)("for %s", packageManager => {
         vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
         vi.mocked(commitUpdatedFiles).mockRejectedValue(mockedError);
         vi.mocked(isDetailedError).mockReturnValue(true);
+        vi.mocked(isBranchOnRemoteRepository).mockResolvedValue(false);
+        vi.mocked(isTagOnRemoteRepository).mockResolvedValue(false);
         await expect(publish(context)).rejects.toThrow(mockedError);
         expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
           "original-commit",
@@ -391,8 +399,13 @@ describe.each(packageManagers)("for %s", packageManager => {
         );
         expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
         expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
-        expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
+        expect(isBranchOnRemoteRepository).toHaveBeenCalled();
+        expect(deleteBranchOnRemoteRepository).not.toHaveBeenCalledWith(
+          mockedReleaseBranch,
+          context
+        );
         expect(removeTag).not.toHaveBeenCalled();
+        expect(isTagOnRemoteRepository).not.toHaveBeenCalled();
         expect(removeTagOnRemoteRepository).not.toHaveBeenCalled();
       });
       it("should rollback commits and delete release branch when `git commit` fails", async () => {
@@ -412,6 +425,8 @@ describe.each(packageManagers)("for %s", packageManager => {
         );
         vi.mocked(getCurrentCommitId).mockReturnValue("original-commit");
         vi.mocked(commitUpdatedFiles).mockRejectedValue(mockedError);
+        vi.mocked(isBranchOnRemoteRepository).mockResolvedValue(false);
+        vi.mocked(isTagOnRemoteRepository).mockResolvedValue(false);
         await expect(publish(context)).rejects.toThrow(mockedError);
         expect(cancelCommitsSinceRef).toHaveBeenCalledWith(
           "original-commit",
@@ -420,7 +435,8 @@ describe.each(packageManagers)("for %s", packageManager => {
         );
         expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
         expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
-        expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
+        expect(isBranchOnRemoteRepository).toHaveBeenCalledWith(mockedReleaseBranch, context);
+        expect(deleteBranchOnRemoteRepository).not.toHaveBeenCalled();
         expect(removeTag).not.toHaveBeenCalled();
         expect(removeTagOnRemoteRepository).not.toHaveBeenCalled();
       });
@@ -450,9 +466,11 @@ describe.each(packageManagers)("for %s", packageManager => {
         );
         expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
         expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
+        expect(isBranchOnRemoteRepository).toHaveBeenCalledWith(mockedReleaseBranch, context);
         expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
         expect(removeTag).toHaveBeenCalled();
-        expect(removeTagOnRemoteRepository).toHaveBeenCalled();
+        expect(isTagOnRemoteRepository).toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).toHaveBeenCalledTimes(context.nextRelease.length);
       });
       it("should rollback commits, remove tags and delete release branch when repository merge options request fails", async () => {
         const { branch, cwd } = context;
@@ -480,9 +498,11 @@ describe.each(packageManagers)("for %s", packageManager => {
         );
         expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
         expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
+        expect(isBranchOnRemoteRepository).toHaveBeenCalled();
         expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
         expect(removeTag).toHaveBeenCalled();
-        expect(removeTagOnRemoteRepository).toHaveBeenCalled();
+        expect(isTagOnRemoteRepository).toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).toHaveBeenCalledTimes(context.nextRelease.length);
       });
       it("should rollback commits, remove tags and delete release branch when pull request creation fails", async () => {
         const { branch, cwd } = context;
@@ -508,9 +528,11 @@ describe.each(packageManagers)("for %s", packageManager => {
         );
         expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
         expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
+        expect(isBranchOnRemoteRepository).toHaveBeenCalled();
         expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
         expect(removeTag).toHaveBeenCalled();
-        expect(removeTagOnRemoteRepository).toHaveBeenCalled();
+        expect(isTagOnRemoteRepository).toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).toHaveBeenCalledTimes(context.nextRelease.length);
       });
       it("should rollback commits, remove tags and delete release branch when release notes creation fails", async () => {
         const { branch, cwd } = context;
@@ -537,9 +559,35 @@ describe.each(packageManagers)("for %s", packageManager => {
         );
         expect(switchToBranch).toHaveBeenCalledWith(branch, cwd);
         expect(deleteBranch).toHaveBeenCalledWith(mockedReleaseBranch, cwd, expect.any(Boolean));
+        expect(isBranchOnRemoteRepository).toHaveBeenCalled();
         expect(deleteBranchOnRemoteRepository).toHaveBeenCalled();
         expect(removeTag).toHaveBeenCalled();
-        expect(removeTagOnRemoteRepository).toHaveBeenCalled();
+        expect(isTagOnRemoteRepository).toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).toHaveBeenCalledTimes(context.nextRelease.length);
+      });
+      it("should complete the rollback and rethrow the original error even if a remote operation fails", async () => {
+        const mockedError = new Error(
+          "Failed to create the pull request: The command failed with status 128.",
+          {
+            cause: {
+              title: "Failed to create the pull request",
+              message: "The command failed with status 128.",
+              details: {
+                output: "GitHub API error",
+                command: "POST /repos/:owner/:repo/pulls"
+              }
+            }
+          }
+        );
+        vi.mocked(createPullRequest).mockRejectedValue(mockedError);
+        vi.mocked(isBranchOnRemoteRepository).mockRejectedValue(new Error("Network error"));
+        vi.mocked(removeTagOnRemoteRepository).mockRejectedValueOnce(new Error("Network error"));
+        await expect(publish(context)).rejects.toThrow(mockedError);
+        expect(isBranchOnRemoteRepository).toHaveBeenCalledWith(mockedReleaseBranch, context);
+        expect(deleteBranchOnRemoteRepository).not.toHaveBeenCalled();
+        expect(removeTag).toHaveBeenCalledTimes(context.nextRelease.length);
+        expect(isTagOnRemoteRepository).toHaveBeenCalled();
+        expect(removeTagOnRemoteRepository).toHaveBeenCalledTimes(context.nextRelease.length);
       });
       it("should not rollback when error is not from `git add`, `git commit`, `git push`, repository merge options request, pull request creation or release notes creation", async () => {
         vi.mocked(updateLockFile).mockRejectedValue(new Error("Lock file update failed"));
@@ -547,8 +595,10 @@ describe.each(packageManagers)("for %s", packageManager => {
         expect(cancelCommitsSinceRef).not.toHaveBeenCalled();
         expect(switchToBranch).not.toHaveBeenCalled();
         expect(deleteBranch).not.toHaveBeenCalled();
+        expect(isBranchOnRemoteRepository).not.toHaveBeenCalled();
         expect(deleteBranchOnRemoteRepository).not.toHaveBeenCalled();
         expect(removeTag).not.toHaveBeenCalled();
+        expect(isTagOnRemoteRepository).not.toHaveBeenCalled();
         expect(removeTagOnRemoteRepository).not.toHaveBeenCalled();
       });
       it("should set `process.exitCode` to 1 on error", async () => {
