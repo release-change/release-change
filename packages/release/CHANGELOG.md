@@ -1,5 +1,21 @@
 # @release-change/release
 
+## 0.8.1
+
+### Patch changes
+
+- **git:** check that branch and Git tag exist before removing on remote repository (#863) ([`4b8ee9b`](https://github.com/release-change/release-change/commit/4b8ee9b5d0e219cb988c955d42c5afba827183bb))
+
+### Dependencies updates
+
+- [@release-change/git@0.7.1](https://github.com/release-change/release-change/tree/@release-change/git@v0.7.1/packages/git)
+- [@release-change/github@0.7.1](https://github.com/release-change/release-change/tree/@release-change/github@v0.7.1/packages/github)
+- [@release-change/release-notes-generator@0.7.1](https://github.com/release-change/release-change/tree/@release-change/release-notes-generator@v0.7.1/packages/release-notes-generator)
+
+---
+
+**Full changelog:** [`@release-change/release@v0.8.0...@release-change/release@v0.8.1`](https://github.com/release-change/release-change/compare/@release-change/release@v0.8.0...@release-change/release@v0.8.1)
+
 ## 0.8.0
 
 ### Minor changes
