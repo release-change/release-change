@@ -1,5 +1,15 @@
 # release-change
 
+## 0.9.1
+
+### Patch changes
+
+- **git:** check that branch and Git tag exist before removing on remote repository (#863) ([`4b8ee9b`](https://github.com/release-change/release-change/commit/4b8ee9b5d0e219cb988c955d42c5afba827183bb))
+
+---
+
+**Full changelog:** [`v0.9.0...v0.9.1`](https://github.com/release-change/release-change/compare/v0.9.0...v0.9.1)
+
 ## 0.9.0
 
 ### Minor changes
