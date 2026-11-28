@@ -20,6 +20,20 @@ export const isBranchOnRemoteRepository = async (
   const logger = setLogger(debug);
   logger.setScope("git");
   if (branch) {
+    if (remoteName.startsWith("-")) {
+      throw formatDetailedError({
+        title: "Failed to check a branch on remote repository",
+        message: "The remote name must not start with `-`.",
+        details: { output: `remoteName: ${remoteName}` }
+      });
+    }
+    if (branch.startsWith("-")) {
+      throw formatDetailedError({
+        title: "Failed to check a branch on remote repository",
+        message: "The branch name must not start with `-`.",
+        details: { output: `branch: ${branch}` }
+      });
+    }
     const args = ["ls-remote", "--branches", "--exit-code", remoteName, branch];
     const commandResult = await runCommand("git", args, { cwd });
     const { status } = commandResult;

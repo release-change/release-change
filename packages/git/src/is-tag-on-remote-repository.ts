@@ -20,6 +20,20 @@ export const isTagOnRemoteRepository = async (
   const logger = setLogger(debug);
   logger.setScope("git");
   if (gitTag) {
+    if (remoteName.startsWith("-")) {
+      throw formatDetailedError({
+        title: "Failed to check a Git tag on remote repository",
+        message: "The remote name must not start with `-`.",
+        details: { output: `gitTag: ${gitTag}` }
+      });
+    }
+    if (gitTag.startsWith("-")) {
+      throw formatDetailedError({
+        title: "Failed to check a Git tag on remote repository",
+        message: "The Git tag name must not start with `-`.",
+        details: { output: `gitTag: ${gitTag}` }
+      });
+    }
     const args = ["ls-remote", "--tags", "--exit-code", remoteName, gitTag];
     const commandResult = await runCommand("git", args, { cwd });
     const { status } = commandResult;

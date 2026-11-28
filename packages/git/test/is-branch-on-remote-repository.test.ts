@@ -21,7 +21,7 @@ vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it("should throw an error if the branch name is empty", async () => {
   const expectedError = new Error(
-    "Failed to remove a branch on remote repository: The branch name must not be empty.",
+    "Failed to check a branch on remote repository: The branch name must not be empty.",
     {
       cause: {
         title: "Failed to check a branch on remote repository",
@@ -34,6 +34,42 @@ it("should throw an error if the branch name is empty", async () => {
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   await expect(isBranchOnRemoteRepository("", mockedContext)).rejects.toThrow(expectedError);
+});
+it("should throw an error if the remote name starts with `-`", async () => {
+  const expectedError = new Error(
+    "Failed to check a branch on remote repository: The remote name must not start with `-`.",
+    {
+      cause: {
+        title: "Failed to check a branch on remote repository",
+        message: "The remote name must not start with `-`.",
+        details: {
+          output: "remoteName: --upload-pack"
+        }
+      }
+    }
+  );
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(isBranchOnRemoteRepository("--upload-pack", mockedContext)).rejects.toThrow(
+    expectedError
+  );
+});
+it("should throw an error if the branch name starts with `-`", async () => {
+  const expectedError = new Error(
+    "Failed to check a branch on remote repository: The branch name must not start with `-`.",
+    {
+      cause: {
+        title: "Failed to check a branch on remote repository",
+        message: "The branch name must not start with `-`.",
+        details: {
+          output: "branch: --upload-pack"
+        }
+      }
+    }
+  );
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(isBranchOnRemoteRepository("--upload-pack", mockedContext)).rejects.toThrow(
+    expectedError
+  );
 });
 it("should throw an error if the `git ls-remote --branches` command is run and fails", async () => {
   const expectedOutput = "status: 128\n\nstdout: \n\nstderr: Some error message.";

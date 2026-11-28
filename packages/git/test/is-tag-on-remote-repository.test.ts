@@ -22,7 +22,7 @@ vi.mocked(setLogger).mockReturnValue(mockedLogger);
 
 it("should throw an error if the Git tag name is empty", async () => {
   const expectedError = new Error(
-    "Failed to remove a Git tag on remote repository: The tag name must not be empty.",
+    "Failed to check a Git tag on remote repository: The Git tag name must not be empty.",
     {
       cause: {
         title: "Failed to check a Git tag on remote repository",
@@ -35,6 +35,42 @@ it("should throw an error if the Git tag name is empty", async () => {
   );
   vi.mocked(formatDetailedError).mockReturnValue(expectedError);
   await expect(isTagOnRemoteRepository("", mockedContext)).rejects.toThrow(expectedError);
+});
+it("should throw an error if the remote name starts with `-`", async () => {
+  const expectedError = new Error(
+    "Failed to check a Git tag on remote repository: The remote name must not start with `-`.",
+    {
+      cause: {
+        title: "Failed to check a Git tag on remote repository",
+        message: "The remote name must not start with `-`.",
+        details: {
+          output: "remoteName: --upload-pack"
+        }
+      }
+    }
+  );
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(isTagOnRemoteRepository("--upload-pack", mockedContext)).rejects.toThrow(
+    expectedError
+  );
+});
+it("should throw an error if the Git tag name starts with `-`", async () => {
+  const expectedError = new Error(
+    "Failed to check a Git tag on remote repository: The Git tag name must not start with `-`.",
+    {
+      cause: {
+        title: "Failed to check a Git tag on remote repository",
+        message: "The Git tag name must not start with `-`.",
+        details: {
+          output: "gitTag: --upload-pack"
+        }
+      }
+    }
+  );
+  vi.mocked(formatDetailedError).mockReturnValue(expectedError);
+  await expect(isTagOnRemoteRepository("--upload-pack", mockedContext)).rejects.toThrow(
+    expectedError
+  );
 });
 describe.each(mockedGitTags)("for %s", mockedGitTag => {
   it("should throw an error if the `git ls-remote --tags` command is run and fails", async () => {
